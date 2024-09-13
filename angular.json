@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "COCKPIT-FE"
+    }
+  },
+  "defaultProject": "COCKPIT-FE",
+  "cli": {
+    "analytics": "525698a8-6f43-464d-9ab3-75bfeffe9a7a"
+  }
 }
