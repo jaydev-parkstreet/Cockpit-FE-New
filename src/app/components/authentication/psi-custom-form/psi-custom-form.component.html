@@ -9,13 +9,27 @@
                         <h1>Log In</h1>
                         <p>Welcome back to Park Street</p>
                     </div>
-                    <div>
-                        <label for="">Email OR Username</label>
-                        <input type="text">
+                    <div class="form-group">
+                        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                            <div class="form-field">
+                                <label for="user-name">Email OR Username</label>
+                                <input type="text" id="user-name" formControlName="userName">
+                            </div>
+                            <div class="form-field">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" formControlName="password">
+                            </div>
+                            <div class="form-submit-button">
+                                <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Log In</button>
+                                <div class="seperator">
+                                    OR
+                                </div>
+                            </div>
+                        </form>
+                        <div class="form-footer-notes">By clicking Log in, you agree to the Park Street Terms of use, Privacy Policy and Cookie Policy.</div>
                     </div>
                 </div>
             </div>
-           
         </div>
     </div>
 </div>
