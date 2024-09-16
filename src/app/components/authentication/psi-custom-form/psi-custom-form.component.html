@@ -4,25 +4,36 @@
     <div class="psi-custom-form">
         <div class="custom-form-wrapper">
             <div class="form-container">
+                <div class="form-validation">
+                    <div *ngIf="loginForm.invalid && formSubmitted " class="validation-msg">
+                        Please enter the required fields.
+                    </div>
+                    <div *ngIf="loginForm.controls['userName'].invalid && loginForm.controls['userName'].touched && !formSubmitted" class="validation-msg">
+                        Please enter your email or username
+                    </div>
+                    <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched && !formSubmitted" class="validation-msg">
+                        Please enter your Password
+                    </div>
+                </div>
                 <div class="psi-form">
                     <div class="form-title">
                         <h1>Log In</h1>
                         <p>Welcome back to Park Street</p>
                     </div>
                     <div class="form-group">
-                        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="false">
                             <div class="form-field">
                                 <label for="user-name">Email OR Username</label>
-                                <input type="text" id="user-name" formControlName="userName">
+                                <input type="text" id="user-name" formControlName="userName" >
                             </div>
                             <div class="form-field">
                                 <label for="password">Password</label>
                                 <input type="password" id="password" formControlName="password">
                             </div>
                             <div class="form-submit-button">
-                                <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Log In</button>
+                                <button type="submit" class="btn btn-primary" >Log In</button>
                                 <div class="seperator">
-                                    OR
+                                    <span>OR</span>
                                 </div>
                             </div>
                         </form>

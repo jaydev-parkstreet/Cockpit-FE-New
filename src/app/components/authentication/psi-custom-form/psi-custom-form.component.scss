@@ -9,7 +9,7 @@
         background-repeat: no-repeat;
         width: 100%;
         height: 100%;
-        min-height: 600px;
+        min-height: 700px;
         position: absolute;
         top: 150px;
         right: 8px;
@@ -25,6 +25,20 @@
                 margin-right: 150px;
                 float: right;
                 z-index: 2;
+
+                .form-validation {
+                    .validation-msg {
+                        position: relative;
+                        z-index: 2;
+                        background-color: transparent;
+                        color: #e74536;
+                        text-align: center;
+                        padding: 8px;
+                        font-family: "Montserrat-Medium";
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
 
                 .psi-form {
                     position: relative;
@@ -42,16 +56,20 @@
                         .seperator {
                             text-align: center;
                             font-size: 14px;
+                            position: relative;
+
+                            &::before {
+                                content: "";
+                                border: 2px solid green;
+                                width: 100%;
+                                height: 2px;
+                                position: relative;
+
+
+                            }
                         }
 
-                        .separator::before,
-                        .separator::after {
-                            content: "";
-                            // flex-grow: 1;
-                            height: 2px;
-                            width: 10px;
-                            background-color: black;
-                        }
+                        
 
                         .form-field {
                             display: flex;
@@ -109,12 +127,10 @@
                     padding: 8px 32px;
                     border-radius: 8px;
                     text-align: center;
-
-                    
                 }
                 button:hover {
                     color: #fff;
-                    background-color: #de1300;;
+                    background-color: #de1300;
                     outline: 0;
                     border-color: transparent;
                     cursor: pointer;

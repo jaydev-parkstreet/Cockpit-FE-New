@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-psi-custom-form',
@@ -8,9 +8,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class PsiCustomFormComponent implements OnInit {
   loginForm = new FormGroup({
-    userName : new FormControl(''),
-    password : new FormControl(''),
-  })
+    userName : new FormControl('',[Validators.required]),
+    password : new FormControl('',[
+      Validators.required,
+      Validators.minLength(6)
+    ]),
+  });
+  formSubmitted: boolean;
+  bothInvalid : boolean;
   
 
   constructor() { }
@@ -18,7 +23,18 @@ export class PsiCustomFormComponent implements OnInit {
   ngOnInit(): void {
   }
   onSubmit(){
-    console.log("formSubmit",this.loginForm.value);
+    debugger
+    this.formSubmitted = true;
+
+  if (this.loginForm.invalid) {
+    // this.bothInvalid = true;
+    // (this.loginForm.controls.userName.status === 'INVALID' && this.loginForm.controls.password.status === 'INVALID'){
+
+
+    // }
+    // this.loginForm.markAllAsTouched();
+    return;
+  }
   }
 
 }
