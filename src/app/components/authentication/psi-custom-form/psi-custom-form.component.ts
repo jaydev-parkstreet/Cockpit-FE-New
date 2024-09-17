@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {PsiCustomFormService} from './psi-custom-form.service'
+import { PsiCustomFormService } from './psi-custom-form.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-psi-custom-form',
@@ -17,54 +18,40 @@ export class PsiCustomFormComponent implements OnInit {
   });
   formSubmitted: boolean;
   bothInvalid: boolean;
+  isShowLoginErrorMsg:boolean = false;
+  showErrorMsg: string;
 
 
-  constructor( public readonly PsiCustomFormService: PsiCustomFormService) { 
-   
+  constructor(public readonly PsiCustomFormService: PsiCustomFormService) {
   }
 
   ngOnInit(): void {
   }
-  // onSubmit(){
-  // this.formSubmitted = true;
-  // console.log(this.loginForm.value.password !=='' && this.loginForm.value.userName !=='' )
-
-  // if (this.loginForm.invalid) {
-
-  // return;
-  // }
 
   onSubmit(form) {
-    console
     debugger
     if (form.valid) {
-      // this.usSpinnerService.spin('app-loader');
-      // this.formConfig.serverValidation = '';
       let reqObj: any = {
         username: form.controls.userName.value,
         password: form.controls.password.value,
-        // token: null,
-        // email_verification_token:'',
-        // skip2fa: false
+        token: null,
+        email_verification_token:'',
+        skip2fa: false
       };
-      // if (this.commonService.getURLParameter('compeId')) {
-      //   reqObj.is_competition_req = true;
-      //   reqObj.competition_id = this.commonService.getURLParameter('compeId');
-      // }
-      // this.loginService.userLogin(reqObj).then((response) => {
-      //   this.processResponseAfterLogin(response);
-      //   this.usSpinnerService.stop('app-loader');
-      // });
-      this.PsiCustomFormService.loginToCockpit(reqObj).then((res) =>{
+      this.PsiCustomFormService.userLogin(reqObj).then((res) => {
+        console.log(res);
         
-        if (!res.hasError) { 
-          const token = res.data.token;
-          window.location.href = `https://cockpit.parkstreet.com/router.php/dashboard#/`;
-      } else {
-          
-          console.error("Login failed", res);
-      }
-      })
+        debugger
+        if (!res.hasError) {
+          window.location.href = environment.oldCockpit + '/router.php/dashboard';
+        }
+        
+       else {
+        debugger
+        this.isShowLoginErrorMsg = true;
+        this.showErrorMsg = res.msg
+        }
+      });
     }
   }
 }

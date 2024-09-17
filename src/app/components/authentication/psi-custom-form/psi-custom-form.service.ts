@@ -15,7 +15,7 @@ export class PsiCustomFormService {
 
   }
 
-  loginToCockpit(filterData): any {
+  userLogin(filterData): any {
     return this.http
       .post(environment.apiUrl + AppRoutes.AUTHENTICATION.LOGIN, filterData)
       .toPromise();
