@@ -43,9 +43,9 @@ export class PsiCustomFormComponent implements OnInit {
       let reqObj: any = {
         username: form.controls.userName.value,
         password: form.controls.password.value,
-        token: null,
-        email_verification_token:'',
-        skip2fa: false
+        // token: null,
+        // email_verification_token:'',
+        // skip2fa: false
       };
       // if (this.commonService.getURLParameter('compeId')) {
       //   reqObj.is_competition_req = true;
@@ -56,8 +56,14 @@ export class PsiCustomFormComponent implements OnInit {
       //   this.usSpinnerService.stop('app-loader');
       // });
       this.PsiCustomFormService.loginToCockpit(reqObj).then((res) =>{
-        console.log(res);
-        debugger
+        
+        if (!res.hasError) { 
+          const token = res.data.token;
+          window.location.href = `https://cockpit.parkstreet.com/router.php/dashboard#/`;
+      } else {
+          
+          console.error("Login failed", res);
+      }
       })
     }
   }
