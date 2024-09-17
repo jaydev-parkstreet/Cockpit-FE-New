@@ -5,13 +5,13 @@
         <div class="custom-form-wrapper">
             <div class="form-container">
                 <div class="form-validation">
-                    <div *ngIf="loginForm.invalid && formSubmitted " class="validation-msg">
+                    <div *ngIf="loginForm.invalid && formSubmitted" class="validation-msg">
                         Please enter the required fields.
                     </div>
-                    <div *ngIf="loginForm.controls['userName'].invalid && loginForm.controls['userName'].touched && !formSubmitted" class="validation-msg">
+                    <div *ngIf="loginForm.controls['userName'].invalid && loginForm.controls['userName'].touched" class="validation-msg">
                         Please enter your email or username
                     </div>
-                    <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched && !formSubmitted" class="validation-msg">
+                    <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="validation-msg">
                         Please enter your Password
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                         <p>Welcome back to Park Street</p>
                     </div>
                     <div class="form-group">
-                        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="false">
+                        <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)" autocomplete="false">
                             <div class="form-field">
                                 <label for="user-name">Email OR Username</label>
                                 <input type="text" id="user-name" formControlName="userName" >
