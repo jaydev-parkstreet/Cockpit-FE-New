@@ -12,12 +12,12 @@ export class PsiCustomFormService {
   constructor(
     private http: HttpClient,
   ) {
-    
-   }
 
-   loginToCockpit(filterData):any {
+  }
+
+  loginToCockpit(filterData): any {
     return this.http
-    .post(environment.apiUrl + AppRoutes.AUTHENTICATION.LOGIN, filterData)
-    .toPromise();
+      .post(environment.apiUrl + AppRoutes.AUTHENTICATION.LOGIN, filterData)
+      .toPromise();
   }
 }

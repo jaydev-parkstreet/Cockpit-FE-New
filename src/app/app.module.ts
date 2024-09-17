@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationModule } from './components/authentication/authentication.module';
+import {HttpClientModule}  from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent
@@ -10,12 +11,13 @@ import { AuthenticationModule } from './components/authentication/authentication
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AuthenticationModule
+    AuthenticationModule,
+    HttpClientModule,
   ],
   exports: [
    
   ],
-  providers: [],
+  providers: [HttpClientModule],
   
   bootstrap: [AppComponent]
 })

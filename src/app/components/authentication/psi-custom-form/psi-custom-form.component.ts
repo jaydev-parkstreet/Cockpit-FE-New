@@ -35,17 +35,18 @@ export class PsiCustomFormComponent implements OnInit {
   // }
 
   onSubmit(form) {
+    console
     debugger
     if (form.valid) {
       // this.usSpinnerService.spin('app-loader');
       // this.formConfig.serverValidation = '';
-      // let reqObj: any = {
-      //   username: this.user.email,
-      //   password: this.user.password,
-      //   token: this.token,
-      //   email_verification_token: this.emailVerificationToken,
-      //   skip2fa: false
-      // };
+      let reqObj: any = {
+        username: form.controls.userName.value,
+        password: form.controls.password.value,
+        token: null,
+        email_verification_token:'',
+        skip2fa: false
+      };
       // if (this.commonService.getURLParameter('compeId')) {
       //   reqObj.is_competition_req = true;
       //   reqObj.competition_id = this.commonService.getURLParameter('compeId');
@@ -54,7 +55,7 @@ export class PsiCustomFormComponent implements OnInit {
       //   this.processResponseAfterLogin(response);
       //   this.usSpinnerService.stop('app-loader');
       // });
-      this.PsiCustomFormService.loginToCockpit(form).then((res) =>{
+      this.PsiCustomFormService.loginToCockpit(reqObj).then((res) =>{
         console.log(res);
         debugger
       })
