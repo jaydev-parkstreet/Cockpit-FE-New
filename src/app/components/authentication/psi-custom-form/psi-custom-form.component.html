@@ -14,7 +14,7 @@
                     <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="validation-msg">
                         Please enter your Password
                     </div>
-                    <div *ngIf="isShowLoginErrorMsg">
+                    <div *ngIf="isShowLoginErrorMsg" class="validation-msg">
                         {{showErrorMsg}}
                     </div>
                 </div>

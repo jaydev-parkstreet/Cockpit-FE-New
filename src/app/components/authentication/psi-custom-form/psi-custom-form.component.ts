@@ -18,7 +18,7 @@ export class PsiCustomFormComponent implements OnInit {
   });
   formSubmitted: boolean;
   bothInvalid: boolean;
-  isShowLoginErrorMsg:boolean = false;
+  isShowLoginErrorMsg: boolean = false;
   showErrorMsg: string;
 
 
@@ -35,23 +35,42 @@ export class PsiCustomFormComponent implements OnInit {
         username: form.controls.userName.value,
         password: form.controls.password.value,
         token: null,
-        email_verification_token:'',
+        email_verification_token: '',
         skip2fa: false
       };
-      this.PsiCustomFormService.userLogin(reqObj).then((res) => {
-        console.log(res);
-        
-        debugger
-        if (!res.hasError) {
-          window.location.href = environment.oldCockpit + '/router.php/dashboard';
-        }
-        
-       else {
-        debugger
+      this.userLoginHandler(reqObj);
+      // this.PsiCustomFormService.userLogin(reqObj).then((res) => {
+      //   console.log(res);
+      //   debugger
+      //   if (!res.hasError) {
+      //     window.location.href = environment.oldCockpit + '/router.php/dashboard';
+      //   } else {
+      //     debugger
+      //     console.log(this.isShowLoginErrorMsg);
+      //     this.isShowLoginErrorMsg = true;
+      //     this.showErrorMsg = res.msg
+      //   }
+      // });
+      
+    }
+  }
+
+  async userLoginHandler(reqObj) {
+    try {
+      const res = await this.PsiCustomFormService.userLogin(reqObj);
+      
+      if (!res.hasError) {
+        window.location.href = environment.oldCockpit + '/router.php/dashboard';
+      } else {
         this.isShowLoginErrorMsg = true;
-        this.showErrorMsg = res.msg
-        }
-      });
+        this.showErrorMsg = res.msg;
+      }
+    } catch (error) {
+      debugger
+      // Catch any errors from the API call (such as 404 or network errors)
+      console.error('Error in API call:', error);
+      this.isShowLoginErrorMsg = true;
+      this.showErrorMsg = error.error.msg;
     }
   }
 }
