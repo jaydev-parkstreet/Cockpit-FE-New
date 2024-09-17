@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {PsiCustomFormService} from './psi-custom-form.service'
 
 @Component({
   selector: 'app-psi-custom-form',
@@ -18,7 +19,9 @@ export class PsiCustomFormComponent implements OnInit {
   bothInvalid: boolean;
 
 
-  constructor() { }
+  constructor( public readonly PsiCustomFormService: PsiCustomFormService) { 
+   
+  }
 
   ngOnInit(): void {
   }
@@ -32,6 +35,7 @@ export class PsiCustomFormComponent implements OnInit {
   // }
 
   onSubmit(form) {
+    debugger
     if (form.valid) {
       // this.usSpinnerService.spin('app-loader');
       // this.formConfig.serverValidation = '';
@@ -50,6 +54,10 @@ export class PsiCustomFormComponent implements OnInit {
       //   this.processResponseAfterLogin(response);
       //   this.usSpinnerService.stop('app-loader');
       // });
+      this.PsiCustomFormService.loginToCockpit(form).then((res) =>{
+        console.log(res);
+        debugger
+      })
     }
   }
 }
