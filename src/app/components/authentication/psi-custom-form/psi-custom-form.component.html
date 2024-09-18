@@ -5,17 +5,8 @@
         <div class="custom-form-wrapper">
             <div class="form-container">
                 <div class="form-validation">
-                    <div *ngIf="loginForm.invalid && formSubmitted" class="validation-msg">
-                        Please enter the required fields.
-                    </div>
-                    <div *ngIf="loginForm.controls['userName'].invalid && loginForm.controls['userName'].touched" class="validation-msg">
-                        Please enter your email or username
-                    </div>
-                    <div *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="validation-msg">
-                        Please enter your Password
-                    </div>
-                    <div *ngIf="isShowLoginErrorMsg" class="validation-msg">
-                        {{showErrorMsg}}
+                    <div class="form-validation">
+                        <div *ngIf="isShowLoginErrorMsg" class="validation-msg" [innerHTML]="showErrorMsg"></div>
                     </div>
                 </div>
                 <div class="psi-form">

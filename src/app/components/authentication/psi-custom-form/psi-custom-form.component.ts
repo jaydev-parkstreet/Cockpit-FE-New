@@ -17,27 +17,41 @@ export class PsiCustomFormComponent implements OnInit {
       Validators.minLength(6)
     ]),
   });
-  formSubmitted: boolean;
-  bothInvalid: boolean;
+  formSubmitted: boolean = false;
+  bothInvalid: boolean = false;
   isShowLoginErrorMsg: boolean = false;
-  showErrorMsg: string;
+  showErrorMsg: string = '';
 
-  constructor(public readonly PsiCustomFormService: PsiCustomFormService,public router: Router) {
-  }
+  constructor(
+    public readonly PsiCustomFormService: PsiCustomFormService,
+    public router: Router) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
-  onSubmit(form) {
-    if (form.valid) {
-      let reqObj: any = {
-        username: form.controls.userName.value,
-        password: form.controls.password.value,
-        token: null,
-        email_verification_token: '',
-        skip2fa: false
-      };
-      this.userLoginHandler(reqObj); 
+  onSubmit (form) {
+    this.formSubmitted = true;
+    if (!form.controls['userName'].value && form.controls['password'].value) {
+      this.isShowLoginErrorMsg = true;
+      this.showErrorMsg = 'Please enter your email or username';
+    } else if (form.controls['userName'].value && !form.controls['password'].value) {
+      this.isShowLoginErrorMsg = true;
+      this.showErrorMsg = 'Please enter your password';
+    } else if (form.controls['userName'].invalid && form.controls['password'].invalid) {
+      this.isShowLoginErrorMsg = true;
+      this.showErrorMsg = 'Please enter the required fields.';
+    } else {
+      this.isShowLoginErrorMsg = false;
+      this.showErrorMsg = '';
+      if (form.valid) {
+        let reqObj: any = {
+          username: form.controls.userName.value,
+          password: form.controls.password.value,
+          token: null,
+          email_verification_token: '',
+          skip2fa: false
+        };
+        this.userLoginHandler(reqObj);
+      }
     }
   }
 
@@ -45,15 +59,13 @@ export class PsiCustomFormComponent implements OnInit {
     try {
       const res = await this.PsiCustomFormService.userLogin(reqObj);
       if (!res.hasError) {
-        // window.location.href = environment.oldCockpit + '/router.php/dashboard';
         this.setSessionOldNavigatorSite(res.data.token);
         this.router.navigate(['/middle']);
       } else {
         this.isShowLoginErrorMsg = true;
-        // this.showErrorMsg = res.msg;
+        this.showErrorMsg = res.msg;
       }
     } catch (error) {
-      console.error('Error in API call:', error);
       this.isShowLoginErrorMsg = true;
       this.showErrorMsg = error.error.msg;
     }
@@ -64,6 +76,3 @@ export class PsiCustomFormComponent implements OnInit {
     iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
   }
 }
-
-
-
