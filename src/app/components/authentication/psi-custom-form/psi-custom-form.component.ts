@@ -23,7 +23,7 @@ export class PsiCustomFormComponent implements OnInit {
   showErrorMsg: string;
 
 
-  constructor(public readonly PsiCustomFormService: PsiCustomFormService,private router: Router) {
+  constructor(public readonly PsiCustomFormService: PsiCustomFormService,public router: Router) {
   }
 
   ngOnInit(): void {
@@ -64,16 +64,17 @@ export class PsiCustomFormComponent implements OnInit {
         // window.location.href = environment.oldCockpit + '/router.php/dashboard';
 
         this.setSessionOldNavigatorSite(res.data.token);
-        debugger
         setTimeout(() => {
-          // this.router.navigate(['/middle']);
-          // this.se
+          console.log("redirecttion to middle component" );
           
         }, 3000);
+          this.router.navigate(['/middle']);
+          console.log(this.router);
+         
         
       } else {
         this.isShowLoginErrorMsg = true;
-        this.showErrorMsg = res.msg;
+        // this.showErrorMsg = res.msg;
       }
     } catch (error) {
       debugger
@@ -88,7 +89,9 @@ export class PsiCustomFormComponent implements OnInit {
     const iframe = document.getElementById('myframe') as HTMLInputElement;
     iframe.src =
         'http://cockpit.parkstreet.local' + '/router.php/set_session?jwt=' + token;
-}
+    }
+    
+  
 }
 
 

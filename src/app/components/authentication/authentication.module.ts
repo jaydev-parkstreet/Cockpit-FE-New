@@ -17,7 +17,8 @@ import { MiddleComponent } from './middle/middle.component';
   ],
   exports: [
     LoginPageComponent,
-    PsiCustomFormComponent
+    PsiCustomFormComponent,
+    MiddleComponent
   ]
 })
 export class AuthenticationModule { }
