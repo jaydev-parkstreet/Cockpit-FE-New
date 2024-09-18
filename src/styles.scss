@@ -3,6 +3,12 @@
 @import "./styles/typography";
 @import "./styles/utilities";
 
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 @font-face {
     font-family: "Montserrat-Regular";
     src: url("../src/assets/fonts/montserrat/Montserrat-Regular.woff") format("woff");
