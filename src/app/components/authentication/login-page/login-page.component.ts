@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import AppConstant  from '../../../../../src/app/app.constant';
+import AppConstant from '../../../../../src/app/app.constant';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -7,15 +7,15 @@ import AppConstant  from '../../../../../src/app/app.constant';
 })
 export class LoginPageComponent implements OnInit {
 
-  title:any;
-  formConfig:any;
+  title: any;
+  formConfig: any;
 
   constructor() { }
 
   ngOnInit(): void {
     this.title = {
       firstline: AppConstant.LOGIN.PAGE_TITLE,
-      secondline:  AppConstant.LOGIN.PAGE_SUBTITLE
+      secondline: AppConstant.LOGIN.PAGE_SUBTITLE
     };
     this.formConfig = {
       schema: [
