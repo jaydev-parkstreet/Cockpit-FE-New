@@ -1,11 +1,38 @@
-@import './styles/colors';
-@import './styles/variables';
-@import './styles/typography';
-@import './styles/utilities';
+@import "./styles/colors";
+@import "./styles/variables";
+@import "./styles/typography";
+@import "./styles/utilities";
 
-.hello{
-    position: relative;
-    z-index: 999;
-    font-family: $montserrat-regular;
+@font-face {
+    font-family: "Montserrat-Regular";
+    src: url("../src/assets/fonts/montserrat/Montserrat-Regular.woff") format("woff");
+}
 
+@font-face {
+    font-family: "Montserrat-Medium";
+    src: url("../src/assets/fonts/montserrat/Montserrat-Medium.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Montserrat-Bold";
+    src: url("../src/assets/fonts/montserrat/Montserrat-Bold.woff") format("woff");
+    font-weight: bold;
+    font-style: bold;
+}
+
+@font-face {
+    font-family: "CrimsonPro-Regular";
+    src: url("../src/assets/fonts/crimson-pro/CrimsonPro-Regular.woff") format("woff");
+}
+
+@font-face {
+    font-family: "CrimsonPro-Medium";
+    src: url("../src/assets/fonts/crimson-pro/CrimsonPro-Medium.woff") format("woff");
+}
+
+@font-face {
+    font-family: "CrimsonPro-Bold";
+    src: url("../src/assets/fonts/crimson-pro/CrimsonPro-Bold.woff") format("woff");
+    font-weight: bold;
+    font-style: bold;
 }

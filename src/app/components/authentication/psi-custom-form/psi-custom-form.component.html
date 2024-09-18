@@ -18,11 +18,11 @@
                         <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)" autocomplete="false">
                             <div class="form-field">
                                 <label for="user-name">Email OR Username</label>
-                                <input type="text" id="user-name" formControlName="userName" >
+                                <input type="text" id="user-name" formControlName="userName" placeholder="Email or Username">
                             </div>
                             <div class="form-field">
                                 <label for="password">Password</label>
-                                <input type="password" id="password" formControlName="password">
+                                <input type="password" id="password" formControlName="password" placeholder="Password">
                             </div>
                             <div class="form-submit-button">
                                 <button type="submit" class="btn btn-primary" >Log In</button>
@@ -31,6 +31,11 @@
                                 </div>
                             </div>
                         </form>
+                        <div class="social-btn-container">
+                            <a class="social-icon" href="javascript:void(0);" ><img src="../../../../assets/images/google.svg" class="img-responsive" /> </a>
+                            <a class="social-icon" href="javascript:void(0);" ><img src="../../../../assets/images/apple.svg" class="img-responsive" /> </a>
+                            <a class="social-icon" href="javascript:void(0);" ><img src="../../../../assets/images/linkedIn.svg" class="img-responsive" /> </a>
+                        </div>
                         <div class="form-footer-notes">By clicking Log in, you agree to the Park Street Terms of use, Privacy Policy and Cookie Policy.</div>
                     </div>
                 </div>

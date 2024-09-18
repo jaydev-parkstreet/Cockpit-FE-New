@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PsiCustomFormService } from './psi-custom-form.service';
 import { environment } from 'src/environments/environment';

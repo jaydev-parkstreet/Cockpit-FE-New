@@ -48,6 +48,15 @@
                     border-radius: 8px;
                     .form-title {
                         padding: 40px;
+                        h1{
+                            font-family: $crimson-pro-bold;
+                            font-size: 32px;
+                        }
+
+                        p {
+                            font-size: 12px;
+                            font-family: $montserrat-medium;
+                        }
                     }
 
                     .form-group {
@@ -63,6 +72,7 @@
                                 z-index: 2;
                                 background-color: white;
                                 padding: 0px 8px;
+                                font-family: $montserrat-regular;
                             }
 
                             &::after {
@@ -85,18 +95,23 @@
 
                         .form-footer-notes {
                             color: #232323;
-                            // padding: 10px 36px;
-                            font-size: 14px;
+                            font-size: 10px;
                             text-align: center;
                             font-family: $montserrat-regular;
                         }
+                        
+                        .social-btn-container{
+                            display: flex;
+                            justify-content: center;
+                        }
+                        
                     }
                 }
                 label {
                     display: inline-block;
                     max-width: 100%;
                     color: #232323;
-                    font-size: 14px;
+                    font-size: 12px;
                     font-weight: normal;
                     margin-bottom: 8px;
                     font-family: $montserrat-regular;
@@ -118,6 +133,7 @@
                     padding: 12px 12px;
                     border: 1px solid #cbcbcb;
                     font-size: 12px;
+                    font-family: $montserrat-regular;
                 }
 
                 button {
