@@ -11,32 +11,38 @@
                 </div>
                 <div class="psi-form">
                     <div class="form-title">
-                        <h1>Log In</h1>
-                        <p>Welcome back to Park Street</p>
+                        <h1 [textContent]="formTitle.firstline"></h1>
+                        <p [textContent]="formTitle.secondline"></p>
                     </div>
                     <div class="form-group">
                         <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)" autocomplete="false">
-                            <div class="form-field">
-                                <label for="user-name">Email OR Username</label>
-                                <input type="text" id="user-name" formControlName="userName" placeholder="Email or Username">
-                            </div>
-                            <div class="form-field">
-                                <label for="password">Password</label>
-                                <input type="password" id="password" formControlName="password" placeholder="Password">
+                            <div class="form-field" *ngFor="let field of formConfig.schema">
+                                <label
+                                    [for]="field.name"
+                                    [ngClass]="{'ps-required-asterisk': field.required}"
+                                    [textContent]="field.label">
+                                </label>
+                                <input
+                                    [type]="field.type"
+                                    [id]="field.name"
+                                    [formControlName]="field.name"
+                                    [placeholder]="field.placeholder"
+                                    [required]="field.required"
+                                >
                             </div>
                             <div class="form-submit-button">
-                                <button type="submit" class="btn btn-primary" >Log In</button>
-                                <div class="seperator">
-                                    <span>OR</span>
-                                </div>
+                              <button type="submit" class="btn btn-primary">{{ formConfig.submitBtnLabel }}</button>
+                              <div class="seperator">
+                                <span [textContent]="formConfig.separatorText"></span>
+                              </div>
                             </div>
                         </form>
-                        <div class="social-btn-container">
+                        <div class="social-btn-container" *ngIf="formConfig.socialButton">
                             <a class="social-icon" href="javascript:void(0);" ><img src="../../../../assets/images/google.svg" class="img-responsive" /> </a>
                             <a class="social-icon" href="javascript:void(0);" ><img src="../../../../assets/images/apple.svg" class="img-responsive" /> </a>
                             <a class="social-icon" href="javascript:void(0);" ><img src="../../../../assets/images/linkedIn.svg" class="img-responsive" /> </a>
                         </div>
-                        <div class="form-footer-notes">By clicking Log in, you agree to the Park Street Terms of use, Privacy Policy and Cookie Policy.</div>
+                        <div class="form-footer-notes" [textContent]="formConfig.footerNotes"></div>
                     </div>
                 </div>
             </div>

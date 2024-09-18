@@ -10,6 +10,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./psi-custom-form.component.scss']
 })
 export class PsiCustomFormComponent implements OnInit {
+  @Input() showTitle: boolean;
+  @Input() formTitle: any;
+  @Input() formConfig: any;
+
   loginForm = new FormGroup({
     userName: new FormControl('', [Validators.required]),
     password: new FormControl('', [
