@@ -22,7 +22,6 @@ export class PsiCustomFormComponent implements OnInit {
   isShowLoginErrorMsg: boolean = false;
   showErrorMsg: string;
 
-
   constructor(public readonly PsiCustomFormService: PsiCustomFormService,public router: Router) {
   }
 
@@ -30,7 +29,6 @@ export class PsiCustomFormComponent implements OnInit {
   }
 
   onSubmit(form) {
-    debugger
     if (form.valid) {
       let reqObj: any = {
         username: form.controls.userName.value,
@@ -39,59 +37,32 @@ export class PsiCustomFormComponent implements OnInit {
         email_verification_token: '',
         skip2fa: false
       };
-      this.userLoginHandler(reqObj);
-      // this.PsiCustomFormService.userLogin(reqObj).then((res) => {
-      //   console.log(res);
-      //   debugger
-      //   if (!res.hasError) {
-      //     window.location.href = environment.oldCockpit + '/router.php/dashboard';
-      //   } else {
-      //     debugger
-      //     console.log(this.isShowLoginErrorMsg);
-      //     this.isShowLoginErrorMsg = true;
-      //     this.showErrorMsg = res.msg
-      //   }
-      // });
-      
+      this.userLoginHandler(reqObj); 
     }
   }
 
   async userLoginHandler(reqObj) {
     try {
       const res = await this.PsiCustomFormService.userLogin(reqObj);
-      
       if (!res.hasError) {
         // window.location.href = environment.oldCockpit + '/router.php/dashboard';
-
         this.setSessionOldNavigatorSite(res.data.token);
-        setTimeout(() => {
-          console.log("redirecttion to middle component" );
-          
-        }, 3000);
-          this.router.navigate(['/middle']);
-          console.log(this.router);
-         
-        
+        this.router.navigate(['/middle']);
       } else {
         this.isShowLoginErrorMsg = true;
         // this.showErrorMsg = res.msg;
       }
     } catch (error) {
-      debugger
-      // Catch any errors from the API call (such as 404 or network errors)
       console.error('Error in API call:', error);
       this.isShowLoginErrorMsg = true;
       this.showErrorMsg = error.error.msg;
     }
   }
 
-  setSessionOldNavigatorSite(token) {
+  setSessionOldNavigatorSite (token) {
     const iframe = document.getElementById('myframe') as HTMLInputElement;
-    iframe.src =
-        'http://cockpit.parkstreet.local' + '/router.php/set_session?jwt=' + token;
-    }
-    
-  
+    iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
+  }
 }
 
 
