@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PsiCustomFormService } from './psi-custom-form.service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-psi-custom-form',
@@ -22,7 +23,7 @@ export class PsiCustomFormComponent implements OnInit {
   showErrorMsg: string;
 
 
-  constructor(public readonly PsiCustomFormService: PsiCustomFormService) {
+  constructor(public readonly PsiCustomFormService: PsiCustomFormService,private router: Router) {
   }
 
   ngOnInit(): void {
@@ -60,7 +61,16 @@ export class PsiCustomFormComponent implements OnInit {
       const res = await this.PsiCustomFormService.userLogin(reqObj);
       
       if (!res.hasError) {
-        window.location.href = environment.oldCockpit + '/router.php/dashboard';
+        // window.location.href = environment.oldCockpit + '/router.php/dashboard';
+
+        this.setSessionOldNavigatorSite(res.data.token);
+        debugger
+        setTimeout(() => {
+          // this.router.navigate(['/middle']);
+          // this.se
+          
+        }, 3000);
+        
       } else {
         this.isShowLoginErrorMsg = true;
         this.showErrorMsg = res.msg;
@@ -73,6 +83,12 @@ export class PsiCustomFormComponent implements OnInit {
       this.showErrorMsg = error.error.msg;
     }
   }
+
+  setSessionOldNavigatorSite(token) {
+    const iframe = document.getElementById('myframe') as HTMLInputElement;
+    iframe.src =
+        'http://cockpit.parkstreet.local' + '/router.php/set_session?jwt=' + token;
+}
 }
 
 
