@@ -13,7 +13,7 @@ import { MiddleComponent } from './middle/middle.component';
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   exports: [
     LoginPageComponent,

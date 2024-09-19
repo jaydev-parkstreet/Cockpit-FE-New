@@ -4,6 +4,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationModule } from './components/authentication/authentication.module';
 import {HttpClientModule}  from '@angular/common/http';
+import { ProductManagementModule } from './components/product-management/product-management.module';
+import { SharedModule } from './shared/shared.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -13,6 +15,8 @@ import {HttpClientModule}  from '@angular/common/http';
     AppRoutingModule,
     AuthenticationModule,
     HttpClientModule,
+    ProductManagementModule,
+    SharedModule
   ],
   exports: [
    

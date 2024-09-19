@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginPageComponent } from './components/authentication/login-page/login-page.component';
 import { MiddleComponent } from './components/authentication/middle/middle.component';
+import { ProductManagementComponent } from './components/product-management/product-management.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component:LoginPageComponent },
-  { path:'middle', component: MiddleComponent},
+  { path: 'middle', component: MiddleComponent },
+  { path: 'product-management', component: ProductManagementComponent }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
