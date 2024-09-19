@@ -1,19 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderToolComponent } from './components/header-tool/header-tool.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { SummaryTopBarComponent } from './components/summary-top-bar/summary-top-bar.component';
 
 
 
 
 @NgModule({
   declarations: [
-    HeaderToolComponent
+    HeaderToolComponent,
+    SearchBarComponent,
+    SummaryTopBarComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    HeaderToolComponent
+    HeaderToolComponent,
+    SearchBarComponent,
+    SummaryTopBarComponent
   ]
 })
 export class SharedModule { }
