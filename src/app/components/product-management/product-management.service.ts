@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -32,9 +32,10 @@ export class ProductManagementService {
   };
 
 
-    getSummary (summaryData:any) {
-      debugger
-      return this.http.post("https://stgapi.parkstreet.com/v1/product-tool/summary",summaryData).toPromise();
+    getSummary (summaryData:any,token) {
+     
+      const headers = new HttpHeaders().set('Authorization',`Bearer ${token}`);
+      return this.http.post("https://stgapi.parkstreet.com/v1/shipments/summary",summaryData,{ headers }).toPromise();
     }
 
   }

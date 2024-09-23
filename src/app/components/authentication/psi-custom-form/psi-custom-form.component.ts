@@ -65,6 +65,8 @@ export class PsiCustomFormComponent implements OnInit {
     try {
       const res = await this.PsiCustomFormService.userLogin(reqObj);
       if (!res.hasError) {
+        const token =res.data.token;
+        localStorage.setItem('authToken', token);
         // this.setSessionOldNavigatorSite(res.data.token).then(()=> {
         //   this.router.navigate(['/product-management']);
         //   // window.location.href = environment.oldCockpit + '/router.php/dashboard';

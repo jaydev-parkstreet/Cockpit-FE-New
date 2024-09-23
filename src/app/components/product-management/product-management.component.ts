@@ -15,16 +15,14 @@ export class ProductManagementComponent implements OnInit {
   }
 
   getSummary(){
+    const token = localStorage.getItem('authToken');
     const summaryData = {
       "page": 1,
       "pageSize": 25,
-      "sort": "status",
-      "order": "desc",
-      "active_status": [
-          "1"
-      ]
+      "sort": "",
+      "order": "asc"
     }
-    this.productManagementService.getSummary(summaryData).then(response => {
+    this.productManagementService.getSummary(summaryData,token).then(response => {
       console.log(response);
     })
   }
