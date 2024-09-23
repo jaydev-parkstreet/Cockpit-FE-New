@@ -28,7 +28,7 @@ export class ProductManagementService {
       searchOptions: {},
       expandFilter: false,
       actions: []
-    }
+    } 
   };
 
 
