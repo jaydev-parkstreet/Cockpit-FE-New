@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PsiCustomFormService } from './psi-custom-form.service';
 import { environment } from 'src/environments/environment';
@@ -14,6 +14,7 @@ export class PsiCustomFormComponent implements OnInit {
   @Input() showTitle: boolean;
   @Input() formTitle: any;
   @Input() formConfig: any;
+  @Output() togglePasswordVisibility = new EventEmitter<any>();
 
   loginForm = new FormGroup({
     userName: new FormControl('', [Validators.required]),
@@ -64,9 +65,13 @@ export class PsiCustomFormComponent implements OnInit {
     try {
       const res = await this.PsiCustomFormService.userLogin(reqObj);
       if (!res.hasError) {
-        this.setSessionOldNavigatorSite(res.data.token);
+        // this.setSessionOldNavigatorSite(res.data.token).then(()=> {
+        //   this.router.navigate(['/product-management']);
+        //   // window.location.href = environment.oldCockpit + '/router.php/dashboard';
+
+        // });
         this.router.navigate(['/product-management']);
-        //window.location.href = environment.oldCockpit + '/router.php/dashboard';
+        // window.location.href = environment.oldCockpit + '/router.php/dashboard';
       } else {
         this.isShowLoginErrorMsg = true;
         this.showErrorMsg = res.msg;
@@ -77,8 +82,30 @@ export class PsiCustomFormComponent implements OnInit {
     }
   }
 
-  setSessionOldNavigatorSite(token) {
+  setSessionOldNavigatorSite(token):Promise<void> {
+    debugger
+    return new Promise((resolve,reject) => {
     const iframe = document.getElementById('myframe') as HTMLInputElement;
     iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
+    iframe.onload = () => {
+      resolve();
+    };
+    })
   }
+
+
+  /**
+  * Function to show and hide password.
+  */
+  togglePassword (index) {
+    this.togglePasswordVisibility.emit(index);
+  }
+
+  /**
+  Function so that the whole DOM is not re-rendered
+  */
+  trackByField(index: number, field: any): string {
+    return field.name;
+  }
+
 }

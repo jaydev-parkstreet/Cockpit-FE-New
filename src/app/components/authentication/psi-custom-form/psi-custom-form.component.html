@@ -17,7 +17,7 @@
                     </div>
                     <div class="form-group">
                         <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)" autocomplete="false">
-                            <div class="form-field" *ngFor="let field of formConfig.schema">
+                            <div class="form-field" *ngFor="let field of formConfig.schema; index as i ; trackBy: trackByField">
                                 <label
                                     [for]="field.name"
                                     [ngClass]="{'ps-required-asterisk': field.required}"
@@ -30,6 +30,10 @@
                                     [placeholder]="field.placeholder"
                                     [required]="field.required"
                                 >
+                                <div class="password-icon">
+                                    <i *ngIf="field.passwordField" class="fa" [ngClass]="{'fa-eye-slash': !field.isPasswordVisible,'fa-eye': field.isPasswordVisible}"
+                                    (click)="togglePassword(i)"></i>
+                                </div>
                             </div>
                             <div class="form-submit-button">
                               <button type="submit" class="btn btn-primary">{{ formConfig.submitBtnLabel }}</button>

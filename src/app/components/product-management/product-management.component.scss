@@ -2,14 +2,10 @@
 @import '../../../../src/styles/colors';
 
 .product-management {
-    margin-left: 100px;
-    margin-top: 16px;
 
     .header-background {
         background-color: $colors-neutral-black;
         color: $colors-neutral-white;
-        margin-left: -100px;
-        margin-top: -16px;
         width: 100vw;
         height: 100vh;
         padding-left: 100px;

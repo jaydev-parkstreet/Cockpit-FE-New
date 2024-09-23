@@ -20,7 +20,7 @@ export class LoginPageComponent implements OnInit {
     this.formConfig = {
       schema: [
         { type: 'text', name: 'userName', label: 'Email OR Username', placeholder: 'Email or Username', required: true },
-        { type: 'password', name: 'password', label: 'Password', placeholder: 'Password', required: true }
+        { type: 'password', name: 'password', label: 'Password', placeholder: 'Password', required: true, passwordField: true, isPasswordVisible : false }
       ],
       submitBtnLabel: AppConstant.LOGIN.BUTTON_LABEL,
       socialButton: true,
@@ -29,4 +29,9 @@ export class LoginPageComponent implements OnInit {
     };
   }
 
+  togglePasswordVisibility (index) {
+    const field = this.formConfig.schema[index];
+    field.type = field.type === 'password' ? 'text' : 'password';
+    field.isPasswordVisible = !field.isPasswordVisible;
+  }
 }

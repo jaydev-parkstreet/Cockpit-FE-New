@@ -15,4 +15,9 @@ export class PsiCustomFormService {
       .post(environment.apiUrl + AppRoutes.AUTHENTICATION.LOGIN, filterData)
       .toPromise();
   }
+
+  summary (summaryData):any {
+    debugger
+    return this.http.post("https://stgapi.parkstreet.com/v1/product-tool/summary",summaryData).toPromise();
+  }
 }

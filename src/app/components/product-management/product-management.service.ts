@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class ProductManagementService {
 
-  constructor() { }
+  constructor(private http:HttpClient) { }
 
 
 
@@ -27,7 +28,15 @@ export class ProductManagementService {
       searchOptions: {},
       expandFilter: false,
       actions: []
-    };
+    }
+  };
+
+
+    getSummary (summaryData:any) {
+      debugger
+      return this.http.post("https://stgapi.parkstreet.com/v1/product-tool/summary",summaryData).toPromise();
+    }
 
   }
-}
+
+

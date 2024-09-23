@@ -7,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SummaryTopBarComponent implements OnInit {
   topBarConfig : any;
+  tooltipText:any;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.tooltipText = 'hello';
   }
 
 }

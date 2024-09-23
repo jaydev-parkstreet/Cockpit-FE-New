@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HeaderToolComponent } from './components/header-tool/header-tool.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SummaryTopBarComponent } from './components/summary-top-bar/summary-top-bar.component';
+import { ExcelExportComponent } from './components/excel-export/excel-export.component';
 
 
 
@@ -11,7 +12,8 @@ import { SummaryTopBarComponent } from './components/summary-top-bar/summary-top
   declarations: [
     HeaderToolComponent,
     SearchBarComponent,
-    SummaryTopBarComponent
+    SummaryTopBarComponent,
+    ExcelExportComponent
   ],
   imports: [
     CommonModule

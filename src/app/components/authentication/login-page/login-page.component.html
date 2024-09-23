@@ -2,6 +2,7 @@
     <app-psi-custom-form
         [showTitle]="true"
         [formTitle]="title"
-        [formConfig]="formConfig">
+        [formConfig]="formConfig"
+        (togglePasswordVisibility)="togglePasswordVisibility($event)">
     </app-psi-custom-form>
 </div>
