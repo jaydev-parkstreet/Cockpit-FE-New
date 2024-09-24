@@ -1,0 +1,152 @@
+@import "../variables/typography";
+@import "../variables/colors";
+
+/* TYPOGRAPHY */
+
+/* Measure is limited to 66 characters */
+.u-measure {
+  max-width: 30em;
+}
+
+/* Measure is limited to 80 characters */
+.u-measure-wide {
+  max-width: 34em;
+}
+
+/* Measure is limited to 45 characters */
+.u-measure-narrow {
+  max-width: 20em;
+}
+
+/* Combine this class with a width to truncate text
+(or just leave as is to truncate at width of containing element. */
+.u-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// As per zero height
+
+@mixin font-bold {
+  font-family: $helvetica-bold;
+  font-weight: bold;
+}
+
+@mixin font-medium {
+  font-family: $helvetica-medium;
+  font-weight: 500;
+}
+
+@mixin font-regular {
+  font-family: $helvetica-neue;
+  font-weight: 400;
+}
+
+[class^='typography-super-'] {
+  font-size: 64px;
+}
+
+[class^='typography-h1-'] {
+  font-size: 56px;
+}
+
+[class^='typography-h2-'] {
+  font-size: 40px;
+}
+
+[class^='typography-h3-'] {
+  font-size: 32px;
+}
+
+[class^='typography-h4-'] {
+  font-size: 24px;
+}
+
+[class^='typography-h5-'] {
+  font-size: 20px;
+}
+
+[class^='typography-h6-'] {
+  font-size: 16px;
+}
+
+[class^='typography-body-'],
+[class^='typography-link-'] {
+  font-size: 14px;
+}
+
+[class^='typography-link-'] {
+  text-decoration: underline;
+}
+
+[class^='typography-paragraph-'],
+[class^='typography-footnote-'] {
+  font-size: 12px;
+}
+
+[class^='typography-caption-'] {
+  font-size: 10px;
+}
+
+[class^='typography-small-'] {
+  font-size: 8px;
+}
+
+[class^='typography-'][class*='-black-'] {
+  color: $colors-neutral-black;
+}
+
+[class^='typography-'][class*='-dark-'] {
+  color: $colors-neutral-dark;
+}
+
+[class^='typography-'][class*='-darkvm-'] {
+  color: $colors-neutral-dark-v-medium;
+}
+
+[class^='typography-'][class*='-error-'] {
+  color: $colors-base-error;
+}
+
+[class^='typography-'][class*='-light-'] {
+  color: $colors-neutral-light;
+}
+
+[class^='typography-'][class*='-primary-'] {
+  color: $colors-base-primary;
+}
+
+[class^='typography-'][class*='-success-'] {
+  color: $colors-base-success;
+}
+
+[class^='typography-'][class*='-warning-'] {
+  color: $colors-base-warning;
+}
+
+[class^='typography-'][class*='-white-'] {
+  color: $colors-neutral-white;
+}
+
+[class^='typography-'][class*='-bold'] {
+  @include font-bold;
+}
+
+[class^='typography-'][class*='-medium'] {
+  @include font-medium;
+}
+
+[class^='typography-'][class*='-regular'] {
+  @include font-regular;
+}
+
+.href-link {
+  color: $colors-neutral-black;
+  cursor: pointer;
+
+  &:hover {
+    color: $colors-base-primary;
+    text-decoration: underline;
+  }
+}

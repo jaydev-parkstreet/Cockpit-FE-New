@@ -2,6 +2,7 @@
 @import "./styles/variables";
 @import "./styles/typography";
 @import "./styles/utilities";
+@import "./app/scss/utilities/flexbox";
 
 * {
     box-sizing: border-box;
@@ -41,4 +42,138 @@
     src: url("../src/assets/fonts/crimson-pro/CrimsonPro-Bold.woff") format("woff");
     font-weight: bold;
     font-style: bold;
+}
+
+body {
+    font-family: "Montserrat-Regular", Arial, sans-serif !important;
+    overflow-x: hidden;
+    color: #4A4A4A !important;
+    font-size: 14px;
+    line-height: 1.5;
+    b-h1,
+    b-h2,
+    b-h3,
+    b-h4,
+    b-h5,
+    b-h6,
+    .b-h1,
+    .b-h2,
+    .b-h3,
+    .b-h4,
+    .b-h5,
+    .b-h6 {
+        font-family: "Montserrat-Regular", Arial, sans-serif !important;
+        font-weight: 500;
+        line-height: 1.1;
+        color: inherit;
+    }
+    b-h1,
+    .b-h1 {
+        font-size: 48px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    b-h2,
+    .b-h2 {
+        font-size: 36px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    b-h3,
+    .b-h3 {
+        font-size: 24px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    b-h4,
+    .b-h4 {
+        font-size: 20px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    b-h5,
+    .b-h5 {
+        font-size: 16px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    b-h6,
+    .b-h6 {
+        font-size: 14px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+    .u-fs14 {
+        font-size: 14px !important;
+    }
+    .u-fs16 {
+        font-size: 16px !important;
+    }
+    .u-fs18 {
+        font-size: 18px !important;
+    }
+    .u-fs20 {
+        font-size: 20px !important;
+    }
+    .u-fs24 {
+        font-size: 24px !important;
+    }
+    .u-fs32 {
+        font-size: 32px !important;
+    }
+
+    .u-f-helvetica-medium {
+        font-family: 'Helvetica-medium';
+    }
+    .u-font-subtle {
+        color: rgba(74, 74, 74, 0.50);
+    }
+    /* Width Scale */
+    .w-10 {
+        width: 10%;
+    }
+    .w-20 {
+        width: 20%;
+    }
+    .w-25 {
+        width: 25%;
+    }
+    .w-30 {
+        width: 30%;
+    }
+    .w-33 {
+        width: 33%;
+    }
+    .w-34 {
+        width: 34%;
+    }
+    .w-40 {
+        width: 40%;
+    }
+    .w-50 {
+        width: 50%;
+    }
+    .w-60 {
+        width: 60%;
+    }
+    .w-70 {
+        width: 70%;
+    }
+    .w-75 {
+        width: 75%;
+    }
+    .w-80 {
+        width: 80%;
+    }
+    .w-90 {
+        width: 90%;
+    }
+    .w-100 {
+        width: 100%;
+    }
+    /* Text Decorations */
+    .u-font-subtle {
+        color: rgba(74, 74, 74, 0.50);
+    }
 }

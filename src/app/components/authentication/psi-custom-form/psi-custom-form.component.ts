@@ -61,18 +61,17 @@ export class PsiCustomFormComponent implements OnInit {
     }
   }
 
-  async userLoginHandler(reqObj) {
+  async userLoginHandler (reqObj) {
     try {
       const res = await this.PsiCustomFormService.userLogin(reqObj);
       if (!res.hasError) {
-        const token =res.data.token;
+        const token = res.data.token;
         localStorage.setItem('authToken', token);
-         this.setSessionOldNavigatorSite(token).then(()=> {
-           this.router.navigate(['/product-management']);
-           // window.location.href = environment.oldCockpit + '/router.php/dashboard';
-
-         });
-        //this.router.navigate(['/product-management']);
+        this.setSessionOldNavigatorSite(token).then(() => {
+          this.router.navigate(['/product-management']);
+          // window.location.href = environment.oldCockpit + '/router.php/dashboard';
+        });
+        this.router.navigate(['/product-management']);
         // window.location.href = environment.oldCockpit + '/router.php/dashboard';
       } else {
         this.isShowLoginErrorMsg = true;
@@ -84,13 +83,13 @@ export class PsiCustomFormComponent implements OnInit {
     }
   }
 
-  setSessionOldNavigatorSite(token):Promise<void> {
-    return new Promise((resolve,reject) => {
-    const iframe = document.getElementById('myframe') as HTMLInputElement;
-    iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
-    iframe.onload = () => {
-      resolve();
-    };
+  setSessionOldNavigatorSite (token): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const iframe = document.getElementById('myframe') as HTMLInputElement;
+      iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
+      iframe.onload = () => {
+        resolve();
+      };
     })
   }
 
@@ -98,7 +97,7 @@ export class PsiCustomFormComponent implements OnInit {
   /**
   * Function to show and hide password.
   */
-  togglePassword (index) {
+  togglePassword(index) {
     this.togglePasswordVisibility.emit(index);
   }
 

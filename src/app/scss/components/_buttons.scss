@@ -1,0 +1,74 @@
+/*
+
+
+BUTTONS
+
+
+*/
+
+.c-btn {
+  font-family: inherit;
+  display: inline-block;
+  font-size: 100%;
+  padding: 0.5em 2em;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  text-decoration: none;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.c-btn:focus {
+  outline: none;
+}
+
+.c-btn.c-btn--full {
+  display: block;
+  width: 100%;
+}
+
+.c-btn.c-btn--primary {
+  color: #fff; /* rgba not supported (IE 8) */;
+  background-color: #BF2009;
+  box-shadow: inset 0 -4px 0 0 rgba(0, 0, 0, 0.17);
+}
+
+.c-btn.c-btn--primary:hover {
+  background-color: rgba(191, 32, 9, 0.72);
+}
+
+.c-btn.c-btn--primary:active {
+  background-color: #8B0E04;
+}
+
+.c-btn.c-btn--secondary {
+  color: #4A4A4A;
+  border-color: #d0d4d9;
+  background: white;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.c-btn.c-btn--secondary:hover {
+  background: -webkit-linear-gradient(white, #f7f9fa);
+  background: linear-gradient(white, #f7f9fa);
+}
+
+.c-btn.c-btn--secondary:active {
+  background: -webkit-linear-gradient(rgba(242, 243, 247, 0.77), #F2F3F7);
+  background: linear-gradient(rgba(242, 243, 247, 0.77), #F2F3F7);
+}
+
+.c-btn.c-btn--secondary:focus {
+  border-color: #72b6ec;
+}
+
+.ps-select {
+  background-image: url("./../assets/images/caret-down.svg") !important;
+  background-size: 12px 14px !important;
+  background-position: right 10px center !important;
+  background-repeat: no-repeat !important;
+  padding-right: 27px !important;
+  -webkit-appearance: none !important;
+}

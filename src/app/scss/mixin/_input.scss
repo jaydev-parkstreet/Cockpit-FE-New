@@ -1,0 +1,42 @@
+@import '../../scss/variables/colors';
+@import '../../scss/variables/typography';
+
+@mixin psi-input {
+  display: block;
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid $colors-neutral-light;
+  font-size: 12px;
+  outline: 0;
+  color: $colors-neutral-black;
+
+  &::placeholder {
+      color: $colors-neutral-light;
+  }
+
+  &:not([readonly]):hover {
+      border: 1px solid $colors-neutral-dark;
+      box-shadow: 0 0 0 1px $colors-neutral-dark;
+  }
+
+  &:not([readonly]):focus {
+      border: 1px solid #66afe9;
+      box-shadow: 0 0 0 1px #66afe9;
+  }
+
+  &[disabled] {
+      color: $colors-neutral-light;
+      background-color: $colors-neutral-light-v-low;
+  }
+
+  &[readonly] {
+      background-color: $colors-base-primary-v-low-t-05;
+  }
+
+  &.invalid {
+      background: $colors-base-primary-v-low-t-10;
+      border: 1px solid $colors-base-error;
+  }
+}

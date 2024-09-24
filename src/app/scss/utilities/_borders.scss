@@ -1,0 +1,177 @@
+/*
+
+
+
+BORDERS
+
+
+
+*/
+
+.u-ba {
+  border-style: solid;
+  border-width: 1px;
+}
+
+.u-bt {
+  border-top-style: solid;
+  border-top-width: 1px;
+}
+
+.u-br {
+  border-right-style: solid;
+  border-right-width: 1px;
+}
+
+.u-bb {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.u-bl {
+  border-left-style: solid;
+  border-left-width: 1px;
+}
+
+.u-bn {
+  border-style: none;
+  border-width: 0;
+}
+
+@media (max-width: $screen-xs-max) {
+  // 767px and below
+
+  .u-ba-xs {
+    border-style: solid;
+    border-width: 1px;
+  }
+
+  .u-bt-xs {
+    border-top-style: solid;
+    border-top-width: 1px;
+  }
+
+  .u-br-xs {
+    border-right-style: solid;
+    border-right-width: 1px;
+  }
+
+  .u-bb-xs {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+  }
+
+  .u-bl-xs {
+    border-left-style: solid;
+    border-left-width: 1px;
+  }
+
+  .u-bn-xs {
+    border-style: none;
+    border-width: 0;
+  }
+}
+
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+  // Between 768px and 991px
+
+  .u-ba-sm {
+    border-style: solid;
+    border-width: 1px;
+  }
+
+  .u-bt-sm {
+    border-top-style: solid;
+    border-top-width: 1px;
+  }
+
+  .u-br-sm {
+    border-right-style: solid;
+    border-right-width: 1px;
+  }
+
+  .u-bb-sm {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+  }
+
+  .u-bl-sm {
+    border-left-style: solid;
+    border-left-width: 1px;
+  }
+
+  .u-bn-sm {
+    border-style: none;
+    border-width: 0;
+  }
+}
+
+
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+  // Between 768px and 991px
+
+  .u-ba-md {
+    border-style: solid;
+    border-width: 1px;
+  }
+
+  .u-bt-md {
+    border-top-style: solid;
+    border-top-width: 1px;
+  }
+
+  .u-br-md {
+    border-right-style: solid;
+    border-right-width: 1px;
+  }
+
+  .u-bb-md {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+  }
+
+  .u-bl-md {
+    border-left-style: solid;
+    border-left-width: 1px;
+  }
+
+  .u-bn-md {
+    border-style: none;
+    border-width: 0;
+  }
+}
+
+@media (min-width: $screen-lg-min) {
+  // 1200px and up
+
+  .u-ba-lg {
+    border-style: solid;
+    border-width: 1px;
+  }
+
+  .u-bt-lg {
+    border-top-style: solid;
+    border-top-width: 1px;
+  }
+
+  .u-br-lg {
+    border-right-style: solid;
+    border-right-width: 1px;
+  }
+
+  .u-bb-lg {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+  }
+
+  .u-bl-lg {
+    border-left-style: solid;
+    border-left-width: 1px;
+  }
+
+  .u-bn-lg {
+    border-style: none;
+    border-width: 0;
+  }
+}

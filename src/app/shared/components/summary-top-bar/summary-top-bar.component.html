@@ -1,9 +1,17 @@
 <div class="summary-top-bar m-flex-direction mr-width">
-<div class="search-box-container m-margin" data-ng-hide="topBarConfig.hideSearch">
-    <app-search-bar>
-    </app-search-bar>
-</div>
-<app-excel-export
+    <div class="search-box-container m-margin" data-ng-hide="topBarConfig.hideSearch">
+        <app-search-bar>
+        </app-search-bar>
+    </div>
+    <app-excel-export
         [tooltipText]="tooltipText">
     </app-excel-export>
+    <div>
+        <app-cmp-button
+            
+            [buttonIconLeft]="'fas fa-filter'"
+            [buttonText]="'Filter'"
+            >
+        </app-cmp-button>
+    </div>
 </div>
