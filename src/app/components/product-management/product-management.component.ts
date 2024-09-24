@@ -19,7 +19,7 @@ export class ProductManagementComponent implements OnInit {
     const summaryData = {
       "page": 1,
       "pageSize": 25,
-      "sort": "",
+      "sort": "status",
       "order": "asc"
     }
     this.productManagementService.getSummary(summaryData,token).then(response => {

@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class ProductManagementService {
     getSummary (summaryData:any,token) {
      
       const headers = new HttpHeaders().set('Authorization',`Bearer ${token}`);
-      return this.http.post("https://stgapi.parkstreet.com/v1/shipments/summary",summaryData,{ headers }).toPromise();
+      return this.http.post(environment.apiUrl +"product-tool/summary",summaryData,{ headers }).toPromise();
     }
 
   }

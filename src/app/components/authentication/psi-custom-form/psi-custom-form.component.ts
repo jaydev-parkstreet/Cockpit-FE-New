@@ -67,12 +67,12 @@ export class PsiCustomFormComponent implements OnInit {
       if (!res.hasError) {
         const token =res.data.token;
         localStorage.setItem('authToken', token);
-        // this.setSessionOldNavigatorSite(res.data.token).then(()=> {
-        //   this.router.navigate(['/product-management']);
-        //   // window.location.href = environment.oldCockpit + '/router.php/dashboard';
+         this.setSessionOldNavigatorSite(token).then(()=> {
+           this.router.navigate(['/product-management']);
+           // window.location.href = environment.oldCockpit + '/router.php/dashboard';
 
-        // });
-        this.router.navigate(['/product-management']);
+         });
+        //this.router.navigate(['/product-management']);
         // window.location.href = environment.oldCockpit + '/router.php/dashboard';
       } else {
         this.isShowLoginErrorMsg = true;
@@ -85,7 +85,6 @@ export class PsiCustomFormComponent implements OnInit {
   }
 
   setSessionOldNavigatorSite(token):Promise<void> {
-    debugger
     return new Promise((resolve,reject) => {
     const iframe = document.getElementById('myframe') as HTMLInputElement;
     iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
