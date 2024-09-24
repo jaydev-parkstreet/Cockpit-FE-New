@@ -16,7 +16,6 @@ export class ProductManagementComponent implements OnInit {
   }
 
   async getSummary(){
-    debugger
     const token = localStorage.getItem('authToken');
     const summaryData = {
       "page": 1,
