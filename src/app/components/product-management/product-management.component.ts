@@ -7,6 +7,7 @@ import { ProductManagementService } from './product-management.service';
   styleUrls: ['./product-management.component.scss']
 })
 export class ProductManagementComponent implements OnInit {
+  summaryResponse:any;
 
   constructor(private productManagementService:ProductManagementService) { }
 
@@ -14,7 +15,8 @@ export class ProductManagementComponent implements OnInit {
     this.getSummary();
   }
 
-  getSummary(){
+  async getSummary(){
+    debugger
     const token = localStorage.getItem('authToken');
     const summaryData = {
       "page": 1,
@@ -22,9 +24,13 @@ export class ProductManagementComponent implements OnInit {
       "sort": "status",
       "order": "asc"
     }
-    this.productManagementService.getSummary(summaryData,token).then(response => {
-      console.log(response);
-    })
+    try {
+      const response:any = await this.productManagementService.getSummary(summaryData,token);
+      this.summaryResponse = response.data;
+    }
+    catch (error) {
+      console.error("Error fetching summary:", error);
+    }
   }
 
 }
