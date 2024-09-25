@@ -4,6 +4,7 @@ import { PsiCustomFormService } from './psi-custom-form.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import AppConstant from '../../../../../src/app/app.constant';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-psi-custom-form',
@@ -30,7 +31,8 @@ export class PsiCustomFormComponent implements OnInit {
 
   constructor(
     public readonly PsiCustomFormService: PsiCustomFormService,
-    public router: Router) { }
+    public router: Router,
+  private authService :AuthService) { }
 
   ngOnInit(): void { }
 
@@ -66,9 +68,10 @@ export class PsiCustomFormComponent implements OnInit {
       const res = await this.PsiCustomFormService.userLogin(reqObj);
       if (!res.hasError) {
         const token = res.data.token;
-        localStorage.setItem('authToken', token);
-        this.setSessionOldNavigatorSite(token).then(() => {
-          this.router.navigate(['/product-management']);
+        // localStorage.setItem('authToken', token);
+        this.authService.login(token);
+        await this.setSessionOldNavigatorSite(token).then(() => {
+          // this.router.navigate(['/product-management']);
           // window.location.href = environment.oldCockpit + '/router.php/dashboard';
         });
         this.router.navigate(['/product-management']);

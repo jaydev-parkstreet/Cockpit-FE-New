@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductManagementService } from './product-management.service';
+import { AuthService } from '../authentication/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-management',
@@ -9,7 +11,7 @@ import { ProductManagementService } from './product-management.service';
 export class ProductManagementComponent implements OnInit {
   summaryResponse:any;
 
-  constructor(private productManagementService:ProductManagementService) { }
+  constructor(private productManagementService:ProductManagementService,private authService:AuthService,private router:Router) { }
 
   ngOnInit(): void {
     this.getSummary();
@@ -30,6 +32,11 @@ export class ProductManagementComponent implements OnInit {
     catch (error) {
       console.error("Error fetching summary:", error);
     }
+  }
+
+  logout () {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
 }
