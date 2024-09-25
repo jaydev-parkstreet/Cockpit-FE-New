@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
 export class ProductManagementComponent implements OnInit {
   summaryResponse:any;
 
-  constructor(private productManagementService:ProductManagementService,private authService:AuthService,private router:Router) { }
+  constructor(private productManagementService:ProductManagementService,
+    private authService:AuthService,private router:Router) { }
 
   ngOnInit(): void {
     this.getSummary();
