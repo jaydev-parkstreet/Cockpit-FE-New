@@ -5,6 +5,7 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { SummaryTopBarComponent } from './components/summary-top-bar/summary-top-bar.component';
 import { ExcelExportComponent } from './components/excel-export/excel-export.component';
 import { CmpButtonComponent } from './components/cmp-button/cmp-button.component';
+import { CmpInputDropdownComponent } from './components/cmp-input-dropdown/cmp-input-dropdown.component';
 
 
 @NgModule({
@@ -13,10 +14,12 @@ import { CmpButtonComponent } from './components/cmp-button/cmp-button.component
     SearchBarComponent,
     SummaryTopBarComponent,
     ExcelExportComponent,
-    CmpButtonComponent
+    CmpButtonComponent,
+    CmpInputDropdownComponent,    
   ],
   imports: [
-    CommonModule
+    CommonModule,
+
   ],
   exports: [
     HeaderToolComponent,

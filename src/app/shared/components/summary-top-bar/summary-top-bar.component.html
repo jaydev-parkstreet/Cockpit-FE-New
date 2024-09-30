@@ -12,6 +12,8 @@
             [buttonIconLeft]="'fas fa-filter'"
             [buttonText]="'Filter'"
             [buttonClass]="'secondary'"
+            (click)="toggleFilter()"
+            [ngClass]="{'active': isFiltered}"
             >
         </app-cmp-button>
         
@@ -24,5 +26,31 @@
             [buttonClass]="'primary'"
             >
         </app-cmp-button>
+
+
+     
     </div>
 </div>
+
+<div class="dropdown-container " *ngIf="isFiltered" >
+
+    <app-cmp-input-dropdown
+    [label]="dropdown1Label"
+    [placeholder]="'Select Status'"
+    > </app-cmp-input-dropdown>
+
+    <app-cmp-input-dropdown
+    [label]="dropdown2Label"
+    [placeholder]="'Select Type'"
+    ></app-cmp-input-dropdown>
+
+    <app-cmp-input-dropdown [label]="dropdown3Label"
+    [placeholder]="'Select Type'">
+
+    </app-cmp-input-dropdown>
+
+
+    <app-cmp-input-dropdown   [label]="dropdown4Label"
+    [placeholder]="'Select'"></app-cmp-input-dropdown>
+</div>
+

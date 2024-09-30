@@ -8,11 +8,20 @@ import { Component, OnInit } from '@angular/core';
 export class SummaryTopBarComponent implements OnInit {
   topBarConfig : any;
   tooltipText:any;
+  isFiltered = false; 
+  dropdown1Label = 'Product Status';
+  dropdown2Label = 'Product Type';  
+  dropdown3Label = 'Product Sub-Type';
+  dropdown4Label = 'Source';
 
   constructor() { }
 
   ngOnInit(): void {
     this.tooltipText = 'hello';
+  }
+
+  toggleFilter() {
+    this.isFiltered = !this.isFiltered; 
   }
 
 }

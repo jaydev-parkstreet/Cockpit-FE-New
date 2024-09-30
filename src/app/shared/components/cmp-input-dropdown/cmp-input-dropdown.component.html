@@ -1,0 +1,59 @@
+ <div class="input-dropdown">
+  <span class="dropdown-label">{{ label }}</span>
+    <div class="dropdown-header" (click)="toggleDropdown()"  > 
+      {{ selectedItems.length > 0  ? getSelectedText() : placeholder }}  
+      <button class="dropdown-button" >
+        <i *ngIf="isOpen" class="fa fa-chevron-up iconbutton" aria-hidden="true"></i>
+        <i *ngIf="!isOpen" class="fa fa-chevron-down iconbutton" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div class="dropdown-list" *ngIf="isOpen">
+    <div class="search-box">
+      <input 
+        type="text" 
+        class="form-control" 
+        [(ngModel)]="searchText" 
+        (keypress)="onKeyPress($event)"
+        placeholder="Search"
+      />
+      <i class="fa fa-times-circle clear-search" 
+        *ngIf="hideList" 
+       (click)="removeSearchText()"></i>
+       <button class="search-icon" (click)="removeSearchText()">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div *ngIf="hideList" class="no-results">
+     <i class="fas fa-times"></i> No results found
+    </div>
+    <div *ngIf="!hideList">
+
+    <div class="select-all">
+      <div 
+          class="checkbox" 
+          [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}"
+          (click)="toggleSelectAll()"
+      >
+          <span *ngIf="!isAllSelected">+</span>
+          <span *ngIf="isAllSelected">-</span>
+      </div>
+      <span *ngIf="!isAllSelected">Select All</span>
+      <span *ngIf="isAllSelected">Unselect All</span>
+  </div>
+   
+  
+    <div *ngFor="let item of getFilteredItems()" class="select-list">
+        <input 
+          type="checkbox"
+          [checked]="isSelected(item)"
+          (change)="toggleSelection(item)"
+        />
+        {{ item }}
+    </div>
+  </div>
+</div>
+  
+
+ 

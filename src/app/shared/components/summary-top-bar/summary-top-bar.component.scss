@@ -1,3 +1,7 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/colors';
+
+
 .summary-top-bar {
     display: flex;
     padding: 16px 16px;
@@ -11,3 +15,27 @@
         height: 40px;
     }
 }
+
+.dropdown-container {
+    display: flex;
+    flex-direction: row;
+    // justify-content: space-between;
+    padding: 16px 16px;
+    gap:18px;
+
+
+app-cmp-input-dropdown{
+    width: 400px;
+}
+   
+
+}
+
+
+  
+app-cmp-button .active {
+    background: $colors-v2-base-primary-v-low-t-05 !important;
+}
+ 
+
+   
