@@ -1,0 +1,18 @@
+<p>{{divId}}</p>
+<div class="table-grid">
+    <div class="custom-checkbox checkbox-selectall" *ngIf="selectAllOption">
+        <label class="checkbox-container">
+            <input class="checkbox_select_all" type="checkbox" (click)="selectAllCheckbox()">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <app-psi-ag-grid
+        divId ="{{divId}}"
+        gridHeight = "{{gridHeight}}"
+        [gridOptions] = "gridOptions"
+        (setDataSource) ="setDataSource.emit()">
+    </app-psi-ag-grid>
+</div>
+<!-- [gridOptions]="gridOptions"
+        (setDataSource)="setDataSource()"
+         -->

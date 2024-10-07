@@ -9,6 +9,8 @@ import { SharedModule } from './shared/shared.module';
 import { AuthInterceptor } from './components/authentication/auth.interceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationModalComponent } from './components/organism/confirmation-modal/confirmation-modal.component';
+import { StatelessModule } from './stateless/stateless.module';
+import { AgGridModule } from 'ag-grid-angular';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +25,9 @@ import { ConfirmationModalComponent } from './components/organism/confirmation-m
     SharedModule,
     FormsModule,
     ReactiveFormsModule
+    StatelessModule,
+    AgGridModule
+    
   ],
   exports: [
    

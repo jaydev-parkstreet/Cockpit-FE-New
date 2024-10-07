@@ -6,6 +6,9 @@ import { ProductAddComponent } from './product-add/product-add.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SimpleModalModule } from 'ngx-simple-modal';
 import { ConfirmationModalComponent } from '../organism/confirmation-modal/confirmation-modal.component';
+import { StatelessModule } from 'src/app/stateless/stateless.module';
+import { AgGridModule } from 'ag-grid-angular';
+
 
 @NgModule({
   declarations: [ProductManagementComponent, ProductAddComponent],
@@ -19,6 +22,8 @@ import { ConfirmationModalComponent } from '../organism/confirmation-modal/confi
     ReactiveFormsModule,
     FormsModule,
     SimpleModalModule.forRoot({container: "modal-container"})
+    StatelessModule,
+    AgGridModule
   ],
   entryComponents: [
    
