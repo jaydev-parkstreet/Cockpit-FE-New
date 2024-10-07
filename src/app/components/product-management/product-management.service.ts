@@ -126,94 +126,92 @@ export class ProductManagementService {
     }
 
     getGridOption() {
-        return {
-            components: {
-                checkbox: (params) => {
-                    let checkboxSelection;
-                    if (params.data !== undefined) {
-                        // checkboxSelection = this.commonService.getCheckboxConfig(params.data.checkbox);
-                        // if (permission.Create) {
-                        checkboxSelection = checkboxSelection +
-                            `<span class="attachments-notes">
+      return {
+        components: {
+          checkbox: (params) => this.renderCheckbox(params),
+          dashRenderer: (params) => this.renderDash(params),
+          idRender: (params) => this.renderId(params),
+          statusRenderer: (params) => this.renderStatus(params),
+        },
+        enableColResize: true,
+        allowContextMenuWithControlKey: true,
+        rowBuffer: 0,
+        infiniteInitialRowCount: 1,
+        maxConcurrentDatasourceRequests: 2,
+        enableServerSideSorting: true,
+        defaultColDef: {
+          width: 200,
+          sortable: true,
+          resizable: true,
+          filter: true,
+        },
+        rowHeight: 38,
+        headerHeight: 38,
+        suppressRowClickSelection: true,
+        rowModelType: 'infinite',
+        paginationPageSize: 25,
+        sortingOrder: ['desc', 'asc'],
+        cacheBlockSize: 25,
+        cacheOverflowSize: 1,
+        debug: false,
+        rowDeselection: true,
+        columnDefs: this.getSummaryTableHeaderConfig(),
+        rowSelection: 'multiple',
+        overlayLoadingTemplate: `<div class="no-data-message">
+                                    <i class="far fa-surprise"></i>
+                                    <span>No Records Found.</span>
+                                  </div>`,
+        getRowNodeId: (data) => data.id,
+      };
+    }
+  
+    renderCheckbox(params) {
+      let checkboxSelection = '';
+      if (params.data) {
+        checkboxSelection += `<span class="attachments-notes">
                               <i class="${params.data.total_attachments <= 0 ? 'fal fa-file' : 'fas fa-file'} show-attachment-modal"></i>
                               <span><i class="${params.data.total_notes <= 0 ? 'fal fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
-                        if (params.data.unread_notes_count) {
-                            checkboxSelection = checkboxSelection + `<span class="note-count ${params.data.unread_notes_count > 9 ? 'u-w-20' : ''} "><p>
-                              ${params.data.unread_notes_count}</p></span>`;
-                        }
-                        checkboxSelection = checkboxSelection + '</span>';
-                        // }
-                    }
-                    return checkboxSelection;
-                },
-                dashRenderer: (params) => {
-                    if (params.value) {
-                        return '<div class="text-ellipsis"><span>' + params.value + '</span>' +
-                            '<span class="add-tooltip">' + params.value + '</span></div>';
-                    } else {
-                        return '--';
-                    }
-                },
-                idRender: (params) => {
-                    if (params.value) {
-                        return '<a target="_blank" href="product-tool/' + params.value + '" >' + params.value + '</a>';
-                        // return permission.Read ? '<a target="_blank" href="product-tool/' + params.value + '" >' + params.value + '</a>' : params.value;
-                    } else {
-                        return '-';
-                    }
-                },
-                statusRenderer: (params) => {
-                    let inActiveIcon = '';
-                    if (params.data && params.data.is_active === 0) {
-                        inActiveIcon = `<i class="fas fa-ban u-ml2 neutral-light icon-vertical-middle"></i>`;
-                    }
-                    if (params.value === 'Approved') {
-                        return `<span class="typography-caption-dark-medium u-bg-light-green status-label">${params.value}</span>` + inActiveIcon;
-                    } else if (params.value === 'Pending') {
-                        return `<span class="typography-caption-dark-medium u-bg-light-yellow status-label">${params.value}</span>` + inActiveIcon;
-                    } else if (params.value === 'Pre-Approved') {
-                        return `<span class="typography-caption-dark-medium u-bg-light-blue status-label">${params.value}</span>` + inActiveIcon;
-                    } else if (params.value === 'Needs Action-Waiting on Supplier') {
-                        return `<span class="typography-caption-dark-medium u-bg-orange status-label widthAction">${params.value}</span>` + inActiveIcon;
-                    } else if (params.value === 'Request Received') {
-                        return `<span class="typography-caption-dark-medium u-bg-light-gray status-label widthRequest">${params.value}</span>` + inActiveIcon;
-                    } else {
-                        return '--';
-                    }
-                },
-            },
-            enableColResize: true,
-            allowContextMenuWithControlKey: true,
-            rowBuffer: 0,
-            infiniteInitialRowCount: 1,
-            maxConcurrentDatasourceRequests: 2,
-            enableServerSideSorting: true,
-            defaultColDef: {
-                width: 200,
-                sortable: true,
-                resizable: true,
-                filter: true
-            },
-            rowHeight: 38,
-            headerHeight: 38,
-            suppressRowClickSelection: true,
-            rowModelType: 'infinite',
-            paginationPageSize: 25,
-            sortingOrder: ['desc', 'asc'],
-            cacheBlockSize: 25,
-            cacheOverflowSize: 1,
-            debug: false,
-            rowDeselection: true,
-            columnDefs: this.getSummaryTableHeaderConfig(),
-            rowSelection: 'multiple',
-            overlayLoadingTemplate: `<div class="no-data-message">
-                                      <i class="far fa-surprise"></i>
-                                      <span>No Records Found.</span>
-                                  </div>`,
-            getRowNodeId: (data) => {
-                return data.id;
-            }
-        };
+        if (params.data.unread_notes_count) {
+          checkboxSelection += `<span class="note-count ${params.data.unread_notes_count > 9 ? 'u-w-20' : ''}">
+                                <p>${params.data.unread_notes_count}</p></span>`;
+        }
+        checkboxSelection += '</span>';
+      }
+      return checkboxSelection;
+    }
+  
+    renderDash(params) {
+      if (params.value) {
+        return `<div class="text-ellipsis"><span>${params.value}</span>
+                <span class="add-tooltip">${params.value}</span></div>`;
+      }
+      return '--';
+    }
+  
+    renderId(params) {
+      if (params.value) {
+        return `<a target="_blank" href="product-tool/${params.value}">${params.value}</a>`;
+      }
+      return '-';
+    }
+  
+    renderStatus(params) {
+      const statusLabels = {
+        Approved: 'u-bg-light-green',
+        Pending: 'u-bg-light-yellow',
+        'Pre-Approved': 'u-bg-light-blue',
+        'Needs Action-Waiting on Supplier': 'u-bg-orange',
+        'Request Received': 'u-bg-light-gray',
+      };
+      
+      let inActiveIcon = params.data && params.data.is_active === 0 
+        ? `<i class="fas fa-ban u-ml2 neutral-light icon-vertical-middle"></i>` 
+        : '';
+  
+      if (statusLabels[params.value]) {
+        return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>` + inActiveIcon;
+      }
+      return '--';
     }
 
 

@@ -20,7 +20,7 @@ export class ProductManagementComponent implements OnInit {
   selectedRows: any;
   selectedCardRows: any;
   mixType: boolean;
-  isLoadingSummaryData: boolean;
+  isLoadingSummaryData: boolean = false;
   productToolSummary: any;
   productToolCardSummary: any;
   hasMoreRecords:boolean;
@@ -43,7 +43,7 @@ export class ProductManagementComponent implements OnInit {
   //   { field: 'price' }
   // ];
 
-  columnDefs =[];
+  columnDefs: any =[];
   rowData: any[] =[];
 
   constructor(private productManagementService:ProductManagementService,
@@ -93,11 +93,15 @@ export class ProductManagementComponent implements OnInit {
 
 
   initGridOptions() {
-    this.columnDefs = this.productManagementService.getSummaryTableHeaderConfig();
+    this.gridOptions = this.productManagementService.getGridOption();
+    this.setDataSourceAgGrid()
+    console.log(this.productManagementService.getGridOption());
+    console.log(this.productManagementService.getSummaryTableHeaderConfig());
   }
 
   async loadGridData() {
-    await this.getSummaryData();
+    // await this.getSummaryData();
+    this.setDataSourceAgGrid()
     this.updateGridData();
 
   }
@@ -108,7 +112,7 @@ export class ProductManagementComponent implements OnInit {
     }
   }
 
-  async getSummaryData(){
+  async getSummaryData(params){
     const token = localStorage.getItem('authToken');
     const summaryData = {
       "page": 1,
@@ -119,8 +123,8 @@ export class ProductManagementComponent implements OnInit {
     try {
       const response:any = await this.productManagementService.getSummary(summaryData,token);
       this.hasMoreRecords = response.data.length === 25;
-      this.summaryResponse = response.data;
-      // this.processResponseData(response,this.params);
+      // this.summaryResponse = response.data;
+      this.processResponseData(response,params);
     }
     catch (error) {
       console.error("Error fetching summary:", error);
@@ -143,50 +147,52 @@ export class ProductManagementComponent implements OnInit {
   //   this.gridOptions = this.productManagementService.getGridOption();
   // }
 
-//   setDataSourceAgGrid() {
-//     console.log('my name is anthony and my datat is coming from the grandchild');
-//     if (!this.isLoadingSummaryData) {
-//         this.selectedAllRows = false;
-//         this.selectedRowCount = 0;
-//         this.selectedRows = [];
-//         this.selectedCardRows = [];
-//         this.mixType = false;
-//         // angular.element('.checkbox_select_all').prop('checked', false);
-//         this.isLoadingSummaryData = true;
-//         this.gridOptions.api.hideOverlay();
-//         this.reportRequestObj.page = 1;
-//         this.productToolSummary = [];
-//         this.productToolCardSummary = [];
-//         this.hasMoreRecords = true;
-//         this.isLoading = false;
-//         this.busy = true;
-//         // if (this.isGridSortApplied !== true) {
-//         //     this.summaryTopBarConfig.actions = this.productToolService.getDefaultActions(this.reportRequestObj,
-//         //         this.permissions.permissions.Create);
-//         // }
-//         this.isGridSortApplied = false;
-//         const dataSource = {
-//             rowCount: null,
-//             getRows: (params) => {
-//               console.log('paraaaaa',params)
-//                 this.params = params;
-//                 if (!this.isLoading && (this.reportRequestObj.page === 1 ||
-//                     (params.startRow >= this.productToolSummary.length)) && this.hasMoreRecords) {
-//                     this.isLoading = true;
-//                     this.gridOptions.api.hideOverlay();
-//                     this.getSummaryData();
-//                 } 
-//                 else {
-//                     this.successCallback(params);
-//                 }
-//                 // if (!this.filtersList) {
-//                     // this.setFilterList();
-//                 // }
-//             }
-//         };
-//         this.gridOptions.api.setDatasource(dataSource);
-//     }
-// }
+  setDataSourceAgGrid() {
+    if (!this.isLoadingSummaryData) {
+        this.selectedAllRows = false;
+        this.selectedRowCount = 0;
+        this.selectedRows = [];
+        this.selectedCardRows = [];
+        this.mixType = false;
+        // angular.element('.checkbox_select_all').prop('checked', false);
+        this.isLoadingSummaryData = true;
+        // this.gridOptions.api.hideOverlay();
+        this.reportRequestObj.page = 1;
+        this.productToolSummary = [];
+        this.productToolCardSummary = [];
+        this.hasMoreRecords = true;
+        this.isLoading = false;
+        this.busy = true;
+        // if (this.isGridSortApplied !== true) {
+        //     this.summaryTopBarConfig.actions = this.productToolService.getDefaultActions(this.reportRequestObj,
+        //         this.permissions.permissions.Create);
+        // }
+        this.isGridSortApplied = false;
+        const dataSource = {
+            rowCount: null,
+            
+            getRows: (params) => {
+              console.log('paraaaaa',params)
+                // this.params = params;
+                if (!this.isLoading && (this.reportRequestObj.page === 1 ||
+                    (params.startRow >= this.productToolSummary.length)) && this.hasMoreRecords) {
+                    this.isLoading = true;
+
+                    this.getSummaryData(params);
+                    
+                } 
+                else {
+                    this.successCallback(params);
+                }
+                // if (!this.filtersList) {
+                    // this.setFilterList();
+                // }
+            }
+        };
+        console.log(dataSource);
+        this.gridOptions.datasource = dataSource;
+    }
+}
 
 
     /**
@@ -198,45 +204,46 @@ export class ProductManagementComponent implements OnInit {
      * @param number startRow
      * @param number endRow
      */
-    // getDisplayRows(data, startRow, endRow) {
-    //   debugger
-    //   const rowsThisPage = data.slice(startRow, endRow);
-    //   let lastRow = -1;
-    //   if (!this.hasMoreRecords) {
-    //   lastRow = data.length;
-    //   }
-    //   return { rowsThisPage: rowsThisPage, lastRow: lastRow };
-    // }
+    getDisplayRows(data, startRow, endRow) {
+      debugger
+      const rowsThisPage = data.slice(startRow, endRow);
+      let lastRow = -1;
+      if (!this.hasMoreRecords) {
+      lastRow = data.length;
+      }
+      return { rowsThisPage: rowsThisPage, lastRow: lastRow };
+    }
 
-  //   processResponseData(response, params) {
-  //     if (response.data.length > 0) {
-  //         // response.data.forEach(row => {
-  //         //     row.iconPaymentClass = row.is_active ? '' : 'fas fa-ban u-mt1 u-ml2 neutral-light';
-  //         // });
-  //         this.productToolSummary = [...this.productToolSummary || [], ...response.data];
-  //         this.productToolCardSummary = [...this.productToolCardSummary || [], ...response.data];
-  //         this.reportRequestObj.page++;
-  //         // this.successCallback(params);
-  //     } 
-  //     else if (this.reportRequestObj.page === 1) {
-  //         params.successCallback(this.productToolSummary, 0);
-  //         this.gridOptions.api.showLoadingOverlay();
-  //         this.productToolCardSummary = [];
-  //     }
-  //      else {
-  //         this.successCallback(params);
-  //     }
-  //     this.isLoading = false;
-  //     this.busy = false;
-  //     this.isLoadingSummaryData = false;
-  // }
+    processResponseData(response, params) {
+      console.log("inside");
+      if (response.data.length > 0) {
+          // response.data.forEach(row => {
+          //     row.iconPaymentClass = row.is_active ? '' : 'fas fa-ban u-mt1 u-ml2 neutral-light';
+          // });
+          this.productToolSummary = [...this.productToolSummary || [], ...response.data];
+          this.productToolCardSummary = [...this.productToolCardSummary || [], ...response.data];
+          this.reportRequestObj.page++;
+          // this.successCallback(params);
+      } 
+      else if (this.reportRequestObj.page === 1) {
+          params.successCallback(this.productToolSummary, 0);
+          this.gridOptions.api.showLoadingOverlay();
+          this.productToolCardSummary = [];
+      }
+       else {
+          this.successCallback(params);
+      }
+      this.isLoading = false;
+      this.busy = false;
+      this.isLoadingSummaryData = false;
+  }
 
-  // successCallback(params): void {
-  //   console.log('1',params);
-  //   setTimeout(() => {
-  //       const returnObj = this.getDisplayRows(this.productToolSummary, params.startRow, params.endRow);
-  //       params.successCallback(returnObj.rowsThisPage, returnObj.lastRow);
-  //   }, 500);
-  // }
+  successCallback(params): void {
+    console.log('1',params);
+    setTimeout(() => {
+        const returnObj = this.getDisplayRows(this.productToolSummary, params.startRow, params.endRow);
+        params.successCallback(returnObj.rowsThisPage, returnObj.lastRow);
+    }, 500);
+  }
 
 }
