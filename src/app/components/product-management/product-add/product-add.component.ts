@@ -136,7 +136,7 @@ export class ProductAddComponent implements OnInit {
         };
 
       console.log('Form Submitted:', reqObj);
-      this.openConfirmationPopup('submit');
+    //  this.openConfirmationPopup('submit');
       
       this.showError = false;
     
@@ -154,19 +154,9 @@ export class ProductAddComponent implements OnInit {
     event.stopPropagation(); // Prevent event bubbling
   }
 
-  openConfirmationPopup(context: string) {
+  openConfirmationPopup() {
     let modalData;
 
-    if (context === 'submit') {
-        modalData = {
-            title: 'Confirm Submission',
-            body: 'Are you sure you want to submit the form?',
-            closeBtnName: 'Cancel',
-            confirmBtnName: 'Submit',
-            iconClass: 'fas fa-check-circle success',
-            showLine: true,
-        };
-    } else {
         modalData = {
             title: 'All data will be lost!',
             body: 'Are you sure you wish to exit?',
@@ -175,7 +165,6 @@ export class ProductAddComponent implements OnInit {
             iconClass: 'fas fa-exclamation-circle error',
             showLine: true,
         };
-    }
 
     this.simpleModalService.addModal(ConfirmationModalComponent, {
         modalData: modalData,
