@@ -6,6 +6,8 @@ import { SummaryTopBarComponent } from './components/summary-top-bar/summary-top
 import { ExcelExportComponent } from './components/excel-export/excel-export.component';
 import { CmpButtonComponent } from './components/cmp-button/cmp-button.component';
 import { CmpInputDropdownComponent } from './components/cmp-input-dropdown/cmp-input-dropdown.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CmpCheckboxComponent } from './components/cmp-checkbox/cmp-checkbox.component';
 
 
 @NgModule({
@@ -15,16 +17,21 @@ import { CmpInputDropdownComponent } from './components/cmp-input-dropdown/cmp-i
     SummaryTopBarComponent,
     ExcelExportComponent,
     CmpButtonComponent,
-    CmpInputDropdownComponent,    
+    CmpInputDropdownComponent,
+    CmpCheckboxComponent,  
   ],
   imports: [
     CommonModule,
+    FormsModule, 
+    ReactiveFormsModule
 
   ],
   exports: [
     HeaderToolComponent,
     SearchBarComponent,
-    SummaryTopBarComponent
+    SummaryTopBarComponent,  
+    CmpInputDropdownComponent, 
+    CmpCheckboxComponent,  
   ]
 })
 export class SharedModule { }

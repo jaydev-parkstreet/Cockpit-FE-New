@@ -1,20 +1,15 @@
 @import '../../../../styles/variables';
 @import '../../../../styles/colors';
 
-
-
-
-
 .input-dropdown {
     position: relative;
   
-    
     .dropdown-label{  
         color: $colors-neutral-black; color: #232323;
         font-family: "Montserrat-Regular" !important;
         font-size: 12px;
-        padding: 16px 0 4px 16px;
-        margin-bottom: 4px;
+     //   padding: 16px 0 4px 16px;
+     //   margin-bottom: 4px;
         border:none !important;
        
         }
@@ -34,6 +29,16 @@
         transition: none;
         box-shadow: none !important;
         position: relative;
+        &.ps-required-asterisk{
+            background-color: #FFE3E3 !important;
+                   
+        }
+        // &::placeholder {
+        //     color: $colors-neutral-light;
+        //     font-family: $montserrat-regular;
+        //     font-size: 12px;
+        // }
+
         &:focus {
             border: none !important;
         }

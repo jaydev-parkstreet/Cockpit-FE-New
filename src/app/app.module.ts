@@ -7,9 +7,12 @@ import {HTTP_INTERCEPTORS, HttpClientModule}  from '@angular/common/http';
 import { ProductManagementModule } from './components/product-management/product-management.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthInterceptor } from './components/authentication/auth.interceptor';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfirmationModalComponent } from './components/organism/confirmation-modal/confirmation-modal.component';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ConfirmationModalComponent
   ],
   imports: [
     BrowserModule,
@@ -17,7 +20,9 @@ import { AuthInterceptor } from './components/authentication/auth.interceptor';
     AuthenticationModule,
     HttpClientModule,
     ProductManagementModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
    

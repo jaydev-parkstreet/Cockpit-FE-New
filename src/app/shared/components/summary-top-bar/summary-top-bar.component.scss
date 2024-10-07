@@ -19,7 +19,6 @@
 .dropdown-container {
     display: flex;
     flex-direction: row;
-    // justify-content: space-between;
     padding: 16px 16px;
     gap:18px;
 
@@ -30,12 +29,3 @@ app-cmp-input-dropdown{
    
 
 }
-
-
-  
-app-cmp-button .active {
-    background: $colors-v2-base-primary-v-low-t-05 !important;
-}
- 
-
-   

@@ -10,12 +10,14 @@ import { Router } from '@angular/router';
 })
 export class ProductManagementComponent implements OnInit {
   summaryResponse:any;
+  dropdownData:any;
 
   constructor(private productManagementService:ProductManagementService,
     private authService:AuthService,private router:Router) { }
 
   ngOnInit(): void {
     this.getSummary();
+    this.getDropdown();
   }
 
   async getSummary(){
@@ -34,6 +36,19 @@ export class ProductManagementComponent implements OnInit {
       console.error("Error fetching summary:", error);
     }
   }
+
+  async getDropdown(){
+    const token = localStorage.getItem('authToken');
+    try {
+      const response:any = await this.productManagementService.getDropdown();
+      this.dropdownData = response.data;
+      console.log(this.dropdownData)
+    }
+    catch (error) {
+      console.error("Error fetching summary:", error);
+    }
+  }
+
 
   logout () {
     this.authService.logout();
