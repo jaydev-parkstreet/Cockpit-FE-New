@@ -3,7 +3,7 @@ import AppConstant from 'src/app/app.constant';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from '../../authentication/auth.service';
 import { Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
 import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdown/input-dropdown.service';
 import { ConfirmationModalComponent } from '../../organism/confirmation-modal/confirmation-modal.component';
 import { SimpleModalService } from 'ngx-simple-modal';
@@ -14,6 +14,15 @@ import { SimpleModalService } from 'ngx-simple-modal';
   styleUrls: ['./product-add.component.scss'],
 })
 export class ProductAddComponent implements OnInit {
+  constructor(
+    private simpleModalService: SimpleModalService,
+    public router: Router,
+    private dropdownService: InputDropdownService,
+    private authService: AuthService,
+    private commonService: CommonService,
+    private formBuilder: FormBuilder
+  ) { }
+
   // Flags and configuration properties
   isErrorRedirect: boolean = false;
   title: any;
@@ -33,38 +42,30 @@ export class ProductAddComponent implements OnInit {
 
 
   // Reactive form initialization
-  productForm = new FormGroup({
-    sub_brand: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
-    fancifulName: new FormControl(''),
-    group: new FormControl('', [Validators.required]),
-    producer: new FormControl(''),
-    caseuom: new FormControl('', [Validators.required]),
-    containerType: new FormControl('', [Validators.required]),
-    announcedPrice: new FormControl(''),
-    classType: new FormControl(''),
-    ct: new FormControl(''),
-    or: new FormControl(''),
-    organic: new FormControl('', [Validators.required]),
-    productType: new FormControl('', [Validators.required]),
-    transaction_type: new FormControl(''),
-    productCode: new FormControl(''),
-    upcCode: new FormControl(''),
-    sccCode: new FormControl(''),
-    suplier_id: new FormControl(''),
-    cola_id: new FormControl(''),
-    nabca: new FormControl(''),
-    unimerc: new FormControl(''),
-    bdn: new FormControl(''),
+  productForm = this.formBuilder.group({
+    sub_brand: ['', [Validators.required]],
+    description: ['', [Validators.required]],
+    fancifulName: [''],
+    group: ['', [Validators.required]],
+    producer: [''],
+    caseuom: ['', [Validators.required]],
+    containerType: ['', [Validators.required]],
+    announcedPrice: [''],
+    classType: [''],
+    ct: [''],
+    or: [''],
+    organic: ['', [Validators.required]],
+    productType: ['', [Validators.required]],
+    transaction_type: [''],
+    productCode: [''],
+    upcCode: [''],
+    sccCode: [''],
+    suplier_id: [''],
+    cola_id: [''],
+    nabca: [''],
+    unimerc: [''],
+    bdn: [''],
   });
-
-  constructor(
-    private simpleModalService: SimpleModalService,
-    public router: Router,
-    private dropdownService: InputDropdownService,
-    private authService: AuthService,
-    private commonService: CommonService
-  ) { }
 
   ngOnInit(): void {
     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
@@ -151,7 +152,7 @@ export class ProductAddComponent implements OnInit {
   }
 
   handleDropdownClick(event: MouseEvent) {
-    event.stopPropagation(); // Prevent event bubbling
+    event.stopPropagation();
   }
 
   openConfirmationPopup() {
