@@ -1,0 +1,85 @@
+<div class="som-details">
+    <app-header-tool
+        titleText="Product Management System"
+        titleIcon="fas fa-wine-bottle">
+    </app-header-tool>
+    <div class="actionbuttons">
+        <div class="back">
+            <app-ps-default-link
+            fontIcon="fas fa-less-than"
+            linkTitle="Back To Products">
+            </app-ps-default-link>
+            
+        </div>
+        <div class="ac-cr-btn">
+            <app-psi-action-buttons [actionButtons]="actionButtons"></app-psi-action-buttons>
+        </div>
+    </div>
+    <div class="container product-detail-container">
+        <div class="row">
+            <div class="col-sm-6 unq-col sync-fail">
+
+                <!-- <app-psi-page-column-header
+                    headerTitle="1234"
+                    status= "pending"
+                    truncate= "'truncate'">
+                 </app-psi-page-column-header> -->
+                <!-- <psi-fields-detail
+                    rows="$ctrl.productDetails">
+                </psi-fields-detail> -->
+                <!-- <psi-details-tab
+                    permissions="$ctrl.permissions.data"
+                    list-notes="$ctrl.listNoteConfig"
+                    filters-list="$ctrl.permissions"
+                    params-upload="$ctrl.paramsUpload"
+                    audit-list="$ctrl.auditTrailData.data"
+                    row-object-keys="$ctrl.rowObjectKeysAuditTrail"
+                    row-object-keys-detail="$ctrl.rowAuditTrailConfigApiRequest"
+                    show-file-type="true"
+                    file-type-options="$ctrl.permissions.entity_kinds"
+                    allow-change-privacy="true"
+                    show-change-privacy-icon="true">
+                </psi-details-tab> -->
+            </div>
+            <div class="col-sm-6 prdct-col">
+                <!-- <psi-page-column-header
+                    header-title="$ctrl.dimensionTitle"
+                    icon="$ctrl.errorIcon"
+                    error-message="$ctrl.headerErrorMsg"
+                    show-error-message="$ctrl.showProductError">
+                </psi-page-column-header> -->
+                <div>
+		            <!-- <psi-product-summary-card rows="$ctrl.productList" ></psi-product-summary-card> -->
+                </div>
+                <div class="code-section">
+                    <!-- <psi-page-column-header
+                        header-title="$ctrl.codesTitle">
+                    </psi-page-column-header> -->
+                    <div class="code-table">
+                        <table id="customers">
+                            <tr>
+                              <th class="col-type">Type</th>
+                              <th class="col-code">
+                                <span class="ftleft"></span>
+                                Code
+                              </th>
+                            </tr>
+                            <tr data-ng-repeat="code in $ctrl.productCodeDetail">
+                              <!-- <td class="type-val">{{code.label}}</td>
+                              <td class="code-val">{{code.val}}</td> -->
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="no-product" ng-if="$ctrl.detailData.products.length == 0 && $ctrl.detailData.customer_codes.length == 0">
+                    <!-- <no-record-screen fa-icon-mark="$ctrl.faClassIcon" place-holder-text="$ctrl.placeholderCart" hr="false">
+                    </no-record-screen> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <!-- <psi-footer-flash-message data-ng-if="$ctrl.showNotificationSync" class="first-footer-flash" message="$ctrl.notificationMessageSync" close-flash-message="$ctrl.closeFlashMessage('sync')" show-message="$ctrl.showNotificationSync">
+    </psi-footer-flash-message>   -->
+</div>

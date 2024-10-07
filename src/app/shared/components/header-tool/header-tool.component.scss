@@ -2,10 +2,7 @@
 @import '../../../../../src/styles/colors';
 
 .header-tool {
-    border-left: 16px solid $colors-neutral-light-t-25;
-    border-right: 16px solid $colors-neutral-light-t-25;
-    border-top: 10px solid $colors-neutral-light-t-25;
-    border-bottom: 10px solid $colors-neutral-light-t-25;
+    margin-bottom: 10px;
     height: 65px;
     display: flex;
     justify-content: space-between;

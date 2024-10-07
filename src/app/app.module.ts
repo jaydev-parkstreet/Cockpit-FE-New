@@ -22,7 +22,6 @@ import { AgGridModule } from 'ag-grid-angular';
     SharedModule,
     StatelessModule,
     AgGridModule
-    
   ],
   exports: [
    

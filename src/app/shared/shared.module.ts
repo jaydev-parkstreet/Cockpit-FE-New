@@ -7,6 +7,8 @@ import { ExcelExportComponent } from './components/excel-export/excel-export.com
 import { CmpButtonComponent } from './components/cmp-button/cmp-button.component';
 import { TableComponent } from './templates/table/table.component';
 import { StatelessModule } from '../stateless/stateless.module';
+import { PsDefaultLinkComponent } from './components/ps-default-link/ps-default-link.component';
+import { PsiActionButtonsComponent } from './components/psi-action-buttons/psi-action-buttons.component';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { StatelessModule } from '../stateless/stateless.module';
     SummaryTopBarComponent,
     ExcelExportComponent,
     CmpButtonComponent,
-    TableComponent
+    TableComponent,
+    PsDefaultLinkComponent,
+    PsiActionButtonsComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +30,9 @@ import { StatelessModule } from '../stateless/stateless.module';
     HeaderToolComponent,
     SearchBarComponent,
     SummaryTopBarComponent,
-    TableComponent
+    TableComponent,
+    PsDefaultLinkComponent,
+    PsiActionButtonsComponent
   ]
 })
 export class SharedModule { }

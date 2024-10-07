@@ -1,0 +1,70 @@
+.action-buttons-rht {
+    margin-left: 50px !important;
+    span {
+        background: rgb(255, 255, 255);
+        border-radius: 80px;
+        height: 32px;
+        width: 32px;
+        padding: 10px;
+        margin-right: 15px;
+        display: inline-block;
+        .fa-sync {
+            margin-top: -1px;
+            margin-left: -2px;
+        }
+        .fa-pen {
+            margin-left: -1px !important;
+        }
+    }
+    i {
+        height: 16px;
+        width: 16px;
+        vertical-align: top;
+        margin-top: -1px;
+        margin-left: 1px;
+        &.disabled {
+            opacity: 0.5;
+        }
+    }
+    .fas.fa-times-circle.disable-color {
+        color: #cbcbcb;
+    }
+    .actionslabel {
+        z-index: 2;
+    }
+    .acbbutton {
+        color: #333;
+        font-family: "HelveticaNeue";
+        font-size: 12px;
+        line-height: 12px;
+        text-align: center;
+        box-shadow: 0px 4px 8px 0px rgba(203, 203, 203, 0.15);
+        min-width: 80px;
+        background: #232323;
+        border-radius: 0px;
+        display: none;
+        // cursor: pointer;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 8px;
+        z-index: 1;
+        pointer-events: none;
+        cursor: default;
+        top: 100%;
+        a {
+            color: white;
+            font-size: 12px;
+            font-family: "HelveticaNeue";
+            text-align: center;
+            line-height: 12px;
+            display: block;
+            width: auto;
+            white-space: nowrap;
+            min-width: 64px;
+        }
+    }
+    .actionslabel:hover .acbbutton {
+        display: table;
+    }
+}
