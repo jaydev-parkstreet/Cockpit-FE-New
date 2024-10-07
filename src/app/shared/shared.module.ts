@@ -5,6 +5,8 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { SummaryTopBarComponent } from './components/summary-top-bar/summary-top-bar.component';
 import { ExcelExportComponent } from './components/excel-export/excel-export.component';
 import { CmpButtonComponent } from './components/cmp-button/cmp-button.component';
+import { TableComponent } from './templates/table/table.component';
+import { StatelessModule } from '../stateless/stateless.module';
 
 
 @NgModule({
@@ -13,15 +15,18 @@ import { CmpButtonComponent } from './components/cmp-button/cmp-button.component
     SearchBarComponent,
     SummaryTopBarComponent,
     ExcelExportComponent,
-    CmpButtonComponent
+    CmpButtonComponent,
+    TableComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    StatelessModule
   ],
   exports: [
     HeaderToolComponent,
     SearchBarComponent,
-    SummaryTopBarComponent
+    SummaryTopBarComponent,
+    TableComponent
   ]
 })
 export class SharedModule { }

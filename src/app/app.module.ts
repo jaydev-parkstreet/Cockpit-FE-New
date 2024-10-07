@@ -7,6 +7,8 @@ import {HTTP_INTERCEPTORS, HttpClientModule}  from '@angular/common/http';
 import { ProductManagementModule } from './components/product-management/product-management.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthInterceptor } from './components/authentication/auth.interceptor';
+import { StatelessModule } from './stateless/stateless.module';
+import { AgGridModule } from 'ag-grid-angular';
 @NgModule({
   declarations: [
     AppComponent
@@ -17,7 +19,10 @@ import { AuthInterceptor } from './components/authentication/auth.interceptor';
     AuthenticationModule,
     HttpClientModule,
     ProductManagementModule,
-    SharedModule
+    SharedModule,
+    StatelessModule,
+    AgGridModule
+    
   ],
   exports: [
    
