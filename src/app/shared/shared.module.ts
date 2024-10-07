@@ -8,6 +8,8 @@ import { CmpButtonComponent } from './components/cmp-button/cmp-button.component
 import { CmpInputDropdownComponent } from './components/cmp-input-dropdown/cmp-input-dropdown.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CmpCheckboxComponent } from './components/cmp-checkbox/cmp-checkbox.component';
+import { TableComponent } from './templates/table/table.component';
+import { StatelessModule } from '../stateless/stateless.module';
 
 
 @NgModule({
@@ -19,19 +21,25 @@ import { CmpCheckboxComponent } from './components/cmp-checkbox/cmp-checkbox.com
     CmpButtonComponent,
     CmpInputDropdownComponent,
     CmpCheckboxComponent,  
+    TableComponent
   ],
   imports: [
     CommonModule,
     FormsModule, 
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StatelessModule,
 
+    
   ],
+ 
   exports: [
     HeaderToolComponent,
     SearchBarComponent,
     SummaryTopBarComponent,  
     CmpInputDropdownComponent, 
     CmpCheckboxComponent,  
+    SummaryTopBarComponent,
+    TableComponent
   ]
 })
 export class SharedModule { }

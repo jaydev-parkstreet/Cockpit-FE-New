@@ -125,9 +125,10 @@
   color: $colors-base-warning;
 }
 
-[class^='typography-'][class*='-white-'] {
+[class^='typography-'],[class*='-white-'] {
   color: $colors-neutral-white;
-}
+} 
+
 
 [class^='typography-'][class*='-bold'] {
   @include font-bold;
