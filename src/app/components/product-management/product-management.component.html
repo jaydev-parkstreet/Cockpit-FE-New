@@ -22,10 +22,7 @@
                 <ag-grid-angular class="ag-theme-material"
                 style="height: 500px; width: 100%;"
                 [rowData]="rowData"
-                [columnDefs]="gridOptions.columnDefs"
-                [rowModelType]="gridOptions.rowModelType"
-                [cacheBlockSize]="gridOptions.cacheBlockSize"
-                [cacheOverflowSize]="gridOptions.cacheOverflowSize"
+                [gridOptions]="gridOptions"
                 ></ag-grid-angular>
             <!-- </div> -->
             <div class="table-list-view" >
