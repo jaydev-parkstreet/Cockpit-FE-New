@@ -21,7 +21,7 @@ import { AgGridModule } from 'ag-grid-angular';
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
-    SimpleModalModule.forRoot({container: "modal-container"})
+    SimpleModalModule.forRoot({container: "modal-container"}),
     StatelessModule,
     AgGridModule
   ],

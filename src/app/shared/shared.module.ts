@@ -21,6 +21,7 @@ import { StatelessModule } from '../stateless/stateless.module';
     CmpButtonComponent,
     CmpInputDropdownComponent,
     CmpCheckboxComponent,  
+    TableComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +29,7 @@ import { StatelessModule } from '../stateless/stateless.module';
     ReactiveFormsModule,
     StatelessModule,
 
-    TableComponent
+    
   ],
  
   exports: [

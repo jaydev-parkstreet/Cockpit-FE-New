@@ -24,7 +24,7 @@ import { AgGridModule } from 'ag-grid-angular';
     ProductManagementModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
     StatelessModule,
     AgGridModule
     
