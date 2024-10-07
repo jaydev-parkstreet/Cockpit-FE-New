@@ -18,10 +18,10 @@
                                             <div class="form-group">
                                                 <form [formGroup]="productForm" (ngSubmit)="onSubmit(productForm)"
                                                     autocomplete="false">
-                                                    <div class="form-field"
-                                                        *ngFor="let field of formConfig.schema; trackBy: trackByField">
+                                                    <div class="form-field">
                                                         <div class="row">
                                                             <div class="column">
+                                                                <ng-container *ngFor="let field of formConfig.schema">
                                                                 <ng-container *ngIf="!field.isVisible  ">
                                                                     <label [for]="field.name"
                                                                         [ngClass]="{'ps-required-asterisk': field.required}"
@@ -54,9 +54,11 @@
                                                                             *ngIf="productForm.get(field.name)?.errors?.required">Required</span>
                                                                     </div>
                                                                 </ng-container>
+                                                            </ng-container>
 
                                                             </div>
                                                             <div class="column-right">
+                                                                <ng-container *ngFor="let field of formConfig.schema">
 
                                                                 <ng-container *ngIf="field.isVisible">
                                                                     <label [for]="field.name"
@@ -71,6 +73,8 @@
                                                                         [required]="field.required" />
 
                                                                 </ng-container>
+                                                            </ng-container>
+
                                                             </div>
                                                         </div>
                                                     </div>
