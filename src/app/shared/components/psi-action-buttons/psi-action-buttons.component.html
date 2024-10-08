@@ -1,9 +1,9 @@
 <div class="action-buttons-rht">
     <ng-container *ngFor="let actionButton of actionButtons">
       <span 
-        [ngClass]="actionButton.class" 
         (click)="!actionButton.disabled ? actionEvent(actionButton.name) : null"
         *ngIf="actionButton.button">
+        <i [ngClass]="actionButton.class" ></i>
         <div class="acbbutton">
           <a href="javascript:void(0);" tabindex="0">{{ actionButton.button }}</a>
         </div>

@@ -8,13 +8,32 @@ import { ProductAddComponent } from './components/product-management/product-add
 import { ProductManagementDetailsComponent } from './components/product-management/product-management-details/product-management-details.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginPageComponent },
-  { path: 'middle', component: MiddleComponent },
-  { path: 'product-management', component: ProductManagementComponent,canActivate: [AuthGuard]  },
-  { path: 'product-management/add', component: ProductAddComponent },
-  
-  { path: 'product-management/:id', component:ProductManagementDetailsComponent}
+  {
+    path: '',
+    redirectTo: '/login',
+    pathMatch: 'full'
+  },
+  {
+    path: 'login',
+    component: LoginPageComponent
+  },
+  {
+    path: 'middle',
+    component: MiddleComponent
+  },
+  {
+    path: 'product-management',
+    component: ProductManagementComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'product-management/add',
+    component: ProductAddComponent
+  },
+  {
+    path: 'product-tool/:id',
+    component: ProductManagementDetailsComponent
+  }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
