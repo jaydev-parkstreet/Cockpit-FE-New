@@ -11,7 +11,7 @@
                 </span>
             </div>
             <div>
-                <app-psi-action-buttons [actionButtons]="actionButtons"></app-psi-action-buttons>
+                <app-psi-action-buttons [actionButtons]="actionButtons" (actionClicked)="onClickAction($event)"></app-psi-action-buttons>
             </div>
         </div>
         <div class="product-tool-details-wrapper">

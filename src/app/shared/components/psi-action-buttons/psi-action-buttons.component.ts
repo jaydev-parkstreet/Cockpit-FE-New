@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-psi-action-buttons',
@@ -7,9 +7,13 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PsiActionButtonsComponent implements OnInit {
   @Input() actionButtons: { name: string; class: string; button: string; disabled: boolean }[] = [];
+  @Output() actionClicked = new EventEmitter<string>();
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  actionEvent(actionName: string) {
+    this.actionClicked.emit(actionName);
+  }
 }

@@ -4,73 +4,60 @@
 @import '../../../scss/utilities/base';
 @import '../../../scss/utilities/typography';
 
-.action-buttons-rht {
-    span {
-        background: rgb(255, 255, 255);
-        border-radius: 80px;
+.button-round {
+    display: flex;
+
+    .action-round {
         height: 32px;
         width: 32px;
-        padding: 9px 8px;
-        margin-right: 15px;
-        display: inline-block;
-        .fa-sync {
-            margin-top: -1px;
-            margin-left: -2px;
-        }
-        .fa-pen {
-            margin-left: -1px !important;
-        }
-    }
-    i {
+        display: flex;
+        margin-left: 16px;
+        background: $colors-neutral-white;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+        box-shadow: $colors-shadows-black-25;
+        cursor: pointer;
+        position: relative;
 
-        height: 16px;
-        width: 16px;
-        vertical-align: top;
-        margin-top: -1px;
-        margin-left: 1px;
-        &.disabled {
-            opacity: 0.5;
+        i {
+            color: $colors-neutral-dark;
         }
-    }
-    .fas.fa-times-circle.disable-color {
-        color: #cbcbcb;
-    }
-    .actionslabel {
-        z-index: 2;
-    }
-    .acbbutton {
-        color: #333;
-        font-family: "HelveticaNeue";
-        font-size: 12px;
-        line-height: 12px;
-        text-align: center;
-        box-shadow: 0px 4px 8px 0px rgba(203, 203, 203, 0.15);
-        min-width: 80px;
-        background: #232323;
-        border-radius: 0px;
-        display: none;
-        // cursor: pointer;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 10px 8px;
-        z-index: 1;
-        pointer-events: none;
-        cursor: default;
-        top: 100%;
-        a {
-            color: white;
-            font-size: 12px;
-            font-family: "HelveticaNeue";
-            text-align: center;
-            line-height: 12px;
-            display: block;
-            width: auto;
+
+        /* Tooltip styling */
+        &::after {
+            content: attr(data-tooltip);
+            visibility: hidden;
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 5px;
+            border-radius: 4px;
             white-space: nowrap;
-            min-width: 64px;
+            pointer-events: none;
+            z-index: 100;
         }
-    }
-    .actionslabel:hover .acbbutton {
-        display: table;
+
+        &:hover {
+            i {
+                color: $colors-neutral-black; /* Change icon color on hover */
+            }
+
+            &::after {
+                visibility: visible; /* Show tooltip on hover */
+                opacity: 1; /* Make tooltip fully visible */
+            }
+        }
+
+        &.disabled:hover {
+            cursor: not-allowed;
+
+            i {
+                color: $colors-neutral-dark; /* Maintain icon color on hover */
+            }
+        }
     }
 }

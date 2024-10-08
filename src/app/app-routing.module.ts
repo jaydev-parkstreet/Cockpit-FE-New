@@ -33,6 +33,10 @@ const routes: Routes = [
   {
     path: 'product-tool/:id',
     component: ProductManagementDetailsComponent
+  },
+  {
+    path: 'product-tool/:id/edit',
+    component: ProductAddComponent
   }
 ];
 @NgModule({
