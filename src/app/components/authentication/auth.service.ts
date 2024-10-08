@@ -29,16 +29,16 @@ export class AuthService {
     return localStorage.getItem('authToken');
   }
 
-  selectClient(token) {
-    let clients = {
-      "clients": [
-        "583"
-      ]
-    }
-    return this.http
-    .post(environment.apiUrl + 'select-clients', clients , token)
-    .toPromise();
-  }
+  // selectClient(token) {
+  //   let clients = {
+  //     "clients": [
+  //       "583"
+  //     ]
+  //   }
+  //   return this.http
+  //   .post(environment.apiUrl + 'select-clients', clients , token)
+  //   .toPromise();
+  // }
 
   private checkToken(): void {
     const token = this.getToken();
