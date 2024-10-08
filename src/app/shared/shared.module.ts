@@ -5,6 +5,9 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 import { SummaryTopBarComponent } from './components/summary-top-bar/summary-top-bar.component';
 import { ExcelExportComponent } from './components/excel-export/excel-export.component';
 import { CmpButtonComponent } from './components/cmp-button/cmp-button.component';
+import { CmpInputDropdownComponent } from './components/cmp-input-dropdown/cmp-input-dropdown.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CmpCheckboxComponent } from './components/cmp-checkbox/cmp-checkbox.component';
 import { TableComponent } from './templates/table/table.component';
 import { StatelessModule } from '../stateless/stateless.module';
 import { PsDefaultLinkComponent } from './components/ps-default-link/ps-default-link.component';
@@ -22,6 +25,8 @@ import { CmpTabGroupComponent } from './components/cmp-tab-group/cmp-tab-group.c
     SummaryTopBarComponent,
     ExcelExportComponent,
     CmpButtonComponent,
+    CmpInputDropdownComponent,
+    CmpCheckboxComponent,  
     TableComponent,
     PsDefaultLinkComponent,
     PsiActionButtonsComponent,
@@ -32,11 +37,19 @@ import { CmpTabGroupComponent } from './components/cmp-tab-group/cmp-tab-group.c
   ],
   imports: [
     CommonModule,
-    StatelessModule
+    FormsModule, 
+    ReactiveFormsModule,
+    StatelessModule,
+
+    
   ],
+ 
   exports: [
     HeaderToolComponent,
     SearchBarComponent,
+    SummaryTopBarComponent,  
+    CmpInputDropdownComponent, 
+    CmpCheckboxComponent,  
     SummaryTopBarComponent,
     TableComponent,
     PsDefaultLinkComponent,

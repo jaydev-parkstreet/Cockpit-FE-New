@@ -63,15 +63,15 @@ export class ProductManagementService {
             headerName: 'Product Description',
             headerTooltip: 'Product Description',
             minWidth: 70,
-            width: 150,
+            width: 200,
             field: 'description',
             cellRenderer: 'dashRenderer',
             cellClass: 'tooltip-cell'
         }, {
             headerName: 'Brand',
-            headerTooltip: 'Brand',
+            // headerTooltip: 'Brand',
             minWidth: 70,
-            width: 100,
+            width: 120,
             field: 'brand_name',
             cellRenderer: 'dashRenderer',
             cellClass: 'tooltip-cell'
@@ -79,7 +79,7 @@ export class ProductManagementService {
             headerName: 'Status',
             headerTooltip: 'Status',
             minWidth: 70,
-            width: 100,
+            width: 120,
             field: 'status',
             cellRenderer: 'statusRenderer',
             sort: 'desc'
@@ -95,7 +95,7 @@ export class ProductManagementService {
             headerName: 'Product Type',
             headerTooltip: 'Product Type',
             minWidth: 70,
-            width: 90,
+            width: 120,
             field: 'product_type',
             cellRenderer: 'dashRenderer',
             cellClass: 'tooltip-cell'
@@ -111,21 +111,22 @@ export class ProductManagementService {
             headerName: 'Source',
             headerTooltip: 'Source',
             minWidth: 70,
-            width: 100, field: 'source',
+            width: 120, 
+            field: 'source',
             cellRenderer: 'dashRenderer',
             cellClass: 'tooltip-cell'
         }, {
             headerName: 'Organic',
             headerTooltip: 'Organic',
             minWidth: 70,
-            width: 100,
+            width: 120,
             field: 'is_organic',
             cellRenderer: 'dashRenderer',
             cellClass: 'tooltip-cell'
         }
         ];
     }
-
+  
     getGridOption() {
         return {
             components: {
@@ -149,20 +150,20 @@ export class ProductManagementService {
             rowHeight: 38,
             headerHeight: 38,
             suppressRowClickSelection: true,
-            // rowModelType: 'infinite',
+            rowModelType: 'infinite',
             paginationPageSize: 25,
             sortingOrder: ['desc', 'asc'],
             cacheBlockSize: 25,
             cacheOverflowSize: 1,
             debug: false,
-            rowDeselection: true,
+            suppressRowDeselection: true,
             columnDefs: this.getSummaryTableHeaderConfig(),
-            rowSelection: 'multiple',
+            rowSelection: 'multiRow',
             overlayLoadingTemplate: `<div class="no-data-message">
                                         <i class="far fa-surprise"></i>
                                         <span>No Records Found.</span>
                                     </div>`,
-            getRowNodeId: (data) => data.id,
+            getRowId: (data) => data.id,
         };
     }
   
@@ -233,5 +234,6 @@ export class ProductManagementService {
         .pipe(map((response :any) => response.data));
     }
 }
+
 
 

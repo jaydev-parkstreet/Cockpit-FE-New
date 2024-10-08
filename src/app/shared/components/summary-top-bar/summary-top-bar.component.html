@@ -3,26 +3,24 @@
         <app-search-bar>
         </app-search-bar>
     </div>
-    <app-excel-export
-        [tooltipText]="tooltipText">
+    <app-excel-export [tooltipText]="tooltipText">
     </app-excel-export>
     <div>
-        <app-cmp-button
-            
-            [buttonIconLeft]="'fas fa-filter'"
-            [buttonText]="'Filter'"
-            [buttonClass]="'secondary'"
-            >
+        <app-cmp-button [buttonIconLeft]="'fas fa-filter'" [buttonText]="'Filter'" [buttonClass]="'secondary'"
+            (click)="toggleFilter()">
         </app-cmp-button>
-        
+
     </div>
     <div>
-    <app-cmp-button
-            
-            [buttonIconLeft]="'fas fa-plus-circle '"
-            [buttonText]="'New Order'"
-            [buttonClass]="'primary'"
-            >
+        <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" [buttonText]="'New Order'" [buttonClass]="'primary'"
+            (click)="addProduct()">
         </app-cmp-button>
     </div>
+</div>
+
+<div class="dropdown-container " *ngIf="isFiltered">
+    <app-cmp-input-dropdown [label]="dropdown1Label" 
+    [showSelectAll]="true" [showCheckboxes]="true"
+    [allowSingleSelect]="false"> </app-cmp-input-dropdown>
+
 </div>

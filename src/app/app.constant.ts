@@ -10,6 +10,12 @@ const AppConstant = {
         REQUIRED_EMAIL: 'Please enter your email or username',
         REQUIRED_PASSWORD: 'Please enter your password',
         PAGE_SUBTITLE_FOR_AGREEMENTS: 'View and manage your agreements with your account at Park Street'
+    },
+
+    PRODUCT:{
+        PAGE_TITLE: 'PRODUCT DETAILS' ,
+        SUBMIT_BUTTON: 'Review',
+        CANCEL_BUTTON: 'Cancel',
     }
 };
 

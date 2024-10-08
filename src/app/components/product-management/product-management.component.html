@@ -9,8 +9,6 @@
                 <div class="u-w-inherit">
                     <app-summary-top-bar
                     ></app-summary-top-bar>
-                    <a href="http://cockpit.parkstreet.local/router.php/app#!/cockpit/product-management"> Old Cockpit page</a>
-                    <button class="logout" (click)="logout()">Logout</button>
                 </div>
                 <!-- <app-psi-ag-grid
                  divId = "productsssss"></app-psi-ag-grid> -->
@@ -18,13 +16,8 @@
                     <p>{{item|json}}</p>
                 </div> -->
             </div>
-            <!-- <div> -->
-                <ag-grid-angular class="ag-theme-material"
-                style="height: 500px; width: 100%;"
-                [rowData]="rowData"
-                [gridOptions]="gridOptions"
-                ></ag-grid-angular>
-            <!-- </div> -->
+                <ag-grid-angular class="ag-theme-material" style="height: 500px; width: 100%;"
+                    [gridOptions]="gridOptions"></ag-grid-angular>
             <div class="table-list-view" >
                 <!-- <div *ngIf="productToolSummary.length > 0"> -->
                 <!-- <app-table 
@@ -47,8 +40,4 @@
         </div>
     </div>
 </div>
-<!-- 
-                   
-                    (setDataSource)="setDataSourceAgGrid()" 
-                    (selectAllCheckbox)="selectAllCheckbox()"
-                    selectedRowCount="selectedRowCount" -->
+
