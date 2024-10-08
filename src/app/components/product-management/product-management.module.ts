@@ -9,6 +9,7 @@ import { ConfirmationModalComponent } from '../organism/confirmation-modal/confi
 import { StatelessModule } from 'src/app/stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { ProductManagementDetailsComponent } from './product-management-details/product-management-details.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ProductManagementDetailsComponent } from './product-management-details/
     FormsModule,
     SimpleModalModule.forRoot({container: "modal-container"}),
     StatelessModule,
-    AgGridModule
+    AgGridModule,
+    RouterModule
   ],
   entryComponents: [
    

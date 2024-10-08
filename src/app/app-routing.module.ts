@@ -23,15 +23,19 @@ const routes: Routes = [
   },
   {
     path: 'product-management',
-    component: ProductManagementComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: ProductManagementComponent
+      },
+      {
+        path: 'add',
+        component: ProductAddComponent
+      }]
   },
   {
-    path: 'product-management/add',
-    component: ProductAddComponent
-  },
-  {
-    path: 'product-management/:id',
+    path: 'product-tool/:id',
     component: ProductManagementDetailsComponent
   }
 ];
