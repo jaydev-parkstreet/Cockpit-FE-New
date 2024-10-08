@@ -9,6 +9,8 @@ import { TableComponent } from './templates/table/table.component';
 import { StatelessModule } from '../stateless/stateless.module';
 import { PsDefaultLinkComponent } from './components/ps-default-link/ps-default-link.component';
 import { PsiActionButtonsComponent } from './components/psi-action-buttons/psi-action-buttons.component';
+import { CmpHeaderWidgetComponent } from './components/cmp-header-widget/cmp-header-widget.component';
+import { CardLayoutDetailsComponent } from './components/card-layout-details/card-layout-details.component';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { PsiActionButtonsComponent } from './components/psi-action-buttons/psi-a
     CmpButtonComponent,
     TableComponent,
     PsDefaultLinkComponent,
-    PsiActionButtonsComponent
+    PsiActionButtonsComponent,
+    CmpHeaderWidgetComponent,
+    CardLayoutDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +36,9 @@ import { PsiActionButtonsComponent } from './components/psi-action-buttons/psi-a
     SummaryTopBarComponent,
     TableComponent,
     PsDefaultLinkComponent,
-    PsiActionButtonsComponent
+    PsiActionButtonsComponent,
+    CmpHeaderWidgetComponent,
+    CardLayoutDetailsComponent
   ]
 })
 export class SharedModule { }
