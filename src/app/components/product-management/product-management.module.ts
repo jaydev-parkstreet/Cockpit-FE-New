@@ -8,10 +8,11 @@ import { SimpleModalModule } from 'ngx-simple-modal';
 import { ConfirmationModalComponent } from '../organism/confirmation-modal/confirmation-modal.component';
 import { StatelessModule } from 'src/app/stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
+import { ProductManagementDetailsComponent } from './product-management-details/product-management-details.component';
 
 
 @NgModule({
-  declarations: [ProductManagementComponent, ProductAddComponent],
+  declarations: [ProductManagementComponent, ProductAddComponent,ProductManagementDetailsComponent],
   providers: [{
     provide: ErrorHandler,
     useClass: ErrorHandler
