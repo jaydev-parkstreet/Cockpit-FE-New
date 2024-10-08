@@ -8,6 +8,10 @@
             <div class="check-container">
                 <div class="u-w-inherit">
                     <app-summary-top-bar
+                        [config]="topPanelConfig"
+                        (addProduct)="addProduct()"
+                        (applyFilters)="applyFilters()"
+                        (resetFilters)="resetFilters()"
                     ></app-summary-top-bar>
                 </div>
                 <!-- <app-psi-ag-grid

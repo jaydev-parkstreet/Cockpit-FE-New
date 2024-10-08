@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdown/input-dropdown.service';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
@@ -8,10 +9,25 @@ import { environment } from 'src/environments/environment';
 })
 export class ProductManagementService {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,
+        private dropdownService: InputDropdownService,
+    ) { }
 
 
 
+    
+    getTopPanelConfig() {
+        return {
+            filtersConfig: [
+                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
+                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
+                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
+                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
+                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk')
+            ]
+        };
+    }
+    
     /**
       * Function to get top bar config.
       * @createdDate 19-09-2024
