@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductManagementService } from '../product-management.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-product-management-details',
@@ -15,7 +16,9 @@ export class ProductManagementDetailsComponent implements OnInit {
     codesTitle: string;
     dimensionTitle: string;
     productCodeDetail: any;
-    constructor(private productManagementService: ProductManagementService) { }
+    productList: any[];
+    tabGroupConfig: { key: string; label: string; }[];
+    activeTab: string;
     sync_status = 1;
     productDetails: any;
     detailProduct: any;
@@ -67,24 +70,33 @@ export class ProductManagementDetailsComponent implements OnInit {
         },
     ];
 
+    constructor(
+        private productManagementService: ProductManagementService,
+        private route: ActivatedRoute,
+        private router: Router
+    ) { }
+
     ngOnInit(): void {
         this.IconHeaderStatus = 'Inactive';
         this.codesTitle = 'CODES';
         this.dimensionTitle = 'DIMENSIONS';
-        this.statusIcon = 'fas fa-ban u-mt1 u-ml2 neutral-light';
-        this.productManagementService.getDetails('2XL-KITTY-750').subscribe((res: any) => {
-            console.log(res);
+        const productId = this.route.snapshot.paramMap.get('id');
+        this.tabGroupConfig = this.getTabGroupConfig()
+        this.activeTab = this.tabGroupConfig[0].key
+        // this.statusIcon = 'fas fa-ban u-mt1 u-ml2 neutral-light';
+        this.productManagementService.getDetails(productId).subscribe((res: any) => {
             this.productDetails = res;
             this.detailProduct = this.fieldsDetail(res);
             this.productCodeDetail = this.prepareProductCodeDetails(res); 
-            console.log(this.detailProduct);
+            this.productList = this.productFieldsDetail({ ...res });
             this.getStatusUpdate();
-            // this.status = this.productDetails.status
             this.headerTitle = this.productDetails.description;
         });
     }
 
-
+    onClickback() {
+        this.router.navigate(['/product-management']);
+    }
     getStatusUpdate() {
         this.status = this.productDetails.status;
         if (this.status === 'Approved') {
@@ -101,6 +113,22 @@ export class ProductManagementDetailsComponent implements OnInit {
         // this.getAuditTrailData();
     }
 
+    getTabGroupConfig() {
+        const tabConfig = [{
+            key: 'notes',
+            label: 'Notes'
+        }, {
+            key: 'attachments',
+            label: 'Attachments'
+        }, {
+            key: 'auditTrail',
+            label: 'Audit Trail'
+        }];
+        return tabConfig;
+    }
+    clickTabGroup(tab) {
+        this.activeTab = tab.tab.key
+    }
     fieldsDetail(row) {
         let response = [];
         if (row) {
@@ -196,5 +224,65 @@ export class ProductManagementDetailsComponent implements OnInit {
             { label: 'UNIMERC Code', val: detail.unimerc_code || '--' },
             { label: 'BDN Code', val: detail.bdn_code || '--' }
         ];
+    }
+
+    productFieldsDetail(row) {
+        let response = [];
+        let obj = {}
+        let productData = [];
+        if (!row) return response;
+        if (row.dimensions && row.dimensions[0] && row.dimensions[0].desc) {
+            for (let i = 0; i < row.dimensions.length; i++) {
+                obj = this.productFieldsDetailObj(row, productData, obj, i);
+                response.push(obj);
+            }
+        }
+        return response;
+    }
+    productFieldsDetailObj(row, productData, obj, i) {
+        if (row.dimensions[i].desc !== "Layer") {
+            obj = {
+                column1: 'Length',
+                value1: this.valueChecker(row.dimensions[i].length),
+                hideColumn1: false,
+                column2: 'Width',
+                value2: this.valueChecker(row.dimensions[i].width),
+                hideColumn2: false,
+                column3: 'Height',
+                value3: this.valueChecker(row.dimensions[i].height),
+                hideColumn3: false,
+                column4: 'Weight',
+                value4: this.valueChecker(row.dimensions[i].weight),
+                hideColumn4: false,
+                hideColumn5: true,
+                products: productData,
+                cardHeader: row.dimensions[i].desc === 'Unit' ? 'Bottle / Unit' : row.dimensions[i].desc,
+                headerClass: 'h-l',
+                headerAl: 'tx-s',
+                showHeader: true,
+                status: '',
+            }
+        } else {
+            obj = {
+                column1: 'Layers per Pallet',
+                value1: this.valueChecker(row.dimensions[i].layers_per_pallet),
+                hideColumn1: false,
+                column2: 'Cases per Layer',
+                value2: this.valueChecker(row.dimensions[i].cases_per_layer),
+                hideColumn2: false,
+                column3: 'Cases per Pallet',
+                value3: this.valueChecker(row.dimensions[i].cases_per_pallet),
+                hideColumn3: false,
+                hideColumn4: true,
+                hideColumn5: true,
+                products: productData,
+                cardHeader: row.dimensions[i].desc === 'Unit' ? 'Bottle / Unit' : row.dimensions[i].desc,
+                headerClass: 'h-l',
+                headerAl: 'tx-s',
+                showHeader: true,
+                status: ''
+            }
+        }
+        return obj;
     }
 }

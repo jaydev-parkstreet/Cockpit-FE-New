@@ -1,4 +1,8 @@
 @import '../../../scss/variables/colors';
+@import '../../../scss/variables/typography';
+@import '../../../scss/utilities/colors';
+@import '../../../scss/utilities/base';
+@import '../../../scss/utilities/typography';
 
 .cards-layout-details {
     background: $colors-neutral-white;
@@ -79,13 +83,12 @@
 }
 
 .typography-body-black-regular{
-    color: black;
+    color: $colors-neutral-black;
 }
 
 .typography-body-black-medium{
-    color: black;
+    color: $colors-neutral-black;
     font-weight: 800;
     font-family: 'HelveticaNeue-Medium';
-    // font-weight: 500;
     width: 44%;
 }

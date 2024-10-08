@@ -11,6 +11,8 @@ import { PsDefaultLinkComponent } from './components/ps-default-link/ps-default-
 import { PsiActionButtonsComponent } from './components/psi-action-buttons/psi-action-buttons.component';
 import { CmpHeaderWidgetComponent } from './components/cmp-header-widget/cmp-header-widget.component';
 import { CardLayoutDetailsComponent } from './components/card-layout-details/card-layout-details.component';
+import { ProductSummaryDimensionsCardComponent } from './components/product-summary-dimensions-card/product-summary-dimensions-card.component';
+import { CmpTabGroupComponent } from './components/cmp-tab-group/cmp-tab-group.component';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { CardLayoutDetailsComponent } from './components/card-layout-details/car
     PsDefaultLinkComponent,
     PsiActionButtonsComponent,
     CmpHeaderWidgetComponent,
-    CardLayoutDetailsComponent
+    CardLayoutDetailsComponent,
+    ProductSummaryDimensionsCardComponent,
+    CmpTabGroupComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +42,9 @@ import { CardLayoutDetailsComponent } from './components/card-layout-details/car
     PsDefaultLinkComponent,
     PsiActionButtonsComponent,
     CmpHeaderWidgetComponent,
-    CardLayoutDetailsComponent
+    CardLayoutDetailsComponent,
+    ProductSummaryDimensionsCardComponent,
+    CmpTabGroupComponent
   ]
 })
 export class SharedModule { }

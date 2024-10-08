@@ -1,0 +1,57 @@
+<div class="product-summary-dimensions-card">
+    <div class="psi-fields-detail" *ngFor="let data of rows">
+        <div class="header-label" [ngClass]="data.headerClass" *ngIf="data.showHeader">
+            <p class="field-bl-dtl">
+                <span class="h-left" [ngClass]="data.headerAl">
+                    {{ data.cardHeader }}
+                </span>
+            </p>
+        </div>
+        <table height="48px" width="464px">
+            <thead>
+                <tr class="tbheading">
+                    <th height="24px" width="75.29px" *ngIf="!data.hideColumn1">
+                        <div>
+                            <span class="ftleft">{{ data.column1 }}</span>
+                            <span *ngIf="!data.hideColumn2" class="ftright"></span>
+                        </div>
+                    </th>
+                    <th height="24px" width="75.29px" *ngIf="!data.hideColumn2">
+                        <div>
+                            <span class="ftleft">{{ data.column2 }}</span>
+                            <span *ngIf="!data.hideColumn3" class="ftright"></span>
+                        </div>
+                    </th>
+                    <th height="24px" width="63.29px" *ngIf="!data.hideColumn3">
+                        <div>
+                            <span class="ftleft">{{ data.column3 }}</span>
+                            <span *ngIf="!data.hideColumn4" class="ftright"></span>
+                        </div>
+                    </th>
+                    <th height="24px" width="63.29px" *ngIf="!data.hideColumn4">
+                        <div>
+                            <span class="ftleft">{{ data.column4 }}</span>
+                            <span *ngIf="!data.hideColumn5" class="ftright"></span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-cell" *ngIf="!data.hideColumn1">
+                        <span>{{ data.value1 }}</span>
+                    </td>
+                    <td class="text-cell" *ngIf="!data.hideColumn2">
+                        <span>{{ data.value2 }}</span>
+                    </td>
+                    <td class="text-cell" *ngIf="!data.hideColumn3">
+                        <span>{{ data.value3 }}</span>
+                    </td>
+                    <td class="text-cell" *ngIf="!data.hideColumn4">
+                        <span>{{ data.value4 }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

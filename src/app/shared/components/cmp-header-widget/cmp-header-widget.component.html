@@ -6,11 +6,10 @@
   <span *ngIf="showTooltip" class="tooltip-text">{{ headerTitle }}</span>
   
   <div class="badge-wrapper">
-    <cmp-badge
-      *ngIf="badgeText"
-      [badgeClass]="badgeClass"
-      [badgeText]="badgeText">
-    </cmp-badge>
+    <div *ngIf="badgeText" class="badge" [ngClass]="badgeClass">
+        <span> {{badgeText}}</span>
+        <i *ngIf="badgeIconClass" [ngClass]="badgeIconClass"></i>
+    </div>
     
     <i *ngIf="badgeIconClass" [ngClass]="['icon-cst-cls', badgeIconClass]">
       <span *ngIf="iconShowTooltip" class="icon-tooltip-text">{{ iconHeaderStatus }}</span>

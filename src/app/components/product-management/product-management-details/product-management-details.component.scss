@@ -1,5 +1,8 @@
 @import '../../../scss/variables/colors';
 @import '../../../scss/variables/typography';
+@import '../../../scss/utilities/colors';
+@import '../../../scss/utilities/base';
+
 
 .product-tool-details {
     background-color: $colors-neutral-light;
@@ -43,32 +46,6 @@
 
                 .badge-wrapper {
                     flex-direction: row-reverse;
-                    .badge {
-                      border-radius: 50%;
-                      width: 20px;
-                      height: 20px;
-                      position: absolute;
-                      background: #C52335;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                      top: -3px;
-                      right: -1px;
-                      font-size: 10px;
-                      transition: all .3s;
-                      line-height: 14px;
-                      .med{
-                        min-width: 10px !important;
-                        padding: 3px 7px !important;
-                        font-weight: 700 !important;
-                        line-height: 1 !important;
-                        white-space: nowrap !important;
-                        vertical-align: middle !important;
-                        width: auto !important;
-                        justify-content: normal !important;
-                        position: unset !important;
-                     }
-                    }
                     i {
                         margin-right: 8px;
                     }
@@ -139,16 +116,9 @@
                 }
             }
 
-            .warning-staus {
-                background: $colors-base-warning;
-            }
-
-            .base-success {
-                background: $colors-base-success;
-            }
 
             .code-section {
-              margin-bottom: 8px;
+              margin-top: 8px;
                 .code-table {
                     background-color: $colors-neutral-white;
                     padding: 16px;

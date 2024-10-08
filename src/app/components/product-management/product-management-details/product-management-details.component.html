@@ -6,7 +6,7 @@
         <div class="action-bar">
             <div class="back-link">
                 <i class="fas fa-chevron-left"></i>
-                <span class="link-text typography-body-black-regular">
+                <span class="link-text typography-body-black-regular" (click)="onClickback()">
                     Back to Products
                 </span>
             </div>
@@ -22,14 +22,12 @@
                     [showTooltip]="true" 
                     [badgeText]="status"
                     [badgeClass]="statusClass"
-                    [badgeIconClass]="statusIcon"
-                    [iconShowTooltip]="true"
                     [iconHeaderStatus]="IconHeaderStatus">
                     </app-cmp-header-widget>
                     <app-card-layout-details [rows]="detailProduct"></app-card-layout-details>
-                    <!-- <cmp-tab-group tab-group-config="$ctrl.tabGroupConfig" active-tab="$ctrl.activeTabGroup"
-                        click-on-tab="$ctrl.clickTabGroup(tab)">
-                    </cmp-tab-group> -->
+                    <app-cmp-tab-group [tabGroupConfig]="tabGroupConfig" [activeTab]="activeTab"
+                        (tabClick)="clickTabGroup($event)">
+                    </app-cmp-tab-group>
                     <!-- <notes-tab data-ng-show="$ctrl.activeTabGroup == $ctrl.tabGroupConfig[0].key"
                         entity="$ctrl.productData.product_id" permissions="$ctrl.permissions" show-new-notes="true"
                         show-privacy-icon="true" filters-list="$ctrl.filtersList">
@@ -47,7 +45,7 @@
                 <div class="col-sm-6 u-pl2 right-side">
                     <div>
                         <app-cmp-header-widget [headerTitle]="dimensionTitle"></app-cmp-header-widget>
-                        <!-- <product-summary-dimensions-card rows="$ctrl.productList"></product-summary-dimensions-card> -->
+                        <app-product-summary-dimensions-card [rows]="productList"></app-product-summary-dimensions-card>
                     </div>
                     <div class="code-section">
                         <app-cmp-header-widget [headerTitle]="codesTitle"></app-cmp-header-widget>
