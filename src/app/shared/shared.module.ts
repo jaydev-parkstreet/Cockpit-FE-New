@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CmpCheckboxComponent } from './components/cmp-checkbox/cmp-checkbox.component';
 import { TableComponent } from './templates/table/table.component';
 import { StatelessModule } from '../stateless/stateless.module';
+import { PsDefaultLinkComponent } from './components/ps-default-link/ps-default-link.component';
+import { PsiActionButtonsComponent } from './components/psi-action-buttons/psi-action-buttons.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { StatelessModule } from '../stateless/stateless.module';
     CmpButtonComponent,
     CmpInputDropdownComponent,
     CmpCheckboxComponent,  
-    TableComponent
+    TableComponent,
+    PsDefaultLinkComponent,
+    PsiActionButtonsComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +43,9 @@ import { StatelessModule } from '../stateless/stateless.module';
     CmpInputDropdownComponent, 
     CmpCheckboxComponent,  
     SummaryTopBarComponent,
-    TableComponent
+    TableComponent,
+    PsDefaultLinkComponent,
+    PsiActionButtonsComponent
   ]
 })
 export class SharedModule { }

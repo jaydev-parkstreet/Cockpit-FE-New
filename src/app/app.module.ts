@@ -27,7 +27,6 @@ import { AgGridModule } from 'ag-grid-angular';
     ReactiveFormsModule,
     StatelessModule,
     AgGridModule
-    
   ],
   exports: [
    
