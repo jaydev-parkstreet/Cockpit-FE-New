@@ -124,10 +124,6 @@ export class ProductManagementComponent implements OnInit {
   }
 
 
-  logout () {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
 
   // getDropdown(){
   //   const token = localStorage.getItem('authToken');
