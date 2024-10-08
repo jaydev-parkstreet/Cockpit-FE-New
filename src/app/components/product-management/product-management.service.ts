@@ -125,7 +125,7 @@ export class ProductManagementService {
         }
         ];
     }
-
+  
     getGridOption() {
         return {
             components: {
@@ -227,5 +227,6 @@ export class ProductManagementService {
         return this.http.get("https://stgapi.parkstreet.com/v1/product-tool/dropdown", { headers });
     }
 }
+
 
 

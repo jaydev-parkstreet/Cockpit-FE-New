@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import AppRoutes from 'src/app/app.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor() { 
+  constructor( private http: HttpClient ) { 
     this.checkToken();
   }
 
@@ -26,6 +28,17 @@ export class AuthService {
   getToken() : string | null {
     return localStorage.getItem('authToken');
   }
+
+  // selectClient(token) {
+  //   let clients = {
+  //     "clients": [
+  //       "583"
+  //     ]
+  //   }
+  //   return this.http
+  //   .post(environment.apiUrl + 'select-clients', clients , token)
+  //   .toPromise();
+  // }
 
   private checkToken(): void {
     const token = this.getToken();

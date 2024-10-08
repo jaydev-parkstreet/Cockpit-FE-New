@@ -1,0 +1,55 @@
+.cmp-checkbox {
+    display: flex;
+    position: relative;
+    padding-left: 24px;
+    color: #232323;
+    font-family: 'HelveticaNeue';
+    font-size: 14px;
+    line-height: 16px;
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+
+        &:checked~.checkmark {
+            background-color: #e74536;
+
+            i {
+                display: block;
+            }
+        }
+
+        &:disabled~.checkmark {
+            opacity: 0.5;
+        }
+    }
+
+    .checkmark {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e74536;
+        border-radius: 4px;
+
+        i {
+            font-size: 10px;
+            color: #ffffff;
+            display: none;
+        }
+    }
+}

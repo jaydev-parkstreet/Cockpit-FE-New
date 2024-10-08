@@ -4,12 +4,14 @@ import { LoginPageComponent } from './components/authentication/login-page/login
 import { MiddleComponent } from './components/authentication/middle/middle.component';
 import { ProductManagementComponent } from './components/product-management/product-management.component';
 import { AuthGuard } from './components/authentication/auth.guard';
+import { ProductAddComponent } from './components/product-management/product-add/product-add.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component:LoginPageComponent },
   { path: 'middle', component: MiddleComponent },
-  { path: 'product-management', component: ProductManagementComponent,canActivate: [AuthGuard]  }
+  { path: 'product-management', component: ProductManagementComponent,canActivate: [AuthGuard]  },
+  { path: 'product-management/add', component: ProductAddComponent }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

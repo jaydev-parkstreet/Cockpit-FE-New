@@ -14,6 +14,7 @@ import { ColDef } from 'ag-grid-community';
 export class ProductManagementComponent implements OnInit {
   reportRequestObj: any = {};
   summaryResponse: any;
+  dropdownData: any;
   gridOptions: any;
   selectedAllRows: boolean;
   selectedRowCount: number;
@@ -40,6 +41,13 @@ export class ProductManagementComponent implements OnInit {
     private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+   
+    this.getDropdown();
+
+    //Angular 10 appproach------------
+
+
+    // --------------------------
     // this.getSummaryData();
     // this.getDropdown();
     // this.loadGridData();
@@ -103,8 +111,19 @@ export class ProductManagementComponent implements OnInit {
     }
   }
 
+  async getDropdown(){
+    const token = localStorage.getItem('authToken');
+    try {
+      const response:any = await this.productManagementService.getDropdown(token);
+      this.dropdownData = response.data;
+      console.log(this.dropdownData)
+    }
+    catch (error) {
+      console.error("Error fetching summary:", error);
+    }
+  }
 
-  //Function to logout
+
   logout () {
     this.authService.logout();
     this.router.navigate(['/login']);

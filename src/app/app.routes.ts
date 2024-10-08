@@ -1,6 +1,7 @@
 const AppRoutes = {
     AUTHENTICATION: {
         LOGIN: 'login',
+        SELECT_CLIENTS: 'select-clients',
         LINKEDIN_LOGIN: 'linkedin-login',
         SIGNUP: 'signup-create-new-user',
         LOGOUT: 'logout',

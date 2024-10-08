@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-summary-top-bar',
@@ -8,11 +9,20 @@ import { Component, OnInit } from '@angular/core';
 export class SummaryTopBarComponent implements OnInit {
   topBarConfig : any;
   tooltipText:any;
+  isFiltered = false; 
+  dropdown1Label = 'Product Status';
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit(): void {
     this.tooltipText = 'hello';
   }
+
+  toggleFilter() {
+    this.isFiltered = !this.isFiltered; 
+}
+   addProduct() {
+    this.router.navigate(['/product-management/add']); 
+}
 
 }
