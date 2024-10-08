@@ -31,7 +31,7 @@ const routes: Routes = [
     component: ProductAddComponent
   },
   {
-    path: 'product-management/:id',
+    path: 'product-tool/:id',
     component: ProductManagementDetailsComponent
   }
 ];
