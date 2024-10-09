@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import AppConstant from '../../../../../src/app/app.constant';
 import { AuthService } from '../auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-psi-custom-form',
@@ -32,7 +33,7 @@ export class PsiCustomFormComponent implements OnInit {
   constructor(
     public readonly PsiCustomFormService: PsiCustomFormService,
     public router: Router,
-  private authService :AuthService) { }
+  private authService :AuthService,private spinner:NgxSpinnerService) { }
 
   ngOnInit(): void { }
 
@@ -64,6 +65,7 @@ export class PsiCustomFormComponent implements OnInit {
   }
 
   async userLoginHandler (reqObj) {
+    this.spinner.show();
     try {
       const res = await this.PsiCustomFormService.userLogin(reqObj);
       if (!res.hasError) {
@@ -73,7 +75,7 @@ export class PsiCustomFormComponent implements OnInit {
      //  const tkn = responce.data.token;
       //  console.log("Inside",tkn);
      //   this.authService.login(tkn);
-     this.authService.login(token);
+      this.authService.login(token);
         await this.setSessionOldNavigatorSite(token).then(() => {
           // this.router.navigate(['/product-management']);
           // window.location.href = environment.oldCockpit + '/router.php/dashboard';
@@ -87,6 +89,9 @@ export class PsiCustomFormComponent implements OnInit {
     } catch (error) {
       this.isShowLoginErrorMsg = true;
       this.showErrorMsg = error.error.msg;
+    }
+    finally {
+      this.spinner.hide();
     }
   }
 

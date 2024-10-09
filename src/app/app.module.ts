@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationModalComponent } from './components/organism/confirmation-modal/confirmation-modal.component';
 import { StatelessModule } from './stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +27,9 @@ import { AgGridModule } from 'ag-grid-angular';
     FormsModule,
     ReactiveFormsModule,
     StatelessModule,
-    AgGridModule
+    AgGridModule,
+    NgxSpinnerModule,
+
   ],
   exports: [
    

@@ -3,12 +3,14 @@ import { ProductManagementService } from './product-management.service';
 import { AuthService } from '../authentication/auth.service';
 import { Router } from '@angular/router';
 import { ColDef } from 'ag-grid-community';
+import { RouterModule } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-product-management',
   templateUrl: './product-management.component.html',
   styleUrls: ['./product-management.component.scss'],
-  // imports:[AgGridAngular]
+
  
 })
 export class ProductManagementComponent implements OnInit {
@@ -39,9 +41,18 @@ export class ProductManagementComponent implements OnInit {
   topPanelConfig:any
 
   constructor(private productManagementService: ProductManagementService,
-    private authService: AuthService, private router: Router) { }
+    private authService: AuthService, private router: Router, private spinner :NgxSpinnerService) { }
 
   ngOnInit(): void {
+    // this.spinner.show();
+
+    setTimeout(() => {
+      this.spinner.hide();
+
+      
+    }, 2000);
+
+    // this.spinner.hide();
    
     this.getDropdown();
     this.topPanelConfig = this.productManagementService.getTopPanelConfig();
@@ -95,9 +106,10 @@ export class ProductManagementComponent implements OnInit {
      * @author PSI-Enhancements
     */
   async getSummaryData() {
+    this.spinner.show();
     const token = localStorage.getItem('authToken');
     const summaryData = {
-      "page": 1,
+      "page": this.reportRequestObj.page,
       "pageSize": 25,
       "sort": "status",
       "order": "asc"
@@ -110,6 +122,9 @@ export class ProductManagementComponent implements OnInit {
     }
     catch (error) {
       console.error("Error fetching summary:", error);
+    }
+    finally {
+      this.spinner.hide();
     }
   }
 
