@@ -36,6 +36,7 @@ export class ProductManagementComponent implements OnInit {
   permissionObj: any;
   isSorting: boolean;
   scrollDisabled: boolean;
+  topPanelConfig:any
 
   constructor(private productManagementService: ProductManagementService,
     private authService: AuthService, private router: Router) { }
@@ -43,6 +44,7 @@ export class ProductManagementComponent implements OnInit {
   ngOnInit(): void {
    
     this.getDropdown();
+    this.topPanelConfig = this.productManagementService.getTopPanelConfig();
 
     //Angular 10 appproach------------
 
@@ -242,6 +244,18 @@ export class ProductManagementComponent implements OnInit {
       const returnObj = this.getDisplayRows(this.productToolSummary, params.startRow, params.endRow);
       params.successCallback(returnObj.rowsThisPage, returnObj.lastRow);
     }, 500);
+  }
+
+  addProduct() {
+    this.router.navigate(['/product-management/add']);
+  }
+
+  applyFilters() {
+    console.log("a");
+    
+  }
+  resetFilters () {
+    console.log("b");
   }
 
 }
