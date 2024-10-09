@@ -105,6 +105,21 @@
             }
 
         }
+      
+        &::ng-deep .ag-theme-material {
+            .ag-header-cell {
+                color: #232323;
+                font-size: 16px;
+                font-family: $crimson-pro-medium;
+                font-weight: 500;
+                background-color: white;
+                text-transform: none;
+            }
+            
+
+        }
+
+
     }
 }
 
