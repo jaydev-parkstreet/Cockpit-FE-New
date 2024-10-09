@@ -47,7 +47,6 @@ export class ProductManagementDetailsComponent implements OnInit {
         this.tabGroupConfig = this.getTabGroupConfig()
         this.activeTab = this.tabGroupConfig[0].key
         // this.statusIcon = 'fas fa-ban u-mt1 u-ml2 neutral-light';
-<<<<<<< HEAD
         this.productManagementService.getDetails(productId).subscribe((res: any) => {
             this.productDetails = res;
             this.detailProduct = this.fieldsDetail(res);
@@ -58,14 +57,9 @@ export class ProductManagementDetailsComponent implements OnInit {
         });
 
 
-        this.productManagementService.getPermission().subscribe((res: any) => {
-            this.permissions = res;
-            console.log(this.permissions)
-        });
-=======
+        
         this.getProductData(productId);
 
->>>>>>> PEQ-2745-main
     }
 
     async getProductData(productId : string) {
