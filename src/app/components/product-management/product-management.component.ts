@@ -114,6 +114,7 @@ export class ProductManagementComponent implements OnInit {
   }
 
   async getDropdown(){
+
     const token = localStorage.getItem('authToken');
     try {
       const response:any = await this.productManagementService.getDropdown(token);
