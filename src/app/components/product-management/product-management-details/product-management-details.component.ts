@@ -67,7 +67,6 @@ export class ProductManagementDetailsComponent implements OnInit {
           }
     }
     onClickAction(action) {
-        console.log(action);
         if (action.key === 'Sync') {
             this.syncOrder();
         } else if (action.key === 'edit') {

@@ -39,31 +39,16 @@ export class ProductManagementComponent implements OnInit {
   isSorting: boolean;
   scrollDisabled: boolean;
   topPanelConfig:any
+  filterList: any;
 
   constructor(private productManagementService: ProductManagementService,
     private authService: AuthService, private router: Router, private spinner :NgxSpinnerService) { }
 
-  ngOnInit(): void {
-    // this.spinner.show();
-
-    setTimeout(() => {
-      this.spinner.hide();
-
-      
-    }, 2000);
-
-    // this.spinner.hide();
-   
+  ngOnInit(): void {   
     this.getDropdown();
     this.topPanelConfig = this.productManagementService.getTopPanelConfig();
-
     //Angular 10 appproach------------
 
-
-    // --------------------------
-    // this.getSummaryData();
-    // this.getDropdown();
-    // this.loadGridData();
     this.reportRequestObj = {};
     this.selectedRowCount = 0;
     // this.selectedCardRowCount = 0;
@@ -129,16 +114,15 @@ export class ProductManagementComponent implements OnInit {
   }
 
   async getDropdown(){
-
     const token = localStorage.getItem('authToken');
     try {
       const response:any = await this.productManagementService.getDropdown(token);
       this.dropdownData = response.data;
-      console.log(this.dropdownData)
     }
     catch (error) {
       console.error("Error fetching summary:", error);
     }
+    this.filterList = this.dropdownData;
   }
 
 
