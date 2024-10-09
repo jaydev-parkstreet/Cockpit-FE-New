@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ProductManagementService } from '../product-management.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -22,6 +22,12 @@ export class ProductManagementDetailsComponent implements OnInit {
     sync_status = 1;
     productDetails: any;
     detailProduct: any;
+    @Input() entity: number;
+    @Input() permissions: any;
+    @Input() showNewNotes: boolean;
+    @Input() showPrivacyIcon: boolean;
+    @Input() filtersList: any[];
+
     actionButtons: any = [
         {
             name: 'Needs Action-Waiting on Supplier',
@@ -87,10 +93,16 @@ export class ProductManagementDetailsComponent implements OnInit {
         this.productManagementService.getDetails(productId).subscribe((res: any) => {
             this.productDetails = res;
             this.detailProduct = this.fieldsDetail(res);
-            this.productCodeDetail = this.prepareProductCodeDetails(res); 
+            this.productCodeDetail = this.prepareProductCodeDetails(res);
             this.productList = this.productFieldsDetail({ ...res });
             this.getStatusUpdate();
             this.headerTitle = this.productDetails.description;
+        });
+
+
+        this.productManagementService.getPermission().subscribe((res: any) => {
+            this.permissions = res;
+            console.log(this.permissions)
         });
     }
 

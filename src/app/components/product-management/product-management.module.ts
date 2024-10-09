@@ -9,10 +9,11 @@ import { ConfirmationModalComponent } from '../organism/confirmation-modal/confi
 import { StatelessModule } from 'src/app/stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { ProductManagementDetailsComponent } from './product-management-details/product-management-details.component';
+import { NotesTabComponent } from '../organism/notes-tab/notes-tab.component';
 
 
 @NgModule({
-  declarations: [ProductManagementComponent, ProductAddComponent,ProductManagementDetailsComponent],
+  declarations: [ProductManagementComponent, ProductAddComponent,ProductManagementDetailsComponent,  NotesTabComponent ],
   providers: [{
     provide: ErrorHandler,
     useClass: ErrorHandler
@@ -27,7 +28,7 @@ import { ProductManagementDetailsComponent } from './product-management-details/
     AgGridModule
   ],
   entryComponents: [
-   
+  
     ConfirmationModalComponent,
   ],
   exports: [ ]

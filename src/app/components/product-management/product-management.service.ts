@@ -233,6 +233,12 @@ export class ProductManagementService {
         .get(environment.apiUrl + "product-tool?product_id=" + id)
         .pipe(map((response :any) => response.data));
     }
+
+    getPermission() {
+        return this.http
+        .get(environment.apiUrl + "product-tool/permissions")
+        .pipe(map((response :any) => response.data));
+    }
 }
 
 
