@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import AppConstant from 'src/app/app.constant';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from '../../authentication/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
 import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdown/input-dropdown.service';
 import { ConfirmationModalComponent } from '../../organism/confirmation-modal/confirmation-modal.component';
 import { SimpleModalService } from 'ngx-simple-modal';
+import { ProductManagementService } from '../product-management.service';
 
 @Component({
   selector: 'app-product-add',
@@ -18,9 +19,9 @@ export class ProductAddComponent implements OnInit {
     private simpleModalService: SimpleModalService,
     public router: Router,
     private dropdownService: InputDropdownService,
-    private authService: AuthService,
-    private commonService: CommonService,
-    private formBuilder: FormBuilder
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private productmanagementService: ProductManagementService
   ) { }
 
   // Flags and configuration properties
@@ -43,61 +44,55 @@ export class ProductAddComponent implements OnInit {
 
   // Reactive form initialization
   productForm = this.formBuilder.group({
-    sub_brand: ['', [Validators.required]],
+    client_id: ['', [Validators.required]],
+    sub_brand_product_id: ['', [Validators.required]],
     description: ['', [Validators.required]],
-    fancifulName: [''],
+    name: [''],
     group: ['', [Validators.required]],
     producer: [''],
-    caseuom: ['', [Validators.required]],
-    containerType: ['', [Validators.required]],
-    announcedPrice: [''],
-    classType: [''],
-    ct: [''],
-    or: [''],
-    organic: ['', [Validators.required]],
-    productType: ['', [Validators.required]],
-    transaction_type: [''],
-    productCode: [''],
-    upcCode: [''],
-    sccCode: [''],
-    suplier_id: [''],
-    cola_id: [''],
-    nabca: [''],
-    unimerc: [''],
-    bdn: [''],
+    case_unit_of_measure: ['', [Validators.required]],
+    container_type: ['', [Validators.required]],
+    ex_works_cost: [''],
+    is_organic: ['', [Validators.required]],
+    prod_type: ['', [Validators.required]],
+    product_id: [''],
+    abv: [''],
+    upc_code: [''],
+    scc_code: [''],
+    system_id: [''],
+    cola_ttb_id: [''],
+    nabca_code: [''],
+    unimerc_code: [''],
+    bdn_code: [''],
+    unit_length: [''],
+    unit_width: [''],
+    unit_height: [''],
+    unit_weight: [''],
+    pallet_length: [''],
+    pallet_width: [''],
+    pallet_height: [''],
+    pallet_weight: [''],
+    case_length: [''],
+    case_width: [''],
+    case_height: [''],
+    case_weight: [''],
+    layers_per_pallet: [''],
+    cases_per_layer: [''],
+    cases_per_pallet: [''],
   });
+  
 
   ngOnInit(): void {
+    const productId = this.route.snapshot.paramMap.get('id')
     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
-    this.formConfig = {
-      schema: [
-        this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-        { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
-        { type: 'text', name: 'fancifulName', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
-        this.dropdownService.createFilterObj('group', 'group', 'Group', 'Select group', 'group', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-        { type: 'text', name: 'producer', label: 'Producer', placeholder: 'Enter Producer', required: false },
-        this.dropdownService.createFilterObj('caseuom', 'caseuom', 'Case UOM', 'Select Type', 'caseuom', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-        this.dropdownService.createFilterObj('containerType', 'containerType', 'Container Type', 'Select Type', 'containerType', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-        { type: 'text', name: 'announcedPrice', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
-        { type: 'text', name: 'classType', label: 'Class / Type Description', placeholder: 'Enter Class / Type Description', required: false },
-        { type: 'text', name: 'ct', label: 'CT', placeholder: '', required: false },
-        { type: 'text', name: 'or', label: 'OR', placeholder: '', required: false },
-        this.dropdownService.createFilterObj('organic', 'organic', 'Organic', 'Select Organic', 'organic', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-        this.dropdownService.createFilterObj('productType', 'productType', 'Product Type', 'Select Type', 'productType', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-        { type: 'text', name: 'productCode', label: 'Park Street Product Code', placeholder: '', isVisible: true },
-        { type: 'text', name: 'upcCode', label: 'UPC Code', placeholder: 'UPC Code', isVisible: true },
-        { type: 'text', name: 'sccCode', label: 'SCC Code', placeholder: 'SCC Code', isVisible: true },
-        { type: 'text', name: 'suplier_id', label: 'Supplier Reference ID', placeholder: 'Supplier Reference ID', isVisible: true },
-        { type: 'text', name: 'cola_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isVisible: true },
-        { type: 'text', name: 'nabca', label: 'NABCA Code', placeholder: 'NABCA Code', isVisible: true },
-        { type: 'text', name: 'unimerc', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isVisible: true },
-        { type: 'text', name: 'bdn', label: 'BDN Code', placeholder: 'BDN Code', isVisible: true },
-      ],
-      cancelBtnLabel: AppConstant.PRODUCT.CANCEL_BUTTON,
-      submitBtnLabel: AppConstant.PRODUCT.SUBMIT_BUTTON,
-    };
+    this.initializeFormConfig();
 
-    // Subscribe to form value changes
+    if (productId) {
+      this.productmanagementService.getDetails(productId).subscribe((productData) => {
+        this.prefillForm(productData);
+      });
+    }
+    
     this.productForm.valueChanges.subscribe(() => {
       if (this.formSubmitted) {
         this.showError = false;
@@ -105,36 +100,139 @@ export class ProductAddComponent implements OnInit {
     });
   }
 
+  initializeFormConfig(): void {
+    this.formConfig = {
+      schema: this.createFormSchema(),
+      cancelBtnLabel: AppConstant.PRODUCT.CANCEL_BUTTON,
+      submitBtnLabel: AppConstant.PRODUCT.SUBMIT_BUTTON,
+    };
+  }
+
+  createFormSchema() {
+    return [
+      this.dropdownService.createFilterObj('client_id', 'client_id', 'Client', 'Select Client', 'client_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('sub_brand_product_id', 'sub_brand_product_id', 'Sub-Brand Product', 'Select Sub-Brand Product', 'sub_brand_product_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
+      { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
+      this.dropdownService.createFilterObj('group', 'group', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('producer', 'producer', 'Producer', 'Select Producer', 'producer', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('case_unit_of_measure', 'case_unit_of_measure', 'Case UOM', 'Select Type', 'case_unit_of_measure', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('container_type', 'container_type', 'Container Type', 'Select Type', 'container_type', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
+      this.dropdownService.createFilterObj('is_organic', 'is_organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('prod_type', 'prod_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '', isVisible: true },
+      { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', isVisible: true },
+      { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isVisible: true },
+      { type: 'text', name: 'scc_code', label: 'SCC Code', placeholder: 'SCC Code', isVisible: true },
+      { type: 'text', name: 'system_id', label: 'Supplier Reference ID', placeholder: 'Supplier Reference ID', isVisible: true },
+      { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isVisible: true },
+      { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isVisible: true },
+      { type: 'text', name: 'unimerc_code', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isVisible: true },
+      { type: 'text', name: 'bdn_code', label: 'BDN Code', placeholder: 'BDN Code', isVisible: true },
+      { type: 'text', name: 'unit_length', label: 'Length', placeholder: 'Enter Length', required: false },
+      { type: 'text', name: 'unit_width', label: 'Width', placeholder: 'Enter Width', required: false },
+      { type: 'text', name: 'unit_height', label: 'Height', placeholder: 'Enter Height', required: false },
+      { type: 'text', name: 'unit_weight', label: 'Weight', placeholder: 'Enter Weight', required: false },
+      { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false },
+      { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false },
+      { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false },
+      { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false },
+      { type: 'text', name: 'case_length', label: 'Case Length', placeholder: 'Enter Case Length', required: false },
+      { type: 'text', name: 'case_width', label: 'Case Width', placeholder: 'Enter Case Width', required: false },
+      { type: 'text', name: 'case_height', label: 'Case Height', placeholder: 'Enter Case Height', required: false },
+      { type: 'text', name: 'case_weight', label: 'Case Weight', placeholder: 'Enter Case Weight', required: false },
+      { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false },
+      { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false },
+      { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false },
+    ];
+  }
+  
+
+  prefillForm(productData: any): void {
+    this.productForm.patchValue({
+      client_id: productData.client_id,
+      sub_brand_product_id: productData.sub_brand_product_id,
+      description: productData.description,
+      name: productData.fanciful_name,
+      group: productData.group_name,
+      producer: productData.producer_name,
+      case_unit_of_measure: productData.case_unit_of_measure,
+      container_type: productData.container_type,
+      ex_works_cost: productData.ex_works_cost,
+      is_organic: productData.is_organic,
+      prod_type: productData.prod_type,
+      product_id: productData.product_id,
+      abv: productData.abv,
+      upc_code: productData.upc_code,
+      scc_code: productData.scc_code,
+      system_id: productData.system_id,
+      cola_ttb_id: productData.cola_ttb_id,
+      nabca_code: productData.nabca_code,
+      unimerc_code: productData.unimerc_code,
+      bdn_code: productData.bdn_code,
+      unit_length: productData.unit_length,
+      unit_width: productData.unit_width,
+      unit_height: productData.unit_height,
+      unit_weight: productData.unit_weight,
+      pallet_length: productData.pallet_length,
+      pallet_width: productData.pallet_width,
+      pallet_height: productData.pallet_height,
+      pallet_weight: productData.pallet_weight,
+      case_length: productData.case_length,
+      case_width: productData.case_width,
+      case_height: productData.case_height,
+      case_weight: productData.case_weight,
+      layers_per_pallet: productData.layers_per_pallet,
+      cases_per_layer: productData.cases_per_layer,
+      cases_per_pallet: productData.cases_per_pallet,
+    });
+  }
+  
   onSubmit(form: FormGroup) {
     this.formSubmitted = true;
     this.showError = false;
 
     if (form.valid) {
 
-        const reqObj = {
-            sub_brand: form.value.sub_brand,
-            description: form.value.description,
-            fancifulName: form.value.fancifulName,
-            group: form.value.group,
-            producer: form.value.producer,
-            caseuom: form.value.caseuom,
-            containerType: form.value.containerType,
-            announcedPrice: form.value.announcedPrice,
-            classType: form.value.classType,
-            ct: form.value.ct,
-            or: form.value.or,
-            organic: form.value.organic,
-            productType: form.value.productType,
-            transaction_type: form.value.transaction_type,
-            productCode: form.value.productCode,
-            upcCode: form.value.upcCode,
-            sccCode: form.value.sccCode,
-            suplier_id: form.value.suplier_id,
-            cola_id: form.value.cola_id,
-            nabca: form.value.nabca,
-            unimerc: form.value.unimerc,
-            bdn: form.value.bdn,
-        };
+      const reqObj = {
+        client_id: form.value.client_id,
+        sub_brand_product_id: form.value.sub_brand_product_id,
+        description: form.value.description,
+        name: form.value.name,  // Updated to match 'fancifulName'
+        group: form.value.group,
+        producer: form.value.producer,
+        case_unit_of_measure: form.value.case_unit_of_measure, // Updated field name
+        container_type: form.value.container_type, // Updated field name
+        ex_works_cost: form.value.ex_works_cost, // Updated field name
+        is_organic: form.value.is_organic, // Updated field name
+        prod_type: form.value.prod_type, // Updated field name
+        product_id: form.value.product_id, // Updated field name
+        abv: form.value.abv, // Updated field name
+        upc_code: form.value.upc_code, // Updated field name
+        scc_code: form.value.scc_code,
+        system_id: form.value.system_id, // Updated field name
+        cola_ttb_id: form.value.cola_ttb_id,
+        nabca_code: form.value.nabca_code, // Updated field name
+        unimerc_code: form.value.unimerc_code, // Updated field name
+        bdn_code: form.value.bdn_code, // Updated field name
+        unit_length: form.value.unit_length, // New field
+        unit_width: form.value.unit_width, // New field
+        unit_height: form.value.unit_height, // New field
+        unit_weight: form.value.unit_weight, // New field
+        pallet_length: form.value.pallet_length, // New field
+        pallet_width: form.value.pallet_width, // New field
+        pallet_height: form.value.pallet_height, // New field
+        pallet_weight: form.value.pallet_weight, // New field
+        case_length: form.value.case_length, // New field
+        case_width: form.value.case_width, // New field
+        case_height: form.value.case_height, // New field
+        case_weight: form.value.case_weight, // New field
+        layers_per_pallet: form.value.layers_per_pallet, // New field
+        cases_per_layer: form.value.cases_per_layer, // New field
+        cases_per_pallet: form.value.cases_per_pallet, // New field
+    };
+    
 
       console.log('Form Submitted:', reqObj);
     //  this.openConfirmationPopup('submit');
