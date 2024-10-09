@@ -1,14 +1,12 @@
-<div class="action-buttons-rht">
-    <ng-container *ngFor="let actionButton of actionButtons">
-      <span 
-        (click)="!actionButton.disabled ? actionEvent(actionButton.name) : null"
-        *ngIf="actionButton.button">
-        <i [ngClass]="actionButton.class" ></i>
-        <div class="acbbutton">
-          <a href="javascript:void(0);" tabindex="0">{{ actionButton.button }}</a>
-        </div>
-      </span>
-    </ng-container>
+<div class="button-round">
+  <span
+      class="action-round"
+      [ngClass]="{ 'disabled': action.disabled }"
+      *ngFor="let action of actionButtons"
+      (click)="!action.disabled ? actionEvent(action) : null"
+      [attr.data-tooltip]="action.showTooltip ? action.tooltipText : null">
+      <i [ngClass]="action.icon"></i>
+      <!-- <span class="icon-tooltiptext" *ngIf="action.showTooltip">{{ action.tooltipText }}</span> -->
+  </span>
 </div>
-  
   

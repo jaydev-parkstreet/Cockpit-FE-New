@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdown/input-dropdown.service';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
@@ -8,10 +9,25 @@ import { environment } from 'src/environments/environment';
 })
 export class ProductManagementService {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,
+        private dropdownService: InputDropdownService,
+    ) { }
 
 
 
+    
+    getTopPanelConfig() {
+        return {
+            filtersConfig: [
+                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
+                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
+                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
+                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
+                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk')
+            ]
+        };
+    }
+    
     /**
       * Function to get top bar config.
       * @createdDate 19-09-2024
@@ -40,87 +56,42 @@ export class ProductManagementService {
      */
     getSummaryTableHeaderConfig() {
         return [{
-            headerClass: 'check',
-            suppressMenu: true,
-            width: 80,
-            minWidth: 80,
-            maxWidth: 80,
-            suppressSorting: true,
             headerName: '',
             field: 'data',
+            cellRenderer: 'checkbox',
+            width: 150,
+            minWidth: 65,
+            maxWidth: 150,
+            headerClass: 'check',
+            suppressMenu: true,
+            suppressSorting: true,
             lockPosition: true,
             resizable: false,
-            cellRenderer: 'checkbox',
-            cellClass: 'check'
+            cellClass: 'select-all-header-cell pl0px header-check check'
         }, {
             headerName: 'Product Code',
             headerTooltip: 'Product Code',
-            minWidth: 70,
-            width: 100,
+            minWidth: 150,
+            width: 150,
             field: 'product_id',
             cellRenderer: 'idRender'
-        }, {
-            headerName: 'Product Description',
-            headerTooltip: 'Product Description',
-            minWidth: 70,
-            width: 200,
-            field: 'description',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
-            headerName: 'Brand',
-            // headerTooltip: 'Brand',
-            minWidth: 70,
-            width: 120,
-            field: 'brand_name',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
-            headerName: 'Status',
-            headerTooltip: 'Status',
-            minWidth: 70,
-            width: 120,
-            field: 'status',
-            cellRenderer: 'statusRenderer',
-            sort: 'desc'
-        }, {
-            headerName: 'TTB ID',
-            headerTooltip: 'TTB ID',
-            minWidth: 70,
-            width: 120,
-            field: 'ttb_id',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
-            headerName: 'Product Type',
-            headerTooltip: 'Product Type',
-            minWidth: 70,
-            width: 120,
-            field: 'product_type',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
-            headerName: 'Product Sub-Type',
-            headerTooltip: 'Product Sub-Type',
-            minWidth: 70,
-            width: 120,
-            field: 'sub_type',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
-            headerName: 'Source',
-            headerTooltip: 'Source',
-            minWidth: 70,
-            width: 120, 
-            field: 'source',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
+        },
+        { headerName: 'Product Description', headerTooltip: 'Product Description', minWidth: 75, width: 193, field: 'description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Supplier', headerTooltip: 'Client', minWidth: 75, width: 115, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Brand', headerTooltip: 'Brand', minWidth: 75, width: 115, field: 'brand_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Product Status', headerTooltip: 'Product Status', minWidth: 100, width: 175, field: 'status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
+        { headerName: 'TTB ID', headerTooltip: 'TTB ID', minWidth: 60, width: 108, field: 'ttb_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Date Created', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormat'},
+        { headerName: 'Product Type', headerTooltip: 'Product Type', minWidth: 75, width: 134, field: 'product_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Product Sub-Type ', headerTooltip: 'Product Sub-Type', minWidth: 75, width: 171, field: 'sub_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Source', headerTooltip: 'Source', field: 'source', minWidth: 75, width: 125, cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'CRM', headerTooltip: 'CRM', minWidth: 75, width: 140, field: 'crm', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        {
             headerName: 'Organic',
             headerTooltip: 'Organic',
-            minWidth: 70,
-            width: 120,
             field: 'is_organic',
+            minWidth: 75,
+            width: 125,
             cellRenderer: 'dashRenderer',
             cellClass: 'tooltip-cell'
         }
@@ -170,9 +141,13 @@ export class ProductManagementService {
     renderCheckbox(params) {
         let checkboxSelection = '';
         if (params.data) {
+            checkboxSelection += `<span class="custom-checkbox"><label class="checkbox-container">
+                                    <input type="checkbox" class="checkbox_gir_row">
+                                    <span class="checkmark"></span>
+                                </label></span>`;
             checkboxSelection += `<span class="attachments-notes">
-                                <i class="${params.data.total_attachments <= 0 ? 'fal fa-file' : 'fas fa-file'} show-attachment-modal"></i>
-                                <span><i class="${params.data.total_notes <= 0 ? 'fal fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
+                                <i class="${params.data.total_attachments <= 0 ? 'far fa-file' : 'fas fa-file'} show-attachment-modal"></i>
+                                <span><i class="${params.data.total_notes <= 0 ? 'far fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
             if (params.data.unread_notes_count) {
             checkboxSelection += `<span class="note-count ${params.data.unread_notes_count > 9 ? 'u-w-20' : ''}">
                                     <p>${params.data.unread_notes_count}</p></span>`;
@@ -223,9 +198,8 @@ export class ProductManagementService {
     }
 
     getDropdown(token) {
-        const tokenn = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXlsb2FkIjp7InVzZXJfaWQiOjE2NTUsImFsbG93X2FkbWluX2NsaWVudHMiOjEsImlzQWRtaW4iOnRydWUsIklzVXNlckFmZmlsaWF0ZWQiOnRydWUsInBlcnNvbl9pZCI6MjMwMywiaXNPcGVuVXNlciI6dHJ1ZSwiZGVmYXVsdF90eXBlIjoxLCJjdXN0b21lcl9pZCI6MCwiaXNDdXN0b21lckNvbXBhbnkiOmZhbHNlLCJtYXJrZXRfcGxhY2UiOjEsImlzX2ZyZWVfdXNlciI6ZmFsc2UsImlzRnJlZUNvbXBhbnkiOmZhbHNlLCJ1c2VybmFtZSI6InljYXN0aWxsbyIsImZ1bGxfbmFtZSI6Illvc2VseW4gQ2FzdGlsbG8iLCJmaXJzdF9uYW1lIjoiWW9zZWx5biIsImxhc3RfbmFtZSI6IkNhc3RpbGxvIiwiZW1haWwiOiJ5Y2FzdGlsbG9AcGFya3N0cmVldC5jb20iLCJ0ZXJtc19hY2NlcHRlZCI6MSwiZGVwbGV0aW9uX2FjY2VwdGVkIjoxLCJkaXNwbGF5X2Fubm91bmNlbWVudF9zdGF0dXMiOjAsInBlcm1pc3Npb25zIjp7ImFsbG93X2FkbWluX2NsaWVudHMiOjEsImFsbG93X3NhbGVzX2J5X2RhdGVfcmFuZ2UiOjEsImFsbG93X3NhbGVzX2J5X21vbnRoIjoxLCJhbGxvd19jdXN0b21lcl9iYWxhbmNlX3JlcG9ydCI6MSwiYWxsb3dfaW52ZW50b3J5IjoxLCJhbGxvd19jYXNoX3JlcG9ydCI6MSwiYWxsb3dfZG9jdW1lbnRfY2VudGVyIjoxLCJhbGxvd19wYXJrX3N0cmVldF9pcHQiOjEsImFsbG93X3Bhcmtfc3RyZWV0X3VuaXZlcnNpdHkiOjEsImFsbG93X3N5bmNfbWFuYWdlciI6MSwiYWxsb3dfZGVwbGV0aW9uX3JlcG9ydCI6MSwiYWxsb3dfaW5kdXN0cnlfY29ubmVjdCI6MSwiYWxsb3dfc3RhdGVfcmVndWxhdGlvbnMiOjEsImFsbG93X2FkbWluX3JlcV9kaXN0IjoxfSwiaXNfMkZBX2FjdGl2ZSI6MCwidmVyaWZpY2F0aW9uX3R5cGUiOiJzbXMiLCJwaG9uZV9ubyI6IiIsImlzX2VtYWlsX3ZlcmlmaWVkIjoxLCJzaG93X25ld19uYXZpZ2F0aW9uIjoxLCJzaG93X25hdmlnYXRpb25fYmFubmVyIjoxLCJyZXN0cmljdF9jb21wZXRpdGlvbl9tYW5hZ2VyX25hdmlnYXRpb24iOnRydWUsImlzX3dob2xlc2FsZXIiOmZhbHNlLCJjbGllbnRJZHMiOiIxNjA2LDExODUiLCJhbGxfY2xpZW50c19zZWxlY3RlZCI6ZmFsc2UsImNsaWVudHMiOlsiMzg0MTEiXSwiY29tcGFuaWVzIjpbXSwiY29tcGFueV9jaGFuZ2UiOjEsInVzZUNvbXBhbnlJZCI6ZmFsc2UsImlzTWFrZXIiOmZhbHNlfSwiZXhwIjoxNzI3OTUyNjE2fQ.Ra2kCetugM6z5X8SeaYRlvpjyM7wBihtTDfaBRIOOOY';
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${tokenn}`);
-        return this.http.get("https://stgapi.parkstreet.com/v1/product-tool/dropdown", { headers });
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get(environment.apiUrl + "product-tool/dropdown", { headers }).toPromise();;
     }
 
     getDetails(id) {

@@ -9,7 +9,11 @@ import { ConfirmationModalComponent } from '../organism/confirmation-modal/confi
 import { StatelessModule } from 'src/app/stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { ProductManagementDetailsComponent } from './product-management-details/product-management-details.component';
+<<<<<<< HEAD
 import { NotesTabComponent } from '../organism/notes-tab/notes-tab.component';
+=======
+import { RouterModule } from '@angular/router';
+>>>>>>> PEQ-2745-main
 
 
 @NgModule({
@@ -25,7 +29,8 @@ import { NotesTabComponent } from '../organism/notes-tab/notes-tab.component';
     FormsModule,
     SimpleModalModule.forRoot({container: "modal-container"}),
     StatelessModule,
-    AgGridModule
+    AgGridModule,
+    RouterModule
   ],
   entryComponents: [
   

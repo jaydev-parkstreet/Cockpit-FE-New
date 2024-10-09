@@ -22,58 +22,15 @@ export class ProductManagementDetailsComponent implements OnInit {
     sync_status = 1;
     productDetails: any;
     detailProduct: any;
-    @Input() entity: number;
-    @Input() permissions: any;
-    @Input() showNewNotes: boolean;
-    @Input() showPrivacyIcon: boolean;
-    @Input() filtersList: any[];
-
-    actionButtons: any = [
-        {
-            name: 'Needs Action-Waiting on Supplier',
-            icon: 'fas fa-clock',
-            isDisable: false,
-            showTooltip: true,
-            class: 'fas fa-clock',
-            button: 'Needs Action-Waiting on Supplier',
-            tooltipText: 'Needs Action-Waiting on Supplier',
-        },
-        {
-            name: 'Pre-Approved',
-            class: 'fas fa-check-circle pointer',
-            showTooltip: true,
-            isDisable: false,
-            icon: 'fas fa-check-circle pointer',
-            button: 'Pre-Approved',
-            tooltipText: 'Pre-Approved',
-        },
-        {
-            name: 'Approve',
-            class: 'fas fa-check-circle pointer',
-            showTooltip: true,
-            isDisable: false,
-            icon: 'fas fa-check-circle pointer',
-            button: 'Approve',
-            tooltipText: 'Approve',
-        },
-        {
-            name: 'Edit',
-            class: 'fas fa-pen pointer',
-            showTooltip: true,
-            isDisable: false,
-            icon: 'fas fa-pen pointer',
-            button: 'Edit',
-            tooltipText: 'Edit',
-        },
-        {
-            name: 'Clone',
-            icon: 'fas fa-copy',
-            class: 'fas fa-copy',
-            showTooltip: true,
-            isDisable: false,
-            button: 'Duplicate',
-            tooltipText: 'Duplicate',
-        },
+    actionButtons: any = 
+    [
+        { key:'Sync', showTooltip: true, icon: 'fas fa-sync-alt fa-spin', tooltipText: 'Sync' }, //need to update as per conditions
+        { key: 'Approve', showTooltip: true, icon: 'fas fa-check-circle pointer', tooltipText: 'Approve'},        
+        { key: 'Needs Action-Waiting on Supplier', icon: 'fas fa-clock', showTooltip: true, tooltipText: 'Needs Action-Waiting on Supplier'},
+        { key: 'Pre-Approved', showTooltip: true, icon: 'fas fa-check-circle pointer', tooltipText: 'Pre-Approved'},
+        { key: 'inactivate', icon: 'fas fa-ban', showTooltip: true, tooltipText: 'Deactivate' },
+        { key: 'duplicate', icon: 'fas fa-clone', showTooltip: true, tooltipText: 'Duplicate' },
+        { key: 'edit', icon: 'fas fa-pen', showTooltip: true, tooltipText: 'Edit' },
     ];
 
     constructor(
@@ -90,6 +47,7 @@ export class ProductManagementDetailsComponent implements OnInit {
         this.tabGroupConfig = this.getTabGroupConfig()
         this.activeTab = this.tabGroupConfig[0].key
         // this.statusIcon = 'fas fa-ban u-mt1 u-ml2 neutral-light';
+<<<<<<< HEAD
         this.productManagementService.getDetails(productId).subscribe((res: any) => {
             this.productDetails = res;
             this.detailProduct = this.fieldsDetail(res);
@@ -104,8 +62,81 @@ export class ProductManagementDetailsComponent implements OnInit {
             this.permissions = res;
             console.log(this.permissions)
         });
+=======
+        this.getProductData(productId);
+
+>>>>>>> PEQ-2745-main
     }
 
+    async getProductData(productId : string) {
+        try {
+            await this.productManagementService.getDetails(productId).subscribe((res: any) => {
+                this.productDetails = res;
+                this.detailProduct = this.fieldsDetail(res);
+                this.productCodeDetail = this.prepareProductCodeDetails(res); 
+                this.productList = this.productFieldsDetail({ ...res });
+                this.getStatusUpdate();
+                this.headerTitle = this.productDetails.description;
+            });
+          }
+          catch (error) {
+            console.error("Error fetching ProductData:", error);
+          }
+    }
+    onClickAction(action) {
+        console.log(action);
+        if (action.key === 'Sync') {
+            this.syncOrder();
+        } else if (action.key === 'edit') {
+            this.navigateToEdit();
+        } else if (action.key === 'Approve') {
+            this.getApproveAPI();
+        }  else if (action.key === 'inactivate') {
+            this.getInactiveAPI();
+        } else if (action.key === 'Pre-Approved') {
+            this.getPreApproveAPI();
+        } else if (action.key === 'Needs Action-Waiting on Supplier') {
+            this.getNeedActionAPI();
+        } else if (action.key === 'duplicate') {
+            this.navigateToClone();
+        }
+        else{
+            return true;
+        }
+    }
+
+    syncOrder() {
+        console.log("inside sync");
+    }
+
+    getApproveAPI() {
+        console.log("call Approve API here");
+    }
+    getPreApproveAPI() {
+        console.log("Call Pre-Approve API here");
+    }
+
+    getNeedActionAPI() {
+        console.log("call get Need Action API here");
+    }
+    getInactiveAPI() {
+        console.log("call get Inactive API here");
+    }
+
+    navigateToEdit() {
+        if (this.productDetails.product_id) {
+            const currentPath = this.route.snapshot.pathFromRoot
+              .map(route => route.url.map(segment => segment.toString()).join('/'))
+              .join('/');
+            const editPath = `${currentPath}/edit`;
+
+            this.router.navigate([editPath]);
+        }
+    }
+
+    navigateToClone() {
+        console.log("navigate to Clone as per Navigate to Edit");
+    }
     onClickback() {
         this.router.navigate(['/product-management']);
     }

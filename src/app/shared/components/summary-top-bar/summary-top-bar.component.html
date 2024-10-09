@@ -13,14 +13,28 @@
     </div>
     <div>
         <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" [buttonText]="'New Order'" [buttonClass]="'primary'"
-            (click)="addProduct()">
+            (click)="addProduct.emit()">
         </app-cmp-button>
     </div>
 </div>
 
-<div class="dropdown-container " *ngIf="isFiltered">
-    <app-cmp-input-dropdown [label]="dropdown1Label" 
-    [showSelectAll]="true" [showCheckboxes]="true"
-    [allowSingleSelect]="false"> </app-cmp-input-dropdown>
-
+<div class="filter-container" *ngIf="isExpandFilter">
+    <div class="row">
+        <div class="filter-item" [ngClass]="filter.divClass" *ngFor="let filter of config.filtersConfig">
+            <app-cmp-input-dropdown
+                [label]="filter.label"
+                [showSelectAll]="true"
+                [showCheckboxes]="true"
+                [allowSingleSelect]="false">
+            </app-cmp-input-dropdown>
+        </div>
+    </div>
+    <div class="u-flex u-align-center u-pg-py-2">
+        <app-cmp-button
+            [buttonClass]="'secondary sm'"
+            [buttonText]=" 'Apply' "
+            (onClick)="applyFilters.emit()">
+        </app-cmp-button>
+        <div class="btn-link primary-link u-pg-ml-3" (click)="resetFilters.emit()">Clear</div>
+    </div>
 </div>

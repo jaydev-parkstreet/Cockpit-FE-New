@@ -16,16 +16,13 @@
     }
 }
 
-.dropdown-container {
-    display: flex;
-    flex-direction: row;
-    padding: 16px 16px;
-    gap:18px;
+.filter-container {
+    padding: 16px;
 
-
-app-cmp-input-dropdown{
-    width: 400px;
-}
-   
-
+    .row {
+        margin-bottom: 16px;
+    }
+    .filter-item {
+        padding: 8px;
+    }
 }

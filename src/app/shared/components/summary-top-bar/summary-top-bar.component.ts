@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,9 +7,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./summary-top-bar.component.scss']
 })
 export class SummaryTopBarComponent implements OnInit {
+  @Input() config: string;
+  @Output() addProduct = new EventEmitter<any>();
+  @Output() applyFilters = new EventEmitter<any>();
+  @Output() resetFilters = new EventEmitter<any>();
   topBarConfig : any;
   tooltipText:any;
-  isFiltered = false; 
+  isExpandFilter = false; 
   dropdown1Label = 'Product Status';
 
   constructor(private router:Router) { }
@@ -19,10 +23,6 @@ export class SummaryTopBarComponent implements OnInit {
   }
 
   toggleFilter() {
-    this.isFiltered = !this.isFiltered; 
-}
-   addProduct() {
-    this.router.navigate(['/product-management/add']); 
-}
-
+    this.isExpandFilter = !this.isExpandFilter;
+  }
 }
