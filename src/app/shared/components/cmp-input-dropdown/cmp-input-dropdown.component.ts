@@ -15,9 +15,9 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/f
 })
 export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValueAccessor {
   @Input() label: string;
-  @Input() placeholder: string = 'Select Items';
   @Input() validationClasses: string;
   @Input() settings: any = {};
+  @Input() filteredItems: any ;
   @Input() formControl: FormControl;
   @Input() showSelectAll: boolean = true;
   @Input() showCheckboxes: boolean = true;
@@ -34,8 +34,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
   searchText: string = '';
   isAllSelected: boolean = false;
   hideList: boolean = false;
-  filteredItems: string[] = [...this.items];
-
+  // filteredItems: string[] = [...this.items];
 
 
   texts = {
@@ -133,7 +132,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
   }
 
   private updateFilteredItems(): void {
-    this.filteredItems = [...this.items];
+    // this.filteredItems = [...this.items];
     this.hideList = false;
   }
 

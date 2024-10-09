@@ -12,7 +12,7 @@
 
     </div>
     <div>
-        <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" [buttonText]="'New Order'" [buttonClass]="'primary'"
+        <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" [buttonText]="'New Product'" [buttonClass]="'primary'"
             (click)="addProduct.emit()">
         </app-cmp-button>
     </div>
@@ -25,13 +25,15 @@
                 [label]="filter.label"
                 [showSelectAll]="true"
                 [showCheckboxes]="true"
-                [allowSingleSelect]="false">
+                [allowSingleSelect]="false"
+                [settings]="filter.setting"
+                [filteredItems]="filterList[filter.key]">
             </app-cmp-input-dropdown>
         </div>
     </div>
     <div class="u-flex u-align-center u-pg-py-2">
         <app-cmp-button
-            [buttonClass]="'secondary sm'"
+            [buttonClass]="'primary sm'"
             [buttonText]=" 'Apply' "
             (onClick)="applyFilters.emit()">
         </app-cmp-button>

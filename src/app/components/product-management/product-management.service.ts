@@ -12,21 +12,6 @@ export class ProductManagementService {
     constructor(private http: HttpClient,
         private dropdownService: InputDropdownService,
     ) { }
-
-
-
-    
-    getTopPanelConfig() {
-        return {
-            filtersConfig: [
-                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
-                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
-                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
-                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk'),
-                this.dropdownService.createFilterObj('sub_brand', 'sub_brand', 'Sub-Brand Product', 'Select Type', 'sub_brand', true, true, null, null, 'col-4', null, 'ps-required-asterisk')
-            ]
-        };
-    }
     
     /**
       * Function to get top bar config.
@@ -191,6 +176,68 @@ export class ProductManagementService {
       return '--';
     }
 
+    getTopPanelConfig() {
+        return {
+            placeholder: 'Search',
+            searchText: '',
+            searchOptions: {},
+            showFilter: false,
+            actions: [],
+            filtersConfig: [
+                { key: 'clients', label: 'Supplier', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Supplier') },
+                { key: 'product_state', label: 'Product Status', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Status') },
+                { key: 'product_type', label: 'Product Type', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Type') },
+                { key: 'product_sub_type', label: 'Product Sub-Type', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Sub-Type') },
+                { key: 'source', label: 'Source', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Source') },
+                // {
+                //     key: 'brands',
+                //     label: 'Brand',
+                //     type: 'multiselect-search',
+                //     divClass: 'col-4',
+                //     setting: this.getMultiSelectConfig('Select Brand')
+                //     // setting: this.getMultiSelectConfigserver(Routes.available.mobile_product_management_system_brand_search, 'Select Brand')
+                // },
+                // {
+                //     key: 'sub_brand',
+                //     label: 'Sub-Brand',
+                //     type: 'multiselect-search',
+                //     divClass: 'col-4',
+                //     setting: this.getMultiSelectConfig('Select Sub brand')
+                //     // setting: this.getMultiSelectConfigserver(Routes.available.mobile_product_management_system_sub_brand_search, 'Select Sub-Brand')
+                // },
+                // {
+                //     key: 'sub_brand_product',
+                //     label: 'Sub-Brand Product',
+                //     type: 'multiselect-search',
+                //     divClass: 'col-4 norightpadding',
+                //     setting: this.getMultiSelectConfig('Select Sub Brand product')
+                //     // setting: this.getMultiSelectConfigserver(Routes.available.mobile_product_management_system_sub_brand_product_search, 'Select Sub-Brand Product')
+                // },
+                { key: 'organic', label: 'Organic', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Organic') },
+                { key: 'active_status', label: 'Active State', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select State')},
+                { key: 'bottles_per_case', label: 'Bottles Per Case', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Bottles Per Case')},
+                { key: 'container_sizes_filter', label: 'Container Size', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Container Size')}
+            ],
+        };
+    }
+    getMultiSelectConfig(placeholdertext, name = 'name') {
+        return {
+            enableSearch: true,
+            dynamicTitle: true,
+            showSelectAll: true,
+            keyboardControls: true,
+            displayProp: name,
+            searchField: name,
+            scrollable: true,
+            clearSearchOnClose: true,
+            closeOnDeselect: false,
+            idProperty: 'id',
+            checkBoxes: true,
+            buttonClasses: 'c-btn c-btn--secondary c-btn--full u-h3 ps-select',
+            translationTexts: { buttonDefaultText: placeholdertext, searchPlaceholder: 'Search', noResultText: 'No results found' },
+        };
+    }
+
 
     getSummary(summaryData: any, token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -199,7 +246,7 @@ export class ProductManagementService {
 
     getDropdown(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get(environment.apiUrl + "product-tool/dropdown", { headers }).toPromise();;
+        return this.http.get(environment.apiUrl + "product-tool/dropdown", { headers }).toPromise();
     }
 
     getDetails(id) {

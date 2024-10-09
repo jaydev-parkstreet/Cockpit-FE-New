@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./summary-top-bar.component.scss']
 })
 export class SummaryTopBarComponent implements OnInit {
-  @Input() config: string;
+  @Input() config: any;
+  @Input() filterList: any;
   @Output() addProduct = new EventEmitter<any>();
   @Output() applyFilters = new EventEmitter<any>();
   @Output() resetFilters = new EventEmitter<any>();
