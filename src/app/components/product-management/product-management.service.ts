@@ -56,87 +56,42 @@ export class ProductManagementService {
      */
     getSummaryTableHeaderConfig() {
         return [{
-            headerClass: 'check',
-            suppressMenu: true,
-            width: 80,
-            minWidth: 80,
-            maxWidth: 80,
-            suppressSorting: true,
             headerName: '',
             field: 'data',
+            cellRenderer: 'checkbox',
+            width: 100,
+            minWidth: 65,
+            maxWidth: 100,
+            headerClass: 'check',
+            suppressMenu: true,
+            suppressSorting: true,
             lockPosition: true,
             resizable: false,
-            cellRenderer: 'checkbox',
-            cellClass: 'check'
+            cellClass: 'select-all-header-cell pl0px header-check check'
         }, {
             headerName: 'Product Code',
             headerTooltip: 'Product Code',
-            minWidth: 70,
-            width: 100,
+            minWidth: 150,
+            width: 150,
             field: 'product_id',
             cellRenderer: 'idRender'
-        }, {
-            headerName: 'Product Description',
-            headerTooltip: 'Product Description',
-            minWidth: 70,
-            width: 200,
-            field: 'description',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
-            headerName: 'Brand',
-            // headerTooltip: 'Brand',
-            minWidth: 70,
-            width: 120,
-            field: 'brand_name',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
-            headerName: 'Status',
-            headerTooltip: 'Status',
-            minWidth: 70,
-            width: 120,
-            field: 'status',
-            cellRenderer: 'statusRenderer',
-            sort: 'desc'
-        }, {
-            headerName: 'TTB ID',
-            headerTooltip: 'TTB ID',
-            minWidth: 70,
-            width: 120,
-            field: 'ttb_id',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
-            headerName: 'Product Type',
-            headerTooltip: 'Product Type',
-            minWidth: 70,
-            width: 120,
-            field: 'product_type',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
-            headerName: 'Product Sub-Type',
-            headerTooltip: 'Product Sub-Type',
-            minWidth: 70,
-            width: 120,
-            field: 'sub_type',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
-            headerName: 'Source',
-            headerTooltip: 'Source',
-            minWidth: 70,
-            width: 120, 
-            field: 'source',
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }, {
+        },
+        { headerName: 'Product Description', headerTooltip: 'Product Description', minWidth: 75, width: 193, field: 'description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Supplier', headerTooltip: 'Client', minWidth: 75, width: 115, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Brand', headerTooltip: 'Brand', minWidth: 75, width: 115, field: 'brand_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Product Status', headerTooltip: 'Product Status', minWidth: 100, width: 175, field: 'status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
+        { headerName: 'TTB ID', headerTooltip: 'TTB ID', minWidth: 60, width: 108, field: 'ttb_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Date Created', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormat'},
+        { headerName: 'Product Type', headerTooltip: 'Product Type', minWidth: 75, width: 134, field: 'product_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Product Sub-Type ', headerTooltip: 'Product Sub-Type', minWidth: 75, width: 171, field: 'sub_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Source', headerTooltip: 'Source', field: 'source', minWidth: 75, width: 125, cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'CRM', headerTooltip: 'CRM', minWidth: 75, width: 140, field: 'crm', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        {
             headerName: 'Organic',
             headerTooltip: 'Organic',
-            minWidth: 70,
-            width: 120,
             field: 'is_organic',
+            minWidth: 75,
+            width: 125,
             cellRenderer: 'dashRenderer',
             cellClass: 'tooltip-cell'
         }
@@ -186,9 +141,13 @@ export class ProductManagementService {
     renderCheckbox(params) {
         let checkboxSelection = '';
         if (params.data) {
+            checkboxSelection += `<span class="custom-checkbox"><label class="checkbox-container">
+                                    <input type="checkbox" class="checkbox_gir_row">
+                                    <span class="checkmark"></span>
+                                </label></span>`;
             checkboxSelection += `<span class="attachments-notes">
-                                <i class="${params.data.total_attachments <= 0 ? 'fal fa-file' : 'fas fa-file'} show-attachment-modal"></i>
-                                <span><i class="${params.data.total_notes <= 0 ? 'fal fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
+                                <i class="${params.data.total_attachments <= 0 ? 'far fa-file' : 'fas fa-file'} show-attachment-modal"></i>
+                                <span><i class="${params.data.total_notes <= 0 ? 'far fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
             if (params.data.unread_notes_count) {
             checkboxSelection += `<span class="note-count ${params.data.unread_notes_count > 9 ? 'u-w-20' : ''}">
                                     <p>${params.data.unread_notes_count}</p></span>`;
