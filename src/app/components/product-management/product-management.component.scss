@@ -3,8 +3,8 @@
 // @import 'ag-grid-community/styles/ag-grid.css';
 /* Quartz Theme Specific CSS */
 // @import 'ag-grid-community/styles/ag-theme-quartz.css';
-@import "~ag-grid-community/dist/styles/ag-grid.css";
-@import "~ag-grid-community/dist/styles/ag-theme-balham.css";
+// @import "ag-grid-community/dist/styles/ag-grid.css";
+// @import "ag-grid-community/dist/styles/ag-theme-material.css";
 @import '../../scss/utilities/colors';
 @import '../../scss/utilities/base';
 
@@ -110,10 +110,33 @@
             .ag-header-cell {
                 color: #232323;
                 font-size: 16px;
-                font-family: $crimson-pro-medium;
-                font-weight: 500;
                 background-color: white;
                 text-transform: none;
+            }
+
+            .ag-header {
+                background-color: $ps-washed-gray;
+                color: $ps-black;
+                text-transform: uppercase;
+
+                .ag-header-viewport {
+                    .ag-header-container {
+                        .ag-header-row {
+                            display: flex !important;
+                        }
+                    }
+                }
+            }
+
+            .ag-body-container a {
+                color: #337ab7 !important;
+            }
+
+            .ag-cell {
+                -webkit-user-select: text !important;
+                -moz-user-select: text !important;
+                -ms-user-select: text !important;
+                user-select: text !important;
             }
 
             .ag-row {
@@ -131,7 +154,261 @@
                     }
                 }
             }
+
+            .ag-row-hover {
+                background: $colors-neutral-white;
+            }
+
+            .attachments-notes .fas.fa-file,
+            .fas.fa-comment {
+                color: $colors-base-primary;
+
+                &:hover {
+                    color: $colors-base-primary-v-high;
+                }
+            }
+
+            .attachments-notes {
+                .note-count {
+                    background: $colors-base-error;
+                    height: 12px;
+                    width: 13%;
+                    border-radius: 50px;
+                    position: absolute;
+
+                    p {
+                        color: $colors-neutral-white;
+                        font-family: $helvetica-medium;
+                        font-weight: 500;
+                        font-size: 10px;
+                        position: absolute;
+                        top: -8px;
+                        left: 4px;
+                    }
+                }
+            }
+
+            .attachments-notes .far.fa-file,
+            .far.fa-comment {
+                color: $colors-neutral-dark;
+
+                &:hover {
+                    color: $colors-neutral-dark-v-high;
+                }
+            }
+
+            .attachments-notes {
+                .note-count {
+                    background: $colors-base-error;
+                    height: 12px;
+                    width: 13%;
+                    border-radius: 50px;
+                    position: absolute;
+
+                    p {
+                        color: $colors-neutral-white;
+                        font-family: $helvetica-medium;
+                        font-weight: 500;
+                        font-size: 10px;
+                        position: absolute;
+                        top: -8px;
+                        left: 4px;
+                    }
+                }
+            }
+
+            .ag-header {
+                color: $colors-neutral-black;
+                font-size: 16px;
+                background-color: $colors-neutral-white;
+                text-transform: none;
+
+                .ag-header-row {
+                    border-bottom: 1px solid $colors-neutral-light;
+
+                    .ag-header-cell.check {
+                        .ag-header-cell-resize {
+                            display: none;
+                        }
+                    }
+
+                    .ag-header-cell {
+                        line-height: 41px;
+                        padding-left: 12px;
+                        padding-right: 12px;
+
+                        .ag-header-cell-resize::after {
+                            height: 20px;
+                            margin-top: 12px;
+                            border-right: none !important;
+                        }
+
+                        .ag-header-cell-label {
+                            width: 100%;
+                        }
+
+                        .ag-header-cell-label .ag-header-icon {
+                            margin-left: 4px;
+                            opacity: unset;
+                        }
+
+                        // .ag-icon-asc {
+                        //     background: transparent url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJsb25nLWFycm93LWFsdC11cCIgY2xhc3M9InN2Zy1pbmxpbmUtLWZhIGZhLWxvbmctYXJyb3ctYWx0LXVwIGZhLXctOCIgcm9sZT0iaW1nIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgNTEyIj48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik04OCAxNjYuMDU5VjQ2OGMwIDYuNjI3IDUuMzczIDEyIDEyIDEyaDU2YzYuNjI3IDAgMTItNS4zNzMgMTItMTJWMTY2LjA1OWg0Ni4wNTljMjEuMzgyIDAgMzIuMDktMjUuODUxIDE2Ljk3MS00MC45NzFsLTg2LjA1OS04Ni4wNTljLTkuMzczLTkuMzczLTI0LjU2OS05LjM3My0zMy45NDEgMGwtODYuMDU5IDg2LjA1OWMtMTUuMTE5IDE1LjExOS00LjQxMSA0MC45NzEgMTYuOTcxIDQwLjk3MUg4OHoiPjwvcGF0aD48L3N2Zz4=) center no-repeat;
+                        //     height: 11px;
+                        //     width: 6px;
+                        // }
+
+                        // .ag-icon-desc {
+                        //     background: transparent url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJsb25nLWFycm93LWFsdC1kb3duIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtbG9uZy1hcnJvdy1hbHQtZG93biBmYS13LTgiIHJvbGU9ImltZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMjU2IDUxMiI+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTY4IDM0NS45NDFWNDRjMC02LjYyNy01LjM3My0xMi0xMi0xMmgtNTZjLTYuNjI3IDAtMTIgNS4zNzMtMTIgMTJ2MzAxLjk0MUg0MS45NDFjLTIxLjM4MiAwLTMyLjA5IDI1Ljg1MS0xNi45NzEgNDAuOTcxbDg2LjA1OSA4Ni4wNTljOS4zNzMgOS4zNzMgMjQuNTY5IDkuMzczIDMzLjk0MSAwbDg2LjA1OS04Ni4wNTljMTUuMTE5LTE1LjExOSA0LjQxMS00MC45NzEtMTYuOTcxLTQwLjk3MUgxNjh6Ij48L3BhdGg+PC9zdmc+) center no-repeat;
+                        //     height: 11px;
+                        //     width: 6px;
+                        // }
+                    }
+                }
+            }
+
+            .ag-row {
+                height: 30px !important;
+                margin-top: 3px;
+                margin-bottom: 3px;
+
+                .ag-cell {
+                    line-height: 27px;
+                    white-space: nowrap !important;
+                    padding-left: 12px;
+                    padding-right: 12px;
+                    // font-family: $helvetica-neue;
+                    font-size: 14px;
+                }
+
+
+                .gird-selected-row {
+                    background: $colors-base-primary-v-low-t-10;
+                }
+            }
+            .ag-row:hover{
+                background: $colors-base-primary-v-low-t-05;
+            }
+
+            .ag-overlay {
+                top: 41px;
+
+                .ag-overlay-wrapper {
+                    .no-data-message {
+                        color: #a5a5a5;
+                        font-size: 14px;
+                        margin-top: 100px;
+                        font-family: $helvetica-medium;
+                        display: flex;
+                        flex-direction: column;
+
+                        i {
+                            font-size: 25px;
+                        }
+
+                        span {
+                            height: 49px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                    }
+                }
+            }
+
+            .ag-body-viewport::-webkit-scrollbar {
+                height: 8px;
+                width: 8px;
+            }
+
+            .ag-body-viewport::-webkit-scrollbar-track {
+                -webkit-border-radius: 4px;
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                -webkit-border-radius: 4px;
+                border-radius: 4px;
+                background: $colors-base-primary-t-10;
+            }
+
+            span.ag-header-icon.ag-sort-order {
+                display: none;
+            }
+
+            .show-attachment-modal {
+                margin-left: 12px;
+                margin-right: 13px;
+                cursor: pointer;
+            }
+
+            .note-modal {
+                cursor: pointer;
+            }
+
+            .note-modal,
+            .show-attachment-modal {
+                font-size: 12px;
+            }
+
+            .tooltip-cell {
+                .text-ellipsis {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+
+                    .add-tooltip {
+                        display: none;
+
+                        &.w-130 {
+                            width: 130px;
+                        }
+                    }
+
+                    .text-right {
+                        float: right;
+                        padding-right: 12px;
+                    }
+                }
+
+                &:hover {
+                    overflow: visible;
+
+                    .tooltip-text {
+                        color: #232323;
+                        display: flex;
+                    }
+                }
+
+                .tooltip-text {
+                    height: auto;
+                    display: none;
+                    border-radius: 0px;
+                    background-color: $colors-neutral-black;
+                    color: $colors-neutral-white !important;
+                    font-family: $helvetica-neue;
+                    font-size: 14px;
+                    text-align: center;
+                    margin-top: -6px;
+                    padding: 6px 4px;
+                    position: absolute;
+                    z-index: 1;
+                    line-height: 14px;
+                    align-items: center;
+                    justify-content: center;
+                    white-space: pre-wrap;
+                }
+            }
+
+            &:not(.gird-selected-row):hover {
+                z-index: 5;
+                background: $colors-base-primary-v-low-t-05;
+            }
+
+            .ag-cell-focus {
+                border: 1px solid rgba(163, 52, 52, 0);
+                outline: none;
+            }
         }
     }
 }
-
