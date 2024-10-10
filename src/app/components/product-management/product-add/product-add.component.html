@@ -36,17 +36,18 @@
 
                                                                     <app-cmp-input-dropdown
                                                                         *ngIf="field?.type == 'multiselect-search'"
-                                                                        [options]="dropdownOptions"
+                                                                       
                                                                         [placeholder]="field.placeholder"
                                                                         [formControl]="productForm.get(field.name)"
                                                                         [validationClasses]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
                                                                         [showSelectAll]="false" [showCheckboxes]="false"
                                                                         [allowSingleSelect]="true"
                                                                         [isActive]="activeDropdownId === field.id"
-                                                                        (dropdownStateChange)="onDropdownStateChange(field.id)">
+                                                                        [settings]="field.setting"
+                                                                        (dropdownStateChange)="onDropdownStateChange(field.id)"
+                                                                        [filteredItems]="filterList[field.key]">
                                                                     </app-cmp-input-dropdown>
-
-
+                                                                
 
                                                                     <div *ngIf="isFieldInvalid(field.name)"
                                                                         class="error-message">

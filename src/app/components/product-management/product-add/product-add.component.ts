@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import AppConstant from 'src/app/app.constant';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from '../../authentication/auth.service';
@@ -31,6 +31,9 @@ export class ProductAddComponent implements OnInit {
   showError: boolean = false;
   activeDropdownId: string | null = null;
   formSubmitted: boolean = false;
+  dropdownData:any
+  @Input() filterList: any;
+
 
   // Dropdown configuration
   dropdownSettings = { versionStyle: 'default' };
@@ -39,7 +42,7 @@ export class ProductAddComponent implements OnInit {
     selectAll: 'Select All',
     uncheckAll: 'Uncheck All',
   };
-  dropdownOptions = ['Option 1', 'Option 2', 'Option 3'];
+
 
 
   // Reactive form initialization
@@ -86,6 +89,8 @@ export class ProductAddComponent implements OnInit {
     const productId = this.route.snapshot.paramMap.get('id')
     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
     this.initializeFormConfig();
+    this.getDropdown()
+    console.log(this.filterList)
 
     if (productId) {
       this.productmanagementService.getDetails(productId).subscribe((productData) => {
@@ -110,17 +115,17 @@ export class ProductAddComponent implements OnInit {
 
   createFormSchema() {
     return [
-      this.dropdownService.createFilterObj('client_id', 'client_id', 'Client', 'Select Client', 'client_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('client_id', 'clients', 'Clients', 'Select Client', 'client_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
       this.dropdownService.createFilterObj('sub_brand_product_id', 'sub_brand_product_id', 'Sub-Brand Product', 'Select Sub-Brand Product', 'sub_brand_product_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
       { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
       { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
-      this.dropdownService.createFilterObj('group', 'group', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('producer', 'producer', 'Producer', 'Select Producer', 'producer', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('case_unit_of_measure', 'case_unit_of_measure', 'Case UOM', 'Select Type', 'case_unit_of_measure', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('container_type', 'container_type', 'Container Type', 'Select Type', 'container_type', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('group', 'groups', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('producer', 'producers', 'Producer', 'Select Producer', 'producer', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('case_unit_of_measure', 'cases_uom', 'Case UOM', 'Select Type', 'case_unit_of_measure', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('container_type', 'container_types', 'Container Type', 'Select Type', 'container_type', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
       { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
-      this.dropdownService.createFilterObj('is_organic', 'is_organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('prod_type', 'prod_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('is_organic', 'organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('prod_type', 'product_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
       { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '', isVisible: true },
       { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', isVisible: true },
       { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isVisible: true },
@@ -243,6 +248,19 @@ export class ProductAddComponent implements OnInit {
       this.showError = true;
     }
   }
+
+  async getDropdown(){
+    const token = localStorage.getItem('authToken');
+    try {
+      const response:any = await this.productmanagementService.getDropdown(token);
+      this.dropdownData = response.data;
+    }
+    catch (error) {
+      console.error("Error fetching summary:", error);
+    }
+    this.filterList = this.dropdownData;
+  }
+
 
   isFieldInvalid(controlName: string): boolean {
     const control = this.productForm.get(controlName);
