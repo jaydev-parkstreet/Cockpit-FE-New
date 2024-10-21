@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ProductManagementService } from '../product-management.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -47,6 +47,17 @@ export class ProductManagementDetailsComponent implements OnInit {
         this.tabGroupConfig = this.getTabGroupConfig()
         this.activeTab = this.tabGroupConfig[0].key
         // this.statusIcon = 'fas fa-ban u-mt1 u-ml2 neutral-light';
+        this.productManagementService.getDetails(productId).subscribe((res: any) => {
+            this.productDetails = res;
+            this.detailProduct = this.fieldsDetail(res);
+            this.productCodeDetail = this.prepareProductCodeDetails(res);
+            this.productList = this.productFieldsDetail({ ...res });
+            this.getStatusUpdate();
+            this.headerTitle = this.productDetails.description;
+        });
+
+
+        
         this.getProductData(productId);
 
     }

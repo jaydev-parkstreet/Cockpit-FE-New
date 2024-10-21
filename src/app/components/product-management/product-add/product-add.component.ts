@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import AppConstant from 'src/app/app.constant';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from '../../authentication/auth.service';
@@ -31,6 +31,9 @@ export class ProductAddComponent implements OnInit {
   showError: boolean = false;
   activeDropdownId: string | null = null;
   formSubmitted: boolean = false;
+  dropdownData:any
+  @Input() filterList: any;
+
 
   // Dropdown configuration
   dropdownSettings = { versionStyle: 'default' };
@@ -39,22 +42,22 @@ export class ProductAddComponent implements OnInit {
     selectAll: 'Select All',
     uncheckAll: 'Uncheck All',
   };
-  dropdownOptions = ['Option 1', 'Option 2', 'Option 3'];
+
 
 
   // Reactive form initialization
   productForm = this.formBuilder.group({
-    client_id: ['', [Validators.required]],
+    clients: ['', [Validators.required]],
     sub_brand_product_id: ['', [Validators.required]],
     description: ['', [Validators.required]],
     name: [''],
-    group: ['', [Validators.required]],
+    groups: ['', [Validators.required]],
     producer: [''],
     case_unit_of_measure: ['', [Validators.required]],
-    container_type: ['', [Validators.required]],
+    container_types: ['', [Validators.required]],
     ex_works_cost: [''],
-    is_organic: ['', [Validators.required]],
-    prod_type: ['', [Validators.required]],
+    organic: ['', [Validators.required]],
+    product_type: ['', [Validators.required]],
     product_id: [''],
     abv: [''],
     upc_code: [''],
@@ -86,6 +89,7 @@ export class ProductAddComponent implements OnInit {
     const productId = this.route.snapshot.paramMap.get('id')
     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
     this.initializeFormConfig();
+    this.getDropdown()
 
     if (productId) {
       this.productmanagementService.getDetails(productId).subscribe((productData) => {
@@ -110,17 +114,17 @@ export class ProductAddComponent implements OnInit {
 
   createFormSchema() {
     return [
-      this.dropdownService.createFilterObj('client_id', 'client_id', 'Client', 'Select Client', 'client_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('clients', 'clients', 'Client', 'Select Client', 'client_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
       this.dropdownService.createFilterObj('sub_brand_product_id', 'sub_brand_product_id', 'Sub-Brand Product', 'Select Sub-Brand Product', 'sub_brand_product_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
       { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
       { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
-      this.dropdownService.createFilterObj('group', 'group', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('producer', 'producer', 'Producer', 'Select Producer', 'producer', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('case_unit_of_measure', 'case_unit_of_measure', 'Case UOM', 'Select Type', 'case_unit_of_measure', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('container_type', 'container_type', 'Container Type', 'Select Type', 'container_type', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('groups', 'groups', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('producers', 'producers', 'Producer', 'Select Producer', 'producer', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('cases_uom', 'cases_uom', 'Case UOM', 'Select Type', 'case_unit_of_measure', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('container_types', 'container_types', 'Container Type', 'Select Type', 'container_type', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
       { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
-      this.dropdownService.createFilterObj('is_organic', 'is_organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('prod_type', 'prod_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('organic', 'organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('product_type', 'product_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
       { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '', isVisible: true },
       { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', isVisible: true },
       { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isVisible: true },
@@ -151,17 +155,17 @@ export class ProductAddComponent implements OnInit {
 
   prefillForm(productData: any): void {
     this.productForm.patchValue({
-      client_id: productData.client_id,
+      clients: productData.client_id,
       sub_brand_product_id: productData.sub_brand_product_id,
       description: productData.description,
       name: productData.fanciful_name,
-      group: productData.group_name,
-      producer: productData.producer_name,
-      case_unit_of_measure: productData.case_unit_of_measure,
-      container_type: productData.container_type,
+      groups: productData.group_name,
+      producers: productData.producer_name,
+      cases_uom: productData.case_unit_of_measure,
+      container_types: productData.container_type,
       ex_works_cost: productData.ex_works_cost,
-      is_organic: productData.is_organic,
-      prod_type: productData.prod_type,
+      organic: productData.is_organic,
+      product_type: productData.prod_type,
       product_id: productData.product_id,
       abv: productData.abv,
       upc_code: productData.upc_code,
@@ -196,17 +200,17 @@ export class ProductAddComponent implements OnInit {
     if (form.valid) {
 
       const reqObj = {
-        client_id: form.value.client_id,
+        clients: form.value.client_id,
         sub_brand_product_id: form.value.sub_brand_product_id,
         description: form.value.description,
         name: form.value.name,  // Updated to match 'fancifulName'
-        group: form.value.group,
-        producer: form.value.producer,
-        case_unit_of_measure: form.value.case_unit_of_measure, // Updated field name
-        container_type: form.value.container_type, // Updated field name
+        groups: form.value.group,
+        producers: form.value.producer,
+        cases_uom: form.value.case_unit_of_measure, // Updated field name
+        container_types: form.value.container_type, // Updated field name
         ex_works_cost: form.value.ex_works_cost, // Updated field name
-        is_organic: form.value.is_organic, // Updated field name
-        prod_type: form.value.prod_type, // Updated field name
+        organic: form.value.is_organic, // Updated field name
+        product_type: form.value.prod_type, // Updated field name
         product_id: form.value.product_id, // Updated field name
         abv: form.value.abv, // Updated field name
         upc_code: form.value.upc_code, // Updated field name
@@ -243,6 +247,20 @@ export class ProductAddComponent implements OnInit {
       this.showError = true;
     }
   }
+
+  async getDropdown(){
+    const token = localStorage.getItem('authToken');
+    try {
+      const response:any = await this.productmanagementService.getDropdown(token);
+      this.dropdownData = response.data;
+    }
+    catch (error) {
+      console.error("Error fetching summary:", error);
+    }
+    this.filterList = this.dropdownData;
+    console.log(this.filterList);
+  }
+
 
   isFieldInvalid(controlName: string): boolean {
     const control = this.productForm.get(controlName);
