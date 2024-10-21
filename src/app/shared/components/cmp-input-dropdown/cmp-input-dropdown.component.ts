@@ -28,7 +28,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
 
   @Output() dropdownStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  items: string[] = ['Request Received', 'Needs Action-Waiting on Supplier', 'Approved', 'Pending', 'Pre-Approved'];
+  // items: string[] = ['Request Received', 'Needs Action-Waiting on Supplier', 'Approved', 'Pending', 'Pre-Approved'];
   selectedItems: string[] = [];
   isOpen: boolean = false;
   searchText: string = '';
@@ -45,8 +45,8 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
 
   ngOnInit(): void {
     this.selectedItems = this.formControl?.value || [];
-    this.updateFilteredItems();
-    this.updateSelectAllState();
+    this.updateFilteredItems(this.filteredItems);
+    this.updateSelectAllState(this.filteredItems);
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['isActive'] && this.isActive) {
@@ -71,6 +71,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     if (this.allowSingleSelect) {
         this.selectedItems = [item];
         this.isOpen = false;
+        
         this.updateFormControl();
     } else {
         const index = this.selectedItems.indexOf(item);
@@ -80,7 +81,8 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
             this.selectedItems.splice(index, 1);
         }
     }
-}
+    this.onDropDownChange.emit(this.selectedItems);
+  }
   
   onChevronClick(event: MouseEvent): void {
     console.log("Chevron clicked", event.target);
@@ -94,23 +96,23 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     if (this.isAllSelected) {
         this.selectedItems = [];
     } else {
-        this.selectedItems = [...this.items];
+        this.selectedItems = [...this.filteredItems];
     }
     this.isAllSelected = !this.isAllSelected;
 
-    if (this.allowSingleSelect) {
-        this.updateFormControl(); 
-    }
-}
+    this.onDropDownChange.emit(this.selectedItems);
+    this.updateFormControl(); 
+  }
   
   updateFormControl(): void {
     if (this.formControl) {
         this.formControl.setValue(this.selectedItems);
         this.formControl.updateValueAndValidity();
     } 
+    
   }
-  updateSelectAllState(): void {
-    this.isAllSelected = this.selectedItems.length === this.items.length;
+  updateSelectAllState(items): void {
+    this.isAllSelected = this.selectedItems.length === items.length;
   }
 
   isSelected(item: string): boolean {
@@ -118,9 +120,9 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
   }
 
   
-  filterItems(): void {
+  filterItems(items): void {
     const searchTextLower = this.searchText.toLowerCase();
-    this.filteredItems = this.items.filter(item =>
+    this.filteredItems = items.filter(item =>
       item.toLowerCase().includes(searchTextLower)
     );
     this.hideList = this.filteredItems.length === 0 && this.searchText !== '';
@@ -128,17 +130,17 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
 
   clearSearch(): void {
     this.searchText = '';
-    this.updateFilteredItems();
+    this.updateFilteredItems(this.filteredItems);
   }
 
-  private updateFilteredItems(): void {
-    // this.filteredItems = [...this.items];
+  private updateFilteredItems(items): void {
+    this.filteredItems = [...items];
     this.hideList = false;
   }
 
   getSelectedText(): string {
     if (this.selectedItems.length === 0) {
-      return 'Select Items';
+        return 'Select Items';
     }
     const firstItem = this.selectedItems[0];
     const additionalCount = this.selectedItems.length - 1;
@@ -155,7 +157,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
 
   writeValue(obj: any): void {
     this.selectedItems = obj || [];
-    this.updateFilteredItems();
+    this.updateFilteredItems(this.filteredItems);
   }
 
   registerOnChange(fn: any): void {

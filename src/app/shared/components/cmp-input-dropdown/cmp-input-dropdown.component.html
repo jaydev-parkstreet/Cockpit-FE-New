@@ -27,8 +27,8 @@
         <span>{{ isAllSelected ? texts.uncheckAll : texts.selectAll }}</span>
       </div>
 
-      <div *ngFor="let item of filteredItems" class="select-list" (click)="toggleSelection(item)">
-        <input *ngIf="showCheckboxes" type="checkbox" [checked]="isSelected(item)" />
+      <div *ngFor="let item of filteredItems" class="select-list" (click)="toggleSelection(item.name)">
+        <input *ngIf="showCheckboxes" type="checkbox" [checked]="isSelected(item.name)" (change)="onDropDownChange.emit(selectedItems)"/>
         <span>{{ item.name }}</span>
       </div>
     </div>

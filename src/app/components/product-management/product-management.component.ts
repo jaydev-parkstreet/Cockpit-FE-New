@@ -39,7 +39,7 @@ export class ProductManagementComponent implements OnInit {
   isSorting: boolean;
   scrollDisabled: boolean;
   topPanelConfig:any
-  filterList: any;
+  filterList: any = {};
 
   constructor(private productManagementService: ProductManagementService,
     private authService: AuthService, private router: Router, private spinner :NgxSpinnerService) { }
@@ -49,7 +49,13 @@ export class ProductManagementComponent implements OnInit {
     this.topPanelConfig = this.productManagementService.getTopPanelConfig();
     //Angular 10 appproach------------
 
-    this.reportRequestObj = {};
+    this.reportRequestObj = {
+      "page": this.reportRequestObj.page,
+      "pageSize": 25,
+      "sort": "status",
+      "order": "asc",
+      "universal_search": ""
+    };
     this.selectedRowCount = 0;
     // this.selectedCardRowCount = 0;
     this.productToolCardSummary = [];
@@ -63,11 +69,10 @@ export class ProductManagementComponent implements OnInit {
     // this.openNotePopup = false;
     // this.defaultState = this.productToolService.getDefaultState()[0].id;
     // this.reportRequestObj = {
-    //     page: 1,
+    //     // page: 1,
     //     pageSize: 25,
     //     sort: 'status',
     //     order: 'desc',
-    //     active_status: [this.defaultState]
     // };
     // this.summaryTopBarConfig = this.productToolService.getSummaryTopBarConfig();
     // this.summaryTopBarConfig.actions = this.productToolService.getDefaultActions(this.reportRequestObj,
@@ -93,12 +98,7 @@ export class ProductManagementComponent implements OnInit {
   async getSummaryData() {
     this.spinner.show();
     const token = localStorage.getItem('authToken');
-    const summaryData = {
-      "page": this.reportRequestObj.page,
-      "pageSize": 25,
-      "sort": "status",
-      "order": "asc"
-    }
+    const summaryData = this.reportRequestObj
     try {
       const response: any = await this.productManagementService.getSummary(summaryData, token);
       this.hasMoreRecords = response.data.length === 25;
@@ -250,12 +250,27 @@ export class ProductManagementComponent implements OnInit {
     this.router.navigate(['/product-management/add']);
   }
 
-  applyFilters() {
-    console.log("a");
-    
+  applyFilters(selectedFilters: any) {
+    console.log('Selected Filters: ', selectedFilters);
+    this.reportRequestObj = {
+      ...this.reportRequestObj,
+      ...selectedFilters
+    };
+    this.reportRequestObj.page = 1;
+    this.productToolSummary = [];
+    this.getSummaryData();
   }
+
   resetFilters () {
-    console.log("b");
+    this.reportRequestObj = {
+      "page": 1,
+      "pageSize": 25,
+      "sort": "status",
+      "order": "asc",
+      "universal_search": ""
+    }
+    this.productToolSummary = [];
+    this.getSummaryData();
   }
 
 }

@@ -16,6 +16,7 @@ export class SummaryTopBarComponent implements OnInit {
   tooltipText:any;
   isExpandFilter = false; 
   dropdown1Label = 'Product Status';
+  selectedFilters = {}
 
   constructor(private router:Router) { }
 
@@ -26,4 +27,19 @@ export class SummaryTopBarComponent implements OnInit {
   toggleFilter() {
     this.isExpandFilter = !this.isExpandFilter;
   }
+
+  onFilterChange(key: string, value: any) {
+    // Update the selected filter values when any filter changes
+    this.selectedFilters[key] = value;
+  }
+
+  applyFilterChanges() {
+    this.applyFilters.emit(this.selectedFilters);
+  }
+
+  resetFilterChanges() {
+    this.selectedFilters = {};
+    this.resetFilters.emit();
+  }
+
 }

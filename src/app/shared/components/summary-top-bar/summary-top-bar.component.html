@@ -27,7 +27,8 @@
                 [showCheckboxes]="true"
                 [allowSingleSelect]="false"
                 [settings]="filter.setting"
-                [filteredItems]="filterList[filter.key]">
+                [filteredItems]="filterList[filter.key]"
+                (onDropDownChange)="onFilterChange(filter.key, $event)">
             </app-cmp-input-dropdown>
         </div>
     </div>
@@ -35,8 +36,8 @@
         <app-cmp-button
             [buttonClass]="'primary sm'"
             [buttonText]=" 'Apply' "
-            (onClick)="applyFilters.emit()">
+            (click)="applyFilterChanges()">
         </app-cmp-button>
-        <div class="btn-link primary-link u-pg-ml-3" (click)="resetFilters.emit()">Clear</div>
+        <div class="btn-link primary-link u-pg-ml-3" (click)="resetFilterChanges()">Clear</div>
     </div>
 </div>
