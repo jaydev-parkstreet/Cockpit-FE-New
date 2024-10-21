@@ -33,21 +33,15 @@
                                                                         [id]="field.name" [formControlName]="field.name"
                                                                         [placeholder]="field.placeholder"
                                                                         [required]="field.required" />
-
                                                                     <app-cmp-input-dropdown
                                                                         *ngIf="field?.type == 'multiselect-search'"
-                                                                       
-                                                                        [placeholder]="field.placeholder"
-                                                                        [formControl]="productForm.get(field.name)"
-                                                                        [validationClasses]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
-                                                                        [showSelectAll]="false" [showCheckboxes]="false"
-                                                                        [allowSingleSelect]="true"
-                                                                        [isActive]="activeDropdownId === field.id"
+                                                                        [showSelectAll]="true"
+                                                                        [showCheckboxes]="true"
+                                                                        [allowSingleSelect]="false"
                                                                         [settings]="field.setting"
-                                                                        (dropdownStateChange)="onDropdownStateChange(field.id)"
-                                                                        [filteredItems]="filterList[field.key]">
+                                                                        [filteredItems]="filterList[field.key]"
+                                                                        (onDropDownChange)="onDropdownStateChange(field.id)">
                                                                     </app-cmp-input-dropdown>
-                                                                
 
                                                                     <div *ngIf="isFieldInvalid(field.name)"
                                                                         class="error-message">
