@@ -41,7 +41,11 @@ const routes: Routes = [
   {
     path: 'product-tool/:id/edit',
     component: ProductAddComponent
-  }
+  },
+  {
+    path: 'product-tool/:id/clone',
+    component: ProductAddComponent
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

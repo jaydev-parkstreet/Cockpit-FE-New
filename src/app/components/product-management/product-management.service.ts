@@ -260,6 +260,27 @@ export class ProductManagementService {
         .get(environment.apiUrl + "product-tool/permissions")
         .pipe(map((response :any) => response.data));
     }
+
+    syncOrder(productId) {
+        let params = {
+            'productId' : productId
+        };
+        return this.http
+            .post(environment.apiUrl +"product-tool/ns_sync", params)
+            .pipe(map((response :any) => response.data));
+    }
+
+    getApproveAPI(productId) {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+          });
+      
+          const params = { product_id: productId };
+      
+          return this.http
+          .get(environment.apiUrl + "product-tool/approve/product", { headers, params,})
+          .pipe(map((response :any) => response.data));
+    }
 }
 
 

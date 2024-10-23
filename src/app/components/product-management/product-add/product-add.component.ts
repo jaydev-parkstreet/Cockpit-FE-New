@@ -48,7 +48,7 @@ export class ProductAddComponent implements OnInit {
   // Reactive form initialization
   productForm = this.formBuilder.group({
     clients: ['', [Validators.required]],
-    sub_brand_product_id: ['', [Validators.required]],
+    // sub_brand_product_id: ['', [Validators.required]],
     description: ['', [Validators.required]],
     name: [''],
     groups: ['', [Validators.required]],
@@ -115,7 +115,7 @@ export class ProductAddComponent implements OnInit {
   createFormSchema() {
     return [
       this.dropdownService.createFilterObj('clients', 'clients', 'Client', 'Select Client', 'client_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('sub_brand_product_id', 'sub_brand_product_id', 'Sub-Brand Product', 'Select Sub-Brand Product', 'sub_brand_product_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
+      // this.dropdownService.createFilterObj('sub_brand_product_id', 'sub_brand_product_id', 'Sub-Brand Product', 'Select Sub-Brand Product', 'sub_brand_product_id', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
       { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
       { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
       this.dropdownService.createFilterObj('groups', 'groups', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, 'ps-required-asterisk'),
@@ -156,7 +156,7 @@ export class ProductAddComponent implements OnInit {
   prefillForm(productData: any): void {
     this.productForm.patchValue({
       clients: productData.client_id,
-      sub_brand_product_id: productData.sub_brand_product_id,
+      // sub_brand_product_id: productData.sub_brand_product_id,
       description: productData.description,
       name: productData.fanciful_name,
       groups: productData.group_name,
@@ -201,7 +201,7 @@ export class ProductAddComponent implements OnInit {
 
       const reqObj = {
         clients: form.value.client_id,
-        sub_brand_product_id: form.value.sub_brand_product_id,
+        // sub_brand_product_id: form.value.sub_brand_product_id,
         description: form.value.description,
         name: form.value.name,  // Updated to match 'fancifulName'
         groups: form.value.group,

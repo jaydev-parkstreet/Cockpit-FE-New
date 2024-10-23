@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductManagementService } from '../product-management.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
     selector: 'app-product-management-details',
@@ -22,21 +24,20 @@ export class ProductManagementDetailsComponent implements OnInit {
     sync_status = 1;
     productDetails: any;
     detailProduct: any;
-    actionButtons: any = 
-    [
-        { key:'Sync', showTooltip: true, icon: 'fas fa-sync-alt fa-spin', tooltipText: 'Sync' }, //need to update as per conditions
-        { key: 'Approve', showTooltip: true, icon: 'fas fa-check-circle pointer', tooltipText: 'Approve'},        
-        { key: 'Needs Action-Waiting on Supplier', icon: 'fas fa-clock', showTooltip: true, tooltipText: 'Needs Action-Waiting on Supplier'},
-        { key: 'Pre-Approved', showTooltip: true, icon: 'fas fa-check-circle pointer', tooltipText: 'Pre-Approved'},
-        { key: 'inactivate', icon: 'fas fa-ban', showTooltip: true, tooltipText: 'Deactivate' },
-        { key: 'duplicate', icon: 'fas fa-clone', showTooltip: true, tooltipText: 'Duplicate' },
-        { key: 'edit', icon: 'fas fa-pen', showTooltip: true, tooltipText: 'Edit' },
-    ];
+    actionButtons: any = [];
+    SYNC_STATUS: any = {
+        1: 'Synced',
+        2: 'Syncing',
+        3: 'Sync',
+        4: 'Sync'
+    }
 
     constructor(
         private productManagementService: ProductManagementService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private spinner :NgxSpinnerService,
+        private commonService : CommonService
     ) { }
 
     ngOnInit(): void {
@@ -55,9 +56,6 @@ export class ProductManagementDetailsComponent implements OnInit {
             this.getStatusUpdate();
             this.headerTitle = this.productDetails.description;
         });
-
-
-        
         this.getProductData(productId);
 
     }
@@ -70,6 +68,7 @@ export class ProductManagementDetailsComponent implements OnInit {
                 this.productCodeDetail = this.prepareProductCodeDetails(res); 
                 this.productList = this.productFieldsDetail({ ...res });
                 this.getStatusUpdate();
+                this.actionButtons = this.getactionButtons(this.productDetails);
                 this.headerTitle = this.productDetails.description;
             });
           }
@@ -100,10 +99,30 @@ export class ProductManagementDetailsComponent implements OnInit {
 
     syncOrder() {
         console.log("inside sync");
+        if (this.productDetails.sync_status === 1 || this.productDetails.sync_status === 2 || this.actionButtons[0].button === this.SYNC_STATUS[2]) {
+            return false;
+        }
+        this.actionButtons[0].class = 'fas fa-sync fa-spin';
+        this.actionButtons[0].button = this.SYNC_STATUS[2];
+        this.productManagementService.syncOrder(this.productDetails.id).subscribe( (result) =>{
+            setInterval(() => {
+                // this.getSyncStatusDetails();
+            }, 30000);
+        });
+        return true;
     }
 
     getApproveAPI() {
-        console.log("call Approve API here");
+        this.spinner.show();
+        this.productManagementService.getApproveAPI(this.productDetails.product_id).subscribe(response => {
+            this.spinner.hide();
+            if (!response.hasError) {
+                this.getProductData(this.productDetails.product_id);
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+            } else {
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+            }
+        });
     }
     getPreApproveAPI() {
         console.log("Call Pre-Approve API here");
@@ -128,7 +147,14 @@ export class ProductManagementDetailsComponent implements OnInit {
     }
 
     navigateToClone() {
-        console.log("navigate to Clone as per Navigate to Edit");
+        if (this.productDetails.product_id) {
+            const currentPath = this.route.snapshot.pathFromRoot
+              .map(route => route.url.map(segment => segment.toString()).join('/'))
+              .join('/');
+            const clonePath = `${currentPath}/clone`;
+
+            this.router.navigate([clonePath]);
+        }
     }
     onClickback() {
         this.router.navigate(['/product-management']);
@@ -321,4 +347,82 @@ export class ProductManagementDetailsComponent implements OnInit {
         }
         return obj;
     }
+    getactionButtons(detail) {
+        let syncbtnName = '';
+        if (!detail.sync_status) {
+            syncbtnName = this.SYNC_STATUS[3];
+        } else {
+            console.log(typeof(detail.sync_status));
+            syncbtnName = this.SYNC_STATUS[detail.sync_status];
+        }
+        let data = [];
+        if (detail.status !== 'Approved' &&
+            detail.status !== 'Needs Action-Waiting on Supplier') {
+            data.push({
+                key: 'Needs Action-Waiting on Supplier',
+                icon: 'fas fa-clock',
+                showTooltip: true,
+                tooltipText: 'Needs Action-Waiting on Supplier',
+                });
+        }
+        if (detail.status === 'Approved') {
+            let syncClass = detail.sync_status === 1 ? 'fas fa-sync-alt' : 'fas fa-sync-alt pointer';
+            data.push({
+              key: 'Sync',
+              showTooltip: true,
+              icon: (detail.sync_status === 2 ? 'fas fa-sync-alt fa-spin' :syncClass ),
+              tooltipText: syncbtnName,
+            });
+        } else if (detail.status === 'Request Received' ||
+            detail.status === 'Needs Action-Waiting on Supplier' ||
+            detail.status === 'Pending') {
+            data.push({
+              key: 'Pre-Approved',
+              showTooltip: true,
+              icon: 'fas fa-check-circle pointer',
+              tooltipText: 'Pre-Approved',
+            });
+        } else {
+            data.push({
+              key: 'Approve',
+              showTooltip: true,
+              icon: 'fas fa-check-circle pointer',
+              tooltipText: 'Approve',
+            });
+        }
+        {
+            data.push(
+              {
+                key: 'edit',
+                icon: 'fas fa-pen',
+                showTooltip: true,
+                tooltipText: 'Edit',
+              },
+              {
+                key: 'duplicate',
+                icon: 'fas fa-clone',
+                showTooltip: true,
+                tooltipText: 'Duplicate',
+              }
+            ); 
+        }
+            data.push({
+                key:'inactivate',
+                icon:detail.is_active !== 1 ? 'fas fa-check-circle':'fas fa-times-circle',
+                button: detail.is_active !== 1 ? 'Activate' : 'Deactivate',
+                showTooltip: true, 
+                tooltipText: detail.is_active !== 1 ? 'Activate' : 'Deactivate',
+            })
+        return data;
+    }
+
+        // [
+    //     { key:'Sync', showTooltip: true, icon: 'fas fa-sync-alt fa-spin', tooltipText: 'Sync' }, //need to update as per conditions
+    //     { key: 'Approve', showTooltip: true, icon: 'fas fa-check-circle pointer', tooltipText: 'Approve'},        
+    //     { key: 'Needs Action-Waiting on Supplier', icon: 'fas fa-clock', showTooltip: true, tooltipText: 'Needs Action-Waiting on Supplier'},
+    //     { key: 'Pre-Approved', showTooltip: true, icon: 'fas fa-check-circle pointer', tooltipText: 'Pre-Approved'},
+    //     { key: 'inactivate', icon: 'fas fa-ban', showTooltip: true, tooltipText: 'Deactivate' },
+    //     { key: 'duplicate', icon: 'fas fa-clone', showTooltip: true, tooltipText: 'Duplicate' },
+    //     { key: 'edit', icon: 'fas fa-pen', showTooltip: true, tooltipText: 'Edit' },
+    // ];
 }
