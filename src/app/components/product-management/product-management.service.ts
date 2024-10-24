@@ -184,39 +184,60 @@ export class ProductManagementService {
             showFilter: false,
             actions: [],
             filtersConfig: [
-                { key: 'clients', label: 'Supplier', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Supplier') },
-                { key: 'product_state', label: 'Product Status', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Status') },
-                { key: 'product_type', label: 'Product Type', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Type') },
-                { key: 'product_sub_type', label: 'Product Sub-Type', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Sub-Type') },
-                { key: 'source', label: 'Source', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Source') },
-                // {
-                //     key: 'brands',
-                //     label: 'Brand',
-                //     type: 'multiselect-search',
-                //     divClass: 'col-4',
-                //     setting: this.getMultiSelectConfig('Select Brand')
-                //     // setting: this.getMultiSelectConfigserver(Routes.available.mobile_product_management_system_brand_search, 'Select Brand')
-                // },
-                // {
-                //     key: 'sub_brand',
-                //     label: 'Sub-Brand',
-                //     type: 'multiselect-search',
-                //     divClass: 'col-4',
-                //     setting: this.getMultiSelectConfig('Select Sub brand')
-                //     // setting: this.getMultiSelectConfigserver(Routes.available.mobile_product_management_system_sub_brand_search, 'Select Sub-Brand')
-                // },
-                // {
-                //     key: 'sub_brand_product',
-                //     label: 'Sub-Brand Product',
-                //     type: 'multiselect-search',
-                //     divClass: 'col-4 norightpadding',
-                //     setting: this.getMultiSelectConfig('Select Sub Brand product')
-                //     // setting: this.getMultiSelectConfigserver(Routes.available.mobile_product_management_system_sub_brand_product_search, 'Select Sub-Brand Product')
-                // },
-                { key: 'organic', label: 'Organic', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Organic') },
-                { key: 'active_status', label: 'Active State', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select State')},
-                { key: 'bottles_per_case', label: 'Bottles Per Case', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Bottles Per Case')},
-                { key: 'container_sizes_filter', label: 'Container Size', type: 'multiselect-search', divClass: 'col-4 norightpadding', setting: this.getMultiSelectConfig('Select Container Size')}
+                {
+                    key: 'clients',
+                    label: 'Supplier',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    setting: this.getMultiSelectConfig('Select Supplier')
+                }, {
+                    key: 'product_state',
+                    label: 'Product Status',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    setting: this.getMultiSelectConfig('Select Status')
+                }, {
+                    key: 'product_type',
+                    label: 'Product Type', 
+                    ype: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    setting: this.getMultiSelectConfig('Select Type')
+                }, {
+                    key: 'product_sub_type',
+                    label: 'Product Sub-Type',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    setting: this.getMultiSelectConfig('Select Sub-Type')
+                }, { 
+                    key: 'source',
+                    label: 'Source',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    setting: this.getMultiSelectConfig('Select Source')
+                }, {
+                    key: 'organic',
+                    label: 'Organic',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding', 
+                    setting: this.getMultiSelectConfig('Select Organic')
+                }, {
+                    key: 'active_status',
+                    label: 'Active State',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    setting: this.getMultiSelectConfig('Select State')
+                }, {
+                    key: 'bottles_per_case',
+                    label: 'Bottles Per Case',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    setting: this.getMultiSelectConfig('Select Bottles Per Case')
+                }, {
+                    key: 'container_sizes_filter',
+                    label: 'Container Size',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    setting: this.getMultiSelectConfig('Select Container Size')}
             ],
         };
     }
