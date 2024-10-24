@@ -281,6 +281,12 @@ export class ProductManagementService {
           .get(environment.apiUrl + "product-tool/approve/product", { headers, params,})
           .pipe(map((response :any) => response.data));
     }
+
+    getProductManagementSystemSave(obj) {
+        return this.http
+            .post(environment.apiUrl + "product-tool/save", obj)
+            .pipe(map((response :any) => response));
+    }
 }
 
 
