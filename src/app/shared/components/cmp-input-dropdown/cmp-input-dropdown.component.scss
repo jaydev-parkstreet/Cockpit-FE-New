@@ -106,6 +106,21 @@
     font-size: 14px;
     color: $colors-neutral-black;
     font-family: $montserrat-regular;
+    &::-webkit-scrollbar {
+        width: 5px;
+        height: 150px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $colors-neutral-light;
+        border-radius: 4px;
+        height: 150px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+        height: 150px;
+    }
 
     .no-results{
         color: #cbcbcb;
@@ -114,15 +129,14 @@
         text-align: center;
         justify-content: center;
     }
-  
- 
+
     .select-all {
         margin: 5px;
         padding: 8px;
         display: flex;
         align-items: center;
     }
-    
+
     .checkbox {
         background: $colors-v2-base-primary; 
         height: 16px; 
@@ -139,11 +153,11 @@
         cursor: pointer; 
         transition: background 0.3s; 
     }
-    
+
     .checkbox.checked {
         background: $colors-v2-base-primary; 
     }
-    
+
     .checkbox.unchecked {
         background: #e74536; 
         color: white;
@@ -153,7 +167,7 @@
     .checkbox:hover {
         background: #d6362f; 
     }
-    
+
     .select-list {
         cursor: pointer;
         margin: 5px;

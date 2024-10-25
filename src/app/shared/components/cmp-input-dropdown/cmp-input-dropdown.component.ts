@@ -88,9 +88,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
 }
   
   onChevronClick(event: MouseEvent): void {
-    console.log("Chevron clicked", event.target);
     event.stopPropagation();
-
     event.preventDefault();
     this.toggleDropdown();
   }
@@ -102,7 +100,6 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
         this.selectedItems = [...this.filteredItems];
     }
     this.isAllSelected = !this.isAllSelected;
-
     this.onDropDownChange.emit(this.selectedItems);
     this.updateFormControl(); 
   }
