@@ -140,3 +140,52 @@ $colors-shadows-secondary-100: 0 16px 40px 0 rgba(119,194,245,0.15);
 
 $colors-accent-jacarta: #4A3C6F;
 $colors-scrollbar-thumb-05: rgba(163, 52, 52, 0.05);
+
+// Navigator 2.0 Rebranding
+
+$colors-v2-base-primary: rgb(231, 69, 54);
+$colors-v2-base-primary-t-75: rgba(231, 69, 54, 0.75);
+$colors-v2-base-primary-t-50: rgba(231, 69, 54, 0.5);
+$colors-v2-base-primary-t-25: rgba(231, 69, 54, 0.25);
+$colors-v2-base-primary-t-10: rgba(231, 69, 54, 0.1);
+$colors-v2-base-primary-v-high: rgb(222, 19, 0);
+$colors-v2-base-primary-v-medium: rgb(237, 42, 24);
+$colors-v2-base-primary-v-low: rgb(250, 103, 89);
+$colors-v2-base-primary-v-low-t-10: rgba(250, 103, 89, 0.1);
+$colors-v2-base-primary-v-low-t-05: rgba(250, 103, 89, 0.05);
+
+$colors-v2-base-secondary: rgb(54, 216, 231);
+$colors-v2-base-secondary-t-75: rgba(54, 216, 231, 0.75);
+$colors-v2-base-secondary-t-50:  rgba(54, 216, 231, 0.5);
+$colors-v2-base-secondary-t-25: rgba(54, 216, 231, 0.25);
+$colors-v2-base-secondary-t-10: rgba(54, 216, 231, 0.1);
+$colors-v2-base-secondary-v-high: rgb(46, 128, 135);
+$colors-v2-base-secondary-v-medium: rgb(46, 179, 191);
+$colors-v2-base-secondary-v-low: rgb(35, 236, 255);
+
+$colors-v2-base-success: rgb(110, 216, 35);
+$colors-v2-base-success-t-75: rgba(110, 216, 35, 0.75);
+$colors-v2-base-success-t-50: rgba(110, 216, 35, 0.5);
+$colors-v2-base-success-t-25: rgba(110, 216, 35, 0.25);
+$colors-v2-base-success-t-10: rgba(110, 216, 35, 0.1);
+$colors-v2-base-success-v-high: rgb(68, 128, 26);
+$colors-v2-base-success-v-medium: rgb(84, 178, 18);
+$colors-v2-base-success-v-low: rgb(102, 245, 0);
+
+$colors-v2-base-warning: rgb(255, 162, 29);
+$colors-v2-base-warning-t-75: rgba(255, 162, 29, 0.75);
+$colors-v2-base-warning-t-50: rgba(255, 162, 29, 0.5);
+$colors-v2-base-warning-t-25: rgba(255, 162, 29, 0.25);
+$colors-v2-base-warning-t-10: rgba(255, 162, 29, 0.1);
+$colors-v2-base-warning-v-high: rgb(140, 94, 28);
+$colors-v2-base-warning-v-medium: rgb(191, 120, 19);
+$colors-v2-base-warning-v-low: rgba(255, 150, 0, 1);
+
+$colors-v2-base-error: rgb(197, 0, 0);
+$colors-v2-base-error-t-75: rgba(197, 0, 0, 0.75);
+$colors-v2-base-error-t-50: rgba(197, 0, 0, 0.5);
+$colors-v2-base-error-t-25: rgba(197, 0, 0, 0.25);
+$colors-v2-base-error-t-10: rgba(197, 0, 0, 0.1);
+$colors-v2-base-error-v-high: rgb(139, 0, 0);
+$colors-v2-base-error-v-medium: rgb(229, 0, 0);
+$colors-v2-base-error-v-low: rgba(255, 23, 23, 1);

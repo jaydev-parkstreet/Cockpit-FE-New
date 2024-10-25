@@ -6,13 +6,10 @@
   
     .dropdown-label{  
         color: $colors-neutral-black; color: #232323;
-        font-family: "Montserrat-Regular" !important;
+        font-family: $montserrat-regular !important;
         font-size: 12px;
-     //   padding: 16px 0 4px 16px;
-     //   margin-bottom: 4px;
         border:none !important;
-       
-        }
+    }
 
     .dropdown-header {
         height: 40px;
@@ -58,17 +55,13 @@
         &:hover:not(:focus-within) {
             border-radius: 8px;
             border: 2px solid $colors-neutral-dark;
-    
+
             .dropdown-header,
             .dropdown-button {
                 border: none !important;
             }
         }
-        
-     
     }
- 
-  
 
     .dropdown-button {
         display: flex;
@@ -84,11 +77,6 @@
         padding: 0;
         margin: 0;
     }
-
-  
-  
-
-
 
     .text-overflow {
         font-family: $helvetica-neue;
@@ -136,14 +124,14 @@
     }
     
     .checkbox {
-        background: #e74536; 
+        background: $colors-v2-base-primary; 
         height: 16px; 
         width: 16px; 
-        color: white; 
+        color: $colors-neutral-white; 
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 1px solid #e74536; 
+        border: 1px solid $colors-v2-base-primary; 
         border-radius: 4px;
         font-size: 12px; 
         font-weight: bold; 
@@ -153,7 +141,7 @@
     }
     
     .checkbox.checked {
-        background: #e74536; 
+        background: $colors-v2-base-primary; 
     }
     
     .checkbox.unchecked {
@@ -175,19 +163,49 @@
     }
 
     input[type="checkbox"] {
+        box-sizing: border-box;
         margin-right: 10px;
-    }
-
-    input[type="checkbox"]:checked {
-        accent-color: red;
-    }
-
-    .select-list:hover {
-        background: $colors-v2-base-primary-v-low-t-05;
-    }
+        height: 16px;
+        width: 16px;
+        padding: 0;
+        margin-top: 0px;
+        border: 1px solid $colors-v2-base-primary;
+        border-radius: 4px;
+        background-color: #fff;
+        appearance: none;
+        position: relative;
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+        outline: none;
+    
+        &::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 4px;
+            height: 8px;
+            border: solid $colors-neutral-white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+    
+        &:checked {
+            background-color: $colors-v2-base-primary;
+            border-color: $colors-v2-base-primary; 
+        }
+    
+        &:checked::before {
+            opacity: 1;
+        }
+    
+        &:focus {
+            outline: none;
+        }
+    } 
 }
-
-
 
 .search-box {
     display: flex;
@@ -274,7 +292,4 @@
             border: none !important;
         }
     }
-
-
-
 }

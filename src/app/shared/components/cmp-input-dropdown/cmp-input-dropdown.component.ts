@@ -1,6 +1,9 @@
 import { Component, EventEmitter, forwardRef, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-
+interface Item {
+  id: number;
+  name: string;
+}
 @Component({
   selector: 'app-cmp-input-dropdown',
   templateUrl: './cmp-input-dropdown.component.html',
@@ -13,6 +16,7 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/f
     },
   ],
 })
+
 export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValueAccessor {
   @Input() label: string;
   @Input() validationClasses: string;
@@ -29,7 +33,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
   @Output() dropdownStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   // items: string[] = ['Request Received', 'Needs Action-Waiting on Supplier', 'Approved', 'Pending', 'Pre-Approved'];
-  selectedItems: string[] = [];
+  selectedItems: Item[] = [];
   isOpen: boolean = false;
   searchText: string = '';
   isAllSelected: boolean = false;
@@ -67,14 +71,13 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     return this.isOpen;
   }
 
-  toggleSelection(item: string): void {
+  toggleSelection(item: Item): void {
     if (this.allowSingleSelect) {
         this.selectedItems = [item];
         this.isOpen = false;
-        
         this.updateFormControl();
     } else {
-        const index = this.selectedItems.indexOf(item);
+        const index = this.selectedItems.findIndex(selectedItem => selectedItem.id === item.id); // Find index based on id
         if (index === -1) {
             this.selectedItems.push(item);
         } else {
@@ -82,7 +85,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
         }
     }
     this.onDropDownChange.emit(this.selectedItems);
-  }
+}
   
   onChevronClick(event: MouseEvent): void {
     console.log("Chevron clicked", event.target);
@@ -115,9 +118,9 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     this.isAllSelected = this.selectedItems.length === items.length;
   }
 
-  isSelected(item: string): boolean {
-    return this.selectedItems.includes(item);
-  }
+  isSelected(item: Item): boolean {
+    return this.selectedItems.some(selectedItem => selectedItem.id === item.id);
+}
 
   
   filterItems(items): void {
@@ -138,13 +141,13 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     this.hideList = false;
   }
 
-  getSelectedText(): string {
+  getSelectedDisplayText(): string {
     if (this.selectedItems.length === 0) {
-        return 'Select Items';
+      return this.settings?.translationTexts?.buttonDefaultText;
     }
-    const firstItem = this.selectedItems[0];
+    const firstItemName = this.selectedItems[0].name;
     const additionalCount = this.selectedItems.length - 1;
-    return additionalCount > 0 ? `${firstItem}, +${additionalCount}` : firstItem;
+    return additionalCount > 0 ? `${firstItemName}, +${additionalCount}` : firstItemName;
   }
 
   @HostListener('document:click', ['$event'])
