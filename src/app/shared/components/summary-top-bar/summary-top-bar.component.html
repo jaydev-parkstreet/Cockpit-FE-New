@@ -27,7 +27,7 @@
                 [showCheckboxes]="true"
                 [allowSingleSelect]="false"
                 [settings]="filter.setting"
-                [filteredItems]="filterList[filter.key]"
+                [filteredItems]="filterList && filterList[filter.key]"
                 (onDropDownChange)="onFilterChange(filter.key, $event)">
             </app-cmp-input-dropdown>
         </div>
