@@ -258,7 +258,8 @@ export class ProductManagementComponent implements OnInit {
     };
     this.reportRequestObj.page = 1;
     this.productToolSummary = [];
-    this.getSummaryData();
+    this.setDataSourceAgGrid();
+    // this.getSummaryData();
   }
 
   resetFilters () {
@@ -270,7 +271,7 @@ export class ProductManagementComponent implements OnInit {
       "universal_search": ""
     }
     this.productToolSummary = [];
-    this.getSummaryData();
+    this.setDataSourceAgGrid();
   }
 
 }
