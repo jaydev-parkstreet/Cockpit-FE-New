@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ColDef } from 'ag-grid-community';
 import { RouterModule } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-product-management',
@@ -40,6 +41,8 @@ export class ProductManagementComponent implements OnInit {
   scrollDisabled: boolean;
   topPanelConfig:any
   filterList: any = {};
+  FileSaver: any;
+  downloading: boolean;
 
   constructor(private productManagementService: ProductManagementService,
     private authService: AuthService, private router: Router, private spinner :NgxSpinnerService) { }
@@ -276,5 +279,26 @@ export class ProductManagementComponent implements OnInit {
     this.reportRequestObj.universal_search = text;
     this.setDataSourceAgGrid();
   }
+	excelExport() {
+		const body = this.reportRequestObj;
+		this.downloading = true;
 
+		this.productManagementService.excelExport(body).subscribe((response) => {
+			const data = response.body;
+			if (data) {
+				const csvBlob = new Blob([data], { type: 'application/force-download' });
+				const fileName = this.getFileNameFromHeader(
+					response.headers.get('content-disposition')
+				);
+				saveAs(csvBlob, fileName || 'report.csv');
+			}
+			this.downloading = false;
+		});
+	}
+
+	getFileNameFromHeader(header: string | null): string | null {
+		if (!header) return null;
+		const result = header.split(';')[1].trim().split('=')[1];
+		return result.replace(/"/g, '');
+	}
 }

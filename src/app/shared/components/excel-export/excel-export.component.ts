@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-excel-export',
@@ -7,12 +7,11 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ExcelExportComponent implements OnInit {
   @Input() tooltipText!:any;
-
+  @Output() onExcelSheet: EventEmitter<any> = new EventEmitter<any>();
   constructor() { }
 
   ngOnInit(): void {
     console.log(this.tooltipText);
      
   }
-
 }
