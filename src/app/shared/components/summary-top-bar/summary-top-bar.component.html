@@ -1,6 +1,8 @@
 <div class="summary-top-bar m-flex-direction mr-width">
     <div class="search-box-container m-margin" data-ng-hide="topBarConfig.hideSearch">
-        <app-search-bar>
+        <app-search-bar
+            [config]="config"
+            (onEnter)="onEnter.emit($event)">
         </app-search-bar>
     </div>
     <app-excel-export [tooltipText]="tooltipText">

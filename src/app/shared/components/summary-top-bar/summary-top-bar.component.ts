@@ -12,6 +12,7 @@ export class SummaryTopBarComponent implements OnInit {
   @Output() addProduct = new EventEmitter<any>();
   @Output() applyFilters = new EventEmitter<any>();
   @Output() resetFilters = new EventEmitter<any>();
+  @Output() onEnter = new EventEmitter<any>();
   topBarConfig : any;
   tooltipText:any;
   isExpandFilter = false; 
