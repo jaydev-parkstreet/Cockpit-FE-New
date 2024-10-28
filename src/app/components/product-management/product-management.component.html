@@ -9,7 +9,8 @@
                     [filterList]="filterList"
                     (addProduct)="addProduct()"
                     (applyFilters)="applyFilters($event)"
-                    (resetFilters)="resetFilters()">
+                    (resetFilters)="resetFilters()"
+                    (onEnter)="universalSearch($event)">
                 </app-summary-top-bar>
             </div>
             <!-- <app-psi-ag-grid

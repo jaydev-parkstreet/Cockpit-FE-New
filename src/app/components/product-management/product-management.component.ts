@@ -47,8 +47,6 @@ export class ProductManagementComponent implements OnInit {
   ngOnInit(): void {   
     this.getDropdown();
     this.topPanelConfig = this.productManagementService.getTopPanelConfig();
-    //Angular 10 appproach------------
-
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
       "pageSize": 25,
@@ -150,7 +148,7 @@ export class ProductManagementComponent implements OnInit {
       this.mixType = false;
       // angular.element('.checkbox_select_all').prop('checked', false);
       this.isLoadingSummaryData = true;
-      // this.gridOptions.api.hideOverlay();
+      this.gridOptions.api.hideOverlay();
       this.reportRequestObj.page = 1;
       this.productToolSummary = [];
       this.productToolCardSummary = [];
@@ -259,10 +257,10 @@ export class ProductManagementComponent implements OnInit {
     this.reportRequestObj.page = 1;
     this.productToolSummary = [];
     this.setDataSourceAgGrid();
-    // this.getSummaryData();
   }
 
-  resetFilters () {
+  resetFilters() {
+    this.filters = {};
     this.reportRequestObj = {
       "page": 1,
       "pageSize": 25,
@@ -271,6 +269,11 @@ export class ProductManagementComponent implements OnInit {
       "universal_search": ""
     }
     this.productToolSummary = [];
+    this.setDataSourceAgGrid();
+  }
+
+  universalSearch (text) {
+    this.reportRequestObj.universal_search = text;
     this.setDataSourceAgGrid();
   }
 
