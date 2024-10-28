@@ -35,9 +35,9 @@
                                                                         [required]="field.required" />
                                                                     <app-cmp-input-dropdown
                                                                         *ngIf="field?.type == 'multiselect-search'"
-                                                                        [showSelectAll]="true"
-                                                                        [showCheckboxes]="true"
-                                                                        [allowSingleSelect]="false"
+                                                                        [showSelectAll]="false"
+                                                                        [showCheckboxes]="false"
+                                                                        [allowSingleSelect]="true"
                                                                         [settings]="field.setting"
                                                                         [filteredItems]="filterList[field.key]"
                                                                         (onDropDownChange)="onDropdownStateChange(field.name, $event)">

@@ -36,6 +36,8 @@ export class InputDropdownService {
     hideOverflowClass = '',
     enableSearch = true,
     checkBoxes = true,
+    showCheckAll= true,
+    showUncheckAll= true,
     selectionLimit = 0,
     selectionRequired = true) {
     return {
@@ -82,11 +84,11 @@ export class InputDropdownService {
       closeOnBlur: true,
       displayProp: 'label',
       enableSearch: false,
+      showCheckAll: true,
+      showUncheckAll: true,
       clearSearchOnClose: false,
       selectionLimit: 0,
       selectionRequired: false,
-      showCheckAll: true,
-      showUncheckAll: true,
       showEnableSearchButton: false,
       closeOnSelect: false,
       buttonClasses: 'btn btn-default',
@@ -149,6 +151,8 @@ export class InputDropdownService {
     apiKey = null,
     divClass = 'col-xs-3',
     enableSearch = true,
+    showCheckAll= false,
+    showUncheckAll= false,
     validationClass: string = '') {
     return {
       id: id, 
@@ -159,7 +163,7 @@ export class InputDropdownService {
       type: 'multiselect-search',
       divClass,
       validationClass,
-      setting: this.getDropdownConfig(placeholder, serverSearch, apiUrl, apiKey, false, 300, false, false, '', enableSearch)
+      setting: this.getDropdownConfig(placeholder, serverSearch, apiUrl, apiKey, false, 300, false, false, '', enableSearch, false ,showCheckAll, showUncheckAll)
     };
   }
 

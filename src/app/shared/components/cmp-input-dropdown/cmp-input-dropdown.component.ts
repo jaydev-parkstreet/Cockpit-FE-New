@@ -29,7 +29,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
   @Output() dropdownStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   // items: string[] = ['Request Received', 'Needs Action-Waiting on Supplier', 'Approved', 'Pending', 'Pre-Approved'];
-  selectedItems: string[] = [];
+  selectedItems: any;
   isOpen: boolean = false;
   searchText: string = '';
   isAllSelected: boolean = false;
@@ -142,7 +142,10 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     if (this.selectedItems.length === 0) {
         return 'Select Items';
     }
-    const firstItem = this.selectedItems[0];
+    if (this.allowSingleSelect) {
+      return this.selectedItems[0].name
+    }
+    const firstItem = this.selectedItems[0].name;
     const additionalCount = this.selectedItems.length - 1;
     return additionalCount > 0 ? `${firstItem}, +${additionalCount}` : firstItem;
   }
