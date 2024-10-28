@@ -5,7 +5,9 @@
             (onEnter)="onEnter.emit($event)">
         </app-search-bar>
     </div>
-    <app-excel-export [tooltipText]="tooltipText">
+    <app-excel-export 
+    [tooltipText]="tooltipText"
+    (onExcelSheet)="excelExport.emit()">
     </app-excel-export>
     <div>
         <app-cmp-button [buttonIconLeft]="'fas fa-filter'" [buttonText]="'Filter'" [buttonClass]="'secondary'"

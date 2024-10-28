@@ -6,10 +6,9 @@
         </div>
         <div class="popup-body">
             <span [innerText]="modalData.body"></span>
-            <span *ngIf="modalData.body1" class="mt-5" [innerText]="modalData.body1"></span>
+            <span *ngIf="modalData.body1" [innerText]="modalData.body1"></span>
         </div>
     </div>
-    <hr class="modal-divider">
     <div class="modal-footer footer">
         <button *ngIf="modalData.closeBtnName" type="button" class="btn psi-button secondary large" (click)="cancel()" [innerText]="modalData.closeBtnName"></button>
         <button *ngIf="modalData.confirmBtnName" type="button" class="btn psi-button primary large" (click)="confirm()" [innerText]="modalData.confirmBtnName"></button>

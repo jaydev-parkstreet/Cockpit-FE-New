@@ -291,11 +291,11 @@ export class ProductAddComponent implements OnInit {
     event.stopPropagation();
   }
 
-  openConfirmationPopup() {
-    let modalData;
+    openConfirmationPopup() {
+        let modalData;
 
         modalData = {
-            title: 'All data will be lost!',
+            title: 'All data will be lost.',
             body: 'Are you sure you wish to exit?',
             closeBtnName: 'No',
             confirmBtnName: 'Yes',
@@ -303,10 +303,13 @@ export class ProductAddComponent implements OnInit {
             showLine: true,
         };
 
-    this.simpleModalService.addModal(ConfirmationModalComponent, {
-        modalData: modalData,
-    });
-}
+        this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+            .subscribe((result) => {
+                if (result.confirm) {
+                    this.router.navigate(["/product-management"])
+                }
+            });
+    }
 confirmSubmission(form: FormGroup) {
   const reqObj = form.value;
   console.log('Form Submitted:', reqObj);

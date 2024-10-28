@@ -309,6 +309,11 @@ export class ProductManagementService {
             .post(environment.apiUrl + "product-tool/save", obj)
             .pipe(map((response :any) => response));
     }
+    excelExport(obj) {
+        return this.http
+            .post(environment.apiUrl + "product-tool/excel-export", obj,{responseType: 'text',observe: 'response'})
+            .pipe(map((response :any) => response));
+    }
 }
 
 
