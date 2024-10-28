@@ -3,7 +3,7 @@
 @import '../../../scss/utilities/colors';
 @import '../../../scss/utilities/base';
 
-.ag-theme-material {
+::ng-deep .ag-theme-material {
     .ag-header-cell {
         color: #232323;
         font-size: 16px;
