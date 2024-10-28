@@ -188,59 +188,61 @@ export class ProductManagementService {
                     key: 'clients',
                     label: 'Supplier',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-3 norightpadding',
                     setting: this.getMultiSelectConfig('Select Supplier')
                 }, {
                     key: 'product_state',
                     label: 'Product Status',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-3 norightpadding',
                     setting: this.getMultiSelectConfig('Select Status')
                 }, {
                     key: 'product_type',
                     label: 'Product Type', 
                     ype: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-3 norightpadding',
                     setting: this.getMultiSelectConfig('Select Type')
                 }, {
                     key: 'product_sub_type',
                     label: 'Product Sub-Type',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-3 norightpadding',
                     setting: this.getMultiSelectConfig('Select Sub-Type')
                 }, { 
                     key: 'source',
                     label: 'Source',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-3 norightpadding',
                     setting: this.getMultiSelectConfig('Select Source')
                 }, {
                     key: 'organic',
                     label: 'Organic',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding', 
+                    divClass: 'col-3 norightpadding', 
                     setting: this.getMultiSelectConfig('Select Organic')
                 }, {
                     key: 'active_status',
                     label: 'Active State',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-3 norightpadding',
                     setting: this.getMultiSelectConfig('Select State')
                 }, {
                     key: 'bottles_per_case',
                     label: 'Bottles Per Case',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-3 norightpadding',
                     setting: this.getMultiSelectConfig('Select Bottles Per Case')
                 }, {
                     key: 'container_sizes_filter',
                     label: 'Container Size',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
-                    setting: this.getMultiSelectConfig('Select Container Size')}
+                    divClass: 'col-3 norightpadding',
+                    setting: this.getMultiSelectConfig('Select Container Size')
+                }
             ],
         };
     }
+
     getMultiSelectConfig(placeholdertext, name = 'name') {
         return {
             enableSearch: true,
@@ -258,7 +260,6 @@ export class ProductManagementService {
             translationTexts: { buttonDefaultText: placeholdertext, searchPlaceholder: 'Search', noResultText: 'No results found' },
         };
     }
-
 
     getSummary(summaryData: any, token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
