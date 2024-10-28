@@ -16,6 +16,8 @@ import { CmpHeaderWidgetComponent } from './components/cmp-header-widget/cmp-hea
 import { CardLayoutDetailsComponent } from './components/card-layout-details/card-layout-details.component';
 import { ProductSummaryDimensionsCardComponent } from './components/product-summary-dimensions-card/product-summary-dimensions-card.component';
 import { CmpTabGroupComponent } from './components/cmp-tab-group/cmp-tab-group.component';
+import { SummaryGridComponent } from './components/summary-grid/summary-grid.component';
+import { AgGridModule } from 'ag-grid-angular'
 
 
 @NgModule({
@@ -33,15 +35,15 @@ import { CmpTabGroupComponent } from './components/cmp-tab-group/cmp-tab-group.c
     CmpHeaderWidgetComponent,
     CardLayoutDetailsComponent,
     ProductSummaryDimensionsCardComponent,
-    CmpTabGroupComponent
+    CmpTabGroupComponent,
+    SummaryGridComponent
   ],
   imports: [
     CommonModule,
     FormsModule, 
     ReactiveFormsModule,
     StatelessModule,
-
-    
+    AgGridModule
   ],
  
   exports: [
@@ -57,7 +59,8 @@ import { CmpTabGroupComponent } from './components/cmp-tab-group/cmp-tab-group.c
     CmpHeaderWidgetComponent,
     CardLayoutDetailsComponent,
     ProductSummaryDimensionsCardComponent,
-    CmpTabGroupComponent
+    CmpTabGroupComponent,
+    SummaryGridComponent
   ]
 })
 export class SharedModule { }

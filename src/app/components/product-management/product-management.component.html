@@ -13,33 +13,14 @@
                     (onEnter)="universalSearch($event)">
                 </app-summary-top-bar>
             </div>
-            <!-- <app-psi-ag-grid
-                 divId = "productsssss"></app-psi-ag-grid> -->
-            <!-- <div *ngFor="let item of summaryResponse" class="items">
-                    <p>{{item|json}}</p>
-                </div> -->
         </div>
-        <ag-grid-angular class="ag-theme-material ag-grid-custom" style="height: 100vh; width: 100%;"
-            [gridOptions]="gridOptions"></ag-grid-angular>
-        <!-- </div> -->
-        <div class="table-list-view">
-            <!-- <div *ngIf="productToolSummary.length > 0"> -->
-            <!-- <app-table 
-                    divId="agGridSummary"
-                    gridHeight="700"
-                    selectAllOption="true"
-                    [gridOptions] = "gridOptions"
-                    (setDataSource)="setDataSourceAgGrid()"
-                    
-                    >
-                </app-table> -->
-            <!-- </div> -->
-            <!-- <no-record show-no-data-msg="!isLoadingSummaryData && productToolSummary.length <= 0"
-                    no-data-msg="'No Products Found'" icon="'fal fa-surprise'">
-                </no-record> -->
-            <!-- <div *ngIf="isLoadingSummaryData" class="text-center u-pt4">
-                    <i class="fas fa-spinner fa-spin fa-2x fa-fw"></i>
-                </div> -->
+        <div>
+            <!-- <app-summary-grid  [gridOptions]="gridOptions"></app-summary-grid> -->
+            <ag-grid-angular
+                class="ag-theme-material ag-grid-custom"
+                style="height: 100vh; width: 100%;"
+                [gridOptions]="gridOptions">
+            </ag-grid-angular>
         </div>
     </div>
 </div>
