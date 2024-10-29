@@ -8,6 +8,7 @@ import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdo
 import { ConfirmationModalComponent } from '../../organism/confirmation-modal/confirmation-modal.component';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ProductManagementService } from '../product-management.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-product-add',
@@ -21,7 +22,8 @@ export class ProductAddComponent implements OnInit {
     private dropdownService: InputDropdownService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private productmanagementService: ProductManagementService
+    private productmanagementService: ProductManagementService,
+	private spinner : NgxSpinnerService
   ) { }
 
   // Flags and configuration properties
@@ -58,6 +60,7 @@ export class ProductAddComponent implements OnInit {
     ex_works_cost: [''],
     is_organic: ['', [Validators.required]],
     prod_type: ['', [Validators.required]],
+    compliance: [''],
     product_id: [''],
     abv: [''],
     upc_code: [''],
@@ -125,6 +128,7 @@ export class ProductAddComponent implements OnInit {
       { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
       this.dropdownService.createFilterObj('is_organic', 'organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
       this.dropdownService.createFilterObj('prod_type', 'product_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
+      { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', isVisible: true },
       { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '', isVisible: true },
       { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', isVisible: true },
       { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isVisible: true },
@@ -192,7 +196,31 @@ export class ProductAddComponent implements OnInit {
       cases_per_pallet: productData.cases_per_pallet, 
     });
   }
-  
+//   callSubBrandProduct(id) {
+// 	this.spinner.show('app-loader');
+// 	this.filtersList.sub_brands_products = [];
+// 	this.form[0].items[0].items[0].items[0].items[1].items[0].titleMap = [];
+// 	this.productToolService.getSubBrandProducts(id).then(response => {
+// 		this.form[0].items[0].items[0].items[0].items[1].items[0].disabled = false;
+// 		this.usSpinnerService.stop('app-loader');
+// 		if (!response.hasError) {
+// 			response.data = [{ id: 'Create New', name: 'Create New' }].concat(response.data);
+// 			this.filtersList.sub_brands_products = response.data;
+// 			if (this.model.sub_brand_product_id) {
+// 				this.model.sub_brand_product_id = this.filtersList.sub_brands_products.filter((subBrandProduct) => {
+// 					return subBrandProduct.id === this.model.sub_brand_product_id;
+// 				});
+// 			}
+// 			if (this.edit || this.duplicate) {
+// 				this.modelOld = angular.copy(this.model);
+// 				this.x.$broadcast('schemaFormValidate');
+// 			}
+// 			this.form[0].items[0].items[0].items[0].items[1].items[0].titleMap = response.data;
+// 			this.form[0].items[0].items[0].items[0].items[1].items[0].setting = this.productToolCrudService.getClientDropdownSetting(
+// 				this.filtersList, 'sub_brands_products');
+// 		}
+// 	});
+// }
   getDropDownArrayByIds (list, value) {
     let result = [] ;
     for (let i = 0; i < list.length; i++) {
@@ -204,13 +232,17 @@ export class ProductAddComponent implements OnInit {
     return result.length===0?null:result;
   }
 
+  changeComplianceValue(isChecked: boolean, fieldName: string) {
+		this.productForm.get(fieldName)?.setValue(isChecked ? '1' : '0');
+	}
+
   onSubmit(form: FormGroup) {
     this.formSubmitted = true;
     this.showError = false;
+	this.spinner.show();
     console.log("inside ", form.valid);
     console.log("inside error", form.value);
     if (form.valid) {
-      console.log("inside if");
       const reqObj = {
         clients: form.value.client_id,
         description: form.value.description,
@@ -249,20 +281,28 @@ export class ProductAddComponent implements OnInit {
     };
       
 
-    console.log('Form Submitted:', form.value);
-    //  this.openConfirmationPopup('submit');
+	if(form.value.compliance != 1){
+		reqObj['compliance'] = 0;
+		form.value['compliance'] = 0;
+	}	
     this.productmanagementService.getProductManagementSystemSave(form.value).subscribe(response => {
 
       console.log(response);
-      // if (!response.hasError) {
-      //     // this.$state.go(this.saveActionState, { "id": response.product_id, "data": { "message": response.msg } }, { reload: true });
-      // } else {
-      //     // this.confirmPopupOpen = false;
-      //     // this.commonService.showFlashMessage(true, response.msg, 'saved-footer');
-      // }
+      if (!response.hasError) {
+		  this.showError = false;
+		  let productId = form.value.product_id;
+		  if (productId) {
+			this.router.navigateByUrl(`/product-tool/${response.product_id}`);
+		  } else {
+			this.router.navigateByUrl(`/product-tool/${response.product_id}`);
+		  }
+      } else {
+		  this.showError = true;
+          // this.confirmPopupOpen = false;
+          // this.commonService.showFlashMessage(true, response.msg, 'saved-footer');
+      }
   });  
     this.showError = false;
-    
     } else {
       this.showError = true;
     }
@@ -321,7 +361,12 @@ confirmSubmission(form: FormGroup) {
   onDropdownStateChange(fieldName , field): void {
     console.log(fieldName, field[0].name);
     this.activeDropdownId = field ? (this.activeDropdownId === field ? null : field) : null;
-    this.productForm.get(fieldName)?.setValue(field[0].name);
+	if(fieldName == 'container_type' || fieldName == 'sub_brand_product_id'){
+		this.productForm.get(fieldName)?.setValue(field[0].id);
+	}else {
+		this.productForm.get(fieldName)?.setValue(field[0].name);
+	}
+    // this.productForm.get(fieldName)?.setValue(field[0].name);
   }
 
   /**
