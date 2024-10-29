@@ -11,9 +11,8 @@ import { saveAs } from 'file-saver';
   selector: 'app-product-management',
   templateUrl: './product-management.component.html',
   styleUrls: ['./product-management.component.scss'],
-
- 
 })
+
 export class ProductManagementComponent implements OnInit {
   reportRequestObj: any = {};
   summaryResponse: any;
@@ -44,8 +43,12 @@ export class ProductManagementComponent implements OnInit {
   FileSaver: any;
   downloading: boolean;
 
-  constructor(private productManagementService: ProductManagementService,
-    private authService: AuthService, private router: Router, private spinner :NgxSpinnerService) { }
+  constructor(
+    private productManagementService: ProductManagementService,
+    private authService: AuthService,
+    private router: Router,
+    private spinner : NgxSpinnerService
+  ) { }
 
   ngOnInit(): void {   
     this.getDropdown();
@@ -252,7 +255,6 @@ export class ProductManagementComponent implements OnInit {
   }
 
   applyFilters(selectedFilters: any) {
-    console.log('Selected Filters: ', selectedFilters);
     this.reportRequestObj = {
       ...this.reportRequestObj,
       ...selectedFilters

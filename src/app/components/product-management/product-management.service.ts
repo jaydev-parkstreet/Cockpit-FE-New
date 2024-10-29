@@ -9,7 +9,8 @@ import { environment } from 'src/environments/environment';
 })
 export class ProductManagementService {
 
-    constructor(private http: HttpClient,
+    constructor(
+        private http: HttpClient,
         private dropdownService: InputDropdownService,
     ) { }
     
@@ -315,6 +316,3 @@ export class ProductManagementService {
             .pipe(map((response :any) => response));
     }
 }
-
-
-
