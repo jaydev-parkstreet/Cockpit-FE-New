@@ -42,6 +42,7 @@ export class ProductManagementComponent implements OnInit {
   filterList: any = {};
   FileSaver: any;
   downloading: boolean;
+  filtermodal: any;
 
   constructor(
     private productManagementService: ProductManagementService,
@@ -65,7 +66,6 @@ export class ProductManagementComponent implements OnInit {
     this.productToolCardSummary = [];
     // this.selectedAll = false;
     this.busy = true;
-    this.filters = {};
     this.permissionObj = {};
     this.isSorting = false;
     this.scrollDisabled = false;
@@ -88,6 +88,24 @@ export class ProductManagementComponent implements OnInit {
 
   initGridOptions() {
     this.gridOptions = this.productManagementService.getGridOption();
+	this.gridOptions.onSortChanged = (params) => {
+		const allSortModels = params.columnApi.getAllColumns()
+            .filter(col => col.getSort())
+            .map(col => ({
+                colId: col.getColId(),
+                sort: col.getSort()
+            }));
+        
+		if (allSortModels && allSortModels.length > 0) {
+		  this.reportRequestObj.sort = allSortModels[0].colId;
+		  this.reportRequestObj.order = allSortModels[0].sort;
+		} else {
+		  this.reportRequestObj.sort = 'status';
+		  this.reportRequestObj.order = 'asc';
+		}
+        this.productToolSummary = [];
+		this.setDataSourceAgGrid();
+	};
     this.gridOptions.onGridReady = () => {
       this.setDataSourceAgGrid();
     };
@@ -108,6 +126,7 @@ export class ProductManagementComponent implements OnInit {
       this.hasMoreRecords = response.data.length === 25;
       this.summaryResponse = response.data;
       this.processResponseData(response, this.params);
+	  this.topPanelConfig.totalResult = response.resultCount
     }
     catch (error) {
       console.error("Error fetching summary:", error);
@@ -255,9 +274,14 @@ export class ProductManagementComponent implements OnInit {
   }
 
   applyFilters(selectedFilters: any) {
+	console.log(selectedFilters);
+	this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
+        acc[key] = selectedFilters[key].map((item: any) => item.id); 
+        return acc;
+    }, {});
     this.reportRequestObj = {
       ...this.reportRequestObj,
-      ...selectedFilters
+      ...this.filtermodal
     };
     this.reportRequestObj.page = 1;
     this.productToolSummary = [];
@@ -265,7 +289,7 @@ export class ProductManagementComponent implements OnInit {
   }
 
   resetFilters() {
-    this.filters = {};
+	this.filtermodal = [];
     this.reportRequestObj = {
       "page": 1,
       "pageSize": 25,

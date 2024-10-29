@@ -41,6 +41,7 @@ export class SummaryTopBarComponent implements OnInit {
 
   resetFilterChanges() {
     this.selectedFilters = {};
+    this.toggleFilter()
     this.resetFilters.emit();
   }
 
