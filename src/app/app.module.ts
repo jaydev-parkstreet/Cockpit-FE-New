@@ -13,10 +13,12 @@ import { StatelessModule } from './stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { NotesTabComponent } from './components/organism/notes-tab/notes-tab.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { SidebarMenuComponent } from './components/layout/sidebar-menu/sidebar-menu.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    SidebarMenuComponent
   ],
   imports: [
     BrowserModule,

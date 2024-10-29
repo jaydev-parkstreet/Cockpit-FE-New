@@ -149,3 +149,17 @@
     font-weight: 500;
     min-height: 25px;
   }
+.filter-results {
+    display: flex;
+    color: $colors-neutral-black;
+    font-family: $helvetica-neue;
+    font-size: 14px;
+    border-left: 1px solid $colors-neutral-light;
+    height: 30px;
+    align-items: center;
+    padding: 0 8px 0 16px;
+
+    span {
+        display: flex;
+    }
+}

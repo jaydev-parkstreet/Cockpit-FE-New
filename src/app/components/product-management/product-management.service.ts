@@ -54,6 +54,7 @@ export class ProductManagementService {
             sortable:false,
             lockPosition: true,
             resizable: false,
+            sortable: false,
             cellClass: 'select-all-header-cell pl0px header-check check'
         }, {
             headerName: 'Product Code',
@@ -191,7 +192,15 @@ export class ProductManagementService {
             searchText: '',
             searchOptions: {},
             showFilter: false,
-            actions: [],
+            totalResult: 0,
+            actions: {
+                result: {
+                    key: 'result',
+                    divClass: 'result-container',
+                    type: 'result',
+                    isShowOutSideFilter: true
+                }
+            },
             filtersConfig: [
                 {
                     key: 'clients',
