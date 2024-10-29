@@ -29,7 +29,8 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
   @Output() onDropDownChange: EventEmitter<any> = new EventEmitter<any>();
   @Input() isActive: boolean = false;
   @Output() dropdownStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  selectedItems: Item[] = [];
+  @Input() selectedItems: any[] = []; 
+  @Input() isAllItemsSelected: boolean = false;
   isOpen: boolean = false;
   searchText: string = '';
   isAllSelected: boolean = false;
@@ -59,9 +60,15 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
       this.originalItems = [...changes['filteredItems'].currentValue];
       this.updateFilteredItems(this.originalItems); 
     }
+    if (changes['isAllItemsSelected']) {
+      this.isAllSelected = this.isAllItemsSelected; 
+    }
+    this.updateSelectAllStates(); 
   }
 
-
+  updateSelectAllStates(): void {
+    this.isAllSelected = this.selectedItems.length === this.filteredItems.length; 
+  }
   toggleDropdown(): void {
     if (CmpInputDropdownComponent.currentlyOpenDropdown && CmpInputDropdownComponent.currentlyOpenDropdown !== this) {
       CmpInputDropdownComponent.currentlyOpenDropdown.closeDropdown();
