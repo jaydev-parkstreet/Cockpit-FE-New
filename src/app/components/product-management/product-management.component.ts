@@ -343,6 +343,7 @@ export class ProductManagementComponent implements OnInit {
     for (const order of this.productToolSummary) {
       order.checked = checked;
     }
+    this.selectAllFlag = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
     this.gridOptions.api.redrawRows();
     console.log(this.summaryResponse);

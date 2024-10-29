@@ -51,10 +51,9 @@ export class ProductManagementService {
             headerClass: 'check',
             suppressMenu: true,
             suppressSorting: true,
-            sortable:false,
+            sortable: false,
             lockPosition: true,
             resizable: false,
-            sortable: false,
             cellClass: 'select-all-header-cell pl0px header-check check'
         }, {
             headerName: 'Product Code',
