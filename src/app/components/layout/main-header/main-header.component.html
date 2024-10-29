@@ -1,1 +1,33 @@
-<div class="display-desktop"></div>
+<div class="headerbar">
+    <div class="header-left">
+        <div class="menutoggle">
+            <i class="fas fa-bars"></i>
+        </div>
+        <form id="nav-search-form" class="searchform">
+            <div class="search-container">
+                <input
+                    type="text"
+                    class="form-control"
+                    name="keyword"
+                    placeholder="Search People and Companies">
+                <i class="fa fa-search search-icon"></i>
+            </div>
+        </form>
+    </div>
+    <div class="header-right">
+        <div class="dropdown">
+            <button
+                class="dropdown-toggle"
+                (click)="toggleDropdown()"
+                aria-haspopup="true"
+                aria-expanded="isDropdownOpen">
+            </button>
+            <div class="dropdown-menu" [class.show]="isDropdownOpen" (click)="closeDropdown()">
+                <a class="dropdown-item" href="#">My Profile</a>
+                <a class="dropdown-item" href="#">Account Settings</a>
+                <a class="dropdown-item" href="#">Help</a>
+                <a class="dropdown-item" href="#" (click)="logout()">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
