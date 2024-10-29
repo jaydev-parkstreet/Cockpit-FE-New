@@ -24,7 +24,7 @@ export class ProductManagementComponent implements OnInit {
   selectedCardRows: any;
   mixType: boolean;
   isLoadingSummaryData: boolean = false;
-  productToolSummary: any;
+  productToolSummary: any[] = [];
   productToolCardSummary: any;
   hasMoreRecords: boolean;
   isLoading: boolean;
@@ -86,29 +86,30 @@ export class ProductManagementComponent implements OnInit {
     //     this.permissions.permissions.Create);
     // this.statusObj = this.productToolService.getStatusObject();
     this.initGridOptions();
+    this.productToolSummary = [];
   }
 
 
   initGridOptions() {
     this.gridOptions = this.productManagementService.getGridOption();
-	this.gridOptions.onSortChanged = (params) => {
+	  this.gridOptions.onSortChanged = (params) => {
 		const allSortModels = params.columnApi.getAllColumns()
             .filter(col => col.getSort())
             .map(col => ({
                 colId: col.getColId(),
                 sort: col.getSort()
             }));
-        
-		if (allSortModels && allSortModels.length > 0) {
-		  this.reportRequestObj.sort = allSortModels[0].colId;
-		  this.reportRequestObj.order = allSortModels[0].sort;
-		} else {
-		  this.reportRequestObj.sort = 'status';
-		  this.reportRequestObj.order = 'asc';
-		}
-        this.productToolSummary = [];
-		this.setDataSourceAgGrid();
-	};
+      if (allSortModels && allSortModels.length > 0) {
+        this.reportRequestObj.sort = allSortModels[0].colId;
+        this.reportRequestObj.order = allSortModels[0].sort;
+      } else {
+        this.reportRequestObj.sort = 'status';
+        this.reportRequestObj.order = 'asc';
+      }
+      this.productToolSummary = [];
+      this.isLoadingSummaryData = true;
+      this.setDataSourceAgGrid();
+	  };
     this.gridOptions.onGridReady = () => {
       this.setDataSourceAgGrid();
     };
@@ -128,18 +129,16 @@ export class ProductManagementComponent implements OnInit {
   async getSummaryData() {
     this.spinner.show();
     const token = localStorage.getItem('authToken');
-    const summaryData = this.reportRequestObj
+    const summaryData = this.reportRequestObj;
     try {
       const response: any = await this.productManagementService.getSummary(summaryData, token);
       this.hasMoreRecords = response.data.length === 25;
       this.summaryResponse = response.data;
       this.processResponseData(response, this.params);
-	  this.topPanelConfig.totalResult = response.resultCount
-    }
-    catch (error) {
+	    this.topPanelConfig.totalResult = response.resultCount
+    } catch (error) {
       console.error("Error fetching summary:", error);
-    }
-    finally {
+    } finally {
       this.spinner.hide();
     }
   }
@@ -344,6 +343,7 @@ export class ProductManagementComponent implements OnInit {
     for (const order of this.productToolSummary) {
       order.checked = checked;
     }
+    this.selectAllFlag = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
 	this.isProductSelected = !this.isProductSelected;
     this.gridOptions.api.redrawRows();
