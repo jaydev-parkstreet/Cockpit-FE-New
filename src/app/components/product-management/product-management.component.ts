@@ -44,6 +44,7 @@ export class ProductManagementComponent implements OnInit {
   downloading: boolean;
   selectAllFlag: boolean;
   filtermodal: any;
+  isProductSelected: any;
 
   constructor(
     private productManagementService: ProductManagementService,
@@ -344,8 +345,8 @@ export class ProductManagementComponent implements OnInit {
       order.checked = checked;
     }
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
+	this.isProductSelected = !this.isProductSelected;
     this.gridOptions.api.redrawRows();
-    console.log(this.summaryResponse);
   }
 
   selectCheckBox(params: any) {
@@ -362,6 +363,7 @@ export class ProductManagementComponent implements OnInit {
     } else {
         this.selectAllFlag = true;
     }
+	this.isProductSelected = !this.isProductSelected;
     this.gridOptions.api.redrawRows();
   }
 }

@@ -54,7 +54,6 @@ export class ProductManagementService {
             sortable:false,
             lockPosition: true,
             resizable: false,
-            sortable: false,
             cellClass: 'select-all-header-cell pl0px header-check check'
         }, {
             headerName: 'Product Code',
@@ -186,7 +185,7 @@ export class ProductManagementService {
       return '--';
     }
 
-    getTopPanelConfig() {
+    getTopPanelConfig(isActive = false) {
         return {
             placeholder: 'Search',
             searchText: '',
@@ -195,11 +194,42 @@ export class ProductManagementService {
             totalResult: 0,
             actions: {
                 result: {
-                    key: 'result',
-                    divClass: 'result-container',
-                    type: 'result',
-                    isShowOutSideFilter: true
-                }
+                  key: 'result',
+                  divClass: 'result-container',
+                  type: 'result',
+                  isShowOutSideFilter: true
+                },
+                extraActions: [{
+                    type: 'icon',
+                    showTooltip: true,
+                    tooltipText: 'Import bulk products',
+                    icon: 'fas fa-layer-group',
+                    key: 'mass-upload',
+                    permission: true,
+                  }, {
+                    type: 'icon',
+                    showTooltip: true,
+                    tooltipText: 'Attach',
+                    icon: 'fas fa-paperclip',
+                    key: 'attachment',
+                    permission: true
+                  }, {
+                    type: 'icon',
+                    showTooltip: true,
+                    tooltipText: 'Note',
+                    icon: 'fas fa-comment',
+                    key: 'notes',
+                    permission: true
+                  }, {
+                    type: 'icon',
+                    showTooltip: true,
+                    tooltipText: isActive ? 'Activate' : 'Deactivate',
+                    icon: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
+                    key: 'active',
+                    isActive,
+                    permission: true
+                  }
+                ]
             },
             filtersConfig: [
                 {
