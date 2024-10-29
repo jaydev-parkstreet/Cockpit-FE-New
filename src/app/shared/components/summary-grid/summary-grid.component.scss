@@ -3,6 +3,55 @@
 @import '../../../scss/utilities/colors';
 @import '../../../scss/utilities/base';
 
+.checkbox-container {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 16px;
+    height: 16px;
+    width: 16px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    height: 16px;
+    width: 16px;
+    background-color: $colors-neutral-white;
+    border: 1px solid $colors-v2-base-primary;
+    top: 24px;
+    z-index: 9999;
+    margin-left: 11px;
+    border-radius: 4px;
+}
+
+.checkbox-container input[type="checkbox"]:checked+.checkmark {
+    background-color: $colors-v2-base-primary;
+    border-color: $colors-v2-base-primary;
+}
+
+.checkbox-container input[type="checkbox"]:checked+.checkmark::after {
+    content: "";
+    position: absolute;
+    display: block;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid $colors-neutral-white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
 ::ng-deep .ag-theme-material {
     .ag-header-cell {
         color: #232323;
@@ -170,7 +219,8 @@
             background: $colors-base-primary-v-low-t-10;
         }
     }
-    .ag-row:hover{
+
+    .ag-row:hover {
         background: $colors-base-primary-v-low-t-05;
     }
 
