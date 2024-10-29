@@ -66,6 +66,17 @@
                                                                         [id]="field.name" [formControlName]="field.name"
                                                                         [placeholder]="field.placeholder"
                                                                         [required]="field.required" />
+                                                                    
+                                                                    <input *ngIf="field?.type == 'checkbox'"
+                                                                        [type]="field.type"
+                                                                        [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
+                                                                        [id]="field.name"
+                                                                        [formControlName]="field.name"
+                                                                        [placeholder]="field.placeholder"
+                                                                        [required]="field.required"
+                                                                        [checked]="field.value === '1'"
+                                                                        value="0"
+                                                                        (change)="changeComplianceValue($event.target.checked, field.name)" />
 
                                                                 </ng-container>
                                                             </ng-container>
