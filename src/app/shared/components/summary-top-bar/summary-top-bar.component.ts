@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class SummaryTopBarComponent implements OnInit {
   @Input() config: any;
+  @Input() productChecked: any;
   @Input() filterList: any;
   @Output() addProduct = new EventEmitter<any>();
   @Output() applyFilters = new EventEmitter<any>();
@@ -41,6 +42,7 @@ export class SummaryTopBarComponent implements OnInit {
 
   resetFilterChanges() {
     this.selectedFilters = {};
+    this.toggleFilter()
     this.resetFilters.emit();
   }
 

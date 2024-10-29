@@ -7,6 +7,7 @@
         <div class="check-container">
             <div class="u-w-inherit">
                 <app-summary-top-bar
+                    [productChecked]="isProductSelected"
                     [config]="topPanelConfig"
                     [filterList]="filterList"
                     (addProduct)="addProduct()"
@@ -17,12 +18,16 @@
                 </app-summary-top-bar>
             </div>
         </div>
-        <div>
+        <div *ngIf="!isLoadingSummaryData || productToolSummary">
             <app-summary-grid
-                [gridOptions] = "gridOptions">
+                [gridOptions] = "gridOptions"
+                [selectAllOption] = "true"
+                [checkAll] = "selectAllFlag"
+                (selectAllChanged) = "onSelectAllChanged($event)"
+                >
             </app-summary-grid>
         </div>
-        <div class="no-record-message" *ngIf="!summaryResponse || summaryResponse.length === 0">
+        <div class="no-record-message" *ngIf="isLoadingSummaryData || !productToolSummary.length">
             <i class="fas fa-surprise"></i>
             <span>No Data Found</span>
         </div>        
