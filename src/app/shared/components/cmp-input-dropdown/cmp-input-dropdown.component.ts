@@ -21,7 +21,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
   @Input() label: string;
   @Input() validationClasses: string;
   @Input() settings: any = {};
-  @Input() filteredItems: any ;
+  @Input() filteredItems: Item[]; 
   @Input() formControl: FormControl;
   @Input() showSelectAll: boolean = true;
   @Input() showCheckboxes: boolean = true;
@@ -34,6 +34,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
   searchText: string = '';
   isAllSelected: boolean = false;
   hideList: boolean = false;
+  originalItems: Item[] = [];
   static currentlyOpenDropdown: CmpInputDropdownComponent | null = null;
 
   texts = {
@@ -46,12 +47,17 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     this.selectedItems = this.formControl?.value || [];
     this.updateFilteredItems(this.filteredItems);
     this.updateSelectAllState(this.filteredItems);
+    this.originalItems = [...this.filteredItems]; 
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['isActive'] && this.isActive) {
       this.isOpen = true; 
     } else {
       this.isOpen = false;
+    }
+    if (changes['filteredItems']) {
+      this.originalItems = [...changes['filteredItems'].currentValue];
+      this.updateFilteredItems(this.originalItems); 
     }
   }
 
@@ -98,9 +104,9 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
 
   toggleSelectAll(): void {
     if (this.isAllSelected) {
-        this.selectedItems = [];
+      this.selectedItems = [];
     } else {
-        this.selectedItems = [...this.filteredItems];
+      this.selectedItems = [...this.originalItems];
     }
     this.isAllSelected = !this.isAllSelected;
     this.onDropDownChange.emit(this.selectedItems);
@@ -122,14 +128,19 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     return this.selectedItems.some(selectedItem => selectedItem.id === item.id);
   }
 
-  filterItems(items): void {
+  filterItems(): void {
     const searchTextLower = this.searchText.toLowerCase();
-    this.filteredItems = items.filter(item =>
-      item.toLowerCase().includes(searchTextLower)
+    if (searchTextLower.trim().length === 0) {
+      this.filteredItems = [...this.originalItems]; 
+      this.hideList = false; 
+      return;
+    }
+    this.filteredItems = this.originalItems.filter((item: Item) =>
+      item.name.toLowerCase().includes(searchTextLower)
     );
-    this.hideList = this.filteredItems.length === 0 && this.searchText !== '';
+    this.hideList = this.filteredItems.length === 0;
   }
-
+  
   clearSearch(): void {
     this.searchText = '';
     this.updateFilteredItems(this.filteredItems);
@@ -163,7 +174,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
 
   writeValue(obj: any): void {
     this.selectedItems = obj || [];
-    this.updateFilteredItems(this.filteredItems);
+    this.updateFilteredItems(this.originalItems); 
   }
 
   registerOnChange(fn: any): void {
