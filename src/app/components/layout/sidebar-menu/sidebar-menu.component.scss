@@ -1,12 +1,39 @@
 @import '../../../scss/variables/colors';
 @import '../../../scss/variables/typography';
 
-// .sidebar-menu {
-//     height: 100vh;
-//     width: 240px;
-//     background-color: $colors-neutral-black;
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     z-index: 100;
-// }
+.sidebar-layout {
+    .sidebar-header {
+        padding: 16px;
+    }
+    .sidebar-content .sidebar-menu #mainMenu {
+        padding: 8px 16px;
+        // padding: 24px 10px 0 10px;
+        list-style: none;
+        // width: 270px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .sidebar-menu-item {
+            a {
+                font-family: "CrimsonPro-Medium";
+                display: flex;
+                align-items: center;
+                height: 40px;
+                padding: 0 10px;
+                color: $colors-neutral-white;
+                text-decoration: none;
+                font-size: 14px;
+
+                i {
+                    // padding-right: 8px;
+                    font-size: 16px;
+                    width: 28px;
+                }
+            }
+
+        }
+
+    }
+    
+}

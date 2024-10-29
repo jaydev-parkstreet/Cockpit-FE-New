@@ -1,1 +1,18 @@
-<div class="sidebar-menu"></div>
+<div class="sidebar-layout">
+    <div class="sidebar-header">
+        <img src="http://cockpit.parkstreet.local/images/cockpit/logo.png" width="200px">
+    </div>
+    <div class="sidebar-content">
+        <div class="sidebar-menu open-current-submenu show-scrollbar">
+            <ul id="mainMenu">
+                <li class="sidebar-menu-item" *ngFor="let menu of menuData">
+                    <a href="">
+                        <i [class]="menu.iconClass"></i>
+                        <span>{{menu.menuContent}}</span> 
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="sidebar-footer"></div>
+</div>
