@@ -20,7 +20,8 @@ const AppRoutes = {
         RESEND_2FA_VERIFICATION_CODE: 'auth/resend_2FA_verification_code',
         VERIFY_2FA_VERIFICATION_CODE: 'auth/verify_2FA_verification_code_for_login',
         VERIFY_2FA_VERIFICATION_CODE_USER: 'auth/verify_2FA_verification_code',
-        GET_PROFILE_INFO: 'get-profile'
+        GET_PROFILE_INFO: 'get-profile',
+        GET_SUB_BRAND_PRODUCT_WITH_CLIENT_ID: 'product-tool/get-sub-brand-products-client'
     }
 };
 
