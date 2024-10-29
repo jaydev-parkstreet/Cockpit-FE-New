@@ -1,5 +1,7 @@
 <div class="product-management">
-    <app-header-tool titleText="Product Management" titleIcon="fas fa-file-invoice-dollar">
+    <app-header-tool
+        titleText="Product Management"
+        titleIcon="fas fa-file-invoice-dollar">
     </app-header-tool>
     <div class="product-tool-container">
         <div class="check-container">
@@ -15,7 +17,9 @@
             </div>
         </div>
         <div>
-            <app-summary-grid  [gridOptions]="gridOptions"></app-summary-grid>
+            <app-summary-grid
+                [gridOptions]="gridOptions">
+            </app-summary-grid>
         </div>
     </div>
 </div>
