@@ -11,13 +11,14 @@
                         <span>{{menu.menuContent}}</span> 
                         <span class="toggle-icon"
                             (click)="toggleIcon(menu)"
-                            [ngClass]="{'icon-plus': !menu.isExpanded, 'icon-minus': menu.isExpanded}">
+                            [ngClass]="{'icon-plus': !menu.isExpanded, 'icon-minus': menu.isExpanded}"
+                            *ngIf="menu.iconPlus">
                         </span>
                     </a>
                 
                 <ul id="mainMenu-items" [ngStyle]="{'display': menu.isExpanded ? 'block':'none'}">
                     <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenuItems">
-                        <a href="">
+                        <a [routerLink]="'/product-managementt'">
                             <i class="fas fa-caret-right"></i>
                             <span>{{submenu.submenuContent}}</span> 
                         </a>

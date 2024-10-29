@@ -15,32 +15,38 @@ export class SidebarMenuComponent implements OnInit {
       id:1,
       iconClass: 'fas fa-tachometer-alt',
       menuContent: 'Dashboard',
-      isExpanded: false
+      isExpanded: false,
+      iconPlus:false
     },
     { id:2,
       iconClass: 'fas fa fa-home',
       menuContent: 'Gateway',
-      isExpanded: false
+      isExpanded: false,
+      iconPlus:false
     }, {
       id:3,
       iconClass: 'fas fa-sitemap',
       menuContent: 'Companies & Contacts',
-      isExpanded: false
+      isExpanded: false,
+      iconPlus:true
     },
     { id:4,
       iconClass: 'fas fa-glass-martini',
       menuContent: 'Suppliers',
-      isExpanded: false
+      isExpanded: false,
+      iconPlus:true
     },
     { id:5,
       iconClass: 'fas fa-dollar-sign',
       menuContent: 'Accounting',
-      isExpanded: false
+      isExpanded: false,
+      iconPlus:true
     },
     { id:6,
       iconClass: 'fas fa-cogs',
       menuContent: 'Operations',
       isExpanded: false,
+      iconPlus:true,
       submenuItems :[{
         submenuContent:'Product Management System'
       }]
@@ -48,31 +54,33 @@ export class SidebarMenuComponent implements OnInit {
     { id:7,
       iconClass: 'fas fa-stamp',
       menuContent: 'Compliance',
-      isExpanded: false
+      isExpanded: false,
+      iconPlus:true
     },{ id:8,
       iconClass: 'fas fa-certificate',
       menuContent: 'Shared Services',
-      isExpanded: false
+      isExpanded: false,
+      iconPlus:true
     },{ id:9,
       iconClass: 'fas fa-poll',
       menuContent: 'Supplier Development',
-      isExpanded: false
+      isExpanded: false,
+      iconPlus:true
     },{ id:10,
       iconClass: 'fas fa-trophy',
       menuContent: 'Service Standards',
-      isExpanded: false
+      isExpanded: false,
+      iconPlus:true
     },{ id:11,
       iconClass: 'fas fa-bullhorn',
       menuContent: 'Announcements',
-      isExpanded: false
+      isExpanded: false,
+      iconPlus:true
     },{ id:12,
       iconClass: 'fas fa-code',
       menuContent: 'Product Development',
-      isExpanded: false
-    },{ id:13,
-      menuContent: 'Beta Tools',
-      isExpanded: false
-
+      isExpanded: false,
+      iconPlus:true
     }];
   }
 
