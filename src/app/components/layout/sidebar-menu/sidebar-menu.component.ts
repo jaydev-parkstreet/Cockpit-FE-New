@@ -12,51 +12,77 @@ export class SidebarMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.menuData = [{
+      id:1,
       iconClass: 'fas fa-tachometer-alt',
-      menuContent: 'Dashboard'
+      menuContent: 'Dashboard',
+      isExpanded: false
     },
-    {
+    { id:2,
       iconClass: 'fas fa fa-home',
-      menuContent: 'Gateway'
+      menuContent: 'Gateway',
+      isExpanded: false
     }, {
+      id:3,
       iconClass: 'fas fa-sitemap',
-      menuContent: 'Companies & Contacts'
+      menuContent: 'Companies & Contacts',
+      isExpanded: false
     },
-    {
+    { id:4,
       iconClass: 'fas fa-glass-martini',
-      menuContent: 'Suppliers'
+      menuContent: 'Suppliers',
+      isExpanded: false
     },
-    {
+    { id:5,
       iconClass: 'fas fa-dollar-sign',
-      menuContent: 'Accounting'
+      menuContent: 'Accounting',
+      isExpanded: false
     },
-    {
+    { id:6,
       iconClass: 'fas fa-cogs',
-      menuContent: 'Operations'
+      menuContent: 'Operations',
+      isExpanded: false,
+      submenuItems :[{
+        submenuContent:'Product Management System'
+      }]
     },
-    {
+    { id:7,
       iconClass: 'fas fa-stamp',
-      menuContent: 'Compliance'
-    },{
+      menuContent: 'Compliance',
+      isExpanded: false
+    },{ id:8,
       iconClass: 'fas fa-certificate',
-      menuContent: 'Shared Services'
-    },{
+      menuContent: 'Shared Services',
+      isExpanded: false
+    },{ id:9,
       iconClass: 'fas fa-poll',
-      menuContent: 'Supplier Development'
-    },{
+      menuContent: 'Supplier Development',
+      isExpanded: false
+    },{ id:10,
       iconClass: 'fas fa-trophy',
-      menuContent: 'Service Standards'
-    },{
+      menuContent: 'Service Standards',
+      isExpanded: false
+    },{ id:11,
       iconClass: 'fas fa-bullhorn',
-      menuContent: 'Announcements'
-    },{
+      menuContent: 'Announcements',
+      isExpanded: false
+    },{ id:12,
       iconClass: 'fas fa-code',
-      menuContent: 'Product Development'
-    },{
-      
-      menuContent: 'Beta Tools'
+      menuContent: 'Product Development',
+      isExpanded: false
+    },{ id:13,
+      menuContent: 'Beta Tools',
+      isExpanded: false
 
     }];
+  }
+
+  toggleIcon (menu:any) {
+    this.menuData.forEach((el)=> {
+      if (el.id !== menu.id) {
+        el.isExpanded = false;
+      }
+    });
+    menu.isExpanded = !menu.isExpanded;
   }
 
 }
