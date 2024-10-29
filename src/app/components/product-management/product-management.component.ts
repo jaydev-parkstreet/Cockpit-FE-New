@@ -42,6 +42,7 @@ export class ProductManagementComponent implements OnInit {
   filterList: any = {};
   FileSaver: any;
   downloading: boolean;
+  selectAllFlag: boolean;
 
   constructor(
     private productManagementService: ProductManagementService,
@@ -91,6 +92,11 @@ export class ProductManagementComponent implements OnInit {
     this.gridOptions.onGridReady = () => {
       this.setDataSourceAgGrid();
     };
+    this.gridOptions.onCellClicked = (params) => {
+      if (params.colDef.cellRenderer === 'checkbox' && (params.event.srcElement.className === 'checkbox_gir_row')) {
+          this.selectCheckBox(params);
+      }
+  }
   }
 
   /**
@@ -303,4 +309,34 @@ export class ProductManagementComponent implements OnInit {
 		const result = header.split(';')[1].trim().split('=')[1];
 		return result.replace(/"/g, '');
 	}
+
+  onSelectAllChanged(isChecked: boolean) {
+    this.updateCheckboxState(isChecked);
+  }
+
+  updateCheckboxState(checked: boolean) {
+    for (const order of this.productToolSummary) {
+      order.checked = checked;
+    }
+    this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
+    this.gridOptions.api.redrawRows();
+    console.log(this.summaryResponse);
+  }
+
+  selectCheckBox(params: any) {
+    if(this.productToolSummary[params.rowIndex].checked) {
+        this.productToolSummary[params.rowIndex].checked = false;
+        this.selectedRowCount--;
+    } else {
+        this.productToolSummary[params.rowIndex].checked = true;
+        this.selectedRowCount++;
+    }
+
+    if(this.selectedRowCount === 0) {
+        this.selectAllFlag = false;
+    } else {
+        this.selectAllFlag = true;
+    }
+    this.gridOptions.api.redrawRows();
+  }
 }

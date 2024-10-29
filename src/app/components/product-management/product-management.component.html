@@ -19,7 +19,11 @@
         </div>
         <div>
             <app-summary-grid
-                [gridOptions] = "gridOptions">
+                [gridOptions] = "gridOptions"
+                [selectAllOption] = "true"
+                [checkAll] = "selectAllFlag"
+                (selectAllChanged) = "onSelectAllChanged($event)"
+                >
             </app-summary-grid>
         </div>
         <div class="no-record-message" *ngIf="!summaryResponse || summaryResponse.length === 0">
