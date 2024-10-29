@@ -6,6 +6,7 @@ import { ProductManagementComponent } from './components/product-management/prod
 import { AuthGuard } from './components/authentication/auth.guard';
 import { ProductAddComponent } from './components/product-management/product-add/product-add.component';
 import { ProductManagementDetailsComponent } from './components/product-management/product-management-details/product-management-details.component';
+import { ApplicationComponent } from './components/layout/application/application.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,15 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginPageComponent
+  },
+  {
+    path: 'dashboard',
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: ApplicationComponent
+      }]
   },
   {
     path: 'middle',

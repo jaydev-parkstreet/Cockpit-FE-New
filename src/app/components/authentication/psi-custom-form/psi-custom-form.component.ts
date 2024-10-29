@@ -80,7 +80,7 @@ export class PsiCustomFormComponent implements OnInit {
           // this.router.navigate(['/product-management']);
           // window.location.href = environment.oldCockpit + '/router.php/dashboard';
         });
-        this.router.navigate(['/product-management']);
+        this.router.navigate(['/dashboard']);
         // window.location.href = environment.oldCockpit + '/router.php/dashboard';
       } else {
         this.isShowLoginErrorMsg = true;
