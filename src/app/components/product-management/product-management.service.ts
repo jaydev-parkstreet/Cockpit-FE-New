@@ -153,7 +153,7 @@ export class ProductManagementService {
   
     renderId(params) {
       if (params.value) {
-        return `<a target="_blank" href="product-tool/${params.value}">${params.value}</a>`;
+        return `<a target="_blank" class="id-renderer" href="product-tool/${params.value}">${params.value}</a>`;
       }
       return '-';
     }

@@ -58,6 +58,12 @@
         font-size: 16px;
         background-color: white;
         text-transform: none;
+        cursor: default;
+
+        &:hover {
+            background-color: unset !important;
+            border: none !important;
+        }
     }
 
     .ag-header {

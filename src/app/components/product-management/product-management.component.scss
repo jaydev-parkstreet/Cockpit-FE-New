@@ -50,6 +50,11 @@
             }
 
         }
+
+        .id-renderer {
+            color: $black !important;
+            text-decoration: none;
+        }
     }
 
     .no-record-message {
