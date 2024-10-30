@@ -284,3 +284,19 @@
         }
     }
 }
+
+.input-dropdown.disabled {
+    background-color: #fff2f1; 
+    // color: #a0a0a0;
+    pointer-events: none;
+  }
+  
+  .input-dropdown.disabled .dropdown-header {
+    cursor: not-allowed;
+    color:$colors-neutral-dark-v-medium;
+  }
+
+  
+  .input-dropdown.disabled .dropdown-list {
+    display: none;
+  }

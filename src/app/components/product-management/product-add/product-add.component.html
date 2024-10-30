@@ -40,9 +40,11 @@
                                                                         [allowSingleSelect]="true"
                                                                         [settings]="field.setting"
                                                                         [filteredItems]="filterList[field.key]"
+                                                                        [isActive]="!field.isDisabled"
+                                                                        [isDisabled]="field.isDisabled"
                                                                         (onDropDownChange)="onDropdownStateChange(field.name, $event)">
+            
                                                                     </app-cmp-input-dropdown>
-
                                                                     <div *ngIf="isFieldInvalid(field.name)"
                                                                         class="error-message">
                                                                         <span
