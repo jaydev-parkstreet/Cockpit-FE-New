@@ -5,7 +5,7 @@
 
     .left-panel {
         width: 240px;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         z-index: 100;
@@ -13,10 +13,19 @@
         background-color: $colors-neutral-black;
     }
 
-    .main-panel {
+    .header-panel {
         margin-left: 240px;
         background-color: $colors-neutral-black;
-        width: 88%;
-        height: 48px;
+        // width: calc(100% - 115px) !important;
+        // width: 88%;
+        // height: 48px;
+        // .headerbar {
+        //     position: fixed;
+        // }
+    }
+
+    .main-panel {
+        margin-left: 240px;
+
     }
 }
