@@ -75,7 +75,8 @@ export class PsiCustomFormComponent implements OnInit {
      //  const tkn = responce.data.token;
       //  console.log("Inside",tkn);
      //   this.authService.login(tkn);
-      this.authService.login(token);
+     const currentUserData = res.data;
+     this.authService.login(token, currentUserData);
         await this.setSessionOldNavigatorSite(token).then(() => {
           // this.router.navigate(['/product-management']);
           // window.location.href = environment.oldCockpit + '/router.php/dashboard';

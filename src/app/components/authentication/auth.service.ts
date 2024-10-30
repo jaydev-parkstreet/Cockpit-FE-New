@@ -1,47 +1,53 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import AppRoutes from 'src/app/app.routes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
 
-  constructor( private http: HttpClient ) { 
+  private userData: any;
+
+  constructor(private http: HttpClient) { 
     this.checkToken();
   }
 
-  login(token: string): void {
+  login(token: string, userData: any): void {
     localStorage.setItem('authToken', token);
+    localStorage.setItem('userData', JSON.stringify(userData));
+    this.userData = userData;
     this.isAuthenticatedSubject.next(true);
   }
 
   logout(): void {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
+    this.userData = null;
     this.isAuthenticatedSubject.next(false);
   }
 
-  getToken() : string | null {
+  getToken(): string | null {
     return localStorage.getItem('authToken');
   }
 
-  // selectClient(token) {
-  //   let clients = {
-  //     "clients": [
-  //       "583"
-  //     ]
-  //   }
-  //   return this.http
-  //   .post(environment.apiUrl + 'select-clients', clients , token)
-  //   .toPromise();
-  // }
+  getUserData(): any {
+    if (!this.userData) {
+      const storedUserData = localStorage.getItem('userData');
+      this.userData = storedUserData ? JSON.parse(storedUserData) : null;
+    }
+    return this.userData;
+  }
 
   private checkToken(): void {
     const token = this.getToken();
     this.isAuthenticatedSubject.next(!!token);
+    if (token) {
+      const storedUserData = localStorage.getItem('userData');
+      this.userData = storedUserData ? JSON.parse(storedUserData) : null;
+    }
   }
 }
