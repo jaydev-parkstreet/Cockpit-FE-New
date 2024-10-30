@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
@@ -9,10 +10,16 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class AppComponent implements OnInit {
   title = 'COCKPIT-FE';
 
-  constructor(private spinner: NgxSpinnerService) {
+  constructor(private spinner: NgxSpinnerService,private router:Router) {
 
   }
   ngOnInit() {
+
+    const loggedIn = localStorage.getItem('authToken');
+    if (!loggedIn) {
+      this.router.navigate(['/login']);
+    }
+
     // this.spinner.show();
     // setTimeout(() => {
     //   this.spinner.hide();

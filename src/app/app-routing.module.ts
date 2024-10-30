@@ -24,12 +24,15 @@ const routes: Routes = [
     component: ApplicationComponent,
     children: [{
         path: 'product-management',
-        component: ProductManagementComponent,
         children: [
-          {
-            path: 'add',
-            component: ProductAddComponent
-          }]
+              {
+                path: '',
+                component: ProductManagementComponent
+              },
+              {
+                path: 'add',
+                component: ProductAddComponent
+              }]
       }]
   },
   {

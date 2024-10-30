@@ -18,7 +18,7 @@
                 
                 <ul id="mainMenu-items" [ngStyle]="{'display': menu.isExpanded ? 'block':'none'}">
                     <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenuItems">
-                        <a [routerLink]="'/product-managementt'">
+                        <a [routerLink]="'/product-management'">
                             <i class="fas fa-caret-right"></i>
                             <span>{{submenu.submenuContent}}</span> 
                         </a>
