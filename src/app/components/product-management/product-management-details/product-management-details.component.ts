@@ -83,8 +83,8 @@ export class ProductManagementDetailsComponent implements OnInit {
             this.navigateToEdit();
         } else if (action.key === 'Approve') {
             this.getApproveAPI();
-        }  else if (action.key === 'inactivate') {
-            this.getInactiveAPI();
+        }  else if (action.key === 'Activate') {
+            this.getActivateAPI();
         } else if (action.key === 'Pre-Approved') {
             this.getPreApproveAPI();
         } else if (action.key === 'Needs Action-Waiting on Supplier') {
@@ -125,14 +125,41 @@ export class ProductManagementDetailsComponent implements OnInit {
         });
     }
     getPreApproveAPI() {
-        console.log("Call Pre-Approve API here");
+        this.spinner.show();
+        this.productManagementService.getPreApproveAPI(this.productDetails.product_id).subscribe((response) => {
+            this.spinner.hide();
+            if (!response.hasError) {
+                this.getProductData(this.productDetails.product_id);
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+            } else {
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+            }
+        });
     }
 
     getNeedActionAPI() {
-        console.log("call get Need Action API here");
+        this.spinner.show();
+        this.productManagementService.getNeedActionAPI(this.productDetails.product_id).subscribe((response) => {
+            this.spinner.hide();
+            if (!response.hasError) {
+                this.getProductData(this.productDetails.product_id);
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+            } else {
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+            }
+        });
     }
-    getInactiveAPI() {
-        console.log("call get Inactive API here");
+    getActivateAPI() {
+        this.spinner.show();
+        this.productManagementService.getActivateAPI([this.productDetails.product_id], this.productDetails.is_active).subscribe((response) => {
+            this.spinner.hide();
+            if (!response.hasError) {
+                this.getProductData(this.productDetails.product_id);
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+            } else {
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+            }
+        });
     }
 
     navigateToEdit() {
@@ -407,7 +434,7 @@ export class ProductManagementDetailsComponent implements OnInit {
             ); 
         }
             data.push({
-                key:'inactivate',
+                key:'Activate',
                 icon:detail.is_active !== 1 ? 'fas fa-check-circle':'fas fa-times-circle',
                 button: detail.is_active !== 1 ? 'Activate' : 'Deactivate',
                 showTooltip: true, 
