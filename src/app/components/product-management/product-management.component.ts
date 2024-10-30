@@ -113,11 +113,17 @@ export class ProductManagementComponent implements OnInit {
     this.gridOptions.onGridReady = () => {
       this.setDataSourceAgGrid();
     };
+    this.gridOptions.getRowClass = function (params) {
+      if (params.data && params.data.checked && params.data.checked === true) {
+        return 'grid-selected-row';
+      }
+      return '';
+    };
     this.gridOptions.onCellClicked = (params) => {
       if (params.colDef.cellRenderer === 'checkbox' && (params.event.srcElement.className === 'checkbox_gir_row')) {
           this.selectCheckBox(params);
       }
-  }
+    };
   }
 
   /**

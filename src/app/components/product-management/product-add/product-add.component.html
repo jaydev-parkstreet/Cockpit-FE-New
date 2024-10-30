@@ -39,7 +39,7 @@
                                                                         [showCheckboxes]="false"
                                                                         [allowSingleSelect]="true"
                                                                         [settings]="field.setting"
-                                                                        [filteredItems]="filterList[field.key]"
+                                                                        [filteredItems]="filterList && filterList[field.key]"
                                                                         (onDropDownChange)="onDropdownStateChange(field.name, $event)">
                                                                     </app-cmp-input-dropdown>
 

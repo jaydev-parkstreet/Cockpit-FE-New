@@ -216,7 +216,6 @@
     }
 
     .ag-row {
-        height: 30px !important;
         margin-top: 3px;
         margin-bottom: 3px;
         border: none;
@@ -228,10 +227,10 @@
             padding-right: 12px;
             font-size: 14px;
         }
+    }
 
-        .gird-selected-row {
-            background: $colors-base-primary-v-low-t-10;
-        }
+    .grid-selected-row {
+        background: $colors-base-primary-v-low-t-10;
     }
 
     .ag-row:hover {
