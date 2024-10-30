@@ -343,7 +343,7 @@ export class ProductManagementService {
             'productId' : productId
         };
         return this.http
-            .post(environment.apiUrl +"product-tool/ns_sync", params)
+            .post(environment.apiUrl +"product-tool/ns-sync", params)
             .pipe(map((response :any) => response.data));
     }
 
@@ -404,6 +404,12 @@ export class ProductManagementService {
     excelExport(obj) {
         return this.http
             .post(environment.apiUrl + "product-tool/excel-export", obj,{responseType: 'text',observe: 'response'})
+            .pipe(map((response :any) => response));
+    }
+
+    getSyncStatusDetails(id) {
+        return this.http
+            .get(environment.apiUrl +`product-tool/ns-sync-status?id=${id}`)
             .pipe(map((response :any) => response));
     }
 }

@@ -31,6 +31,8 @@ export class ProductManagementDetailsComponent implements OnInit {
         3: 'Sync',
         4: 'Sync'
     }
+    syncStatusFail: boolean;
+    timerObj: any;
 
     constructor(
         private productManagementService: ProductManagementService,
@@ -45,8 +47,8 @@ export class ProductManagementDetailsComponent implements OnInit {
         this.codesTitle = 'CODES';
         this.dimensionTitle = 'DIMENSIONS';
         const productId = this.route.snapshot.paramMap.get('id');
-        this.tabGroupConfig = this.getTabGroupConfig()
-        this.activeTab = this.tabGroupConfig[0].key
+        this.tabGroupConfig = this.getTabGroupConfig();
+        this.activeTab = this.tabGroupConfig[0].key;
         // this.statusIcon = 'fas fa-ban u-mt1 u-ml2 neutral-light';
         this.productManagementService.getDetails(productId).subscribe((res: any) => {
             this.productDetails = res;
@@ -54,10 +56,10 @@ export class ProductManagementDetailsComponent implements OnInit {
             this.productCodeDetail = this.prepareProductCodeDetails(res);
             this.productList = this.productFieldsDetail({ ...res });
             this.getStatusUpdate();
+            this.getSyncStatusUpdate();
             this.headerTitle = this.productDetails.description;
         });
         this.getProductData(productId);
-
     }
 
     async getProductData(productId : string) {
@@ -68,6 +70,7 @@ export class ProductManagementDetailsComponent implements OnInit {
                 this.productCodeDetail = this.prepareProductCodeDetails(res); 
                 this.productList = this.productFieldsDetail({ ...res });
                 this.getStatusUpdate();
+                this.getSyncStatusUpdate();
                 this.actionButtons = this.getactionButtons(this.productDetails);
                 this.headerTitle = this.productDetails.description;
             });
@@ -76,6 +79,17 @@ export class ProductManagementDetailsComponent implements OnInit {
             console.error("Error fetching ProductData:", error);
           }
     }
+
+    getSyncStatusUpdate() {
+        if (this.productDetails.sync_status === 2) {
+            this.timerObj = setInterval(() => {
+                this.getSyncStatusDetails();
+            }, 30000);
+        } else if (this.productDetails.sync_status === 3 || this.productDetails.sync_status === null) {
+            this.syncStatusFail = true;
+        }
+    }
+
     onClickAction(action) {
         if (action.key === 'Sync') {
             this.syncOrder();
@@ -98,20 +112,55 @@ export class ProductManagementDetailsComponent implements OnInit {
     }
 
     syncOrder() {
-        console.log("inside sync");
         if (this.productDetails.sync_status === 1 || this.productDetails.sync_status === 2 || this.actionButtons[0].button === this.SYNC_STATUS[2]) {
             return false;
         }
         this.actionButtons[0].class = 'fas fa-sync fa-spin';
         this.actionButtons[0].button = this.SYNC_STATUS[2];
         this.productManagementService.syncOrder(this.productDetails.id).subscribe( (result) =>{
-            setInterval(() => {
-                // this.getSyncStatusDetails();
+            this.timerObj= setInterval(() => {
+                this.getSyncStatusDetails();
             }, 30000);
         });
         return true;
     }
 
+    getSyncStatusDetails() {
+        this.productManagementService.getSyncStatusDetails(this.productDetails.product_id).subscribe(response => {
+            if (!response.hasError) {
+                if (response.data) {
+                    console.log(response.data);
+                    this.productDetails.sync_status = response.data.status
+                    if (response.data.status === 1) {
+                        this.commonService.showToastV2Message(true, 'Sync Successful', 'fas fa-exclamation-circle');
+                        clearInterval(this.timerObj);
+                        this.syncStatusFail = false;
+                    } else if (response.data.status === 3) {
+                        this.commonService.showToastV2Message(true, 'Sync Failed', 'fas fa-exclamation-circle');
+                        this.syncStatusFail = true;
+                        clearInterval(this.timerObj);
+                        this.getProductData(this.productDetails.product_id);
+                    }
+                    this.actionButtons = this.getactionButtons(this.productDetails);
+                } else {
+                    this.syncStatusFail = true;
+                    clearInterval(this.timerObj);
+                    this.getProductData(this.productDetails.product_id);
+                }
+            } else {
+                this.syncStatusFail = true;
+                clearInterval(this.timerObj);
+                this.getProductData(this.productDetails.product_id);
+            }
+        });
+    }
+    
+    clearInterval() {
+        if (this.timerObj) {
+          clearInterval(this.timerObj);
+          this.timerObj = null;
+        }
+    }
     getApproveAPI() {
         this.spinner.show();
         this.productManagementService.getApproveAPI(this.productDetails.product_id).subscribe(response => {
@@ -379,7 +428,6 @@ export class ProductManagementDetailsComponent implements OnInit {
         if (!detail.sync_status) {
             syncbtnName = this.SYNC_STATUS[3];
         } else {
-            console.log(typeof(detail.sync_status));
             syncbtnName = this.SYNC_STATUS[detail.sync_status];
         }
         let data = [];
