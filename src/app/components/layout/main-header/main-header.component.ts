@@ -8,13 +8,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./main-header.component.scss']
 })
 export class MainHeaderComponent implements OnInit {
+  
   isDropdownOpen = false;
+  currentUserData: any;
   constructor(
     private authService:AuthService,
     private router:Router
   ) {}
 
   ngOnInit(): void {
+    this.currentUserData = this.authService.getUserData()
   }
 
   toggleDropdown(): void {

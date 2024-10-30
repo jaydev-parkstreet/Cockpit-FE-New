@@ -16,17 +16,26 @@
     </div>
     <div class="header-right">
         <div class="dropdown">
-            <button
-                class="dropdown-toggle"
-                (click)="toggleDropdown()"
-                aria-haspopup="true"
-                aria-expanded="isDropdownOpen">
-            </button>
+            <div (click)="toggleDropdown()">
+                <img *ngIf="currentUserData && currentUserData.PictureUrl" 
+                    [src]="currentUserData.PictureUrl" 
+                    alt="User Image" 
+                    class="user-image" />
+                <span *ngIf="currentUserData" class="user-name">
+                    <span [innerText]="currentUserData.first_name"></span>
+                    <span [innerText]="currentUserData.last_name"></span>
+                </span>
+                <button
+                    class="dropdown-toggle"
+                    aria-haspopup="true"
+                    aria-expanded="isDropdownOpen">
+                </button>
+            </div>
             <div class="dropdown-menu" [class.show]="isDropdownOpen" (click)="closeDropdown()">
-                <a class="dropdown-item" href="#">My Profile</a>
-                <a class="dropdown-item" href="#">Account Settings</a>
-                <a class="dropdown-item" href="#">Help</a>
-                <a class="dropdown-item" href="#" (click)="logout()">Logout</a>
+                <a class="dropdown-item" href="#"><i class="fas fa-user"></i>My Profile</a>
+                <a class="dropdown-item" href="#"><i class="fas fa-cog"></i>Account Settings</a>
+                <a class="dropdown-item" href="#"><i class="icon fas fa-question"></i>Help</a>
+                <a class="dropdown-item" href="#" (click)="logout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
             </div>
         </div>
     </div>
