@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class SummaryTopBarComponent implements OnInit {
   @Input() config: any;
+  @Input() productChecked: any;
   @Input() filterList: any;
   @Output() addProduct = new EventEmitter<any>();
   @Output() applyFilters = new EventEmitter<any>();
@@ -18,8 +19,9 @@ export class SummaryTopBarComponent implements OnInit {
   tooltipText:any;
   isExpandFilter = false; 
   dropdown1Label = 'Product Status';
-  selectedFilters = {}
-
+  selectedFilters: { [key: string]: any[] } = {}
+  isAllItemsSelected: boolean = false;
+  
   constructor(private router:Router) { }
 
   ngOnInit(): void {
@@ -41,7 +43,8 @@ export class SummaryTopBarComponent implements OnInit {
 
   resetFilterChanges() {
     this.selectedFilters = {};
+    this.isAllItemsSelected = false;
+    this.toggleFilter()
     this.resetFilters.emit();
   }
-
 }

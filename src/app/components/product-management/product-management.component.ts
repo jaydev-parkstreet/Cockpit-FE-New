@@ -24,7 +24,7 @@ export class ProductManagementComponent implements OnInit {
   selectedCardRows: any;
   mixType: boolean;
   isLoadingSummaryData: boolean = false;
-  productToolSummary: any;
+  productToolSummary: any[] = [];
   productToolCardSummary: any;
   hasMoreRecords: boolean;
   isLoading: boolean;
@@ -42,6 +42,9 @@ export class ProductManagementComponent implements OnInit {
   filterList: any = {};
   FileSaver: any;
   downloading: boolean;
+  selectAllFlag: boolean;
+  filtermodal: any;
+  isProductSelected: any;
 
   constructor(
     private productManagementService: ProductManagementService,
@@ -83,13 +86,43 @@ export class ProductManagementComponent implements OnInit {
     //     this.permissions.permissions.Create);
     // this.statusObj = this.productToolService.getStatusObject();
     this.initGridOptions();
+    this.productToolSummary = [];
   }
 
 
   initGridOptions() {
     this.gridOptions = this.productManagementService.getGridOption();
+	  this.gridOptions.onSortChanged = (params) => {
+		const allSortModels = params.columnApi.getAllColumns()
+            .filter(col => col.getSort())
+            .map(col => ({
+                colId: col.getColId(),
+                sort: col.getSort()
+            }));
+      if (allSortModels && allSortModels.length > 0) {
+        this.reportRequestObj.sort = allSortModels[0].colId;
+        this.reportRequestObj.order = allSortModels[0].sort;
+      } else {
+        this.reportRequestObj.sort = 'status';
+        this.reportRequestObj.order = 'asc';
+      }
+      this.productToolSummary = [];
+      this.isLoadingSummaryData = true;
+      this.setDataSourceAgGrid();
+	  };
     this.gridOptions.onGridReady = () => {
       this.setDataSourceAgGrid();
+    };
+    this.gridOptions.getRowClass = function (params) {
+      if (params.data && params.data.checked && params.data.checked === true) {
+        return 'grid-selected-row';
+      }
+      return '';
+    };
+    this.gridOptions.onCellClicked = (params) => {
+      if (params.colDef.cellRenderer === 'checkbox' && (params.event.srcElement.className === 'checkbox_gir_row')) {
+          this.selectCheckBox(params);
+      }
     };
   }
 
@@ -102,17 +135,16 @@ export class ProductManagementComponent implements OnInit {
   async getSummaryData() {
     this.spinner.show();
     const token = localStorage.getItem('authToken');
-    const summaryData = this.reportRequestObj
+    const summaryData = this.reportRequestObj;
     try {
       const response: any = await this.productManagementService.getSummary(summaryData, token);
       this.hasMoreRecords = response.data.length === 25;
       this.summaryResponse = response.data;
       this.processResponseData(response, this.params);
-    }
-    catch (error) {
+	    this.topPanelConfig.totalResult = response.resultCount
+    } catch (error) {
       console.error("Error fetching summary:", error);
-    }
-    finally {
+    } finally {
       this.spinner.hide();
     }
   }
@@ -255,9 +287,14 @@ export class ProductManagementComponent implements OnInit {
   }
 
   applyFilters(selectedFilters: any) {
+	console.log(selectedFilters);
+	this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
+        acc[key] = selectedFilters[key].map((item: any) => item.id); 
+        return acc;
+    }, {});
     this.reportRequestObj = {
       ...this.reportRequestObj,
-      ...selectedFilters
+      ...this.filtermodal
     };
     this.reportRequestObj.page = 1;
     this.productToolSummary = [];
@@ -265,7 +302,7 @@ export class ProductManagementComponent implements OnInit {
   }
 
   resetFilters() {
-    this.filters = {};
+	this.filtermodal = [];
     this.reportRequestObj = {
       "page": 1,
       "pageSize": 25,
@@ -303,4 +340,36 @@ export class ProductManagementComponent implements OnInit {
 		const result = header.split(';')[1].trim().split('=')[1];
 		return result.replace(/"/g, '');
 	}
+
+  onSelectAllChanged(isChecked: boolean) {
+    this.updateCheckboxState(isChecked);
+  }
+
+  updateCheckboxState(checked: boolean) {
+    for (const order of this.productToolSummary) {
+      order.checked = checked;
+    }
+    this.selectAllFlag = checked;
+    this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
+	this.isProductSelected = !this.isProductSelected;
+    this.gridOptions.api.redrawRows();
+  }
+
+  selectCheckBox(params: any) {
+    if(this.productToolSummary[params.rowIndex].checked) {
+        this.productToolSummary[params.rowIndex].checked = false;
+        this.selectedRowCount--;
+    } else {
+        this.productToolSummary[params.rowIndex].checked = true;
+        this.selectedRowCount++;
+    }
+
+    if(this.selectedRowCount === 0) {
+        this.selectAllFlag = false;
+    } else {
+        this.selectAllFlag = true;
+    }
+	this.isProductSelected = !this.isProductSelected;
+    this.gridOptions.api.redrawRows();
+  }
 }

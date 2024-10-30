@@ -51,6 +51,7 @@ export class ProductManagementService {
             headerClass: 'check',
             suppressMenu: true,
             suppressSorting: true,
+            sortable: false,
             lockPosition: true,
             resizable: false,
             cellClass: 'select-all-header-cell pl0px header-check check'
@@ -127,10 +128,17 @@ export class ProductManagementService {
     renderCheckbox(params) {
         let checkboxSelection = '';
         if (params.data) {
-            checkboxSelection += `<span class="custom-checkbox"><label class="checkbox-container">
-                                    <input type="checkbox" class="checkbox_gir_row">
+            if (params.data.checked) {
+                checkboxSelection = `<label class="checkbox-container">
+                                    <input type="checkbox" class="checkbox_gir_row" checked>
                                     <span class="checkmark"></span>
-                                </label></span>`;
+                                </label>`;
+            } else {
+                checkboxSelection = `<label class="checkbox-container">
+                                        <input type="checkbox" class="checkbox_gir_row">
+                                        <span class="checkmark"></span>
+                                    </label>`;
+            }
             checkboxSelection += `<span class="attachments-notes">
                                 <i class="${params.data.total_attachments <= 0 ? 'far fa-file' : 'fas fa-file'} show-attachment-modal"></i>
                                 <span><i class="${params.data.total_notes <= 0 ? 'far fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
@@ -153,7 +161,7 @@ export class ProductManagementService {
   
     renderId(params) {
       if (params.value) {
-        return `<a target="_blank" href="product-tool/${params.value}">${params.value}</a>`;
+        return `<a target="_blank" style="color: black; text-decoration: none;" href="product-tool/${params.value}">${params.value}</a>`;
       }
       return '-';
     }
@@ -177,13 +185,52 @@ export class ProductManagementService {
       return '--';
     }
 
-    getTopPanelConfig() {
+    getTopPanelConfig(isActive = false) {
         return {
             placeholder: 'Search',
             searchText: '',
             searchOptions: {},
             showFilter: false,
-            actions: [],
+            totalResult: 0,
+            actions: {
+                result: {
+                  key: 'result',
+                  divClass: 'result-container',
+                  type: 'result',
+                  isShowOutSideFilter: true
+                },
+                extraActions: [{
+                    type: 'icon',
+                    showTooltip: true,
+                    tooltipText: 'Import bulk products',
+                    icon: 'fas fa-layer-group',
+                    key: 'mass-upload',
+                    permission: true,
+                  }, {
+                    type: 'icon',
+                    showTooltip: true,
+                    tooltipText: 'Attach',
+                    icon: 'fas fa-paperclip',
+                    key: 'attachment',
+                    permission: true
+                  }, {
+                    type: 'icon',
+                    showTooltip: true,
+                    tooltipText: 'Note',
+                    icon: 'fas fa-comment',
+                    key: 'notes',
+                    permission: true
+                  }, {
+                    type: 'icon',
+                    showTooltip: true,
+                    tooltipText: isActive ? 'Activate' : 'Deactivate',
+                    icon: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
+                    key: 'active',
+                    isActive,
+                    permission: true
+                  }
+                ]
+            },
             filtersConfig: [
                 {
                     key: 'clients',
@@ -270,6 +317,13 @@ export class ProductManagementService {
     getDropdown(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http.get(environment.apiUrl + "product-tool/dropdown", { headers }).toPromise();
+    }
+
+    getSubBrandProducts(clientId: string, token: string) {
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http
+            .get(`${environment.apiUrl}product-tool/sub_brand_products?client_id=${clientId}`, { headers })
+            .toPromise();
     }
 
     getDetails(id) {
