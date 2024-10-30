@@ -49,6 +49,8 @@
                 [allowSingleSelect]="false"
                 [settings]="filter.setting"
                 [filteredItems]="filterList && filterList[filter.key]"
+                [selectedItems]="selectedFilters[filter.key] || []"
+                [isAllItemsSelected]="isAllItemsSelected"
                 (onDropDownChange)="onFilterChange(filter.key, $event)">
             </app-cmp-input-dropdown>
         </div>

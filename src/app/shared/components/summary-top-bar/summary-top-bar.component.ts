@@ -19,8 +19,9 @@ export class SummaryTopBarComponent implements OnInit {
   tooltipText:any;
   isExpandFilter = false; 
   dropdown1Label = 'Product Status';
-  selectedFilters = {}
-
+  selectedFilters: { [key: string]: any[] } = {}
+  isAllItemsSelected: boolean = false;
+  
   constructor(private router:Router) { }
 
   ngOnInit(): void {
@@ -42,8 +43,8 @@ export class SummaryTopBarComponent implements OnInit {
 
   resetFilterChanges() {
     this.selectedFilters = {};
+    this.isAllItemsSelected = false;
     this.toggleFilter()
     this.resetFilters.emit();
   }
-
 }

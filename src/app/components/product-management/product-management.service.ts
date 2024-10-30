@@ -319,6 +319,13 @@ export class ProductManagementService {
         return this.http.get(environment.apiUrl + "product-tool/dropdown", { headers }).toPromise();
     }
 
+    getSubBrandProducts(clientId: string, token: string) {
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http
+            .get(`${environment.apiUrl}product-tool/sub_brand_products?client_id=${clientId}`, { headers })
+            .toPromise();
+    }
+
     getDetails(id) {
         return this.http
         .get(environment.apiUrl + "product-tool?product_id=" + id)
