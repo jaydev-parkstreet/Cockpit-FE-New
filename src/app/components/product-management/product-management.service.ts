@@ -343,7 +343,7 @@ export class ProductManagementService {
             'productId' : productId
         };
         return this.http
-            .post(environment.apiUrl +"product-tool/ns_sync", params)
+            .post(environment.apiUrl +"product-tool/ns-sync", params)
             .pipe(map((response :any) => response.data));
     }
 
@@ -356,7 +356,44 @@ export class ProductManagementService {
       
           return this.http
           .get(environment.apiUrl + "product-tool/approve/product", { headers, params,})
-          .pipe(map((response :any) => response.data));
+          .pipe(map((response :any) => response));
+    }
+
+    getPreApproveAPI(productId) {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+      
+        const params = { product_id: productId };
+      
+        return this.http.get(environment.apiUrl + "product-tool/pre-approve/product", { headers, params,})
+        .pipe(map((response :any) => response));
+    }
+
+    getNeedActionAPI(productId) {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+    
+        const params = { product_id: productId };
+    
+        return this.http.get(environment.apiUrl + "product-tool/need-action-waiting-on-client/product", { headers, params,})
+        .pipe(map((response :any) => response));
+    }
+
+    getActivateAPI(productId: string[], isActive: number) {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+          });
+      
+        const body = {
+        product_id: productId,
+        is_active: isActive ? 0 : 1,
+        };
+
+        return this.http
+        .post(environment.apiUrl + "product-tool/active-deactivate/product", body, { headers })
+        .pipe(map((response :any) => response));
     }
 
     getProductManagementSystemSave(obj) {
@@ -367,6 +404,12 @@ export class ProductManagementService {
     excelExport(obj) {
         return this.http
             .post(environment.apiUrl + "product-tool/excel-export", obj,{responseType: 'text',observe: 'response'})
+            .pipe(map((response :any) => response));
+    }
+
+    getSyncStatusDetails(id) {
+        return this.http
+            .get(environment.apiUrl +`product-tool/ns-sync-status?id=${id}`)
             .pipe(map((response :any) => response));
     }
 }

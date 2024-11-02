@@ -107,17 +107,22 @@ export class ProductManagementComponent implements OnInit {
         this.reportRequestObj.order = 'asc';
       }
       this.productToolSummary = [];
-      this.isLoadingSummaryData = true;
       this.setDataSourceAgGrid();
-	  };
+	};
     this.gridOptions.onGridReady = () => {
       this.setDataSourceAgGrid();
+    };
+    this.gridOptions.getRowClass = function (params) {
+      if (params.data && params.data.checked && params.data.checked === true) {
+        return 'grid-selected-row';
+      }
+      return '';
     };
     this.gridOptions.onCellClicked = (params) => {
       if (params.colDef.cellRenderer === 'checkbox' && (params.event.srcElement.className === 'checkbox_gir_row')) {
           this.selectCheckBox(params);
       }
-  }
+    };
   }
 
   /**
@@ -281,7 +286,6 @@ export class ProductManagementComponent implements OnInit {
   }
 
   applyFilters(selectedFilters: any) {
-	console.log(selectedFilters);
 	this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
         acc[key] = selectedFilters[key].map((item: any) => item.id); 
         return acc;
@@ -310,6 +314,7 @@ export class ProductManagementComponent implements OnInit {
 
   universalSearch (text) {
     this.reportRequestObj.universal_search = text;
+	this.productToolSummary = [];
     this.setDataSourceAgGrid();
   }
 	excelExport() {
@@ -345,7 +350,11 @@ export class ProductManagementComponent implements OnInit {
     }
     this.selectAllFlag = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
-	this.isProductSelected = !this.isProductSelected;
+	if (this.selectAllFlag) {
+		this.isProductSelected = true
+	} else {
+		this.isProductSelected = false
+	}
     this.gridOptions.api.redrawRows();
   }
 
@@ -363,7 +372,11 @@ export class ProductManagementComponent implements OnInit {
     } else {
         this.selectAllFlag = true;
     }
-	this.isProductSelected = !this.isProductSelected;
+	if (this.selectAllFlag) {
+		this.isProductSelected = true
+	} else {
+		this.isProductSelected = false
+	}
     this.gridOptions.api.redrawRows();
   }
 }

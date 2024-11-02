@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from './core/services/common.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class AppComponent implements OnInit {
   title = 'COCKPIT-FE';
 
-  constructor(private spinner: NgxSpinnerService) {
+  constructor(private spinner: NgxSpinnerService,
+    public commonService: CommonService
+  ) {
 
   }
   ngOnInit() {
