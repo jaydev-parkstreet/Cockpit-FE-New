@@ -154,7 +154,7 @@ export class InputDropdownService {
     showCheckAll= false,
     showUncheckAll= false,
     validationClass: string = '',
-    isDisabled: boolean = false 
+    disabled: boolean = false 
   ) {
     return {
       id: id, 
@@ -165,7 +165,7 @@ export class InputDropdownService {
       type: 'multiselect-search',
       divClass,
       validationClass,
-      isDisabled: isDisabled,
+      disabled: disabled,
       setting: this.getDropdownConfig(placeholder, serverSearch, apiUrl, apiKey, false, 300, false, false, '', enableSearch, false ,showCheckAll, showUncheckAll)
     };
   }

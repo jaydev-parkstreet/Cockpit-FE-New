@@ -17,7 +17,7 @@ interface Item {
   ],
 })
 
-export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValueAccessor {
+export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() label: string;
   @Input() validationClasses: string;
   @Input() settings: any = {};
@@ -31,7 +31,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
   @Output() dropdownStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedItems: any[] = []; 
   @Input() isAllItemsSelected: boolean = false;
-  @Input() isDisabled: boolean = false; 
+  @Input() disabled: boolean = false; 
 
   isOpen: boolean = false;
   searchText: string = '';
@@ -53,32 +53,32 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     this.updateSelectAllState(this.filteredItems);
     this.originalItems = [...this.filteredItems]; 
   }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isActive']) {
-        this.isOpen = this.isActive || false; 
-    }
-    if (changes['filteredItems']) {
-        const newItems = changes['filteredItems'].currentValue;
+//   ngOnChanges(changes: SimpleChanges): void {
+//     if (changes['isActive']) {
+//         this.isOpen = this.isActive || false; 
+//     }
+//     if (changes['filteredItems']) {
+//         const newItems = changes['filteredItems'].currentValue;
 
-        if (newItems && Array.isArray(newItems)) {
-            this.originalItems = [...newItems];
-            this.updateFilteredItems(this.originalItems);
-        } else {
-            this.originalItems = []; 
-            this.updateFilteredItems(this.originalItems);
-        }
-    }
-    if (changes['isAllItemsSelected']) {
-        this.isAllSelected = changes['isAllItemsSelected'].currentValue || false; 
-    }
-    this.updateSelectAllStates();
-}
+//         if (newItems && Array.isArray(newItems)) {
+//             this.originalItems = [...newItems];
+//             this.updateFilteredItems(this.originalItems);
+//         } else {
+//             this.originalItems = []; 
+//             this.updateFilteredItems(this.originalItems);
+//         }
+//     }
+//     if (changes['isAllItemsSelected']) {
+//         this.isAllSelected = changes['isAllItemsSelected'].currentValue || false; 
+//     }
+//     this.updateSelectAllStates();
+// }
 
   updateSelectAllStates(): void {
     this.isAllSelected = this.selectedItems.length === this.filteredItems.length; 
   }
   toggleDropdown(): void {
-    if (this.isDisabled) return;
+    if (this.disabled  || this.formControl?.disabled) return;
     if (CmpInputDropdownComponent.currentlyOpenDropdown && CmpInputDropdownComponent.currentlyOpenDropdown !== this) {
       CmpInputDropdownComponent.currentlyOpenDropdown.closeDropdown();
     }
@@ -86,7 +86,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     CmpInputDropdownComponent.currentlyOpenDropdown = this.isOpen ? this : null;
     this.dropdownStateChange.emit(this.isOpen);
   }
-
+ 
   closeDropdown(): void {
     this.isOpen = false;
     this.dropdownStateChange.emit(this.isOpen);
@@ -142,7 +142,7 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
   }
   updateDropdownState(): void {
    
-    if (this.isActive && !this.isDisabled) {
+    if (this.isActive && !this.disabled) {
       this.isOpen = false; 
     } else {
       this.isOpen = false; 
@@ -210,7 +210,17 @@ export class CmpInputDropdownComponent implements OnInit, OnChanges, ControlValu
     // Implement if needed
   }
 
+  // setDisabledState?(isDisabled: boolean): void {
+  //   this.isDisabled = isDisabled;
+  // }
   setDisabledState?(isDisabled: boolean): void {
-    // Implement if needed
-  }
+    this.disabled = isDisabled;
+    if (this.formControl) {
+        if (isDisabled) {
+            this.formControl.disable(); 
+        } else {
+            this.formControl.enable(); 
+        }
+    }
+}
 }

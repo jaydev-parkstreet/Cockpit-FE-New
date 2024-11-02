@@ -39,12 +39,10 @@
                                                                         [showCheckboxes]="false"
                                                                         [allowSingleSelect]="true"
                                                                         [settings]="field.setting"
-                                                                        [filteredItems]="filterList[field.key]"
-                                                                        [isActive]="!field.isDisabled"
-                                                                        [isDisabled]="field.isDisabled"
-                                                                        (onDropDownChange)="onDropdownStateChange(field.name, $event)">
-            
-                                                                    </app-cmp-input-dropdown>
+                                                                        [filteredItems]="filterList[field.key]"    
+                                                                        [disabled]="productForm.get(field.name)?.disabled"
+                                                                        (onDropDownChange)="onDropdownStateChange(field.name, $event)">           
+                                                                    </app-cmp-input-dropdown>      
                                                                     <div *ngIf="isFieldInvalid(field.name)"
                                                                         class="error-message">
                                                                         <span
