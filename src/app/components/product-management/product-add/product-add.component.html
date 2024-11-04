@@ -39,6 +39,7 @@
                                                                         [showCheckboxes]="false"
                                                                         [allowSingleSelect]="true"
                                                                         [settings]="field.setting"
+                                                                        [selectedItems]="sellectedData[field.id] || []"
                                                                         [filteredItems]="filterList && filterList[field.key]"
                                                                         (onDropDownChange)="onDropdownStateChange(field.name, $event)">
                                                                     </app-cmp-input-dropdown>
