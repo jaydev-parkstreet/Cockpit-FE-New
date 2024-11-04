@@ -273,6 +273,10 @@ export class ProductManagementService {
                     label: 'Active State',
                     type: 'multiselect-search',
                     divClass: 'col-3 norightpadding',
+                    showSearch:false,
+                    showSelectAll: false,
+                    showCheckboxes: false,
+                    allowSingleSelect: true,
                     setting: this.getMultiSelectConfig('Select State')
                 }, {
                     key: 'bottles_per_case',
@@ -381,7 +385,7 @@ export class ProductManagementService {
         .pipe(map((response :any) => response));
     }
 
-    getActivateAPI(productId: string[], isActive: number) {
+    getActivateAPI(productId: string[], isActive) {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
           });

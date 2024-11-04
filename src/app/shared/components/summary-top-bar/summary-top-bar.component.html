@@ -8,7 +8,7 @@
     <div *ngFor="let action of config.actions.extraActions" class="icon-container" [ngClass]="action.divClass">
         <div *ngIf="productChecked">
             <i [class]="action.icon + ' action-icon'"  [ngClass]="{'is-disabled': action.disabled}" *ngIf="action.type === 'icon'" 
-            (click)="onClickAction(action)">
+            (click)="onClickAction.emit(action)">
             </i>
             <span *ngIf="action.showTooltip" class="icon-tooltiptext" [ngClass]="action.className">
             {{action.tooltipText}}
@@ -44,9 +44,10 @@
         <div class="filter-item" [ngClass]="filter.divClass" *ngFor="let filter of config.filtersConfig">
             <app-cmp-input-dropdown
                 [label]="filter.label"
-                [showSelectAll]="true"
-                [showCheckboxes]="true"
-                [allowSingleSelect]="false"
+                [showSelectAll]="filter.showSelectAll == false ? false : true"
+                [showCheckboxes]="filter.showCheckboxes == false ? false : true"
+                [allowSingleSelect]="filter.allowSingleSelect == true ? true : false"
+                [showSearch]="filter.showSearch == false ? false : true "
                 [settings]="filter.setting"
                 [filteredItems]="filterList && filterList[filter.key]"
                 (onDropDownChange)="onFilterChange(filter.key, $event)">

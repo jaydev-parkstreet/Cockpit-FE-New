@@ -7,13 +7,14 @@
         <div class="check-container">
             <div class="u-w-inherit">
                 <app-summary-top-bar
-                    [productChecked]="isProductSelected"
+                    [productChecked]="selectedAllRows"
                     [config]="topPanelConfig"
                     [filterList]="filterList"
                     (addProduct)="addProduct()"
                     (applyFilters)="applyFilters($event)"
                     (resetFilters)="resetFilters()"
                     (onEnter)="universalSearch($event)"
+                    (onClickAction)="onClickAction($event)"
                     (excelExport)="excelExport()">
                 </app-summary-top-bar>
             </div>
@@ -22,7 +23,7 @@
             <app-summary-grid
                 [gridOptions] = "gridOptions"
                 [selectAllOption] = "true"
-                [checkAll] = "selectAllFlag"
+                [checkAll] = "selectedAllRows"
                 (selectAllChanged) = "onSelectAllChanged($event)"
                 >
             </app-summary-grid>

@@ -6,6 +6,7 @@ import { ColDef } from 'ag-grid-community';
 import { RouterModule } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { saveAs } from 'file-saver';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-product-management',
@@ -42,15 +43,14 @@ export class ProductManagementComponent implements OnInit {
   filterList: any = {};
   FileSaver: any;
   downloading: boolean;
-  selectAllFlag: boolean;
   filtermodal: any;
-  isProductSelected: any;
 
   constructor(
     private productManagementService: ProductManagementService,
     private authService: AuthService,
     private router: Router,
-    private spinner : NgxSpinnerService
+    private spinner : NgxSpinnerService,
+    private commonService : CommonService
   ) { }
 
   ngOnInit(): void {   
@@ -292,6 +292,12 @@ export class ProductManagementComponent implements OnInit {
     };
     this.reportRequestObj.page = 1;
     this.productToolSummary = [];
+    if(selectedFilters.active_status){
+      const isStatusTrue = selectedFilters.active_status[0].name === 'Inactive';
+      this.topPanelConfig.actions.extraActions[3].tooltipText = isStatusTrue ? 'Activate' : 'Deactivate';
+      this.topPanelConfig.actions.extraActions[3].icon = isStatusTrue ? 'fas fa-check-circle':'fas fa-times-circle';
+      this.topPanelConfig.actions.extraActions[3].isActive = isStatusTrue ? true : false;
+    }
     this.setDataSourceAgGrid();
   }
 
@@ -342,10 +348,15 @@ export class ProductManagementComponent implements OnInit {
   updateCheckboxState(checked: boolean) {
     for (const order of this.productToolSummary) {
       order.checked = checked;
+      if(checked){
+        this.selectedRows.push(order.product_id);
+      }
     }
-    this.selectAllFlag = checked;
+    if(!checked){
+      this.selectedRows = [];
+    }
+    this.selectedAllRows = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
-	this.isProductSelected = !this.isProductSelected;
     this.gridOptions.api.redrawRows();
   }
 
@@ -353,17 +364,49 @@ export class ProductManagementComponent implements OnInit {
     if(this.productToolSummary[params.rowIndex].checked) {
         this.productToolSummary[params.rowIndex].checked = false;
         this.selectedRowCount--;
+        let index = this.selectedRows.indexOf(params.data.product_id);
+        if (index > -1) {
+            this.selectedRows.splice(index, 1);
+        }
     } else {
         this.productToolSummary[params.rowIndex].checked = true;
         this.selectedRowCount++;
+        this.selectedRows.push(params.data.product_id);
     }
 
     if(this.selectedRowCount === 0) {
-        this.selectAllFlag = false;
+        this.selectedAllRows = false;
     } else {
-        this.selectAllFlag = true;
+        this.selectedAllRows = true;
     }
-	this.isProductSelected = !this.isProductSelected;
+
     this.gridOptions.api.redrawRows();
+  }
+  onClickAction(event){
+    console.log("Event: ",event);
+    if (event.key === 'notes') {
+      console.log("Notes Clicked");
+    } else if (event.key === 'attachment') {
+      console.log("Attachments Clicked")
+    } else if (event.key === 'active') {
+      if (this.selectedRows && this.selectedRows.length > 0) {
+        this.getActivateAPI(event.isActive);
+      }
+    } else if (event.key === 'mass-upload') {
+      console.log("Mass Upload Click");
+    }
+  }
+
+  getActivateAPI(isActive) {
+    this.spinner.show();
+    this.productManagementService.getActivateAPI(this.selectedRows,!isActive).subscribe((response) => {
+      this.spinner.hide();
+      if (!response.hasError) {
+        this.setDataSourceAgGrid();
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+      } else {
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+      }
+    });
   }
 }
