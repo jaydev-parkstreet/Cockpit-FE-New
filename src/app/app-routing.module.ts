@@ -32,6 +32,10 @@ const routes: Routes = [
               {
                 path: 'add',
                 component: ProductAddComponent
+              },
+              {
+                path: ':id',
+                component: ProductManagementDetailsComponent,
               }]
       }]
   },
@@ -52,10 +56,10 @@ const routes: Routes = [
   //       component: ProductAddComponent
   //     }]
   // },
-  {
-    path: 'product-tool/:id',
-    component: ProductManagementDetailsComponent
-  },
+  // {
+  //   path: 'product-management/:id',
+  //   component: ProductManagementDetailsComponent
+  // },
   {
     path: 'product-tool/:id/edit',
     component: ProductAddComponent

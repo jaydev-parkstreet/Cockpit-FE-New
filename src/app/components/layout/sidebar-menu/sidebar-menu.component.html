@@ -6,11 +6,10 @@
         <div class="sidebar-menu open-current-submenu show-scrollbar">
             <ul id="mainMenu">
                 <li class="sidebar-menu-item" *ngFor="let menu of menuData">
-                    <a [routerLink]="'/dashboard'">
+                    <a [routerLink]="'/dashboard'" (click)="toggleIcon(menu)">
                         <i [class]="menu.iconClass"></i>
                         <span>{{menu.menuContent}}</span> 
                         <span class="toggle-icon"
-                            (click)="toggleIcon(menu)"
                             [ngClass]="{'icon-plus': !menu.isExpanded, 'icon-minus': menu.isExpanded}"
                             *ngIf="menu.iconPlus">
                         </span>
