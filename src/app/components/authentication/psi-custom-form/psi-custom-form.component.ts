@@ -33,7 +33,8 @@ export class PsiCustomFormComponent implements OnInit {
   constructor(
     public readonly PsiCustomFormService: PsiCustomFormService,
     public router: Router,
-  private authService :AuthService,private spinner:NgxSpinnerService) { }
+    private authService: AuthService, private spinner: NgxSpinnerService
+  ) { }
 
   ngOnInit(): void { }
 
@@ -64,19 +65,19 @@ export class PsiCustomFormComponent implements OnInit {
     }
   }
 
-  async userLoginHandler (reqObj) {
+  async userLoginHandler(reqObj) {
     this.spinner.show();
     try {
       const res = await this.PsiCustomFormService.userLogin(reqObj);
       if (!res.hasError) {
         const token = res.data.token;
         // localStorage.setItem('authToken', token);
-       // const responce : any = await this.authService.selectClient(token);
-     //  const tkn = responce.data.token;
-      //  console.log("Inside",tkn);
-     //   this.authService.login(tkn);
-     const currentUserData = res.data;
-     this.authService.login(token, currentUserData);
+        // const responce : any = await this.authService.selectClient(token);
+        //  const tkn = responce.data.token;
+        //  console.log("Inside",tkn);
+        //   this.authService.login(tkn);
+        const currentUserData = res.data;
+        this.authService.login(token, currentUserData);
         await this.setSessionOldNavigatorSite(token).then(() => {
           // this.router.navigate(['/product-management']);
           // window.location.href = environment.oldCockpit + '/router.php/dashboard';
@@ -96,7 +97,7 @@ export class PsiCustomFormComponent implements OnInit {
     }
   }
 
-  setSessionOldNavigatorSite (token): Promise<void> {
+  setSessionOldNavigatorSite(token): Promise<void> {
     return new Promise((resolve, reject) => {
       const iframe = document.getElementById('myframe') as HTMLInputElement;
       iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
@@ -120,5 +121,4 @@ export class PsiCustomFormComponent implements OnInit {
   trackByField(index: number, field: any): string {
     return field.name;
   }
-
 }
