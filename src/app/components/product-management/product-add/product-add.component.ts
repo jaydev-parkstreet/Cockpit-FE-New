@@ -380,11 +380,11 @@ onDropdownStateChange(fieldName: string, selectedValue: any) {
       const isClientSelected = !!selectedValue;    
       this.isBrandDisabled = !isClientSelected;
 
-      const clientId = selectedValue[0].id; 
-      // this.productmanagementService.getBrands(clientId).subscribe(brands => {
+      const clientId = selectedValue[0].id;     
+      this.productmanagementService.getBrands(clientId).subscribe(brands => {
     
-      //    console.log(brands)
-      //   });
+         console.log(brands)
+        });
 
       if (brandControl) {
           if (this.isBrandDisabled) {
