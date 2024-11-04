@@ -35,7 +35,20 @@ const routes: Routes = [
               },
               {
                 path: ':id',
-                component: ProductManagementDetailsComponent,
+                children:[
+                  {
+                    path: '',
+                    component: ProductManagementDetailsComponent
+                  },
+                  {
+                    path: 'edit',
+                    component: ProductAddComponent
+                  },
+                  {
+                    path: 'clone',
+                    component: ProductAddComponent
+                  }
+                ]
               }]
       }]
   },
@@ -60,14 +73,14 @@ const routes: Routes = [
   //   path: 'product-management/:id',
   //   component: ProductManagementDetailsComponent
   // },
-  {
-    path: 'product-tool/:id/edit',
-    component: ProductAddComponent
-  },
-  {
-    path: 'product-tool/:id/clone',
-    component: ProductAddComponent
-  },
+  // {
+  //   path: 'product-tool/:id/edit',
+  //   component: ProductAddComponent
+  // },
+  // {
+  //   path: 'product-tool/:id/clone',
+  //   component: ProductAddComponent
+  // },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
