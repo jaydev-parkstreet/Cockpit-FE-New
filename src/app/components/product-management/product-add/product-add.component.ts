@@ -375,9 +375,16 @@ onDropdownStateChange(fieldName: string, selectedValue: any) {
   const brandControl = this.productForm.get('brand');
   const subBrandControl = this.productForm.get('sub_brand_product_id');
 
-  if (fieldName === 'clients') {
+  if (fieldName === 'clients' && selectedValue.length > 0) {
+    
       const isClientSelected = !!selectedValue;    
       this.isBrandDisabled = !isClientSelected;
+
+      const clientId = selectedValue[0].id; 
+      // this.productmanagementService.getBrands(clientId).subscribe(brands => {
+    
+      //    console.log(brands)
+      //   });
 
       if (brandControl) {
           if (this.isBrandDisabled) {
@@ -397,6 +404,10 @@ onDropdownStateChange(fieldName: string, selectedValue: any) {
   if (fieldName === 'brand') {
       const isBrandSelected = !!selectedValue; 
       this.isSubBrandDisabled = !isBrandSelected; 
+      // this.productmanagementService.getSubBrandProducts(clientId).subscribe(brands => {
+    
+      //    console.log(brands)
+      //   });
 
       if (subBrandControl) {
           if (this.isSubBrandDisabled) {
@@ -414,6 +425,9 @@ onDropdownStateChange(fieldName: string, selectedValue: any) {
   console.log('Brand selected:', !!brandControl?.value);
   console.log('Sub-brand disabled state:', this.isSubBrandDisabled);
 }
+
+
+
 
 
 
