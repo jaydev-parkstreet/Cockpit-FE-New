@@ -54,7 +54,7 @@ export class ProductManagementService {
             sortable: false,
             lockPosition: true,
             resizable: false,
-            cellClass: 'select-all-header-cell pl0px header-check check'
+            cellClass: 'select-all-header-cell pl0px header-check check' 
         }, {
             headerName: 'Product Code',
             headerTooltip: 'Product Code',
@@ -92,7 +92,7 @@ export class ProductManagementService {
             dashRenderer: (params) => this.renderDash(params),
             idRender: (params) => this.renderId(params),
             statusRenderer: (params) => this.renderStatus(params),
-            },
+            },   
             enableColResize: true,
             allowContextMenuWithControlKey: true,
             rowBuffer: 0,
@@ -124,7 +124,6 @@ export class ProductManagementService {
             getRowId: (data) => data.id,
         };
     }
-  
     renderCheckbox(params) {
         let checkboxSelection = '';
         if (params.data) {
@@ -319,24 +318,25 @@ export class ProductManagementService {
         return this.http.get(environment.apiUrl + "product-tool/dropdown", { headers }).toPromise();
     }
  
-    getBrands(clientId) {
+    getBrands(clientId: string) {
+        const token = localStorage.getItem('authToken');
+    
         const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-          });
-          const body = {
-            client_ids: [clientId],
-            };
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }); 
+        const params = { client_ids: [clientId] }; 
         return this.http
-            .post(environment.apiUrl + "product-tool/brands" , body, { headers })
-            .pipe(map((response :any) => response.data));
+            .post(environment.apiUrl + "product-tool/brands", params, { headers })
+            .pipe(map((response: any) => response));
     }
- 
-
-    getSubBrandProducts(clientId: string) {
+    
+    
+    getSubBrandProducts(clientId: string,brandId) {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http
-            .get(`${environment.apiUrl}product-tool/sub_brand_products?client_id=${clientId}`, { headers })
+            .get(`${environment.apiUrl}product-tool/sub_brand_products?client_id=${clientId}?brand_id=${brandId}`, { headers })
             .pipe(map((response :any) => response.data));
     }
 

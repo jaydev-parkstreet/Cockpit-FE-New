@@ -29,6 +29,7 @@ export class ProductAddComponent implements OnInit {
   // Flags and configuration properties
   isErrorRedirect: boolean = false;
   title: any;
+  clientId:any
   formConfig: any;
   showError: boolean = false;
   activeDropdownId: string | null = null;
@@ -130,8 +131,8 @@ export class ProductAddComponent implements OnInit {
     
     return [
       this.dropdownService.createFilterObj('clients', 'clients', 'Supplier', 'Select Supplier', 'clients', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk',false),
-    this.dropdownService.createFilterObj('brand', 'varietals', 'Brand', 'Select Brand', 'brand', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk',this.isBrandDisabled),    
-   this.dropdownService.createFilterObj('sub_brand_product_id', 'varietals', 'Sub-Brand Product', 'Select Sub-Brand Product', 'sub_brand_product_id', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk', this.isSubBrandDisabled),
+      this.dropdownService.createFilterObj('brand', 'varietals', 'Brand', 'Select Brand', 'brand', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk',this.isBrandDisabled),    
+      this.dropdownService.createFilterObj('sub_brand_product_id', 'varietals', 'Sub-Brand Product', 'Select Sub-Brand Product', 'sub_brand_product_id', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk', this.isSubBrandDisabled),
       { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
       { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
       this.dropdownService.createFilterObj('group', 'groups', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
@@ -374,6 +375,7 @@ confirmSubmission(form: FormGroup) {
 onDropdownStateChange(fieldName: string, selectedValue: any) {
   const brandControl = this.productForm.get('brand');
   const subBrandControl = this.productForm.get('sub_brand_product_id');
+   this.clientId = selectedValue[0]?.id; 
 
   if (fieldName === 'clients' && selectedValue.length > 0) {
     
@@ -385,7 +387,7 @@ onDropdownStateChange(fieldName: string, selectedValue: any) {
     
          console.log(brands)
         });
-
+       
       if (brandControl) {
           if (this.isBrandDisabled) {
               brandControl.disable(); 
@@ -396,18 +398,18 @@ onDropdownStateChange(fieldName: string, selectedValue: any) {
           } else {
               brandControl.enable(); 
           }
-      }
-
+        }
       this.changeDetector.detectChanges();
   }
 
   if (fieldName === 'brand') {
       const isBrandSelected = !!selectedValue; 
       this.isSubBrandDisabled = !isBrandSelected; 
-      // this.productmanagementService.getSubBrandProducts(clientId).subscribe(brands => {
+    //  const brandId = selectedValue[0]?.id;    
+        // this.productmanagementService.getSubBrandProducts(clientId).subscribe(brands => {
     
       //    console.log(brands)
-      //   });
+      //   }); 
 
       if (subBrandControl) {
           if (this.isSubBrandDisabled) {
