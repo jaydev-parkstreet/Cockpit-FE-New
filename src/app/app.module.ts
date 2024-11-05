@@ -14,11 +14,17 @@ import { AgGridModule } from 'ag-grid-angular';
 import { NotesTabComponent } from './components/organism/notes-tab/notes-tab.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SidebarMenuComponent } from './components/layout/sidebar-menu/sidebar-menu.component';
+import { ApplicationComponent } from './components/layout/application/application.component';
+import { FooterComponent } from './components/layout/footer/footer.component';
+import { MainHeaderComponent } from './components/layout/main-header/main-header.component';
 @NgModule({
   declarations: [
     AppComponent,
     ConfirmationModalComponent,
-    SidebarMenuComponent
+    SidebarMenuComponent,
+    ApplicationComponent,
+    FooterComponent,
+    MainHeaderComponent
   ],
   imports: [
     BrowserModule,

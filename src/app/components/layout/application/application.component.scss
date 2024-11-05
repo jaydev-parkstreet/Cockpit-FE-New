@@ -1,0 +1,22 @@
+@import '../../../scss/variables/typography';
+@import '../../../scss/variables/colors';
+
+.app-layout {
+    position: relative;
+
+    .header-panel {
+        margin-left: 240px;
+        background-color: $colors-neutral-black;
+    }
+
+    .mainPanelExpand {
+        margin-left: 240px;
+
+    }
+
+    .mainPanelCollapse {
+        margin-left: 65px;
+
+    }
+
+}

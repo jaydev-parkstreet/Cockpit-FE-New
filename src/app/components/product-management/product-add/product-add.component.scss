@@ -6,16 +6,15 @@
     .header-background {
         background-color: $colors-neutral-black;
         color: $colors-neutral-white;
-        width: 100vw;
+        // width: 100vw;
         height: 100vh;
-        padding-left: 100px;
         position: relative;
     }
 
     .product-tool-container {
-        border-left: 16px solid $colors-neutral-light-t-25;
-        border-right: 16px solid $colors-neutral-light-t-25;
-        border-bottom: 10px solid $colors-neutral-light-t-25;
+        // border-left: 16px solid $colors-neutral-light-t-25;
+        // border-right: 16px solid $colors-neutral-light-t-25;
+        // border-bottom: 10px solid $colors-neutral-light-t-25;
         background-color: $colors-neutral-white;
         color: $colors-neutral-black;
         display: flex;
@@ -27,7 +26,7 @@
 
             .psi-form {
                 flex: 1;
-                padding: 20px;
+                padding: 16px 0px 0px 0px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 
             }
@@ -186,7 +185,7 @@
                                 margin: 0; // Ensure no margin
                                 padding: 0;
                                 background: white;
-                                padding: 32px !important;
+                                padding: 24px !important;
                                 margin-left: 15px !important;
                                 height: fit-content;
                                 .right-main{
@@ -271,6 +270,10 @@
                     &.ps-required-asterisk {
                         background-color: #FFE3E3 !important;
 
+                    }
+                    &:disabled {
+                        background-color: #fff2f1;
+                        cursor: not-allowed;
                     }
                 }
 

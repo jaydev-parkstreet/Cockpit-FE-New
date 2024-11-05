@@ -1,0 +1,158 @@
+@import '../../../scss/variables/colors';
+@import "../../../../styles/variables";
+
+.headerbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 1px solid #333;
+    background: #222;
+    margin: 0;
+    padding: 0 50px 0 0px;
+
+    .menutoggle {
+        width: 50px;
+        // height: 47px;
+        font-size: 22px;
+        cursor: pointer;
+        color: #999;
+        border-right: 1px solid #333;
+        transition: all 0.2s ease-out;
+
+        .fas {
+            margin: 14px 0 0 15px;
+        }
+
+        &:hover {
+            color: $colors-neutral-light-v-background;
+        }
+    }
+
+    .searchform {
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: $colors-neutral-black;
+            border-right: 1px solid #333;
+            margin-top:-37px;
+            margin-left: 94px;
+
+
+            &:focus-within .search-icon {
+                color: $colors-neutral-light-v-background;
+            }
+        }
+
+        input {
+            width: 320px;
+            background: #232323;
+            color: #999;
+            border: 0;
+            padding: 15px;
+            font-size: 14px;
+
+            &::placeholder {
+                color: $colors-neutral-white-t-75;
+            }
+
+            &:focus {
+                box-shadow: none;
+                color: $colors-neutral-light-v-background;
+            }
+        }
+
+        .search-icon {
+            margin-left: -35px;
+            color: #999;
+            font-size: 18px;
+            pointer-events: none;
+        }
+    }
+
+    .header-right {
+        position: relative;
+
+        .user-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .user-name {
+            font-family: $montserrat-regular;
+            color: $colors-neutral-white;
+            font-size: 14px;
+
+            span {
+                margin-right: 6px;
+            }
+        }
+    
+        .dropdown {
+            position: relative;
+        
+            .dropdown-toggle {
+                background: none;
+                border: none;
+                color: #fff;
+                font-size: 14px;
+                cursor: pointer;
+        
+                .caret-large {
+                    font-size: 16px;
+                    margin-left: 5px;
+                    vertical-align: middle;
+                }
+            }
+        
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                background: #232323;
+                z-index: 1000;
+                margin-top: 5px;
+                min-width: 200px;
+                margin-left: 0px;
+                font-size: 13px;
+                font-family: $montserrat-regular;
+        
+                &.show {
+                    display: block;
+                }
+        
+                .dropdown-item {
+                    color: #fff;
+                    padding: 10px 15px;
+                    text-decoration: none;
+                    display: flex;
+                    align-items: center;
+                
+                    i {
+                        margin-right: 10px;
+                    }
+                
+                    &:hover {
+                        background-color: $colors-v2-base-primary;
+                    }
+                }
+            }
+        }
+    }   
+}
+
+.headerExpanded {
+    margin-left: 240px;
+    background-color: $colors-neutral-black;
+}
+
+.headerCollapsed {
+    margin-left: 0px;
+    background-color: $colors-neutral-black;
+
+    .menutoggle {
+        margin-left: 9px;
+
+    }
+}

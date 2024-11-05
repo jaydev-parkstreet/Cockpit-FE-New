@@ -17,7 +17,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ProductAddComponent implements OnInit {
   sellectedData: any= {};
-
+  duplicate: boolean = false;
   constructor(private changeDetector: ChangeDetectorRef,
     private simpleModalService: SimpleModalService,
     public router: Router,
@@ -109,6 +109,7 @@ export class ProductAddComponent implements OnInit {
   ngOnInit(): void {
     let productId = this.route.snapshot.paramMap.get('id')
     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
+    this.duplicate = this.route.snapshot.data.isDuplicate || false;
     this.initializeFormConfig();
     this.filters = this.createFormSchema();
     this.getDropdown();
@@ -116,6 +117,9 @@ export class ProductAddComponent implements OnInit {
     if (productId) {
       this.productmanagementService.getDetails(productId).subscribe((productData) => {
         this.renderConditionalFields(productData.prod_type)
+        if (this.duplicate) {
+          delete productData.product_id;
+        }
         this.prefillForm(productData);
       });
     }
@@ -134,6 +138,11 @@ export class ProductAddComponent implements OnInit {
       submitBtnLabel: AppConstant.PRODUCT.SUBMIT_BUTTON,
     };
     console.log( this.formConfig)
+    this.formConfig.schema.forEach(field => {
+      if (field.disabled) {
+          this.productForm.get(field.name)?.disable();
+      }
+    });
     this.updateBrandFilter() 
   }
 
@@ -152,7 +161,7 @@ export class ProductAddComponent implements OnInit {
       this.dropdownService.createFilterObj('is_organic', 'organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
       this.dropdownService.createFilterObj('prod_type', 'product_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
       { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance' },
-      { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '', isVisible: true,  isCode: true },
+      { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '', isVisible: true,  isCode: true , disabled: true},
       { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isVisible: true, isCode: true },
       { type: 'text', name: 'scc_code', label: 'SCC Code', placeholder: 'SCC Code', isVisible: true,isCode: true  },
       { type: 'text', name: 'system_id', label: 'Supplier Reference ID', placeholder: 'Supplier Reference ID', isVisible: true },

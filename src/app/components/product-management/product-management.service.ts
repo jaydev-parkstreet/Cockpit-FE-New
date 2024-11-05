@@ -160,7 +160,8 @@ export class ProductManagementService {
   
     renderId(params) {
       if (params.value) {
-        return `<a target="_blank" style="color: black; text-decoration: none;" href="product-tool/${params.value}">${params.value}</a>`;
+        return `<a target="_blank" style="color: black;text-decoration: none;" onmouseover="this.style.textDecoration='underline'"
+                onmouseout="this.style.textDecoration='none'" href="product-management/${params.value}">${params.value}</a>`;
       }
       return '-';
     }

@@ -17,10 +17,8 @@ export class CmpCheckboxComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
   changeValue(val): any {
     this.onChange.emit(val);
   }
 
 }
-

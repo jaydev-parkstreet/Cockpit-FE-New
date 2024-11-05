@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from './core/services/common.service';
 
@@ -11,11 +12,18 @@ export class AppComponent implements OnInit {
   title = 'COCKPIT-FE';
 
   constructor(private spinner: NgxSpinnerService,
-    public commonService: CommonService
+    public commonService: CommonService,
+    private router:Router
   ) {
 
   }
   ngOnInit() {
+
+    const loggedIn = localStorage.getItem('authToken');
+    if (!loggedIn) {
+      this.router.navigate(['/login']);
+    }
+
     // this.spinner.show();
     // setTimeout(() => {
     //   this.spinner.hide();

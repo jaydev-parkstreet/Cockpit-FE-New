@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -6,10 +6,103 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidebar-menu.component.scss']
 })
 export class SidebarMenuComponent implements OnInit {
+  menuData = [];
+  @Input() isSidebarExpanded:any;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.isSidebarExpanded =true;
+    this.menuData = [
+    {
+      id:1,
+      iconClass: 'fas fa-tachometer-alt',
+      menuContent: 'Dashboard',
+      isExpanded: false,
+      iconPlus:false
+    },
+    { id:2,
+      iconClass: 'fas fa fa-home',
+      menuContent: 'Gateway',
+      isExpanded: false,
+      iconPlus:false
+    }, {
+      id:3,
+      iconClass: 'fas fa-sitemap',
+      menuContent: 'Companies & Contacts',
+      isExpanded: false,
+      iconPlus:true,
+      submenuItems :[{
+        submenuContent:'National Accounts',
+        href:"http://cockpit.parkstreet.local/router.php/app#!/cockpit/product-management"
+      },
+      {
+        submenuContent:'Companies & Contacts',
+        submenuLink :'/product-management'
+      }]
+    },
+    { id:4,
+      iconClass: 'fas fa-glass-martini',
+      menuContent: 'Suppliers',
+      isExpanded: false,
+      iconPlus:true
+    },
+    { id:5,
+      iconClass: 'fas fa-dollar-sign',
+      menuContent: 'Accounting',
+      isExpanded: false,
+      iconPlus:true
+    },
+    { id:6,
+      iconClass: 'fas fa-cogs',
+      menuContent: 'Operations',
+      isExpanded: false,
+      iconPlus:true,
+      submenuItems :[{
+        submenuContent:'Product Management System',
+        submenuLink :'/product-management'
+      }]
+    },
+    { id:7,
+      iconClass: 'fas fa-stamp',
+      menuContent: 'Compliance',
+      isExpanded: false,
+      iconPlus:true
+    },{ id:8,
+      iconClass: 'fas fa-certificate',
+      menuContent: 'Shared Services',
+      isExpanded: false,
+      iconPlus:true
+    },{ id:9,
+      iconClass: 'fas fa-poll',
+      menuContent: 'Supplier Development',
+      isExpanded: false,
+      iconPlus:true
+    },{ id:10,
+      iconClass: 'fas fa-trophy',
+      menuContent: 'Service Standards',
+      isExpanded: false,
+      iconPlus:true
+    },{ id:11,
+      iconClass: 'fas fa-bullhorn',
+      menuContent: 'Announcements',
+      isExpanded: false,
+      iconPlus:true
+    },{ id:12,
+      iconClass: 'fas fa-code',
+      menuContent: 'Product Development',
+      isExpanded: false,
+      iconPlus:true
+    }];
+  }
+
+  toggleIcon (menu:any) {
+    this.menuData.forEach((el)=> {
+      if (el.id !== menu.id) {
+        el.isExpanded = false;
+      }
+    });
+    menu.isExpanded = !menu.isExpanded;
   }
 
 }

@@ -1,0 +1,11 @@
+<div class="app-layout has-sidebar layout fixed-sidebar fixed-header main-sidebar-section">
+        <app-main-header 
+         (menuState)="menuToggle($event)">
+        </app-main-header>
+        <app-sidebar-menu 
+         [isSidebarExpanded] = "isSidebarExpanded">
+        </app-sidebar-menu>
+    <div [ngClass]="isSidebarExpanded? 'mainPanelExpand':'mainPanelCollapse'">
+        <router-outlet></router-outlet>
+    </div>
+</div>
