@@ -44,7 +44,10 @@ const routes: Routes = [
   },
   {
     path: 'product-tool/:id/clone',
-    component: ProductAddComponent
+    component: ProductAddComponent,
+    data: {
+      isDuplicate: true
+    }
   },
 ];
 @NgModule({

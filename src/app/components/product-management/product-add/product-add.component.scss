@@ -255,6 +255,10 @@
                         background-color: #FFE3E3 !important;
 
                     }
+                    &:disabled {
+                        background-color: #fff2f1;
+                        cursor: not-allowed;
+                    }
                 }
 
                 input:hover {
