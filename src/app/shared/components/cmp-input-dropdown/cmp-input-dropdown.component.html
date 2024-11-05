@@ -1,6 +1,6 @@
-<div class="input-dropdown">
+  <div class="input-dropdown" [ngClass]="{'disabled': disabled || formControl?.disabled}">
   <span class="dropdown-label" [textContent]="label"></span>
-  <div class="dropdown-header" [ngClass]="validationClasses" (click)="toggleDropdown()">
+  <div class="dropdown-header" [ngClass]="validationClasses" (click)="!disabled && !formControl?.disabled && toggleDropdown()">
     {{ getSelectedDisplayText() }}
     <button class="dropdown-button" *ngIf="settings.versionStyle !== 'smart-search'" (click)="onChevronClick($event)">
       <i [ngClass]="isDropdownOpen() ? 'fa fa-chevron-up' : 'fa fa-chevron-down'" aria-hidden="true"></i>
@@ -33,7 +33,7 @@
           <span>{{ isAllSelected ? texts.uncheckAll : texts.selectAll }}</span>
         </div>
 
-        <div *ngFor="let item of filteredItems" class="select-list" (click)="toggleSelection(item)">
+        <div *ngFor="let item of filteredItems" class="select-list"    (click)="!disabled && !formControl?.disabled && toggleSelection(item)">        
           <input *ngIf="showCheckboxes" type="checkbox" [checked]="isSelected(item)"
             (change)="onDropDownChange.emit(selectedItems)" />
           <span>{{ item.name }}</span>
