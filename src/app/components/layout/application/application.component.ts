@@ -7,17 +7,17 @@ import { MainHeaderComponent } from '../main-header/main-header.component';
   styleUrls: ['./application.component.scss']
 })
 export class ApplicationComponent implements OnInit {
-  isMenuExpanded !:any;
+  isSidebarExpanded !:any;
   @ViewChild('mainHeader') mainHeader !: MainHeaderComponent;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.isMenuExpanded = true;
+    this.isSidebarExpanded = true;
   }
 
   menuToggle (value) {
-    this.isMenuExpanded = value;
+    this.isSidebarExpanded = value;
   }
 
 }

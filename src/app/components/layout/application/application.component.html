@@ -3,9 +3,9 @@
          (menuState)="menuToggle($event)">
         </app-main-header>
         <app-sidebar-menu 
-         [isMenuExpanded] = "isMenuExpanded">
+         [isSidebarExpanded] = "isSidebarExpanded">
         </app-sidebar-menu>
-    <div [ngClass]="isMenuExpanded? 'mainPanelExpand':'mainPanelCollapse'">
+    <div [ngClass]="isSidebarExpanded? 'mainPanelExpand':'mainPanelCollapse'">
         <router-outlet></router-outlet>
     </div>
 </div>

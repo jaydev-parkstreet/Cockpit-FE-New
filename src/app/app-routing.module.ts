@@ -22,7 +22,13 @@ const routes: Routes = [
     path: '',
     canActivate: [AuthGuard],
     component: ApplicationComponent,
-    children: [{
+    children: [
+      {
+        path: '',
+        redirectTo: 'product-management',
+        pathMatch: 'full'
+      },
+      {
         path: 'product-management',
         children: [
               {

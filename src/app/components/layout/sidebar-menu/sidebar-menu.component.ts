@@ -7,12 +7,12 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SidebarMenuComponent implements OnInit {
   menuData = [];
-  @Input() isMenuExpanded:any;
+  @Input() isSidebarExpanded:any;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.isMenuExpanded =true;
+    this.isSidebarExpanded =true;
     this.menuData = [
     {
       id:1,
@@ -31,7 +31,15 @@ export class SidebarMenuComponent implements OnInit {
       iconClass: 'fas fa-sitemap',
       menuContent: 'Companies & Contacts',
       isExpanded: false,
-      iconPlus:true
+      iconPlus:true,
+      submenuItems :[{
+        submenuContent:'National Accounts',
+        href:"http://cockpit.parkstreet.local/router.php/app#!/cockpit/product-management"
+      },
+      {
+        submenuContent:'Companies & Contacts',
+        submenuLink :'/product-management'
+      }]
     },
     { id:4,
       iconClass: 'fas fa-glass-martini',
@@ -51,7 +59,8 @@ export class SidebarMenuComponent implements OnInit {
       isExpanded: false,
       iconPlus:true,
       submenuItems :[{
-        submenuContent:'Product Management System'
+        submenuContent:'Product Management System',
+        submenuLink :'/product-management'
       }]
     },
     { id:7,

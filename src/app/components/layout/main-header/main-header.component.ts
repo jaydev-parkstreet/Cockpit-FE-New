@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./main-header.component.scss']
 })
 export class MainHeaderComponent implements OnInit {
-  isMenuExpanded = true;
+  isSidebarExpanded = true;
   isDropdownOpen = false;
   currentUserData: any;
   @Output() menuState = new EventEmitter<any>();
@@ -42,8 +42,8 @@ export class MainHeaderComponent implements OnInit {
   }
 
   toggleMenu() {
-    this.isMenuExpanded = !this.isMenuExpanded;
-    this.menuState.emit(this.isMenuExpanded);
+    this.isSidebarExpanded = !this.isSidebarExpanded;
+    this.menuState.emit(this.isSidebarExpanded);
   }
 
 }
