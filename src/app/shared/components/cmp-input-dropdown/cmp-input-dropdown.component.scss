@@ -184,6 +184,31 @@
         .dropdown-content {
             max-height: 300px;
             overflow-y: auto;
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            margin-right: 5px !important;
+          
+
+           &::-webkit-scrollbar {
+                width: 30px;
+            }
+        
+            &::-webkit-scrollbar-track {
+                background: white;
+                border-radius: 10px;
+            }
+        
+            &::-webkit-scrollbar-thumb {
+                background: #fff2f1; 
+                border-radius: 10px;
+                height: 50px; 
+            }
+        
+            &::-webkit-scrollbar-thumb:hover {
+                background: lighten(#fff2f1, 10%); 
+            }   
+            scrollbar-color: #fff2f1 white; 
+        
             .no-results {
                 color: #cbcbcb;
                 font-family: $montserrat-regular;
@@ -236,6 +261,9 @@
                 padding: 8px;
                 display: flex;
                 align-items: center;
+                &:hover {
+                    background: #fff2f1; 
+                }
             }
 
             input[type="checkbox"] {
@@ -282,5 +310,24 @@
                 }
             }
         }
+        .dropdown-content > div { /* Assuming each item is in a div */
+            scroll-snap-align: start; /* Snap to the start of each item */
+        }
     }
 }
+
+.input-dropdown.disabled {
+    background-color: #fff2f1; 
+    // color: #a0a0a0;
+    pointer-events: none;
+  }
+  
+  .input-dropdown.disabled .dropdown-header {
+    cursor: not-allowed;
+    color:$colors-neutral-dark-v-medium;
+  }
+
+  
+  .input-dropdown.disabled .dropdown-list {
+    display: none;
+  }

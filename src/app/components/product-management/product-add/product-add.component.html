@@ -1,107 +1,76 @@
-<div class="product-management">
-    <div class="header-background">
-        <app-header-tool titleText="Product Management" titleIcon="fas fa-file-invoice-dollar">
-        </app-header-tool>
-        <div class="product-tool-container">
-            <div class="check-container">
-                <div class="u-w-inherit">
-                    <div>
-                        <div class="form-wrapper">
-                            <div class="psi-custom-form">
-                                <div class="custom-form-wrapper">
-                                    <div class="form-container">
-                                        <div class="psi-form">
-                                            <div class="form-title headers-container">
-                                                <p class="product-details-header">PRODUCT DETAILS</p>
-                                                <p class="codes-column">CODES</p>
-                                            </div>
-                                            <div class="form-group">
-                                                <form [formGroup]="productForm" (ngSubmit)="onSubmit(productForm)"
-                                                    autocomplete="false">
-                                                    <div class="form-field">
-                                                        <div class="row">
-                                                            <div class="column">
-                                                                <ng-container *ngFor="let field of formConfig.schema">
-                                                                <ng-container *ngIf="!field.isVisible  ">
-                                                                    <label [for]="field.name"
-                                                                        [ngClass]="{'ps-required-asterisk': field.required}"
-                                                                        [textContent]="field.label"></label>
+<div class="product-management header-background">
+     <app-header-tool titleText="Product Tool" titleIcon="fas fa-file-invoice-dollar">
+    </app-header-tool>
+        <div class="product-tool-container check-container form-wrapper">
+            <div class="form-container">
+                <div class="psi-form">
+                    <div class="form-title headers-container">
+                        <p class="product-details-header">PRODUCT DETAILS</p>
+                        <p class="codes-column">CODES</p>
+                    </div>
+                    <div class="form-group">
+                        <form [formGroup]="productForm" (ngSubmit)="onSubmit(productForm)" autocomplete="false">
+                            <div class="form-field">
+                                <div class="row">
+                                    <div class="column">
+                                        <ng-container *ngFor="let field of formConfig.schema">
+                                            <ng-container *ngIf="!field.isVisible  ">
+                                                <label [for]="field.name"
+                                                    [ngClass]="{'ps-required-asterisk': field.required}"
+                                                    [textContent]="field.label"></label>
+                                                <input *ngIf="field?.type == 'text'" [type]="field.type"
+                                                    [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
+                                                    [id]="field.name" [formControlName]="field.name"
+                                                    [placeholder]="field.placeholder" [required]="field.required" />
 
-                                                                    <input *ngIf="field?.type == 'text'"
-                                                                        [type]="field.type"
-                                                                        [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
-                                                                        [id]="field.name" [formControlName]="field.name"
-                                                                        [placeholder]="field.placeholder"
-                                                                        [required]="field.required" />
-                                                                    <app-cmp-input-dropdown
-                                                                        *ngIf="field?.type == 'multiselect-search'"
-                                                                        [showSelectAll]="false"
-                                                                        [showCheckboxes]="false"
-                                                                        [allowSingleSelect]="true"
-                                                                        [settings]="field.setting"
-                                                                        [filteredItems]="filterList && filterList[field.key]"
-                                                                        (onDropDownChange)="onDropdownStateChange(field.name, $event)">
-                                                                    </app-cmp-input-dropdown>
+                                                  
+                                                <app-cmp-input-dropdown *ngIf="field?.type == 'multiselect-search'"
+                                                    [showSelectAll]="false" [showCheckboxes]="false"
+                                                    [allowSingleSelect]="true" [settings]="field.setting"
+                                                    [selectedItems]="sellectedData[field.id] || []"
+                                                    [filteredItems]="filterList && filterList[field.key]"
+                                                    [disabled]="productForm.get(field.name)?.disabled"
+                                                    (onDropDownChange)="onDropdownStateChange(field.name, $event)">
+                                                </app-cmp-input-dropdown>
+                                                <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                                                    <span
+                                                        *ngIf="productForm.get(field.name)?.errors?.required">Required</span>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>                                                                                                                              
+                                    </div>
+                                    <div class="column-right">
+                                        <ng-container *ngFor="let field of formConfig.schema">
+                                          <ng-container *ngIf="field.isVisible">
+                                                <label [for]="field.name"
+                                                    [ngClass]="{'ps-required-asterisk': field.required}"
+                                                    [textContent]="field.label"></label>
 
-                                                                    <div *ngIf="isFieldInvalid(field.name)"
-                                                                        class="error-message">
-                                                                        <span
-                                                                            *ngIf="productForm.get(field.name)?.errors?.required">Required</span>
-                                                                    </div>
-                                                                </ng-container>
-                                                            </ng-container>
+                                                <input *ngIf="field?.type == 'text'" [type]="field.type"
+                                                    [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
+                                                    [id]="field.name" [formControlName]="field.name"
+                                                    [placeholder]="field.placeholder" [required]="field.required" />
 
-                                                            </div>
-                                                            <div class="column-right">
-                                                                <ng-container *ngFor="let field of formConfig.schema">
-
-                                                                <ng-container *ngIf="field.isVisible">
-                                                                    <label [for]="field.name"
-                                                                        [ngClass]="{'ps-required-asterisk': field.required}"
-                                                                        [textContent]="field.label"></label>
-
-                                                                    <input *ngIf="field?.type == 'text'"
-                                                                        [type]="field.type"
-                                                                        [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
-                                                                        [id]="field.name" [formControlName]="field.name"
-                                                                        [placeholder]="field.placeholder"
-                                                                        [required]="field.required" />
-                                                                    
-                                                                    <input *ngIf="field?.type == 'checkbox'"
-                                                                        [type]="field.type"
-                                                                        [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
-                                                                        [id]="field.name"
-                                                                        [formControlName]="field.name"
-                                                                        [placeholder]="field.placeholder"
-                                                                        [required]="field.required"
-                                                                        [checked]="field.value === '1'"
-                                                                        value="0"
-                                                                        (change)="changeComplianceValue($event.target.checked, field.name)" />
-
-                                                                </ng-container>
-                                                            </ng-container>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-submit-button">
-                                                        <button type="submit" class="btn btn-primary">{{
-                                                            formConfig.submitBtnLabel }}</button>
-                                                        <button type="reset" class="cancel"
-                                                            (click)="openConfirmationPopup()">{{
-                                                            formConfig.cancelBtnLabel }}</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
+                                                <input *ngIf="field?.type == 'checkbox'" [type]="field.type"
+                                                    [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
+                                                    [id]="field.name" [formControlName]="field.name"
+                                                    [placeholder]="field.placeholder" [required]="field.required"
+                                                    [checked]="field.value === '1'" value="0"
+                                                    (change)="changeComplianceValue($event.target.checked, field.name)" />
+                                            </ng-container>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="form-submit-button">
+                                <button type="submit" class="btn btn-primary">{{
+                                    formConfig.submitBtnLabel }}</button>
+                                <button type="reset" class="cancel" (click)="openConfirmationPopup()">{{
+                                    formConfig.cancelBtnLabel }}</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </div>

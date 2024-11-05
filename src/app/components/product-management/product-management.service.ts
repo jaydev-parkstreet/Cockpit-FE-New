@@ -54,7 +54,7 @@ export class ProductManagementService {
             sortable: false,
             lockPosition: true,
             resizable: false,
-            cellClass: 'select-all-header-cell pl0px header-check check'
+            cellClass: 'select-all-header-cell pl0px header-check check' 
         }, {
             headerName: 'Product Code',
             headerTooltip: 'Product Code',
@@ -92,7 +92,7 @@ export class ProductManagementService {
             dashRenderer: (params) => this.renderDash(params),
             idRender: (params) => this.renderId(params),
             statusRenderer: (params) => this.renderStatus(params),
-            },
+            },   
             enableColResize: true,
             allowContextMenuWithControlKey: true,
             rowBuffer: 0,
@@ -124,7 +124,6 @@ export class ProductManagementService {
             getRowId: (data) => data.id,
         };
     }
-  
     renderCheckbox(params) {
         let checkboxSelection = '';
         if (params.data) {
@@ -274,6 +273,10 @@ export class ProductManagementService {
                     label: 'Active State',
                     type: 'multiselect-search',
                     divClass: 'col-3 norightpadding',
+                    showSearch:false,
+                    showSelectAll: false,
+                    showCheckboxes: false,
+                    allowSingleSelect: true,
                     setting: this.getMultiSelectConfig('Select State')
                 }, {
                     key: 'bottles_per_case',
@@ -319,12 +322,27 @@ export class ProductManagementService {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http.get(environment.apiUrl + "product-tool/dropdown", { headers }).toPromise();
     }
-
-    getSubBrandProducts(clientId: string, token: string) {
+ 
+    getBrands(clientId: string) {
+        const token = localStorage.getItem('authToken');
+    
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }); 
+        const params = { client_ids: [clientId] }; 
+        return this.http
+            .post(environment.apiUrl + "product-tool/brands", params, { headers })
+            .pipe(map((response: any) => response));
+    }
+    
+    
+    getSubBrandProducts(clientId: string,brandId) {
+        const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http
-            .get(`${environment.apiUrl}product-tool/sub_brand_products?client_id=${clientId}`, { headers })
-            .toPromise();
+            .get(`${environment.apiUrl}product-tool/sub_brand_products?client_id=${clientId}?brand_id=${brandId}`, { headers })
+            .pipe(map((response :any) => response.data));
     }
 
     getDetails(id) {
@@ -344,7 +362,7 @@ export class ProductManagementService {
             'productId' : productId
         };
         return this.http
-            .post(environment.apiUrl +"product-tool/ns_sync", params)
+            .post(environment.apiUrl +"product-tool/ns-sync", params)
             .pipe(map((response :any) => response.data));
     }
 
@@ -357,7 +375,44 @@ export class ProductManagementService {
       
           return this.http
           .get(environment.apiUrl + "product-tool/approve/product", { headers, params,})
-          .pipe(map((response :any) => response.data));
+          .pipe(map((response :any) => response));
+    }
+
+    getPreApproveAPI(productId) {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+      
+        const params = { product_id: productId };
+      
+        return this.http.get(environment.apiUrl + "product-tool/pre-approve/product", { headers, params,})
+        .pipe(map((response :any) => response));
+    }
+
+    getNeedActionAPI(productId) {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+    
+        const params = { product_id: productId };
+    
+        return this.http.get(environment.apiUrl + "product-tool/need-action-waiting-on-client/product", { headers, params,})
+        .pipe(map((response :any) => response));
+    }
+
+    getActivateAPI(productId: string[], isActive) {
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+          });
+      
+        const body = {
+        product_id: productId,
+        is_active: isActive ? 0 : 1,
+        };
+
+        return this.http
+        .post(environment.apiUrl + "product-tool/active-deactivate/product", body, { headers })
+        .pipe(map((response :any) => response));
     }
 
     getProductManagementSystemSave(obj) {
@@ -368,6 +423,12 @@ export class ProductManagementService {
     excelExport(obj) {
         return this.http
             .post(environment.apiUrl + "product-tool/excel-export", obj,{responseType: 'text',observe: 'response'})
+            .pipe(map((response :any) => response));
+    }
+
+    getSyncStatusDetails(id) {
+        return this.http
+            .get(environment.apiUrl +`product-tool/ns-sync-status?id=${id}`)
             .pipe(map((response :any) => response));
     }
 }

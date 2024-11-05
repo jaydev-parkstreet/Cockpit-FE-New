@@ -273,13 +273,18 @@
         -webkit-border-radius: 4px;
         border-radius: 4px;
     }
-
-    ::-webkit-scrollbar-thumb {
+    .ag-root ::-webkit-scrollbar {
+        height: 8px;
+        width: 8px;
+    }
+    .ag-root ::-webkit-scrollbar-thumb {
         -webkit-border-radius: 4px;
         border-radius: 4px;
         background: $colors-base-primary-t-10;
-    }
-
+        &:hover {
+            background: $colors-base-primary-t-25;
+        }
+    }​   
     span.ag-header-icon.ag-sort-order {
         display: none;
     }

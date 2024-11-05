@@ -14,6 +14,7 @@ export class SummaryTopBarComponent implements OnInit {
   @Output() applyFilters = new EventEmitter<any>();
   @Output() resetFilters = new EventEmitter<any>();
   @Output() onEnter = new EventEmitter<any>();
+  @Output() onClickAction: EventEmitter<{action: any}> = new EventEmitter<{action: any}>();
   @Output() excelExport = new EventEmitter<any>();
   topBarConfig : any;
   tooltipText:any;
@@ -44,7 +45,6 @@ export class SummaryTopBarComponent implements OnInit {
   resetFilterChanges() {
     this.selectedFilters = {};
     this.isAllItemsSelected = false;
-    this.toggleFilter()
     this.resetFilters.emit();
   }
 }

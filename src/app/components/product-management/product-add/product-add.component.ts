@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input,  OnInit, Output } from '@angular/core';
 import AppConstant from 'src/app/app.constant';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AuthService } from '../../authentication/auth.service';
@@ -16,25 +16,34 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./product-add.component.scss'],
 })
 export class ProductAddComponent implements OnInit {
-  constructor(
+  sellectedData: any= {};
+
+  constructor(private changeDetector: ChangeDetectorRef,
     private simpleModalService: SimpleModalService,
     public router: Router,
     private dropdownService: InputDropdownService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private productmanagementService: ProductManagementService,
-	private spinner : NgxSpinnerService
+	private spinner : NgxSpinnerService,
+    private commonService : CommonService
   ) { }
 
   // Flags and configuration properties
   isErrorRedirect: boolean = false;
   title: any;
+  clientId:any
   formConfig: any;
   showError: boolean = false;
   activeDropdownId: string | null = null;
   formSubmitted: boolean = false;
-  dropdownData:any
+  dropdownData:any;
   @Input() filterList: any;
+  filters: any[] = [];
+  brand: any[] = [];
+  @Output() dropdownStateChange = new EventEmitter<{ fieldName: string, isDisabled: boolean }>();
+  isBrandDisabled: boolean = true;
+  isSubBrandDisabled: boolean = true;
 
 
   // Dropdown configuration
@@ -49,8 +58,10 @@ export class ProductAddComponent implements OnInit {
 
   // Reactive form initialization
   productForm = this.formBuilder.group({
-    client_id: ['', [Validators.required]],
-    sub_brand_product_id: ['', [Validators.required]],
+    clients: ['', [Validators.required]],
+    // brand: ['', [Validators.required]],
+    brand: [{ value: '', disabled: this.isBrandDisabled }, [Validators.required]],
+    sub_brand_product_id: [{value: '', disabled: this.isSubBrandDisabled },[Validators.required]],
     description: ['', [Validators.required]],
     name: [''],
     group: ['', [Validators.required]],
@@ -89,23 +100,24 @@ export class ProductAddComponent implements OnInit {
   
 
   ngOnInit(): void {
-    const productId = this.route.snapshot.paramMap.get('id')
+    let productId = this.route.snapshot.paramMap.get('id')
     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
     this.initializeFormConfig();
-    this.getDropdown()
+    this.filters = this.createFormSchema();
+    this.getDropdown();
 
     if (productId) {
       this.productmanagementService.getDetails(productId).subscribe((productData) => {
         this.prefillForm(productData);
       });
     }
-    
     this.productForm.valueChanges.subscribe(() => {
       if (this.formSubmitted) {
         this.showError = false;
       }
     });
   }
+ 
 
   initializeFormConfig(): void {
     this.formConfig = {
@@ -113,16 +125,20 @@ export class ProductAddComponent implements OnInit {
       cancelBtnLabel: AppConstant.PRODUCT.CANCEL_BUTTON,
       submitBtnLabel: AppConstant.PRODUCT.SUBMIT_BUTTON,
     };
+    console.log( this.formConfig)
+    this.updateBrandFilter() 
   }
 
   createFormSchema() {
+    
     return [
-      this.dropdownService.createFilterObj('client_id', 'clients', 'Client', 'Select Client', 'client_id', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('sub_brand_product_id', 'varietals', 'Sub-Brand Product', 'Select Sub-Brand Product', 'sub_brand_product_id', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('clients', 'clients', 'Supplier', 'Select Supplier', 'clients', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk',false),
+      this.dropdownService.createFilterObj('brand', 'varietals', 'Brand', 'Select Brand', 'brand', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk',this.isBrandDisabled),    
+      this.dropdownService.createFilterObj('sub_brand_product_id', 'varietals', 'Sub-Brand Product', 'Select Sub-Brand Product', 'sub_brand_product_id', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk', this.isSubBrandDisabled),
       { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
       { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
       this.dropdownService.createFilterObj('group', 'groups', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('producer', 'producers', 'Producer', 'Select Producer', 'producer', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('producer_name', 'producers', 'Producer', 'Select Producer', 'producer', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
       this.dropdownService.createFilterObj('case_unit_of_measure', 'cases_uom', 'Case UOM', 'Select Type', 'case_unit_of_measure', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
       this.dropdownService.createFilterObj('container_type', 'container_types', 'Container Type', 'Select Type', 'container_type', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
       { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
@@ -157,19 +173,19 @@ export class ProductAddComponent implements OnInit {
   }
   
 
-  prefillForm(productData: any): void {
+  prefillForm(productData: any): void { 
     this.productForm.patchValue({
-      client_id: this.getDropDownArrayByIds(this.filterList.clients, productData.client_id),
-      sub_brand_product_id: this.getDropDownArrayByIds(this.filterList.varietals, productData.sub_brand_product_id),
+      client_id: this.getDropDownArrayByIds(this.filterList.clients, productData.client_id , 'client_id'),
+      sub_brand_product_id: this.getDropDownArrayByIds(this.filterList.varietals, productData.sub_brand_product_id, 'sub_brand_product_id'),
       description: productData.description,
       name: productData.fanciful_name,
-      group: this.getDropDownArrayByIds(this.filterList.groups, productData.group_name),
-      producer: this.getDropDownArrayByIds(this.filterList.producers, productData.producer_name),
-      case_unit_of_measure: this.getDropDownArrayByIds(this.filterList.cases_uom, productData.case_unit_of_measure),
-      container_type: this.getDropDownArrayByIds(this.filterList.container_types, productData.container_type),
+      group: this.getDropDownArrayByIds(this.filterList.groups, productData.group_id, 'group'),
+      producer: this.getDropDownArrayByIds(this.filterList.producers, productData.producer_id, 'producer'),
+      case_unit_of_measure: this.getDropDownArrayByIds(this.filterList.cases_uom, productData.case_unit_of_measure, 'case_unit_of_measure'),
+      container_type: this.getDropDownArrayByIds(this.filterList.container_types, productData.container_type, 'container_type'),
       ex_works_cost: productData.ex_works_cost,
-      is_organic: this.getDropDownArrayByIds(this.filterList.organic, productData.is_organic),
-      prod_type: this.getDropDownArrayByIds(this.filterList.product_type, productData.prod_type),
+      is_organic: this.getDropDownArrayByIds(this.filterList.organic, productData.is_organic, 'is_organic'),
+      prod_type: this.getDropDownArrayByIds(this.filterList.product_type, productData.prod_type, 'prod_type'),
       product_id: productData.product_id,
       abv: productData.abv,
       upc_code: productData.upc_code,
@@ -221,14 +237,16 @@ export class ProductAddComponent implements OnInit {
 // 		}
 // 	});
 // }
-  getDropDownArrayByIds (list, value) {
+  getDropDownArrayByIds (list, value, name) {
     let result = [] ;
     for (let i = 0; i < list.length; i++) {
         if (list[i].id === value) {
             result.push(list[i]);
+            this.sellectedData[name] = result
             return result;
         }
     }
+    console.log(name, this.sellectedData[name]);
     return result.length===0?null:result;
   }
 
@@ -239,9 +257,6 @@ export class ProductAddComponent implements OnInit {
   onSubmit(form: FormGroup) {
     this.formSubmitted = true;
     this.showError = false;
-	this.spinner.show();
-    console.log("inside ", form.valid);
-    console.log("inside error", form.value);
     if (form.valid) {
       const reqObj = {
         clients: form.value.client_id,
@@ -285,21 +300,24 @@ export class ProductAddComponent implements OnInit {
 		reqObj['compliance'] = 0;
 		form.value['compliance'] = 0;
 	}	
+    // this.spinner.show();
     this.productmanagementService.getProductManagementSystemSave(form.value).subscribe(response => {
-
-      console.log(response);
       if (!response.hasError) {
+            // this.spinner.hide();
 		  this.showError = false;
 		  let productId = form.value.product_id;
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
 		  if (productId) {
 			this.router.navigateByUrl(`/product-tool/${response.product_id}`);
 		  } else {
 			this.router.navigateByUrl(`/product-tool/${response.product_id}`);
 		  }
       } else {
-		  this.showError = true;
-          // this.confirmPopupOpen = false;
-          // this.commonService.showFlashMessage(true, response.msg, 'saved-footer');
+        // this.spinner.hide();
+        // this.confirmPopupOpen = false;
+        console.log("inside else ", response);
+        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+        this.showError = true;
       }
   });  
     this.showError = false;
@@ -318,7 +336,6 @@ export class ProductAddComponent implements OnInit {
       console.error("Error fetching summary:", error);
     }
     this.filterList = this.dropdownData;
-    console.log(this.filterList);
   }
 
 
@@ -352,23 +369,83 @@ export class ProductAddComponent implements OnInit {
     }
 confirmSubmission(form: FormGroup) {
   const reqObj = form.value;
-  console.log('Form Submitted:', reqObj);
   form.reset();
   //this.simpleModalService.closeModal();
 }
 
 
-  onDropdownStateChange(fieldName , field): void {
-    console.log(fieldName, field[0].name);
-    this.activeDropdownId = field ? (this.activeDropdownId === field ? null : field) : null;
-	if(fieldName == 'container_type' || fieldName == 'sub_brand_product_id'){
-		this.productForm.get(fieldName)?.setValue(field[0].id);
-	}else {
-		this.productForm.get(fieldName)?.setValue(field[0].name);
-	}
+  // onDropdownStateChange(fieldName , field): void {
+  //   this.activeDropdownId = field ? (this.activeDropdownId === field ? null : field) : null;
+	// if(fieldName == 'container_type' || fieldName == 'sub_brand_product_id'){
+	// 	this.productForm.get(fieldName)?.setValue(field[0].id);
+	// }else {
+	// 	this.productForm.get(fieldName)?.setValue(field[0].name);
+	// }
     // this.productForm.get(fieldName)?.setValue(field[0].name);
+onDropdownStateChange(fieldName: string, selectedValue: any) {
+  const brandControl = this.productForm.get('brand');
+  const subBrandControl = this.productForm.get('sub_brand_product_id');
+   this.clientId = selectedValue[0]?.id; 
+
+  if (fieldName === 'clients' && selectedValue.length > 0) {
+    
+      const isClientSelected = !!selectedValue;    
+      this.isBrandDisabled = !isClientSelected;
+
+      const clientId = selectedValue[0].id;     
+      this.productmanagementService.getBrands(clientId).subscribe(brands => {
+    
+         console.log(brands)
+        });
+       
+      if (brandControl) {
+          if (this.isBrandDisabled) {
+              brandControl.disable(); 
+              brandControl.setValue('');
+              this.isSubBrandDisabled = true; 
+              subBrandControl.disable(); 
+              subBrandControl.setValue('');
+          } else {
+              brandControl.enable(); 
+          }
+        }
+      this.changeDetector.detectChanges();
   }
 
+  if (fieldName === 'brand') {
+      const isBrandSelected = !!selectedValue; 
+      this.isSubBrandDisabled = !isBrandSelected; 
+    //  const brandId = selectedValue[0]?.id;    
+        // this.productmanagementService.getSubBrandProducts(clientId).subscribe(brands => {
+    
+      //    console.log(brands)
+      //   }); 
+
+      if (subBrandControl) {
+          if (this.isSubBrandDisabled) {
+              subBrandControl.disable(); 
+              subBrandControl.setValue(''); 
+          } else {
+              subBrandControl.enable(); 
+          }
+      }
+
+      this.changeDetector.detectChanges();
+  }
+
+  console.log('Client selected:', !!this.productForm.get('client_id')?.value);
+  console.log('Brand selected:', !!brandControl?.value);
+  console.log('Sub-brand disabled state:', this.isSubBrandDisabled);
+}
+
+
+
+
+
+
+updateBrandFilter() {
+ return this.dropdownService. createFilterObj('brand', 'varietals', 'Brand', 'Select Brand', 'brand', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk',this.isBrandDisabled);
+}
   /**
    * Function to track fields and prevent unnecessary re-renders
    */
