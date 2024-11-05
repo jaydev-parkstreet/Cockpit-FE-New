@@ -52,7 +52,10 @@ const routes: Routes = [
                   },
                   {
                     path: 'clone',
-                    component: ProductAddComponent
+                    component: ProductAddComponent,
+                    data: {
+                      isDuplicate: true
+                    }
                   }
                 ]
               }]
