@@ -49,7 +49,6 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit(): void {
     this.isOpen = false;
-    this.selectedItems = this.formControl?.value || [];
     this.updateFilteredItems(this.filteredItems);
     this.updateSelectAllState(this.filteredItems);
     this.originalItems = [...this.filteredItems]; 
@@ -111,7 +110,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
       }
     }
     this.onDropDownChange.emit(this.selectedItems);
-    console.log(this.onDropDownChange.emit(this.selectedItems))
+    // console.log(this.onDropDownChange.emit(this.selectedItems))
   }
 
   onChevronClick(event: MouseEvent): void {

@@ -71,9 +71,16 @@ export class ProductAddComponent implements OnInit {
     ex_works_cost: [''],
     is_organic: ['', [Validators.required]],
     prod_type: ['', [Validators.required]],
+    sub_type: [''],
+    category:  [''],
+    source:  [''],
+    country: [''],
+    vintage: [''],
+    varietal: [''],
     compliance: [''],
     product_id: [''],
     abv: [''],
+    manufactured_location_address: [''],
     upc_code: [''],
     scc_code: [''],
     system_id: [''],
@@ -108,6 +115,7 @@ export class ProductAddComponent implements OnInit {
 
     if (productId) {
       this.productmanagementService.getDetails(productId).subscribe((productData) => {
+        this.renderConditionalFields(productData.prod_type)
         this.prefillForm(productData);
       });
     }
@@ -130,7 +138,6 @@ export class ProductAddComponent implements OnInit {
   }
 
   createFormSchema() {
-    
     return [
       this.dropdownService.createFilterObj('clients', 'clients', 'Supplier', 'Select Supplier', 'clients', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk',false),
       this.dropdownService.createFilterObj('brand', 'varietals', 'Brand', 'Select Brand', 'brand', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk',this.isBrandDisabled),    
@@ -144,50 +151,52 @@ export class ProductAddComponent implements OnInit {
       { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
       this.dropdownService.createFilterObj('is_organic', 'organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
       this.dropdownService.createFilterObj('prod_type', 'product_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
-      { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', isVisible: true },
-      { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '', isVisible: true },
-      { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', isVisible: true },
-      { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isVisible: true },
-      { type: 'text', name: 'scc_code', label: 'SCC Code', placeholder: 'SCC Code', isVisible: true },
+      { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance' },
+      { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '', isVisible: true,  isCode: true },
+      { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isVisible: true, isCode: true },
+      { type: 'text', name: 'scc_code', label: 'SCC Code', placeholder: 'SCC Code', isVisible: true,isCode: true  },
       { type: 'text', name: 'system_id', label: 'Supplier Reference ID', placeholder: 'Supplier Reference ID', isVisible: true },
-      { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isVisible: true },
-      { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isVisible: true },
-      { type: 'text', name: 'unimerc_code', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isVisible: true },
-      { type: 'text', name: 'bdn_code', label: 'BDN Code', placeholder: 'BDN Code', isVisible: true },
-      { type: 'text', name: 'unit_length', label: 'Length', placeholder: 'Enter Length', required: false },
-      { type: 'text', name: 'unit_width', label: 'Width', placeholder: 'Enter Width', required: false },
-      { type: 'text', name: 'unit_height', label: 'Height', placeholder: 'Enter Height', required: false },
-      { type: 'text', name: 'unit_weight', label: 'Weight', placeholder: 'Enter Weight', required: false },
-      { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false },
-      { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false },
-      { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false },
-      { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false },
-      { type: 'text', name: 'case_length', label: 'Case Length', placeholder: 'Enter Case Length', required: false },
-      { type: 'text', name: 'case_width', label: 'Case Width', placeholder: 'Enter Case Width', required: false },
-      { type: 'text', name: 'case_height', label: 'Case Height', placeholder: 'Enter Case Height', required: false },
-      { type: 'text', name: 'case_weight', label: 'Case Weight', placeholder: 'Enter Case Weight', required: false },
-      { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false },
-      { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false },
-      { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false },
+      { type: 'text', name: 'unit_length', label: 'Length', placeholder: 'Enter Length', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'unit_width', label: 'Width', placeholder: 'Enter Width', required: false,isVisible: true, isDimension: true },
+      { type: 'text', name: 'unit_height', label: 'Height', placeholder: 'Enter Height', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'unit_weight', label: 'Weight', placeholder: 'Enter Weight', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'case_length', label: 'Case Length', placeholder: 'Enter Case Length', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'case_width', label: 'Case Width', placeholder: 'Enter Case Width', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'case_height', label: 'Case Height', placeholder: 'Enter Case Height', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'case_weight', label: 'Case Weight', placeholder: 'Enter Case Weight', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false, isVisible: true, isDimension: true },
     ];
   }
   
 
   prefillForm(productData: any): void { 
     this.productForm.patchValue({
-      client_id: this.getDropDownArrayByIds(this.filterList.clients, productData.client_id , 'client_id'),
-      sub_brand_product_id: this.getDropDownArrayByIds(this.filterList.varietals, productData.sub_brand_product_id, 'sub_brand_product_id'),
+      clients: this.getDropDownArrayByIds(this.filterList.clients, productData.client_id , 'clients'),
+      sub_brand_product_id: this.getDropDownArrayByIds(this.filterList.product_sub_type_other, productData.sub_brand_product_id, 'sub_brand_product_id'),
       description: productData.description,
       name: productData.fanciful_name,
       group: this.getDropDownArrayByIds(this.filterList.groups, productData.group_id, 'group'),
-      producer: this.getDropDownArrayByIds(this.filterList.producers, productData.producer_id, 'producer'),
+      producer: this.getDropDownArrayByIds(this.filterList.producers, productData.producer_id, 'producer_name'),
       case_unit_of_measure: this.getDropDownArrayByIds(this.filterList.cases_uom, productData.case_unit_of_measure, 'case_unit_of_measure'),
       container_type: this.getDropDownArrayByIds(this.filterList.container_types, productData.container_type, 'container_type'),
       ex_works_cost: productData.ex_works_cost,
       is_organic: this.getDropDownArrayByIds(this.filterList.organic, productData.is_organic, 'is_organic'),
       prod_type: this.getDropDownArrayByIds(this.filterList.product_type, productData.prod_type, 'prod_type'),
+      sub_type: this.getDropDownArrayByIds(this.filterList.product_sub_type, productData.sub_type, 'sub_type'),
+      category: this.getDropDownArrayByIds(this.filterList.categories, productData.category_id, 'category'),
+      source: this.getDropDownArrayByIds(this.filterList.source, productData.source, 'source'),
+      country: this.getDropDownArrayByIds(this.filterList.countries, productData.country_id, 'country'),
+      vintage: this.getDropDownArrayByIds(this.filterList.vintages, productData.vintage, 'vintage'),
+      varietal: this.getDropDownArrayByIds(this.filterList.varietals, productData.varietal, 'varietal'),
       product_id: productData.product_id,
       abv: productData.abv,
+      manufactured_location_address: productData.manufactured_location_address,
       upc_code: productData.upc_code,
       scc_code: productData.scc_code,
       system_id: productData.system_id,
@@ -246,7 +255,6 @@ export class ProductAddComponent implements OnInit {
             return result;
         }
     }
-    console.log(name, this.sellectedData[name]);
     return result.length===0?null:result;
   }
 
@@ -258,46 +266,53 @@ export class ProductAddComponent implements OnInit {
     this.formSubmitted = true;
     this.showError = false;
     if (form.valid) {
-      const reqObj = {
-        clients: form.value.client_id,
-        description: form.value.description,
-        name: form.value.name,  // Fanciful Name
-        groups: form.value.groups,
-        producer: form.value.producer, // Producer
-        case_unit_of_measure: form.value.case_unit_of_measure, // Case UOM
-        container_types: form.value.container_types, // Container Type
-        ex_works_cost: form.value.ex_works_cost, // Ex Works Cost
-        organic: form.value.organic, // Organic
-        product_type: form.value.product_type, // Product Type
-        product_id: form.value.product_id, // Product ID
-        abv: form.value.abv, // ABV
-        upc_code: form.value.upc_code, // UPC Code
-        scc_code: form.value.scc_code, // SCC Code
-        system_id: form.value.system_id, // Supplier Reference ID
-        cola_ttb_id: form.value.cola_ttb_id, // COLA TTB ID
-        nabca_code: form.value.nabca_code, // NABCA Code
-        unimerc_code: form.value.unimerc_code, // UNIMERC Code
-        bdn_code: form.value.bdn_code, // BDN Code
-        unit_length: form.value.unit_length, // Unit Length
-        unit_width: form.value.unit_width, // Unit Width
-        unit_height: form.value.unit_height, // Unit Height
-        unit_weight: form.value.unit_weight, // Unit Weight
-        pallet_length: form.value.pallet_length, // Pallet Length
-        pallet_width: form.value.pallet_width, // Pallet Width
-        pallet_height: form.value.pallet_height, // Pallet Height
-        pallet_weight: form.value.pallet_weight, // Pallet Weight
-        case_length: form.value.case_length, // Case Length
-        case_width: form.value.case_width, // Case Width
-        case_height: form.value.case_height, // Case Height
-        case_weight: form.value.case_weight, // Case Weight
-        layers_per_pallet: form.value.layers_per_pallet, // Layers per Pallet
-        cases_per_layer: form.value.cases_per_layer, // Cases per Layer
-        cases_per_pallet: form.value.cases_per_pallet, // Cases per Pallet
-    };
+    //   const reqObj = {
+    //     clients: form.value.client_id,
+    //     description: form.value.description,
+    //     name: form.value.name,  // Fanciful Name
+    //     groups: form.value.groups,
+    //     producer: form.value.producer, // Producer
+    //     case_unit_of_measure: form.value.case_unit_of_measure, // Case UOM
+    //     container_types: form.value.container_types, // Container Type
+    //     ex_works_cost: form.value.ex_works_cost, // Ex Works Cost
+    //     organic: form.value.organic, // Organic
+    //     product_type: form.value.prod_type, // Product Type
+    //     product_sub_type: form.value.sub_type,
+    //     categories: form.value.category_id,
+    //     source: form.value.source,
+    //     countries: form.value.country,
+    //     vintages: form.value.vintage,
+    //     varietals: form.value.varietal,
+    //     product_id: form.value.product_id, // Product ID
+    //     abv: form.value.abv, // ABV
+    //     manufactured_location_address: form.value.manufactured_location_address,
+    //     upc_code: form.value.upc_code, // UPC Code
+    //     scc_code: form.value.scc_code, // SCC Code
+    //     system_id: form.value.system_id, // Supplier Reference ID
+    //     cola_ttb_id: form.value.cola_ttb_id, // COLA TTB ID
+    //     nabca_code: form.value.nabca_code, // NABCA Code
+    //     unimerc_code: form.value.unimerc_code, // UNIMERC Code
+    //     bdn_code: form.value.bdn_code, // BDN Code
+    //     unit_length: form.value.unit_length, // Unit Length
+    //     unit_width: form.value.unit_width, // Unit Width
+    //     unit_height: form.value.unit_height, // Unit Height
+    //     unit_weight: form.value.unit_weight, // Unit Weight
+    //     pallet_length: form.value.pallet_length, // Pallet Length
+    //     pallet_width: form.value.pallet_width, // Pallet Width
+    //     pallet_height: form.value.pallet_height, // Pallet Height
+    //     pallet_weight: form.value.pallet_weight, // Pallet Weight
+    //     case_length: form.value.case_length, // Case Length
+    //     case_width: form.value.case_width, // Case Width
+    //     case_height: form.value.case_height, // Case Height
+    //     case_weight: form.value.case_weight, // Case Weight
+    //     layers_per_pallet: form.value.layers_per_pallet, // Layers per Pallet
+    //     cases_per_layer: form.value.cases_per_layer, // Cases per Layer
+    //     cases_per_pallet: form.value.cases_per_pallet, // Cases per Pallet
+    // };
       
 
 	if(form.value.compliance != 1){
-		reqObj['compliance'] = 0;
+		// reqObj['compliance'] = 0;
 		form.value['compliance'] = 0;
 	}	
     // this.spinner.show();
@@ -433,11 +448,96 @@ onDropdownStateChange(fieldName: string, selectedValue: any) {
       this.changeDetector.detectChanges();
   }
 
-  console.log('Client selected:', !!this.productForm.get('client_id')?.value);
-  console.log('Brand selected:', !!brandControl?.value);
-  console.log('Sub-brand disabled state:', this.isSubBrandDisabled);
+  if (fieldName === 'prod_type') {
+    this.renderConditionalFields(selectedValue[0].name)
+  }
+
 }
 
+    renderConditionalFields(selectedValue: any) {
+        const fieldExists = (fieldName: string) => {
+            return this.formConfig.schema.some(field => field.name === fieldName);
+        };
+
+        const baseFields = [
+            this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+            this.dropdownService.createFilterObj('category', 'categories', 'Category', 'Select Category', 'category', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+            this.dropdownService.createFilterObj('source', 'source', 'Source', 'Select Source', 'source', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+            this.dropdownService.createFilterObj('country', 'countries', 'Country', 'Select Country', 'country', false, false, null, null, 'col-xs-3', true, false, false, '', false),
+            { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', isVisible: false, required: true },
+            { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isVisible: true, isCode: true, required: true },
+            { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isVisible: true, isCode: true },
+            { type: 'text', name: 'unimerc_code', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isVisible: true, isCode: true },
+            { type: 'text', name: 'bdn_code', label: 'BDN Code', placeholder: 'BDN Code', isVisible: true, isCode: true },
+            { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address', isVisible: false},
+        ];
+
+        const conditionalFields = {
+            wine: [
+                this.dropdownService.createFilterObj('vintage', 'vintages', 'Vintage', 'Select Vintage', 'vintage', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+                this.dropdownService.createFilterObj('varietal', 'varietals', 'Varietal', 'Select Varietal', 'varietal', false, false, null, null, 'col-xs-3', true, false, false, '', false)
+            ],
+            malt: [
+                this.dropdownService.createFilterObj('varietal', 'varietals', 'Varietal', 'Select Varietal', 'varietal', false, false, null, null, 'col-xs-3', true, false, false, '', false) // only varietal
+            ],
+            spirits: [
+                this.dropdownService.createFilterObj('vintage', 'vintages', 'Vintage', 'Select Vintage', 'vintage', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false) // only vintage
+            ]
+        };
+        
+        switch (selectedValue) {
+            case 'Wine':
+                baseFields.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        this.formConfig.schema.push(field);
+                    }
+                });
+                conditionalFields.wine.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        this.formConfig.schema.push(field);
+                    }
+                });
+                break;
+            case 'Malt':
+                baseFields.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        this.formConfig.schema.push(field);
+                    }
+                });
+                conditionalFields.malt.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        this.formConfig.schema.push(field);
+                    }
+                });
+                break;
+            case 'Spirits':
+                baseFields.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        this.formConfig.schema.push(field);
+                    }
+                });
+                conditionalFields.spirits.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        this.formConfig.schema.push(field);
+                    }
+                });
+                break;
+            case 'Bulk':
+            case 'Others':
+                if (!fieldExists('sub_type')) {
+                    this.formConfig.schema.push(this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false));
+                }
+                if (!fieldExists('manufactured_location_address')) {
+                    this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address', isVisible: false});
+                }
+                break;
+            default:
+                if (!fieldExists('manufactured_location_address')) {
+                    this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address', isVisible: false});
+                }
+                break;
+        }
+    }
 
 
 

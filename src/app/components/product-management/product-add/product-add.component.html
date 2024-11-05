@@ -14,7 +14,7 @@
                                 <div class="row">
                                     <div class="column">
                                         <ng-container *ngFor="let field of formConfig.schema">
-                                            <ng-container *ngIf="!field.isVisible  ">
+                                            <ng-container *ngIf="!field.isVisible">
                                                 <label [for]="field.name"
                                                     [ngClass]="{'ps-required-asterisk': field.required}"
                                                     [textContent]="field.label"></label>
@@ -22,7 +22,13 @@
                                                     [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
                                                     [id]="field.name" [formControlName]="field.name"
                                                     [placeholder]="field.placeholder" [required]="field.required" />
-
+                                                
+                                                <input *ngIf="field?.type == 'checkbox'" [type]="field.type"
+                                                    [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
+                                                    [id]="field.name" [formControlName]="field.name"
+                                                    [placeholder]="field.placeholder" [required]="field.required"
+                                                    [checked]="field.value === '1'" value="0"
+                                                    (change)="changeComplianceValue($event.target.checked, field.name)" />
                                                   
                                                 <app-cmp-input-dropdown *ngIf="field?.type == 'multiselect-search'"
                                                     [showSelectAll]="false" [showCheckboxes]="false"
@@ -40,25 +46,32 @@
                                         </ng-container>                                                                                                                              
                                     </div>
                                     <div class="column-right">
-                                        <ng-container *ngFor="let field of formConfig.schema">
-                                          <ng-container *ngIf="field.isVisible">
+                                        <div *ngFor="let field of formConfig.schema" class="right-main">
+                                            <div *ngIf="field.isCode" class="code">
                                                 <label [for]="field.name"
+                                                    class="code-label"
                                                     [ngClass]="{'ps-required-asterisk': field.required}"
                                                     [textContent]="field.label"></label>
 
                                                 <input *ngIf="field?.type == 'text'" [type]="field.type"
+                                                    class="code-input"
                                                     [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
                                                     [id]="field.name" [formControlName]="field.name"
                                                     [placeholder]="field.placeholder" [required]="field.required" />
+                                            </div>
+                                            <div class="dimension" *ngIf="field.isDimension">
+                                                <label [for]="field.name"
+                                                    [ngClass]="{'ps-required-asterisk': field.required}"
+                                                    class="dimension-label"
+                                                    [textContent]="field.label"></label>
 
-                                                <input *ngIf="field?.type == 'checkbox'" [type]="field.type"
+                                                <input *ngIf="field?.type == 'text'" [type]="field.type"
+                                                    class="dimension-input"
                                                     [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
                                                     [id]="field.name" [formControlName]="field.name"
-                                                    [placeholder]="field.placeholder" [required]="field.required"
-                                                    [checked]="field.value === '1'" value="0"
-                                                    (change)="changeComplianceValue($event.target.checked, field.name)" />
-                                            </ng-container>
-                                        </ng-container>
+                                                    [placeholder]="field.placeholder" [required]="field.required" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
