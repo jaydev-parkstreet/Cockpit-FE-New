@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -7,11 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarMenuComponent implements OnInit {
   menuData = [];
+  @Input() isMenuExpanded:any;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.menuData = [{
+    this.isMenuExpanded =true;
+    this.menuData = [
+    {
       id:1,
       iconClass: 'fas fa-tachometer-alt',
       menuContent: 'Dashboard',

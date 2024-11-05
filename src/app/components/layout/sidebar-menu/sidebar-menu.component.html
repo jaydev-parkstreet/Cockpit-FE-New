@@ -1,5 +1,5 @@
-<div class="sidebar-layout">
-    <div class="sidebar-header">
+<div class="sidebar-layout" [ngClass]="{'expanded':isMenuExpanded,'collapsed':!isMenuExpanded}">
+    <div class="sidebar-header" *ngIf="isMenuExpanded">
         <img src="http://cockpit.parkstreet.local/images/cockpit/logo.png" width="200px">
     </div>
     <div class="sidebar-content">
@@ -8,14 +8,14 @@
                 <li class="sidebar-menu-item" *ngFor="let menu of menuData">
                     <a [routerLink]="'/dashboard'" (click)="toggleIcon(menu)">
                         <i [class]="menu.iconClass"></i>
-                        <span>{{menu.menuContent}}</span> 
+                        <span *ngIf="isMenuExpanded">{{menu.menuContent}}</span> 
                         <span class="toggle-icon"
                             [ngClass]="{'icon-plus': !menu.isExpanded, 'icon-minus': menu.isExpanded}"
-                            *ngIf="menu.iconPlus">
+                            *ngIf="menu.iconPlus && isMenuExpanded">
                         </span>
                     </a>
                 
-                <ul id="mainMenu-items" [ngStyle]="{'display': menu.isExpanded ? 'block':'none'}">
+                <ul id="mainMenu-items" [ngStyle]="{'display': menu.isExpanded && isMenuExpanded ? 'block':'none'}">
                     <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenuItems">
                         <a [routerLink]="'/product-management'">
                             <i class="fas fa-caret-right"></i>

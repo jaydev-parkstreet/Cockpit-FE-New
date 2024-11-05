@@ -2,15 +2,16 @@
 @import '../../../scss/variables/typography';
 
 .sidebar-layout {
+    position: absolute;
+    left: 0;
+    z-index: 100;
+    background-color: $colors-neutral-black;
     .sidebar-header {
         padding: 16px;
     }
     .sidebar-content .sidebar-menu #mainMenu {
         padding: 8px 16px;
-        // padding: 24px 10px 0 10px;
         list-style: none;
-        // width: 270px;
-        height: 100%;
         display: flex;
         flex-direction: column;
 
@@ -79,4 +80,14 @@
             }
         }
     } 
+}
+
+.expanded { 
+    width: 240px;
+    top: 0;
+}
+
+.collapsed { 
+    width: 65px;
+    top: 38px;
 }

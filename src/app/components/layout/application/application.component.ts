@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/core';
+import { MainHeaderComponent } from '../main-header/main-header.component';
 
 @Component({
   selector: 'app-application',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./application.component.scss']
 })
 export class ApplicationComponent implements OnInit {
+  isMenuExpanded !:any;
+  @ViewChild('mainHeader') mainHeader !: MainHeaderComponent;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.isMenuExpanded = true;
+  }
+
+  menuToggle (value) {
+    this.isMenuExpanded = value;
   }
 
 }

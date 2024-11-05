@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Output, EventEmitter } from '@angular/core';
 import { AuthService } from './../../../components/authentication/auth.service';
 import { Router } from '@angular/router';
 
@@ -8,9 +8,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./main-header.component.scss']
 })
 export class MainHeaderComponent implements OnInit {
-  
+  isMenuExpanded = true;
   isDropdownOpen = false;
   currentUserData: any;
+  @Output() menuState = new EventEmitter<any>();
   constructor(
     private authService:AuthService,
     private router:Router
@@ -40,5 +41,9 @@ export class MainHeaderComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  toggleMenu() {
+    this.isMenuExpanded = !this.isMenuExpanded;
+    this.menuState.emit(this.isMenuExpanded);
+  }
 
 }

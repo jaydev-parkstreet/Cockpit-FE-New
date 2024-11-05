@@ -2,30 +2,21 @@
 @import '../../../scss/variables/colors';
 
 .app-layout {
-
-    .left-panel {
-        width: 240px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        height: 100vh;
-        background-color: $colors-neutral-black;
-    }
+    position: relative;
 
     .header-panel {
         margin-left: 240px;
         background-color: $colors-neutral-black;
-        // width: calc(100% - 115px) !important;
-        // width: 88%;
-        // height: 48px;
-        // .headerbar {
-        //     position: fixed;
-        // }
     }
 
-    .main-panel {
+    .mainPanelExpand {
         margin-left: 240px;
 
     }
+
+    .mainPanelCollapse {
+        margin-left: 65px;
+
+    }
+
 }

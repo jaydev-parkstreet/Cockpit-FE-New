@@ -141,3 +141,18 @@
         }
     }   
 }
+
+.headerExpanded {
+    margin-left: 240px;
+    background-color: $colors-neutral-black;
+}
+
+.headerCollapsed {
+    margin-left: 0px;
+    background-color: $colors-neutral-black;
+
+    .menutoggle {
+        margin-left: 9px;
+
+    }
+}
