@@ -15,7 +15,7 @@
         [(ngModel)]="searchText"
         (input)="filterItems()"
         placeholder="Search" />
-      <i class="fa fa-times-circle clear-search" *ngIf="searchText" (click)="clearSearch()"></i>
+      <i class="fa fa-times-circle clear-search" *ngIf="searchText" (click)="clearSearch($event)"></i>
     </div>
 
     <div class="dropdown-content">
