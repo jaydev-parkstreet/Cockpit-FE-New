@@ -173,15 +173,14 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   
   clearSearch(): void {
     this.searchText = '';
-    this.updateFilteredItems(this.filteredItems);
+    this.updateFilteredItems(this.originalItems);
   }
 
   //private updateFilteredItems(items): void {
   //   this.filteredItems = [...items];
   //   this.hideList = false;
   // }
-  private updateFilteredItems(items): void {
-
+  updateFilteredItems(items): void {
     this.filteredItems = Array.isArray(items) ? [...items] : [];
     this.hideList = false;
   }
