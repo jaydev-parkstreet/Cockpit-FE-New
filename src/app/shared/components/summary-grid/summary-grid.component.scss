@@ -6,7 +6,6 @@
 .checkbox-container {
     display: inline-block;
     position: relative;
-    cursor: pointer;
     font-size: 16px;
     line-height: 16px;
     height: 16px;
@@ -16,7 +15,6 @@
 .checkbox-container input[type="checkbox"] {
     position: absolute;
     opacity: 0;
-    cursor: pointer;
     height: 0;
     width: 0;
 }
@@ -32,6 +30,7 @@
     z-index: 9999;
     margin-left: 11px;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .checkbox-container input[type="checkbox"]:checked+.checkmark {
@@ -43,12 +42,13 @@
     content: "";
     position: absolute;
     display: block;
-    top: 50%; 
-    left: 50%; 
-    width: 8px; 
-    height: 2px;
-    background-color:  $colors-neutral-white;
-    transform: translate(-50%, -50%);
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid $colors-neutral-white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
 }
 
 ::ng-deep .ag-theme-material {
@@ -112,49 +112,6 @@
                 text-align: center;
                 font-family: $montserrat-regular;
             }
-            .checkbox-container {
-                display: inline-block;
-                position: relative;
-                cursor: pointer;
-                font-size: 16px;
-                line-height: 16px;
-                height: 16px;
-                width: 16px;
-            }
-            .checkbox-container input[type="checkbox"] {
-                position: absolute;
-                opacity: 0;
-                cursor: pointer;
-                height: 0;
-                width: 0;
-            }
-            .checkmark {
-                position: absolute;
-                top: 0;
-                height: 16px;
-                width: 16px;
-                background-color: $colors-neutral-white;
-                border: 1px solid $colors-v2-base-primary;
-                top: 10px;
-                z-index: 9999;
-                border-radius: 4px;
-            } 
-            .checkbox-container input[type="checkbox"]:checked+.checkmark {
-                background-color: $colors-v2-base-primary;
-                border-color: $colors-v2-base-primary;
-            } 
-            .checkbox-container input[type="checkbox"]:checked+.checkmark::after {
-                content: "";
-                position: absolute;
-                display: block;
-                left: 4px;
-                top: 1px;
-                width: 5px;
-                height: 10px;
-                border: solid $colors-neutral-white;
-                border-width: 0 2px 2px 0;
-                transform: rotate(45deg);
-            }     
         }
     }
 
