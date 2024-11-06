@@ -59,7 +59,7 @@ export class ProductAddComponent implements OnInit {
 
   // Reactive form initialization
   productForm = this.formBuilder.group({
-    clients: ['', [Validators.required]],
+    client_id: ['', [Validators.required]],
     // brand: ['', [Validators.required]],
     brand: [{ value: '', disabled: this.isBrandDisabled }, [Validators.required]],
     sub_brand_product_id: [{ value: '', disabled: this.isSubBrandDisabled }, [Validators.required]],
@@ -160,7 +160,7 @@ export class ProductAddComponent implements OnInit {
 
   createFormSchema() {
     return [
-      this.dropdownService.createFilterObj('clients', 'clients', 'Supplier', 'Select Supplier', 'clients', true, true, null, null, 'col-xs-3', null, false, false, 'ps-required-asterisk', false),
+      this.dropdownService.createFilterObj('client_id', 'clients', 'Supplier', 'Select Supplier', 'client_id', true, true, null, 'client_id', 'col-xs-3', null, false, false, 'ps-required-asterisk', false),
       this.dropdownService.createFilterObj('brand', 'brand', 'Brand', 'Select Brand', 'brand', true, true, null, null, 'col-xs-3', null, false, false, 'ps-required-asterisk', this.isBrandDisabled),
       this.dropdownService.createFilterObj('sub_brand_product_id', 'sub_brand_product_id', 'Sub-Brand Product', 'Select Sub-Brand Product', 'sub_brand_product_id', true, true, null, null, 'col-xs-3', null, false, false, 'ps-required-asterisk', this.isSubBrandDisabled),
       { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
@@ -198,7 +198,7 @@ export class ProductAddComponent implements OnInit {
 
   prefillForm(productData: any): void { 
     this.productForm.patchValue({
-      clients: this.getDropDownArrayByIds(this.filterList.clients, productData.client_id , 'clients'),
+      clients: this.getDropDownArrayByIds(this.filterList.clients, productData.client_id , 'client_id'),
       sub_brand_product_id: this.getDropDownArrayByIds(this.filterList.product_sub_type_other, productData.sub_brand_product_id, 'sub_brand_product_id'),
       description: productData.description,
       name: productData.fanciful_name,
@@ -275,6 +275,7 @@ export class ProductAddComponent implements OnInit {
             this.sellectedData[name] = result
             return result;
         }
+        
     }
     return result.length === 0 ? null : result;
   }
@@ -341,12 +342,12 @@ export class ProductAddComponent implements OnInit {
       if (!response.hasError) {
             // this.spinner.hide();
 		  this.showError = false;
-		  let productId = form.value.product_id;
+		  let productId = response.product_id;
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
 		  if (productId) {
-			this.router.navigateByUrl(`/product-tool/${response.product_id}`);
+			this.router.navigateByUrl(`/product-management/${response.product_id}`);
 		  } else {
-			this.router.navigateByUrl(`/product-tool/${response.product_id}`);
+			this.router.navigateByUrl(`/product-management/${response.product_id}`);
 		  }
       } else {
         // this.spinner.hide();
@@ -422,21 +423,21 @@ confirmSubmission(form: FormGroup) {
     // this.productForm.get(fieldName)?.setValue(field[0].name);
 
   onDropdownStateChange(fieldName: string, selectedValue: any) {
-    this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
-	  if(fieldName == 'container_type' || fieldName == 'sub_brand_product_id' || fieldName == "clients"){
-		     this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
-	   }
-     else {
-	     	this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
-	   }
-        this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
-
+      this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
+      if(fieldName == 'container_type' || fieldName == 'sub_brand_product_id' || fieldName == "client_id" || fieldName == "group" 
+        || fieldName == "is_organic" || fieldName == "producer_name" || fieldName == "case_unit_of_measure" || fieldName == "brand"){
+           this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
+       }
+       else {
+           this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
+       }
+     
     const brandControl = this.productForm.get('brand');
     console.log(this.productForm.get('brand'))
     const subBrandControl = this.productForm.get('sub_brand_product_id');
     this.clientId = selectedValue[0]?.class_id;
 
-    if (fieldName === 'clients' && selectedValue.length > 0) {
+    if (fieldName === 'client_id' && selectedValue.length > 0) {
       const isClientSelected = !!selectedValue;
       this.isBrandDisabled = !isClientSelected;
   
@@ -508,7 +509,7 @@ confirmSubmission(form: FormGroup) {
       this.filterList['brand'] = this.brand;
     }
   }
- 
+  
 
 
     renderConditionalFields(selectedValue: any) {

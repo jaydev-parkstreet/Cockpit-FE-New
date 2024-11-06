@@ -47,6 +47,10 @@ const routes: Routes = [
                     component: ProductManagementDetailsComponent
                   },
                   {
+                    path: 'add',
+                    component: ProductAddComponent
+                  },
+                  {
                     path: 'edit',
                     component: ProductAddComponent
                   },
