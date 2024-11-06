@@ -26,7 +26,6 @@ export class SummaryTopBarComponent implements OnInit {
   constructor(private router:Router) { }
 
   ngOnInit(): void {
-    this.tooltipText = 'hello';
   }
 
   toggleFilter() {
