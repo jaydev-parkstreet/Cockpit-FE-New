@@ -38,7 +38,7 @@ export class ProductAddComponent implements OnInit {
   activeDropdownId: string | null = null;
   formSubmitted: boolean = false;
   dropdownData: any
-  @Input() filterList: any;
+  @Input() filterList?: any;
   filters: any[] = [];
   brand: any[] = [];
   sub_brand_product_id: any[] = [];
@@ -68,7 +68,7 @@ export class ProductAddComponent implements OnInit {
     group: ['', [Validators.required]],
     producer: [''],
     case_unit_of_measure: ['', [Validators.required]],
-    container_type: ['', [Validators.required]],
+    container_type: [''],
     ex_works_cost: [''],
     is_organic: ['', [Validators.required]],
     prod_type: ['', [Validators.required]],
@@ -139,7 +139,7 @@ export class ProductAddComponent implements OnInit {
       );
       controls[field.name] = formControl;
     }); 
-    this.productForm = new FormGroup(controls); 
+    // this.productForm = new FormGroup(controls);
   }
 
 
@@ -166,9 +166,9 @@ export class ProductAddComponent implements OnInit {
       { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
       { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
       this.dropdownService.createFilterObj('group', 'groups', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('producer_name', 'producers', 'Producer', 'Select Producer', 'producer', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('producer_name', 'producers', 'Producer', 'Select Producer', 'producer', false, true, null, null, 'col-xs-3', null, false,false,''),
       this.dropdownService.createFilterObj('case_unit_of_measure', 'cases_uom', 'Case UOM', 'Select Type', 'case_unit_of_measure', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('container_type', 'container_types', 'Container Type', 'Select Type', 'container_type', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('container_type', 'container_types', 'Container Type', 'Select Type', 'container_type', false, true, null, null, 'col-xs-3', null,false,false, ''),
       { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
       this.dropdownService.createFilterObj('is_organic', 'organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
       this.dropdownService.createFilterObj('prod_type', 'product_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
@@ -198,23 +198,23 @@ export class ProductAddComponent implements OnInit {
 
   prefillForm(productData: any): void { 
     this.productForm.patchValue({
-      clients: this.getDropDownArrayByIds(this.filterList.clients, productData.client_id , 'client_id'),
-      sub_brand_product_id: this.getDropDownArrayByIds(this.filterList.product_sub_type_other, productData.sub_brand_product_id, 'sub_brand_product_id'),
+      clients: this.getDropDownArrayByIds(this.filterList?.clients, productData.client_id , 'client_id'),
+      sub_brand_product_id: this.getDropDownArrayByIds(this.filterList?.product_sub_type_other, productData.sub_brand_product_id, 'sub_brand_product_id'),
       description: productData.description,
       name: productData.fanciful_name,
-      group: this.getDropDownArrayByIds(this.filterList.groups, productData.group_id, 'group'),
-      producer: this.getDropDownArrayByIds(this.filterList.producers, productData.producer_id, 'producer_name'),
-      case_unit_of_measure: this.getDropDownArrayByIds(this.filterList.cases_uom, productData.case_unit_of_measure, 'case_unit_of_measure'),
-      container_type: this.getDropDownArrayByIds(this.filterList.container_types, productData.container_type, 'container_type'),
+      group: this.getDropDownArrayByIds(this.filterList?.groups, productData.group_id, 'group'),
+      producer: this.getDropDownArrayByIds(this.filterList?.producers, productData.producer_id, 'producer_name'),
+      case_unit_of_measure: this.getDropDownArrayByIds(this.filterList?.cases_uom, productData.case_unit_of_measure, 'case_unit_of_measure'),
+      container_type: this.getDropDownArrayByIds(this.filterList?.container_types, productData.container_type, 'container_type'),
       ex_works_cost: productData.ex_works_cost,
-      is_organic: this.getDropDownArrayByIds(this.filterList.organic, productData.is_organic, 'is_organic'),
-      prod_type: this.getDropDownArrayByIds(this.filterList.product_type, productData.prod_type, 'prod_type'),
-      sub_type: this.getDropDownArrayByIds(this.filterList.product_sub_type, productData.sub_type, 'sub_type'),
-      category: this.getDropDownArrayByIds(this.filterList.categories, productData.category_id, 'category'),
-      source: this.getDropDownArrayByIds(this.filterList.source, productData.source, 'source'),
-      country: this.getDropDownArrayByIds(this.filterList.countries, productData.country_id, 'country'),
-      vintage: this.getDropDownArrayByIds(this.filterList.vintages, productData.vintage, 'vintage'),
-      varietal: this.getDropDownArrayByIds(this.filterList.varietals, productData.varietal, 'varietal'),
+      is_organic: this.getDropDownArrayByIds(this.filterList?.organic, productData.is_organic, 'is_organic'),
+      prod_type: this.getDropDownArrayByIds(this.filterList?.product_type, productData.prod_type, 'prod_type'),
+      sub_type: this.getDropDownArrayByIds(this.filterList?.product_sub_type, productData.sub_type, 'sub_type'),
+      category: this.getDropDownArrayByIds(this.filterList?.categories, productData.category_id, 'category'),
+      source: this.getDropDownArrayByIds(this.filterList?.source, productData.source, 'source'),
+      country: this.getDropDownArrayByIds(this.filterList?.countries, productData.country_id, 'country'),
+      vintage: this.getDropDownArrayByIds(this.filterList?.vintages, productData.vintage, 'vintage'),
+      varietal: this.getDropDownArrayByIds(this.filterList?.varietals, productData.varietal, 'varietal'),
       product_id: productData.product_id,
       abv: productData.abv,
       manufactured_location_address: productData.manufactured_location_address,
@@ -269,7 +269,7 @@ export class ProductAddComponent implements OnInit {
 // }
   getDropDownArrayByIds (list, value, name) {
     let result = [] ;
-    for (let i = 0; i < list.length; i++) {
+    for (let i = 0; i < list?.length; i++) {
         if (list[i].id === value) {
             result.push(list[i]);
             this.sellectedData[name] = result
