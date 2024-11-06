@@ -121,22 +121,22 @@ export class ProductManagementService {
                                         <i class="far fa-surprise"></i>
                                         <span>No Records Found.</span>
                                     </div>`,
-            getRowId: (data) => data.id,
+            getRowId: (params) => params.data.product_id,
         };
     }
     renderCheckbox(params) {
         let checkboxSelection = '';
         if (params.data) {
             if (params.data.checked) {
-                checkboxSelection = `<label class="checkbox-container">
-                                    <input type="checkbox" class="checkbox_gir_row" checked>
-                                    <span class="checkmark"></span>
-                                </label>`;
+                     checkboxSelection = `<label class="checkbox-container">
+                                <input type="checkbox" class="checkbox_gir_row" checked>
+                                <span class="checkmark"></span>
+                            </label>`;
             } else {
                 checkboxSelection = `<label class="checkbox-container">
-                                        <input type="checkbox" class="checkbox_gir_row">
-                                        <span class="checkmark"></span>
-                                    </label>`;
+                                    <input type="checkbox" class="checkbox_gir_row">
+                                    <span class="checkmark"></span>
+                                </label>`;
             }
             checkboxSelection += `<span class="attachments-notes">
                                 <i class="${params.data.total_attachments <= 0 ? 'far fa-file' : 'fas fa-file'} show-attachment-modal"></i>
@@ -330,18 +330,19 @@ export class ProductManagementService {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
         }); 
-        const params = { client_ids: [clientId] }; 
         return this.http
-            .post(environment.apiUrl + "product-tool/brands", params, { headers })
-            .pipe(map((response: any) => response));
-    }
+            .get(environment.apiUrl + "product-tool/get-brands-client" + `?client_id=${clientId}` , { headers })
+            .pipe(map((response: any) => {return  response.data;
+            })
+        );
+}
     
     
     getSubBrandProducts(clientId: string,brandId) {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http
-            .get(`${environment.apiUrl}product-tool/sub_brand_products?client_id=${clientId}?brand_id=${brandId}`, { headers })
+            .get(`${environment.apiUrl}product-tool/get-sub-brands-client?client_id=${clientId}&brand_id=${brandId}`, { headers })
             .pipe(map((response :any) => response.data));
     }
 
