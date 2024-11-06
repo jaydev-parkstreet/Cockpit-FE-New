@@ -49,10 +49,16 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit(): void {
     this.isOpen = false;
+    this.selectedItems = this.formControl?.value || [];
+    if (!Array.isArray(this.filteredItems)) {
+      this.filteredItems = [];
+    }
+    this.filteredItems = this.filteredItems || []
     this.updateFilteredItems(this.filteredItems);
     this.updateSelectAllState(this.filteredItems);
     this.originalItems = [...this.filteredItems]; 
   }
+  
 //   ngOnChanges(changes: SimpleChanges): void {
 //     if (changes['isActive']) {
 //         this.isOpen = this.isActive || false; 
@@ -110,7 +116,6 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
       }
     }
     this.onDropDownChange.emit(this.selectedItems);
-    // console.log(this.onDropDownChange.emit(this.selectedItems))
   }
 
   onChevronClick(event: MouseEvent): void {
@@ -171,8 +176,13 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.updateFilteredItems(this.filteredItems);
   }
 
+  //private updateFilteredItems(items): void {
+  //   this.filteredItems = [...items];
+  //   this.hideList = false;
+  // }
   private updateFilteredItems(items): void {
-    this.filteredItems = [...items];
+
+    this.filteredItems = Array.isArray(items) ? [...items] : [];
     this.hideList = false;
   }
 
