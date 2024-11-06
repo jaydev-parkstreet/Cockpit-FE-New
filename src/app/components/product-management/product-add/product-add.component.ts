@@ -161,25 +161,25 @@ export class ProductAddComponent implements OnInit {
       this.dropdownService.createFilterObj('is_organic', 'organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
       this.dropdownService.createFilterObj('prod_type', 'product_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
       { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance' },
-      { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '', isVisible: true,  isCode: true , disabled: true},
-      { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isVisible: true, isCode: true },
-      { type: 'text', name: 'scc_code', label: 'SCC Code', placeholder: 'SCC Code', isVisible: true,isCode: true  },
-      { type: 'text', name: 'system_id', label: 'Supplier Reference ID', placeholder: 'Supplier Reference ID', isVisible: true },
-      { type: 'text', name: 'unit_length', label: 'Length', placeholder: 'Enter Length', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'unit_width', label: 'Width', placeholder: 'Enter Width', required: false,isVisible: true, isDimension: true },
-      { type: 'text', name: 'unit_height', label: 'Height', placeholder: 'Enter Height', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'unit_weight', label: 'Weight', placeholder: 'Enter Weight', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'case_length', label: 'Case Length', placeholder: 'Enter Case Length', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'case_width', label: 'Case Width', placeholder: 'Enter Case Width', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'case_height', label: 'Case Height', placeholder: 'Enter Case Height', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'case_weight', label: 'Case Weight', placeholder: 'Enter Case Weight', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false, isVisible: true, isDimension: true },
-      { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false, isVisible: true, isDimension: true },
+      { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '',  isCode: true , disabled: true},
+      { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isCode: true },
+      { type: 'text', name: 'scc_code', label: 'SCC Code', placeholder: 'SCC Code',isCode: true  },
+      { type: 'text', name: 'system_id', label: 'Supplier Reference ID', placeholder: 'Supplier Reference ID', isCode:true },
+      { type: 'text', name: 'unit_length', label: 'Length', placeholder: 'Enter Length', required: false, isDimension: true, dimensionType: 'unit'},
+      { type: 'text', name: 'unit_width', label: 'Width', placeholder: 'Enter Width', required: false,isVisible: true, isDimension: true, dimensionType: 'unit'},
+      { type: 'text', name: 'unit_height', label: 'Height', placeholder: 'Enter Height', required: false, isDimension: true, dimensionType: 'unit'},
+      { type: 'text', name: 'unit_weight', label: 'Weight', placeholder: 'Enter Weight', required: false, isDimension: true, dimensionType: 'unit' },
+      { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false, isDimension: true, dimensionType: 'pallet' },
+      { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false, isDimension: true, dimensionType: 'pallet' },
+      { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false, isDimension: true, dimensionType: 'pallet' },
+      { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false, isDimension: true, dimensionType: 'pallet' },
+      { type: 'text', name: 'case_length', label: 'Case Length', placeholder: 'Enter Case Length', required: false, isDimension: true, dimensionType: 'case' },
+      { type: 'text', name: 'case_width', label: 'Case Width', placeholder: 'Enter Case Width', required: false, isDimension: true, dimensionType: 'case' },
+      { type: 'text', name: 'case_height', label: 'Case Height', placeholder: 'Enter Case Height', required: false, isDimension: true, dimensionType: 'case' },
+      { type: 'text', name: 'case_weight', label: 'Case Weight', placeholder: 'Enter Case Weight', required: false, isDimension: true, dimensionType: 'case' },
+      { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false, isDimension: true, dimensionType: 'layer' },
+      { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false, isDimension: true, dimensionType: 'layer' },
+      { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false, isDimension: true, dimensionType: 'layer' },
     ];
   }
   
@@ -473,12 +473,12 @@ onDropdownStateChange(fieldName: string, selectedValue: any) {
             this.dropdownService.createFilterObj('category', 'categories', 'Category', 'Select Category', 'category', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
             this.dropdownService.createFilterObj('source', 'source', 'Source', 'Select Source', 'source', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
             this.dropdownService.createFilterObj('country', 'countries', 'Country', 'Select Country', 'country', false, false, null, null, 'col-xs-3', true, false, false, '', false),
-            { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', isVisible: false, required: true },
-            { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isVisible: true, isCode: true, required: true },
-            { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isVisible: true, isCode: true },
-            { type: 'text', name: 'unimerc_code', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isVisible: true, isCode: true },
-            { type: 'text', name: 'bdn_code', label: 'BDN Code', placeholder: 'BDN Code', isVisible: true, isCode: true },
-            { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address', isVisible: false},
+            { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', required: true },
+            { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isCode: true, required: true },
+            { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isCode: true },
+            { type: 'text', name: 'unimerc_code', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isCode: true },
+            { type: 'text', name: 'bdn_code', label: 'BDN Code', placeholder: 'BDN Code', isCode: true },
+            { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'},
         ];
 
         const conditionalFields = {
@@ -537,12 +537,12 @@ onDropdownStateChange(fieldName: string, selectedValue: any) {
                     this.formConfig.schema.push(this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false));
                 }
                 if (!fieldExists('manufactured_location_address')) {
-                    this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address', isVisible: false});
+                    this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'});
                 }
                 break;
             default:
                 if (!fieldExists('manufactured_location_address')) {
-                    this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address', isVisible: false});
+                    this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'});
                 }
                 break;
         }

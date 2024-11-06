@@ -6,15 +6,11 @@
     .header-background {
         background-color: $colors-neutral-black;
         color: $colors-neutral-white;
-        // width: 100vw;
         height: 100vh;
         position: relative;
     }
 
     .product-tool-container {
-        // border-left: 16px solid $colors-neutral-light-t-25;
-        // border-right: 16px solid $colors-neutral-light-t-25;
-        // border-bottom: 10px solid $colors-neutral-light-t-25;
         background-color: $colors-neutral-white;
         color: $colors-neutral-black;
         display: flex;
@@ -26,12 +22,8 @@
 
             .psi-form {
                 flex: 1;
-                padding: 16px 0px 0px 0px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-
             }
-
-
 
             .headers-container {
                 display: flex;
@@ -41,50 +33,22 @@
 
             .product-details-header,
             .codes-column {
-                width: calc(50% - 1px);
+                width: 100%;
                 text-align: center;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 background-color: white;
                 padding: 10px;
                 margin: 0;
-            }
-
-            .codes-column {
-                margin-left: 15px;
-
-            }
-
-
-        }
-
-        .check-container {
-
-            .items {
-                margin: 16px;
-            }
-
-            .u-w-inherit button.logout {
+                box-shadow: 0px 4px 8px rgba(74, 74, 74, 0.15);
+                font-family: "Montserrat-Regular";
+                font-style: normal;
+                font-weight: 400;
                 font-size: 14px;
-                font-weight: 700;
-                color: #fff;
-                background-color: #e74536;
-                border-color: transparent;
-                box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.5);
-                font-family: "CrimsonPro-Bold";
-                outline: 0;
-                padding: 8px 32px;
-                border-radius: 8px;
-                margin-left: 8px;
-
-                &:hover {
-                    color: #fff;
-                    background-color: #de1300;
-                    outline: 0;
-                    border-color: transparent;
-                }
+                line-height: 20px;
+                z-index: 1;
             }
-
         }
+
     }
 }
 
@@ -95,7 +59,6 @@
             .form-container {
                 padding: 0px;
                 background-color: #EDEDED;
-
 
                 .form-validation {
                     position: relative;
@@ -112,33 +75,13 @@
                         font-weight: 500;
                         border-radius: 2px;
                         width: 100%;
-
                     }
-                }
-
-                .psi-form .form-title {
-                    // background-color: white;
-                    padding: 0 16px;
                 }
 
                 .psi-form {
                     position: relative;
-
-                    // background: #ffffff;
                     z-index: 2;
                     border-radius: 8px;
-
-
-                    .form-title {
-                        p {
-                            box-shadow: 0px 4px 8px rgba(74, 74, 74, 0.15);
-                            font-family: "Montserrat-Regular";
-                            font-style: normal;
-                            font-weight: 400;
-                            font-size: 14px;
-                            line-height: 20px;
-                        }
-                    }
 
                     .form-group {
                         margin-top: 10px;
@@ -154,12 +97,10 @@
                                 padding: 0px 8px;
                                 font-family: $montserrat-regular;
                             }
-
                         }
 
                         .form-field {
                             margin-bottom: 16px;
-
 
                             .row {
                                 display: flex;
@@ -167,44 +108,56 @@
                                 flex-wrap: wrap;
                                 width: 100%;
                                 margin: 0;
-
                                 justify-content: space-between;
-                                
                             }
-                            .column {
-                                margin-left: 15px !important;
+                            .column-right {
+                                margin-right: 12px !important;
                             }
+
                             .column,
                             .column-right {
                                 display: flex;
                                 flex-direction: column;
                                 flex-basis: 100%;
-                                // width: 100%;
                                 flex: 1;
-                                width: calc(50% - 1px);
-                                margin: 0; // Ensure no margin
+                                margin: 0;
                                 padding: 0;
-                                background: white;
-                                padding: 24px !important;
-                                margin-left: 15px !important;
+                                margin-left: 12px !important;
                                 height: fit-content;
+                                .column-main {
+                                    padding: 0;
+                                }
+                                .field-container{
+                                    background: white;
+                                    padding: 16px;
+                                    margin-bottom: 10px;
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                    label,
+                                    input,
+                                    .full-width{
+                                        width: 100%;
+                                    }
+                                    .dimension{
+                                        padding-right: 16px;
+                                        width: 50%;
+                                    }
+                                    .dimension-sub-tittle{
+                                        width: 100%;
+                                        line-height: 20px;
+                                        font-size: 14px;
+                                        font-weight: 500;
+                                        font-family: "Montserrat-Medium";
+                                        p{
+                                            margin-top: 16px;
+                                            margin-bottom: 8px;
+                                        }
+                                    }
+                                    
+                                }
                                 .right-main{
                                     display: flex;
                                     flex-direction: row;
-                                }
-                                .code{
-                                    width: 100%;
-                                    .code-input,
-                                    .code-label{
-                                        width: 100%;
-                                    }
-                                }
-                                .dimension{
-                                    width: 50%;
-                                    .dimension-input,
-                                    .dimension-label{
-                                        width: 100%;
-                                    }
                                 }
                             }
 
@@ -228,7 +181,6 @@
                             text-align: center;
                             font-family: $montserrat-regular;
                         }
-
                     }
                 }
 
@@ -238,7 +190,8 @@
                     color: #232323;
                     font-size: 12px;
                     font-weight: normal;
-                    margin-bottom: 8px;
+                    margin-top: 8px;
+                    margin-bottom: 0;
                     font-family: $montserrat-regular;
                 }
 
@@ -307,7 +260,6 @@
         font-weight: 700;
         border-radius: 8px;
         float: right;
-        margin-bottom: 100px !important;
     }
 
     /* Hover state */
@@ -342,4 +294,81 @@
         }
 
     }
+}
+.c-checkbox {
+    margin-bottom: 20px;
+    text-align: left;
+
+    &.inline {
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 18px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .label-checkbox {
+        display: block !important;
+        position: relative;
+        cursor: pointer;
+        line-height: 20px;
+        color: rgb(35, 35, 35) !important;
+        font-size: 14px !important;
+        margin-top: 8px !important;
+        margin-left: 8px !important;
+        font-weight: 700 !important;
+    }
+
+    input {
+
+        &[type="checkbox"],
+        &[type="radio"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            visibility: hidden;
+        }
+    }
+
+    .c-checkbox__item {
+        display: inline-block;
+        vertical-align: top;
+        margin: 0 4px 0 0;
+        width: 16px;
+        height: 16px;
+        background: #fff;
+        border: 1px solid #e74536;
+        position: relative;
+        border-radius: 4px;
+        transition: box-shadow 180ms ease;
+        box-shadow: inset 0 0 0 12px #fff;
+        top: 2px;
+        float: left;
+    }
+
+    .fa-check {
+        transform: scale(0);
+    }
+
+    input[type="checkbox"]:checked+.c-checkbox__item {
+        border-color: #e74536;
+        background: #e74536;
+        border-radius: 4px;
+        box-shadow: none;
+
+        .fa-check {
+            color: #ffffff;
+            font-size: 14px;
+            transform: scale(1);
+            vertical-align: super;
+            // padding: 1px 0.25rem;
+        }
+    }
+}
+
+.disbaled-checkbox {
+    cursor: not-allowed !important;
+    opacity: 0.5;
 }
