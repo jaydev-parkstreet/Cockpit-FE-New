@@ -121,7 +121,7 @@ export class ProductManagementService {
                                         <i class="far fa-surprise"></i>
                                         <span>No Records Found.</span>
                                     </div>`,
-            getRowId: (data) => data.id,
+            getRowId: (params) => params.data.product_id,
         };
     }
     renderCheckbox(params) {
