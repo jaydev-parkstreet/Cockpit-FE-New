@@ -160,7 +160,8 @@ export class ProductManagementService {
   
     renderId(params) {
       if (params.value) {
-        return `<a target="_blank" style="color: black; text-decoration: none;" href="product-tool/${params.value}">${params.value}</a>`;
+        return `<a target="_blank" style="color: black;text-decoration: none;" onmouseover="this.style.textDecoration='underline'"
+                onmouseout="this.style.textDecoration='none'" href="product-management/${params.value}">${params.value}</a>`;
       }
       return '-';
     }
@@ -272,6 +273,10 @@ export class ProductManagementService {
                     label: 'Active State',
                     type: 'multiselect-search',
                     divClass: 'col-3 norightpadding',
+                    showSearch:false,
+                    showSelectAll: false,
+                    showCheckboxes: false,
+                    allowSingleSelect: true,
                     setting: this.getMultiSelectConfig('Select State')
                 }, {
                     key: 'bottles_per_case',
@@ -396,7 +401,7 @@ export class ProductManagementService {
         .pipe(map((response :any) => response));
     }
 
-    getActivateAPI(productId: string[], isActive: number) {
+    getActivateAPI(productId: string[], isActive) {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
           });

@@ -1,6 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from './../../../components/authentication/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-tool',
@@ -12,15 +10,7 @@ export class HeaderToolComponent implements OnInit {
   @Input() titleText: string;
   @Input() titleIcon: string;
 
-  constructor(
-    private authService:AuthService,
-    private router:Router
-  ) { }
+  constructor() { }
 
   ngOnInit(): void { }
-
-  logout () {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
 }

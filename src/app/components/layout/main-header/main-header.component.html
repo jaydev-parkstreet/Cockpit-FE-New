@@ -1,0 +1,45 @@
+<div class="headerbar" [ngClass]="isSidebarExpanded ? 'headerExpanded':'headerCollapsed'">
+    <div class="header-left">
+        <div class="menutoggle" (click)="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <!-- <div *ngIf="!isSidebarExpanded">
+            <img src="http://cockpit.parkstreet.local/images/cockpit/logo.png" width="200px">
+        </div> -->
+        <form id="nav-search-form" class="searchform">
+            <div class="search-container">
+                <input
+                    type="text"
+                    class="form-control"
+                    name="keyword"
+                    placeholder="Search People and Companies">
+                <i class="fa fa-search search-icon"></i>
+            </div>
+        </form>
+    </div>
+    <div class="header-right">
+        <div class="dropdown">
+            <div (click)="toggleDropdown()">
+                <img *ngIf="currentUserData && currentUserData.PictureUrl" 
+                    [src]="currentUserData.PictureUrl" 
+                    alt="User Image" 
+                    class="user-image" />
+                <span *ngIf="currentUserData" class="user-name">
+                    <span [innerText]="currentUserData.first_name"></span>
+                    <span [innerText]="currentUserData.last_name"></span>
+                </span>
+                <button
+                    class="dropdown-toggle"
+                    aria-haspopup="true"
+                    aria-expanded="isDropdownOpen">
+                </button>
+            </div>
+            <div class="dropdown-menu" [class.show]="isDropdownOpen" (click)="closeDropdown()">
+                <a class="dropdown-item" href="#"><i class="fas fa-user"></i>My Profile</a>
+                <a class="dropdown-item" href="#"><i class="fas fa-cog"></i>Account Settings</a>
+                <a class="dropdown-item" href="#"><i class="icon fas fa-question"></i>Help</a>
+                <a class="dropdown-item" href="#" (click)="logout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
+            </div>
+        </div>
+    </div>
+</div>

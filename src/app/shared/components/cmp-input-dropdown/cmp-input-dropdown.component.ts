@@ -26,6 +26,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() showSelectAll: boolean = true;
   @Input() showCheckboxes: boolean = true;
   @Input() allowSingleSelect: boolean = false;
+  @Input() showSearch: boolean = true;
   @Output() onDropDownChange: EventEmitter<any> = new EventEmitter<any>();
   @Input() isActive: boolean = false;
   @Output() dropdownStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();

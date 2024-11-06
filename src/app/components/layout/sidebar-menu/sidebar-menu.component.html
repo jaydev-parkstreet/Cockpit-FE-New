@@ -1,1 +1,37 @@
-<p>sidebar-menu works!</p>
+<div class="sidebar-layout" [ngClass]="isSidebarExpanded ? 'expanded' : 'collapsed'">
+    <div class="sidebar-header" *ngIf="isSidebarExpanded">
+        <img src="http://cockpit.parkstreet.local/images/cockpit/logo.png" width="200px">
+    </div>
+    <div class="sidebar-content">
+        <div class="sidebar-menu open-current-submenu show-scrollbar">
+            <ul id="mainMenu">
+                <li class="sidebar-menu-item" *ngFor="let menu of menuData">
+                    <a [routerLink]="'/product-management'" (click)="toggleIcon(menu)">
+                        <i [class]="menu.iconClass"></i>
+                        <span *ngIf="isSidebarExpanded">{{menu.menuContent}}</span>
+                        <span class="toggle-icon"
+                            [ngClass]= "menu.isExpanded ? 'icon-minus' : 'icon-plus'"
+                            *ngIf="menu.iconPlus && isSidebarExpanded">
+                        </span>
+                    </a>
+                
+                    <ul id="mainMenu-items" [ngStyle]="{'display': menu.isExpanded && isSidebarExpanded ? 'block':'none'}">
+                        <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenuItems">
+                            <a [routerLink]="submenu.submenuLink" *ngIf="submenu.submenuLink;else externalLink">
+                                <i class="fas fa-caret-right"></i>
+                                <span>{{submenu.submenuContent}}</span>
+                            </a>
+                            <ng-template #externalLink>
+                                <a [href]="submenu.href" target="_blank">
+                                    <i class="fas fa-caret-right"></i>
+                                    <span>{{submenu.submenuContent}}</span>
+                                </a>
+                            </ng-template>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="sidebar-footer"></div>
+</div>
