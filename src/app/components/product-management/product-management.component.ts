@@ -299,6 +299,7 @@ export class ProductManagementComponent implements OnInit {
       ...this.filtermodal
     };
     this.reportRequestObj.page = 1;
+    this.reportRequestObj.universal_search = this.topPanelConfig.searchText.trim();
     this.productToolSummary = [];
     if(selectedFilters.active_status){
       const isStatusTrue = selectedFilters.active_status[0].name === 'Inactive';
@@ -310,7 +311,7 @@ export class ProductManagementComponent implements OnInit {
   }
 
   resetFilters() {
-	this.filtermodal = [];
+	  this.filtermodal = {};
     this.reportRequestObj = {
       "page": 1,
       "pageSize": 25,
@@ -318,6 +319,7 @@ export class ProductManagementComponent implements OnInit {
       "order": "asc",
       "universal_search": ""
     }
+    this.topPanelConfig.searchText = '';
     this.productToolSummary = [];
     this.setDataSourceAgGrid();
   }
