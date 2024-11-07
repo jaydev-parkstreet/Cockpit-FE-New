@@ -314,7 +314,7 @@ export class ProductManagementService {
         };
     }
    
-  formatModelProductTool(model: any, filtersList: any, subBrandProducts: any[], edit: boolean, caseUnitOfMeasure: any): any {
+  formatModelProductTool(model: any, filtersList: any, subBrandProducts: any[], edit: boolean, id: number): any {
         if (!Object.keys(model).length) {
             return {};  
         }    
@@ -328,7 +328,7 @@ export class ProductManagementService {
             bdn_code: model.bdn_code || "",
             unimerc_code: model?.unimerc_code || "",
             description: model.description || "", 
-            product_id: edit ? model.product_id : "",
+            product_id: model.product_id || "",
     
             // Dimensions 
             unit_height: model.unit_height || "",
@@ -352,9 +352,9 @@ export class ProductManagementService {
             client_id: model.client_id || "",         
             // sub_brand_product_id: model.sub_brand_product_id || null,      
             sub_brand_product_name: model.sub_brand_product_name || "",   
-            sub_brand_product_id: edit ? model.sub_brand_product_id : model.sub_brand_product_id || null,         
+            sub_brand_product_id: model.sub_brand_product_id || null,         
             name: model.name || "",
-            group: edit ? model.group[0]?.id : model.group || null,          
+            group: model.group || null,          
             producer: model.producer ? model.producer.trim() : null,         
             case_unit_of_measure: Array.isArray(model.case_unit_of_measure) && model.case_unit_of_measure.length > 0 
             ? (model.case_unit_of_measure[0].id || null) 
@@ -363,7 +363,7 @@ export class ProductManagementService {
             ? (model.container_type[0].id || null) 
             : model.container_type || null,
             ex_works_cost: model.ex_works_cost || "",      
-            prod_type: edit ? model.prod_type[0]?.id : model.prod_type || "", 
+            prod_type: model.prod_type || "", 
             sub_type: model.sub_type || "",       
             clone: model.clone || 0,
             manufactured_location_address: model.manufactured_location_address || null,
@@ -409,8 +409,11 @@ export class ProductManagementService {
             if (model.pallet_dimensions == null) {
                 delete modelFormat.pallet_dimensions;
             }
-    
-            modelFormat.id = model.id;
+            
+            modelFormat.id = id;
+            modelFormat.temp_product_id = model.product_id
+            modelFormat.product_id = model.product_id
+            console.log(model.product_id);
         }
         return modelFormat;
     }

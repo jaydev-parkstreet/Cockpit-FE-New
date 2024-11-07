@@ -51,6 +51,7 @@ export class ProductAddComponent implements OnInit {
   filtersList: any = {}; 
   subBrandProducts: any[] = []; 
   caseUnitOfMeasure: any; 
+  uniqueId: any; 
   edit: boolean = false; 
   defaultValues = { 
     compliance: 1,  
@@ -134,13 +135,7 @@ export class ProductAddComponent implements OnInit {
     } 
 
     if (productId) {
-      this.productmanagementService.getDetails(productId).subscribe((productData) => {
-        this.renderConditionalFields(productData.prod_type)
-        if (this.duplicate) {
-          delete productData.product_id;
-        }
-        this.prefillForm(productData);
-      });
+        this.getProductData(productId);
     }
 
     this.productForm.valueChanges.subscribe(() => {
@@ -162,8 +157,8 @@ export class ProductAddComponent implements OnInit {
     this.filtersList = this.filterList || {}; 
     this.caseUnitOfMeasure = this.filtersList.case_unit_of_measure || [];
     this.filtersList.case_unit_of_measure = this.productmanagementService.formatDropdownValue(this.caseUnitOfMeasure);
-    this.modelFormat = this.productmanagementService.formatModelProductTool(this.model, this.filtersList, this.subBrandProducts, this.edit, this.caseUnitOfMeasure);
-  
+    this.modelFormat = this.productmanagementService.formatModelProductTool(this.model, this.filtersList, this.subBrandProducts, this.edit, this.uniqueId);
+
   }
 
 
@@ -219,7 +214,21 @@ export class ProductAddComponent implements OnInit {
     ];
   }
 
-
+  async getProductData(productId) {
+    this.productmanagementService.getDetails(productId).subscribe((productData) => {
+        this.renderConditionalFields(productData.prod_type)
+        if (this.duplicate) {
+          delete productData.product_id;
+        }
+        if (!this.duplicate) {
+            console.log("inside");
+            this.uniqueId = productData.id;
+        }
+        console.log(this.uniqueId, this.edit, this.model,this.filterList, this.subBrandProducts,  productData.product_id);
+        this.modelFormat = this.productmanagementService.formatModelProductTool(productData, this.filtersList, this.subBrandProducts, this.edit, this.uniqueId);
+        this.prefillForm(productData);
+    });
+  }
   prefillForm(productData: any): void { 
     if (productData.client_id) {
       this.isBrandDisabled = false; 
@@ -369,7 +378,7 @@ applyDisableEnableForBrandAndSubBrand() {
         this.filtersList,
         this.subBrandProducts,
         this.edit,
-        this.caseUnitOfMeasure
+        this.uniqueId
     );
       formattedModel.compliance = formattedModel.compliance ? 1 : 0;
       if (this.productForm.value.prod_type === 2 || this.productForm.value.prod_type === 4 || this.productForm.value.prod_type === 5) {
