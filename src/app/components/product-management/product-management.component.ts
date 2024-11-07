@@ -287,7 +287,11 @@ export class ProductManagementComponent implements OnInit {
 
   applyFilters(selectedFilters: any) {
 	this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
-        acc[key] = selectedFilters[key].map((item: any) => item.id); 
+        if (key == 'clients') {
+            acc['client'] = selectedFilters[key].map((item: any) => item.id);
+        }else{
+            acc[key] = selectedFilters[key].map((item: any) => item.id); 
+        }
         return acc;
     }, {});
     this.reportRequestObj = {
