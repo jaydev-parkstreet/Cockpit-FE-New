@@ -3,52 +3,58 @@
 @import '../../../scss/utilities/colors';
 @import '../../../scss/utilities/base';
 
-.checkbox-container {
-    display: inline-block;
+.checkbox-selectall {
     position: relative;
-    cursor: pointer;
-    font-size: 16px;
-    line-height: 16px;
-    height: 16px;
-    width: 16px;
-}
-
-.checkbox-container input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
-
-.checkmark {
-    position: absolute;
-    top: 0;
-    height: 16px;
-    width: 16px;
-    background-color: $colors-neutral-white;
-    border: 1px solid $colors-v2-base-primary;
-    top: 24px;
-    z-index: 9999;
-    margin-left: 11px;
-    border-radius: 4px;
-}
-
-.checkbox-container input[type="checkbox"]:checked+.checkmark {
-    background-color: $colors-v2-base-primary;
-    border-color: $colors-v2-base-primary;
-}
-
-.checkbox-container input[type="checkbox"]:checked+.checkmark::after {
-    content: "";
-    position: absolute;
     display: block;
-    top: 50%; 
-    left: 50%; 
-    width: 8px; 
-    height: 2px;
-    background-color:  $colors-neutral-white;
-    transform: translate(-50%, -50%);
+    top: 5px;
+    z-index: 1;
+
+    .checkbox-container {
+        position: absolute;
+        cursor: pointer;
+        user-select: none;
+        margin: 0;
+        padding: 0;
+        width: 16px;
+        height: 16px;
+        top: 8px;
+        margin-left: 12px;
+
+        input {
+            position: relative;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        input[type="checkbox"]:checked+.checkmark {
+            background-color: $colors-v2-base-primary;
+            border-color: $colors-v2-base-primary;
+        }
+
+        input[type="checkbox"]:checked+.checkmark::after {
+            content: "";
+            position: absolute;
+            display: block;
+            top: 50%; 
+            left: 50%; 
+            width: 8px; 
+            height: 2px;
+            background-color:  $colors-neutral-white;
+            transform: translate(-50%, -50%);
+        }
+        .checkmark {
+            position: relative;
+            top: 1px;
+            left: 0;
+            height: 16px;
+            width: 16px;
+            border-radius: 3px;
+            border: 1px solid $colors-v2-base-primary;
+            display: inline-block;
+        }
+    }
 }
 
 ::ng-deep .ag-theme-material {

@@ -1,7 +1,7 @@
 
 <div>
-    <div class="checkbox-container" *ngIf="selectAllOption">
-        <label>
+    <div class="checkbox-selectall" *ngIf="selectAllOption">
+        <label class="checkbox-container" #checkboxContainer>
           <input type="checkbox" #checkboxSelectAll (change)="onSelectAllChange($event)"/>
           <span class="checkmark"></span>
         </label>
