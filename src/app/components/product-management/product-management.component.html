@@ -19,7 +19,7 @@
                 </app-summary-top-bar>
             </div>
         </div>
-        <div *ngIf="!isLoadingSummaryData || productToolSummary">
+        <div [hidden]="productToolSummary.length == 0">
             <app-summary-grid
                 [gridOptions] = "gridOptions"
                 [selectAllOption] = "true"
@@ -28,7 +28,7 @@
                 >
             </app-summary-grid>
         </div>
-        <div class="no-record-message" *ngIf="isLoadingSummaryData || !productToolSummary.length">
+        <div class="no-record-message" *ngIf="!isLoadingSummaryData && productToolSummary.length <= 0">
             <i class="fas fa-surprise"></i>
             <span>No Data Found</span>
         </div>        
