@@ -38,26 +38,13 @@ export class ProductAddComponent implements OnInit {
   activeDropdownId: string | null = null;
   formSubmitted: boolean = false;
   dropdownData: any
-  @Input() filterList: any;
+  @Input() filterList?: any;
   filters: any[] = [];
   brand: any[] = [];
   sub_brand_product_id: any[] = [];
   @Output() dropdownStateChange = new EventEmitter<{ fieldName: string, isDisabled: boolean }>();
   isBrandDisabled: boolean = true;
   isSubBrandDisabled: boolean = true;
-  product: any = {};
-
-  model: any = {}; 
-  modelFormat: any = {}; 
-  filtersList: any = {}; 
-  subBrandProducts: any[] = []; 
-  caseUnitOfMeasure: any; 
-  edit: boolean = false; 
-  defaultValues = { 
-    compliance: 1,  
-    use_up: false,
-    case_unit_of_measure: null
-  };
   
 
   // Dropdown configuration
@@ -80,8 +67,8 @@ export class ProductAddComponent implements OnInit {
     name: [''],
     group: ['', [Validators.required]],
     producer: [''],
-    case_unit_of_measure: [this.defaultValues.case_unit_of_measure, [Validators.required]],
-    container_type: ['', [Validators.required]],
+    case_unit_of_measure: ['', [Validators.required]],
+    container_type: [''],
     ex_works_cost: [''],
     is_organic: ['', [Validators.required]],
     prod_type: ['', [Validators.required]],
@@ -91,7 +78,7 @@ export class ProductAddComponent implements OnInit {
     country: [''],
     vintage: [''],
     varietal: [''],
-    compliance: [this.defaultValues.compliance, Validators.required],
+    compliance: [''],
     product_id: [''],
     abv: [''],
     manufactured_location_address: [''],
@@ -129,13 +116,6 @@ export class ProductAddComponent implements OnInit {
     this.getDropdown();
 
     if (productId) {
-      this.edit =  true;
-    }
-    else {
-      this.edit =  false;
-    } 
-
-    if (productId) {
       this.productmanagementService.getDetails(productId).subscribe((productData) => {
         this.renderConditionalFields(productData.prod_type)
         if (this.duplicate) {
@@ -144,7 +124,6 @@ export class ProductAddComponent implements OnInit {
         this.prefillForm(productData);
       });
     }
-  
 
     this.productForm.valueChanges.subscribe(() => {
       if (this.formSubmitted) {
@@ -160,14 +139,7 @@ export class ProductAddComponent implements OnInit {
       );
       controls[field.name] = formControl;
     }); 
-    this.productForm = new FormGroup(controls); 
-    this.model = this.productForm.value; 
-    this.filtersList = this.filterList || {}; 
-    this.caseUnitOfMeasure = this.filtersList.case_unit_of_measure || [];
-    this.filtersList.case_unit_of_measure = this.productmanagementService.formatDropdownValue(this.caseUnitOfMeasure);
-    this.modelFormat = this.productmanagementService.formatModelProductTool(this.model, this.filtersList, this.subBrandProducts, this.edit, this.caseUnitOfMeasure);
-    
-       
+    // this.productForm = new FormGroup(controls);
   }
 
 
@@ -194,9 +166,9 @@ export class ProductAddComponent implements OnInit {
       { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
       { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
       this.dropdownService.createFilterObj('group', 'groups', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('producer_name', 'producers', 'Producer', 'Select Producer', 'producer', false, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('producer_name', 'producers', 'Producer', 'Select Producer', 'producer', false, true, null, null, 'col-xs-3', null, false,false,''),
       this.dropdownService.createFilterObj('case_unit_of_measure', 'cases_uom', 'Case UOM', 'Select Type', 'case_unit_of_measure', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('container_type', 'container_types', 'Container Type', 'Select Type', 'container_type', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
+      this.dropdownService.createFilterObj('container_type', 'container_types', 'Container Type', 'Select Type', 'container_type', false, true, null, null, 'col-xs-3', null,false,false, ''),
       { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
       this.dropdownService.createFilterObj('is_organic', 'organic', 'Organic', 'Select Organic', 'is_organic', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
       this.dropdownService.createFilterObj('prod_type', 'product_type', 'Product Type', 'Select Type', 'prod_type', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
@@ -225,47 +197,33 @@ export class ProductAddComponent implements OnInit {
 
 
   prefillForm(productData: any): void { 
-    if (productData.client_id) {
-      this.isBrandDisabled = false; 
-      this.productForm.get('brand').setValue("");  
-  } else {
-      this.isBrandDisabled = true;  
-      this.productForm.get('brand').setValue("");  
-  }
-  if (productData.brand_id) {
-      this.isSubBrandDisabled = false; 
-  } else {
-      this.isSubBrandDisabled = true; 
-  }
-
-  this.applyDisableEnableForBrandAndSubBrand();
     this.productForm.patchValue({
-      client_id: this.getDropDownArrayByIds(this.filterList.clients, productData.client_id , 'client_id'),
-      sub_brand_product_id: this.getDropDownArrayByIds(this.filterList.product_sub_type_other, productData.sub_brand_product_id, 'sub_brand_product_id'),
+      clients: this.getDropDownArrayByIds(this.filterList?.clients, productData.client_id , 'client_id'),
+      sub_brand_product_id: this.getDropDownArrayByIds(this.filterList?.product_sub_type_other, productData.sub_brand_product_id, 'sub_brand_product_id'),
       description: productData.description,
       name: productData.fanciful_name,
-      group: this.getDropDownArrayByIds(this.filterList.groups, productData.group_id, 'group'),
-      producer: this.getDropDownArrayByIds(this.filterList.producers, productData.producer_id, 'producer_name'),
-      case_unit_of_measure: this.getDropDownArrayByIds(this.filterList.cases_uom, productData.case_unit_of_measure, 'case_unit_of_measure'),
-      container_type: this.getDropDownArrayByIds(this.filterList.container_types, productData.container_type, 'container_type'),
+      group: this.getDropDownArrayByIds(this.filterList?.groups, productData.group_id, 'group'),
+      producer: this.getDropDownArrayByIds(this.filterList?.producers, productData.producer_id, 'producer_name'),
+      case_unit_of_measure: this.getDropDownArrayByIds(this.filterList?.cases_uom, productData.case_unit_of_measure, 'case_unit_of_measure'),
+      container_type: this.getDropDownArrayByIds(this.filterList?.container_types, productData.container_type, 'container_type'),
       ex_works_cost: productData.ex_works_cost,
-      is_organic: this.getDropDownArrayByIds(this.filterList.organic, productData.is_organic, 'is_organic'),
-      prod_type: this.getDropDownArrayByIds(this.filterList.product_type, productData.prod_type, 'prod_type'),
-      sub_type: this.getDropDownArrayByIds(this.filterList.product_sub_type, productData.sub_type, 'sub_type'),
-      category: this.getDropDownArrayByIds(this.filterList.categories, productData.category_id, 'category'),
-      source: this.getDropDownArrayByIds(this.filterList.source, productData.source, 'source'),
-      country: this.getDropDownArrayByIds(this.filterList.countries, productData.country_id, 'country'),
-      vintage: this.getDropDownArrayByIds(this.filterList.vintages, productData.vintage, 'vintage'),
-      varietal: this.getDropDownArrayByIds(this.filterList.varietals, productData.varietal, 'varietal'),
+      is_organic: this.getDropDownArrayByIds(this.filterList?.organic, productData.is_organic, 'is_organic'),
+      prod_type: this.getDropDownArrayByIds(this.filterList?.product_type, productData.prod_type, 'prod_type'),
+      sub_type: this.getDropDownArrayByIds(this.filterList?.product_sub_type, productData.sub_type, 'sub_type'),
+      category: this.getDropDownArrayByIds(this.filterList?.categories, productData.category_id, 'category'),
+      source: this.getDropDownArrayByIds(this.filterList?.source, productData.source, 'source'),
+      country: this.getDropDownArrayByIds(this.filterList?.countries, productData.country_id, 'country'),
+      vintage: this.getDropDownArrayByIds(this.filterList?.vintages, productData.vintage, 'vintage'),
+      varietal: this.getDropDownArrayByIds(this.filterList?.varietals, productData.varietal, 'varietal'),
       product_id: productData.product_id,
       abv: productData.abv,
-      manufactured_location_address: productData?.manufactured_location_address || null,
+      manufactured_location_address: productData.manufactured_location_address,
       upc_code: productData.upc_code,
       scc_code: productData.scc_code,
       system_id: productData.system_id,
       cola_ttb_id: productData.cola_ttb_id,
       nabca_code: productData.nabca_code,
-      unimerc_code: productData?.unimerc_code  || null,
+      unimerc_code: productData.unimerc_code,
       bdn_code: productData.bdn_code,
       unit_length: productData.unit_length,
       unit_width: productData.unit_width,
@@ -283,21 +241,6 @@ export class ProductAddComponent implements OnInit {
       cases_per_layer: productData.cases_per_layer,
       cases_per_pallet: productData.cases_per_pallet,
     });
-    if (productData.client_id && productData.brand_id) {
-      this.productmanagementService.getBrands(productData.client_id).subscribe(brands => {
-
-          const selectedBrand = brands.find(brand => brand.id === productData.brand_id);
-          if (selectedBrand) {
-            this.productForm.get('brand')?.setValue(selectedBrand.name);
-          }
-          else{
-            this.productForm.get('brand')?.setValue(productData.brand);
-          }
-        
-      });
-    }
-    this.productForm.updateValueAndValidity();
-  
   }
 //   callSubBrandProduct(id) {
 // 	this.spinner.show('app-loader');
@@ -326,7 +269,7 @@ export class ProductAddComponent implements OnInit {
 // }
   getDropDownArrayByIds (list, value, name) {
     let result = [] ;
-    for (let i = 0; i < list.length; i++) {
+    for (let i = 0; i < list?.length; i++) {
         if (list[i].id === value) {
             result.push(list[i]);
             this.sellectedData[name] = result
@@ -340,76 +283,83 @@ export class ProductAddComponent implements OnInit {
   changeComplianceValue(isChecked: boolean, fieldName: string) {
     this.productForm.get(fieldName)?.setValue(isChecked ? '1' : '0');
   }
-  applyDisableEnableForBrandAndSubBrand() {
-    const brandControl = this.productForm.get('brand');
-    const subBrandControl = this.productForm.get('sub_brand_product_id');
 
-    if (brandControl) {
-        if (this.isBrandDisabled) {
-            brandControl.disable();
-            brandControl.setValue('');
-            this.isSubBrandDisabled = true;
-            if (subBrandControl) {
-                subBrandControl.disable();
-                subBrandControl.setValue('');
-            }
-        } else {
-            brandControl.enable();
-        }
-    }
-    if (subBrandControl) {
-        if (this.isSubBrandDisabled) {
-            subBrandControl.disable();
-            subBrandControl.setValue('');
-        } else {
-            subBrandControl.enable();
-        }
-    }
-}
   onSubmit(form: FormGroup) {
     this.formSubmitted = true;
     this.showError = false;
     if (form.valid) {
-      const formattedModel = this.productmanagementService.formatModelProductTool(
-        this.productForm.value,
-        this.filtersList,
-        this.subBrandProducts,
-        this.edit,
-        this.caseUnitOfMeasure
-    );
-      formattedModel.compliance = formattedModel.compliance ? 1 : 0;
+    //   const reqObj = {
+    //     clients: form.value.client_id,
+    //     description: form.value.description,
+    //     name: form.value.name,  // Fanciful Name
+    //     groups: form.value.groups,
+    //     producer: form.value.producer, // Producer
+    //     case_unit_of_measure: form.value.case_unit_of_measure, // Case UOM
+    //     container_types: form.value.container_types, // Container Type
+    //     ex_works_cost: form.value.ex_works_cost, // Ex Works Cost
+    //     organic: form.value.organic, // Organic
+    //     product_type: form.value.prod_type, // Product Type
+    //     product_sub_type: form.value.sub_type,
+    //     categories: form.value.category_id,
+    //     source: form.value.source,
+    //     countries: form.value.country,
+    //     vintages: form.value.vintage,
+    //     varietals: form.value.varietal,
+    //     product_id: form.value.product_id, // Product ID
+    //     abv: form.value.abv, // ABV
+    //     manufactured_location_address: form.value.manufactured_location_address,
+    //     upc_code: form.value.upc_code, // UPC Code
+    //     scc_code: form.value.scc_code, // SCC Code
+    //     system_id: form.value.system_id, // Supplier Reference ID
+    //     cola_ttb_id: form.value.cola_ttb_id, // COLA TTB ID
+    //     nabca_code: form.value.nabca_code, // NABCA Code
+    //     unimerc_code: form.value.unimerc_code, // UNIMERC Code
+    //     bdn_code: form.value.bdn_code, // BDN Code
+    //     unit_length: form.value.unit_length, // Unit Length
+    //     unit_width: form.value.unit_width, // Unit Width
+    //     unit_height: form.value.unit_height, // Unit Height
+    //     unit_weight: form.value.unit_weight, // Unit Weight
+    //     pallet_length: form.value.pallet_length, // Pallet Length
+    //     pallet_width: form.value.pallet_width, // Pallet Width
+    //     pallet_height: form.value.pallet_height, // Pallet Height
+    //     pallet_weight: form.value.pallet_weight, // Pallet Weight
+    //     case_length: form.value.case_length, // Case Length
+    //     case_width: form.value.case_width, // Case Width
+    //     case_height: form.value.case_height, // Case Height
+    //     case_weight: form.value.case_weight, // Case Weight
+    //     layers_per_pallet: form.value.layers_per_pallet, // Layers per Pallet
+    //     cases_per_layer: form.value.cases_per_layer, // Cases per Layer
+    //     cases_per_pallet: form.value.cases_per_pallet, // Cases per Pallet
+    // };
+      
 
-      if (this.productForm.value.prod_type === 2 || this.productForm.value.prod_type === 4 || this.productForm.value.prod_type === 5) {
-        formattedModel.sub_type = formattedModel.sub_type1;
-      } else if (this.productForm.value.prod_type === 1 || this.productForm.value.prod_type === 3) {
-        formattedModel.sub_type = formattedModel.sub_type2;
-      }
-
-      delete formattedModel.sub_type1;
-      delete formattedModel.sub_type2;
-      delete formattedModel.isShowMore;
-
-      this.productmanagementService.getProductManagementSystemSave(formattedModel).subscribe(response => {
-        if (!response.hasError) {
-          this.showError = false;
-          let productId = response.product_id;
-          this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle');
-          if (productId) {
-            this.router.navigateByUrl(`/product-management/${productId}`);
-          } else {
-            this.router.navigateByUrl(`/product-management/${productId}`);
-          }
-        } else {
-          this.showError = true;
+	if(form.value.compliance != 1){
+		// reqObj['compliance'] = 0;
+		form.value['compliance'] = 0;
+	}	
+    // this.spinner.show();
+    this.productmanagementService.getProductManagementSystemSave(form.value).subscribe(response => {
+      if (!response.hasError) {
+            // this.spinner.hide();
+		  this.showError = false;
+		  let productId = response.product_id;
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
-        }
-      }, error => {
-        console.error("Error saving product:", error);
+		  if (productId) {
+			this.router.navigateByUrl(`/product-management/${response.product_id}`);
+		  } else {
+			this.router.navigateByUrl(`/product-management/${response.product_id}`);
+		  }
+      } else {
+        // this.spinner.hide();
+        // this.confirmPopupOpen = false;
+        console.log("inside else ", response);
+        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
         this.showError = true;
-        this.commonService.showToastV2Message(true, "Error while saving the product.", 'fas fa-exclamation-circle');
-      });
+      }
+  });  
+    this.showError = false;
     } else {
-      this.showError = true; 
+      this.showError = true;
     }
   }
  
@@ -474,18 +424,16 @@ confirmSubmission(form: FormGroup) {
 
   onDropdownStateChange(fieldName: string, selectedValue: any) {
       this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
-      if(fieldName == 'container_type' || fieldName == 'sub_brand_product_id'  || fieldName == "client_id" || fieldName == "group" 
+      if(fieldName == 'container_type' || fieldName == 'sub_brand_product_id' || fieldName == "client_id" || fieldName == "group" 
         || fieldName == "is_organic" || fieldName == "producer_name" || fieldName == "case_unit_of_measure" || fieldName == "brand"){
            this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
        }
-       else if(this.edit){
+       else {
            this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
        }
-       else {
-        this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
-    }
      
     const brandControl = this.productForm.get('brand');
+    console.log(this.productForm.get('brand'))
     const subBrandControl = this.productForm.get('sub_brand_product_id');
     this.clientId = selectedValue[0]?.class_id;
 
