@@ -19,7 +19,7 @@
                 </app-summary-top-bar>
             </div>
         </div>
-        <div [hidden]="productToolSummary.length == 0">
+        <div [hidden]="productToolSummary.length == 0 && !isLoadingSummaryData">
             <app-summary-grid
                 [gridOptions] = "gridOptions"
                 [selectAllOption] = "true"
