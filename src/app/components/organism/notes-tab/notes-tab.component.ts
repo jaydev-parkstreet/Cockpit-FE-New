@@ -9,7 +9,7 @@ export interface Note {
   has_edit_permission: boolean;
   en_created_at: string;
   content: string;
-  show_new?: boolean; // Optional if not always present
+  show_new?: boolean;
 }
 @Component({
   selector: 'app-notes-tab',
@@ -19,7 +19,7 @@ export interface Note {
 export class NotesTabComponent implements OnInit {
     notes: [];
     isLoadingNotes: boolean = true;
-    permissions = { Update: true }; // Assume you get these permissions from a service
+    permissions = { Update: true };
   
     constructor() {}
   

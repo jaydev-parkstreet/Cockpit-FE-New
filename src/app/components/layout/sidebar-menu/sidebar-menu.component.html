@@ -14,7 +14,7 @@
                             *ngIf="menu.iconPlus && isSidebarExpanded">
                         </span>
                     </a>
-                
+
                     <ul id="mainMenu-items" [ngStyle]="{'display': menu.isExpanded && isSidebarExpanded ? 'block':'none'}">
                         <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenuItems">
                             <a [routerLink]="submenu.submenuLink" *ngIf="submenu.submenuLink;else externalLink">

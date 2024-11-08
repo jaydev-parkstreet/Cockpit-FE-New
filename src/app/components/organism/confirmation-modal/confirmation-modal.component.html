@@ -10,7 +10,18 @@
         </div>
     </div>
     <div class="modal-footer footer">
-        <button *ngIf="modalData.closeBtnName" type="button" class="btn psi-button secondary large" (click)="cancel()" [innerText]="modalData.closeBtnName"></button>
-        <button *ngIf="modalData.confirmBtnName" type="button" class="btn psi-button primary large" (click)="confirm()" [innerText]="modalData.confirmBtnName"></button>
+        <button
+            *ngIf="modalData.closeBtnName"
+            type="button"
+            class="btn psi-button secondary large"
+            (click)="cancel()"
+            [innerText]="modalData.closeBtnName">
+        </button>
+        <button
+            *ngIf="modalData.confirmBtnName"
+            type="button" class="btn psi-button primary large"
+            (click)="confirm()"
+            [innerText]="modalData.confirmBtnName">
+        </button>
     </div>
 </div>
