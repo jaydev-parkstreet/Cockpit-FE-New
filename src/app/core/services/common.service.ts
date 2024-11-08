@@ -6,10 +6,8 @@ import { Injectable } from '@angular/core';
 export class CommonService {
 
   constructor() { }
-
-  toastV2: any = {}
-  toastV2Watcher: any = {}
-
+    toastV2 : any = {}
+    toastV2Watcher : any = {}
   getDropdownConfig(
     placeholder,
     serverSearch = false,
@@ -90,27 +88,53 @@ export class CommonService {
     }
   }
 
-  showToastV2Message(show, message, icon = null, anyClass = '', time = 3000, actionRequired = false) {
-    this.hideToastV2Message();
-    this.toastV2.show = show;
-    this.toastV2.message = message;
-    this.toastV2.class = anyClass;
-    this.toastV2.icon = icon;
-    if (show && !actionRequired) {
-      this.toastV2Watcher = setTimeout(() => {
-        this.hideToastV2Message();
-      }, time);
+  getValuesByKey(list: any[], id: any) {
+    if (!Array.isArray(list)) {
+      return null; 
     }
+  
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].id === id) {
+        return list[i].name;
+      }
+    }
+    return null; 
+  }
+  
+   getKeyByValue (list, value) {
+    if (!Array.isArray(list)) {
+      return null;
+    }
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].name === value) {
+          return list[i].id;
+      }
+    } 
+    return null; 
   }
 
-  hideToastV2Message() {
-    if (this.toastV2Watcher) {
-      clearTimeout(this.toastV2Watcher);
+
+    showToastV2Message (show, message, icon = null, anyClass = '', time = 3000, actionRequired = false) {
+        this.hideToastV2Message();
+        this.toastV2.show = show;
+        this.toastV2.message = message;
+        this.toastV2.class = anyClass;
+        this.toastV2.icon = icon;
+        if (show && !actionRequired) {
+            this.toastV2Watcher = setTimeout(() => {
+                this.hideToastV2Message();
+            }, time);
+        }
     }
-    this.toastV2 = {
-      show: false,
-      message: '',
-      class: ''
-    };
-  }
+
+    hideToastV2Message () {
+        if (this.toastV2Watcher) {
+            clearTimeout(this.toastV2Watcher);
+        }
+        this.toastV2 = {
+            show: false,
+            message: '',
+            class: ''
+        };
+    }
 }

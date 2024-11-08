@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdown/input-dropdown.service';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class ProductManagementService {
 
     constructor(
-        private http: HttpClient,
+        private http: HttpClient,private commonService:CommonService,
         private dropdownService: InputDropdownService,
     ) { }
     
@@ -312,7 +313,124 @@ export class ProductManagementService {
             translationTexts: { buttonDefaultText: placeholdertext, searchPlaceholder: 'Search', noResultText: 'No results found' },
         };
     }
+   
+  formatModelProductTool(model: any, filtersList: any, subBrandProducts: any[], edit: boolean, id: number): any {
+        if (!Object.keys(model).length) {
+            return {};  
+        }    
+        let modelFormat: any = {
+            compliance: model.compliance === true ? 1 : 1,
+            use_up: model.use_up === true ? 1 : 0,  
+            is_organic: model.is_organic ? 1 : 0, 
+            abv: model.abv || "", 
+            cola_ttb_id: model.cola_ttb_id || "",
+            nabca_code: model.nabca_code || "",
+            bdn_code: model.bdn_code || "",
+            unimerc_code: model?.unimerc_code || "",
+            description: model.description || "", 
+            product_id: model.product_id || "",
+    
+            // Dimensions 
+            unit_height: model.unit_height || "",
+            unit_length: model.unit_length || "",
+            unit_width: model.unit_width || "",
+            unit_weight: model.unit_weight || "",    
+            case_width: model.case_width || "",
+            case_length: model.case_length || "",
+            case_height: model.case_height || "",
+            case_weight: model.case_weight || "",   
+            pallet_length: model.pallet_length || "",
+            pallet_width: model.pallet_width || "",
+            pallet_height: model.pallet_height || "",
+            pallet_weight: model.pallet_weight || "",          
+            layers_per_pallet: model.layers_per_pallet || "",
+            cases_per_layer: model.cases_per_layer || "",
+            cases_per_pallet: model.cases_per_pallet || "",        
+            system_id: model.system_id || "",
+            scc_code: model.scc_code || "",
+            upc_code: model.upc_code || "",
+            client_id: model.client_id || "",         
+            // sub_brand_product_id: model.sub_brand_product_id || null,      
+            sub_brand_product_name: model.sub_brand_product_name || "",   
+            sub_brand_product_id: model.sub_brand_product_id || null,         
+            name: model.name || "",
+            group: model.group || null,          
+            producer: model.producer ? model.producer.trim() : null,         
+            case_unit_of_measure: Array.isArray(model.case_unit_of_measure) && model.case_unit_of_measure.length > 0 
+            ? (model.case_unit_of_measure[0].id || null) 
+            : model.case_unit_of_measure || null,
+            container_type: Array.isArray(model.container_type) && model.container_type.length > 0 
+            ? (model.container_type[0].id || null) 
+            : model.container_type || null,
+            ex_works_cost: model.ex_works_cost || "",      
+            prod_type: model.prod_type || "", 
+            sub_type: model.sub_type || "",       
+            clone: model.clone || 0,
+            manufactured_location_address: model.manufactured_location_address || null,
+            manufactured_location_address_obj: model.manufactured_location_address_obj || null
+        };
+        if (model.unit_length && model.unit_width && model.unit_height && model.unit_weight) {
+            modelFormat.bottle_dimensions = 
+                `Length: ${model.unit_length} inches | Width: ${model.unit_width} inches | Height: ${model.unit_height} inches | Weight: ${model.unit_weight} lbs`;
+        }
+        
+        if (model.case_length && model.case_width && model.case_height && model.case_weight) {
+            modelFormat.case_dimensions =
+                `Length: ${model.case_length} inches | Width: ${model.case_width} inches | Height: ${model.case_height} inches | Weight: ${model.case_weight} lbs`;
+        }
+        
+        if (model.pallet_length && model.pallet_width && model.pallet_height && model.pallet_weight) {
+            modelFormat.pallet_dimensions =
+                `Length: ${model.pallet_length} inches | Width: ${model.pallet_width} inches | Height: ${model.pallet_height} inches | Weight: ${model.pallet_weight} lbs`;
+        }
+        if (edit) {
+            if (modelFormat.prod_type === 2) {
+                modelFormat.sub_type = this.commonService.getKeyByValue(filtersList.wine_sub_type, model.sub_type);
+            }
+            if (modelFormat.prod_type === 4) {
+                modelFormat.sub_type = this.commonService.getKeyByValue(filtersList.other_sub_type, model.sub_type);
+            }
+            if (modelFormat.prod_type === 1) {
+                modelFormat.sub_type = this.commonService.getKeyByValue(filtersList.spirits_sub_type, model.sub_type);
+            }
+            if (modelFormat.prod_type === 3) {
+                modelFormat.sub_type = this.commonService.getKeyByValue(filtersList.malt_sub_type, model.sub_type);
+            }
+            if (modelFormat.prod_type === 5) {
+                modelFormat.sub_type = this.commonService.getKeyByValue(filtersList.bulk_sub_type, model.sub_type);
+            }
+    
+            if (model.bottle_dimensions == null) {
+                delete modelFormat.bottle_dimensions;
+            }
+            if (model.case_dimensions == null) {
+                delete modelFormat.case_dimensions;
+            }
+            if (model.pallet_dimensions == null) {
+                delete modelFormat.pallet_dimensions;
+            }
+            
+            modelFormat.id = id;
+            modelFormat.temp_product_id = model.product_id
+            modelFormat.product_id = model.product_id
+            console.log(model.product_id);
+        }
+        return modelFormat;
+    }
+    
+    
+    formatDropdownValue(values, name = '') {
+        let dropdown = [];
+        if (name) {
+            dropdown.push({ 'value': undefined, 'name': name });
+        }
+        for (let i = 0; i < values.length; i++) {
+            dropdown.push({ value: values[i].id, id: values[i].id, name: values[i].name });
+        }
+        return dropdown;
 
+    }
+   
     getSummary(summaryData: any, token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http.post(environment.apiUrl + "product-tool/summary", summaryData, { headers }).toPromise();
