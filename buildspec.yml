@@ -1,0 +1,34 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10.x
+  pre_build:
+    commands:
+      - echo Installing source NPM dependencies...
+     # - npm install
+
+  build:
+    commands:
+       - gem install ffi -v 1.16.3
+       - gem install sass
+       - npm install --global gulp-cli
+       - npm install -g @angular/cli@10.2.4
+       - npm install
+       - gulp sass
+       - gulp views
+       - ng build --configuration=${env} --verbose
+  post_build:
+    commands:
+      - bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"
+      - aws s3 rm s3://${S3_BUCKET} --recursive
+      - aws s3 cp dist/Cockpit-FE s3://${S3_BUCKET} --recursive  --acl public-read
+      - aws cloudfront create-invalidation --distribution-id ${CF_DISTRIBUTION} --paths "/*"
+      - echo Build completed on `date`
+
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: dist/Cockpit-FE
