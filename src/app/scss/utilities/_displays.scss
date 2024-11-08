@@ -1,0 +1,82 @@
+/*
+
+
+
+DISPLAYS
+
+
+
+
+*/
+
+.u-dn {display: none;}
+.u-di { display: inline; }
+.u-dib { display: inline-block; }
+.u-db { display: block; }
+
+.u-dt { display: table; }
+/*
+  This will set table to full width and then
+  all cells will be equal width
+*/
+.u-dt--fixed { table-layout: fixed; width: 100%; }
+.u-dtc { display: table-cell; }
+
+
+@media (max-width: $screen-xs-max) {
+  // 767px and below
+
+  .u-dn-xs {display: none !important;}
+
+  .u-di-xs { display: inline; }
+  .u-dib-xs { display: inline-block; }
+  .u-db-xs { display: block; }
+  .u-dt-xs { display: table; }
+  .u-dt--fixed-xs { table-layout: fixed; width: 100%; }
+  .u-dtc-xs { display: table-cell; }
+
+}
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+  // Between 768px and 991px
+
+  .u-dn-sm {display: none !important;}
+
+  .u-di-sm { display: inline; }
+  .u-dib-sm { display: inline-block; }
+  .u-db-sm { display: block; }
+  .u-dt-sm { display: table; }
+  .u-dt--fixed-sm { table-layout: fixed; width: 100%; }
+  .u-dtc-sm { display: table-cell; }
+
+}
+
+
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+  // Between 992px and 1199px
+
+  .u-dn-md {display: none !important;}
+
+  .u-di-md { display: inline; }
+  .u-dib-md { display: inline-block; }
+  .u-db-md { display: block; }
+  .u-dt-md { display: table; }
+  .u-dt--fixed-md { table-layout: fixed; width: 100%; }
+  .u-dtc-md { display: table-cell; }
+
+}
+
+@media (min-width: $screen-lg-min) {
+  // 1200px and up
+
+  .u-dn-lg {display: none !important;}
+
+  .u-di-lg { display: inline; }
+  .u-dib-lg { display: inline-block; }
+  .u-db-lg { display: block; }
+  .u-dt-lg { display: table; }
+  .u-dt--fixed-lg { table-layout: fixed; width: 100%; }
+  .u-dtc-lg { display: table-cell; }
+  .u-dn-lg {display: none;}
+
+}

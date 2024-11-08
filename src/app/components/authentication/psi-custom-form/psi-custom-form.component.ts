@@ -4,6 +4,8 @@ import { PsiCustomFormService } from './psi-custom-form.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import AppConstant from '../../../../../src/app/app.constant';
+import { AuthService } from '../auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-psi-custom-form',
@@ -30,7 +32,9 @@ export class PsiCustomFormComponent implements OnInit {
 
   constructor(
     public readonly PsiCustomFormService: PsiCustomFormService,
-    public router: Router) { }
+    public router: Router,
+    private authService: AuthService, private spinner: NgxSpinnerService
+  ) { }
 
   ngOnInit(): void { }
 
@@ -62,14 +66,22 @@ export class PsiCustomFormComponent implements OnInit {
   }
 
   async userLoginHandler(reqObj) {
+    this.spinner.show();
     try {
       const res = await this.PsiCustomFormService.userLogin(reqObj);
       if (!res.hasError) {
-        // this.setSessionOldNavigatorSite(res.data.token).then(()=> {
-        //   this.router.navigate(['/product-management']);
-        //   // window.location.href = environment.oldCockpit + '/router.php/dashboard';
-
-        // });
+        const token = res.data.token;
+        // localStorage.setItem('authToken', token);
+        // const responce : any = await this.authService.selectClient(token);
+        //  const tkn = responce.data.token;
+        //  console.log("Inside",tkn);
+        //   this.authService.login(tkn);
+        const currentUserData = res.data;
+        this.authService.login(token, currentUserData);
+        await this.setSessionOldNavigatorSite(token).then(() => {
+          // this.router.navigate(['/product-management']);
+          // window.location.href = environment.oldCockpit + '/router.php/dashboard';
+        });
         this.router.navigate(['/product-management']);
         // window.location.href = environment.oldCockpit + '/router.php/dashboard';
       } else {
@@ -80,16 +92,18 @@ export class PsiCustomFormComponent implements OnInit {
       this.isShowLoginErrorMsg = true;
       this.showErrorMsg = error.error.msg;
     }
+    finally {
+      this.spinner.hide();
+    }
   }
 
-  setSessionOldNavigatorSite(token):Promise<void> {
-    debugger
-    return new Promise((resolve,reject) => {
-    const iframe = document.getElementById('myframe') as HTMLInputElement;
-    iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
-    iframe.onload = () => {
-      resolve();
-    };
+  setSessionOldNavigatorSite(token): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const iframe = document.getElementById('myframe') as HTMLInputElement;
+      iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
+      iframe.onload = () => {
+        resolve();
+      };
     })
   }
 
@@ -97,7 +111,7 @@ export class PsiCustomFormComponent implements OnInit {
   /**
   * Function to show and hide password.
   */
-  togglePassword (index) {
+  togglePassword(index) {
     this.togglePasswordVisibility.emit(index);
   }
 
@@ -107,5 +121,4 @@ export class PsiCustomFormComponent implements OnInit {
   trackByField(index: number, field: any): string {
     return field.name;
   }
-
 }

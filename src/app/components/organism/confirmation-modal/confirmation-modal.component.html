@@ -1,0 +1,16 @@
+<div class="modal-content content">
+    <div class="modal-body">
+        <div class="popup-header">
+            <i [ngClass]="modalData.icon ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'"></i>
+            <span [innerText]="modalData.title"></span>
+        </div>
+        <div class="popup-body">
+            <span [innerText]="modalData.body"></span>
+            <span *ngIf="modalData.body1" [innerText]="modalData.body1"></span>
+        </div>
+    </div>
+    <div class="modal-footer footer">
+        <button *ngIf="modalData.closeBtnName" type="button" class="btn psi-button secondary large" (click)="cancel()" [innerText]="modalData.closeBtnName"></button>
+        <button *ngIf="modalData.confirmBtnName" type="button" class="btn psi-button primary large" (click)="confirm()" [innerText]="modalData.confirmBtnName"></button>
+    </div>
+</div>

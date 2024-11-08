@@ -1,1 +1,17 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+<!-- <app-application></app-application> -->
+
+<div class="psi-toast" [ngClass]="commonService.toastV2.class" *ngIf="commonService.toastV2.show">
+  <i *ngIf="commonService.toastV2.icon" [class]="commonService.toastV2.icon" class="pr-16" aria-hidden="true"></i>
+  <span class="message"> {{commonService.toastV2.message}}</span>
+  <i class="fas fa-times" aria-hidden="true" (click)="commonService.hideToastV2Message()"></i>
+</div>
+
 <router-outlet></router-outlet>

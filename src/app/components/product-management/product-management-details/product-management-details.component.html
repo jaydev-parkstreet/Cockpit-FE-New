@@ -1,0 +1,78 @@
+<div ui-view class="product-tool-details">
+    <app-header-tool titleText="Product Management System" titleIcon="fas fa-wine-bottle">
+    </app-header-tool>
+
+    <div class="product-tool-details-container">
+        <div class="action-bar">
+            <div class="back-link">
+                <i class="fas fa-chevron-left"></i>
+                <span class="link-text typography-body-black-regular" (click)="onClickback()">
+                    Back to Products
+                </span>
+            </div>
+            <div>
+                <app-psi-action-buttons [actionButtons]="actionButtons" (actionClicked)="onClickAction($event)"></app-psi-action-buttons>
+            </div>
+        </div>
+        <div class="product-tool-details-wrapper">
+            <div class="row">
+                <div class="col-sm-6 u-pr2 left-side">
+                    <app-cmp-header-widget 
+                    [headerTitle]="headerTitle" 
+                    [showTooltip]="true" 
+                    [badgeText]="status"
+                    [badgeClass]="statusClass"
+                    [iconHeaderStatus]="IconHeaderStatus">
+                    </app-cmp-header-widget>
+                    <app-card-layout-details [rows]="detailProduct"></app-card-layout-details>
+                    <app-cmp-tab-group [tabGroupConfig]="tabGroupConfig" [activeTab]="activeTab"
+                        (tabClick)="clickTabGroup($event)">
+                    </app-cmp-tab-group>
+                    <!-- <notes-tab data-ng-show="$ctrl.activeTabGroup == $ctrl.tabGroupConfig[0].key"
+                        entity="$ctrl.productData.product_id" permissions="$ctrl.permissions" show-new-notes="true"
+                        show-privacy-icon="true" filters-list="$ctrl.filtersList">
+                    </notes-tab> -->
+                    <!-- <app-notes-tab >
+                    </app-notes-tab>  -->
+                    <!-- <attachments-tab data-ng-show="$ctrl.activeTabGroup == $ctrl.tabGroupConfig[1].key"
+                        entity="$ctrl.productData.product_id" permissions="$ctrl.permissions"
+                        show-file-type="true" file-types="$ctrl.permissions.entity_kinds" show-privacy-icon="true" filters-list="$ctrl.filtersList">
+                    </attachments-tab> -->
+                    <!-- <audit-tab data-ng-show="$ctrl.activeTabGroup == $ctrl.tabGroupConfig[2].key"
+                        row-object-keys-detail="$ctrl.rowAuditTrailConfigApiRequest" audit-list="$ctrl.auditList"
+                        loader-enabled="$ctrl.loaderEnabledAuditTrail">
+                    </audit-tab> -->
+
+                    <!-- <app-notes-tab 
+                   
+               
+                 
+              >
+                  </app-notes-tab> -->
+                </div>
+                
+                <div class="col-sm-6 u-pl2 right-side">
+                    <div>
+                        <app-cmp-header-widget [headerTitle]="dimensionTitle"></app-cmp-header-widget>
+                        <app-product-summary-dimensions-card [rows]="productList"></app-product-summary-dimensions-card>
+                    </div>
+                    <div class="code-section">
+                        <app-cmp-header-widget [headerTitle]="codesTitle"></app-cmp-header-widget>
+                        <div class="code-table">
+                            <table id="customers">
+                                <tr>
+                                    <th class="typography-paragraph-black-regular col-type">Type</th>
+                                    <th class="typography-paragraph-black-regular col-code"><span class="ftleft"></span>Code</th>
+                                </tr>
+                                <tr class="odd-event-row" *ngFor="let code of productCodeDetail">
+                                    <td class="typography-paragraph-dark-regular type-val">{{code.label}}</td>
+                                    <td class="typography-paragraph-dark-regula code-val">{{code.val}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

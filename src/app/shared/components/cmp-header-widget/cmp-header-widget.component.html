@@ -1,0 +1,30 @@
+<div class="header-widget">
+  <div class="typography-body-black-regular header-widget-title text-uppercase">
+    {{ headerTitle }}
+  </div>
+
+  <span *ngIf="showTooltip" class="tooltip-text">{{ headerTitle }}</span>
+
+  <div class="badge-wrapper">
+    <div *ngIf="badgeText" class="badge" [ngClass]="badgeClass">
+      <span> {{badgeText}}</span>
+      <i *ngIf="badgeIconClass" [ngClass]="badgeIconClass"></i>
+    </div>
+
+    <i *ngIf="badgeIconClass" [ngClass]="['icon-cst-cls', badgeIconClass]">
+      <span *ngIf="iconShowTooltip" class="icon-tooltip-text">{{ iconHeaderStatus }}</span>
+    </i>
+  </div>
+
+  <div class="custom_btns" *ngIf="paymentEnabled">
+    <div class="melio-button"
+      [attr.data-vendor-link]="'parkstreet'"
+      [attr.data-invoice-number]="invoiceData.data.invoice_details.invoice_num"
+      [attr.data-total-amount]="invoiceData.data.invoice_details.total">
+    </div>
+  </div>
+
+  <div class="icon-class">
+    <i *ngIf="iconClass" [ngClass]="iconClass"></i>
+  </div>
+</div>

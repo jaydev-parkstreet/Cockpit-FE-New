@@ -1,0 +1,11 @@
+<label class="cmp-checkbox">
+    <span [textContent]="inputLabel"></span>
+    <input type="checkbox"
+        name="test" id="test"
+        [(ngModel)]="model[inputKey]"
+        (change)="changeValue(model[inputKey])"
+        [disabled]="isDisabled">
+    <span class="checkmark">
+        <i class="fa fa-check"></i>
+    </span>
+</label>

@@ -28,6 +28,17 @@
         }
     }
 
+    i.clear-search {
+        right: 48px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $colors-neutral-light;
+
+        &:hover {
+            color: $colors-neutral-dark;
+        }
+    }
+
     button.search-icon {
         display: flex;
         align-items: center;

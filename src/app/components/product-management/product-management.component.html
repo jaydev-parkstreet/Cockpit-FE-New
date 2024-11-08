@@ -1,16 +1,36 @@
 <div class="product-management">
-    <div class="header-background">
-        <app-header-tool
-            titleText="Product Management"
-            titleIcon="fas fa-file-invoice-dollar">
-        </app-header-tool>
-        <div class="product-tool-container">
-            <div class="check-container">
-                <div class="u-w-inherit">
-                    <app-summary-top-bar></app-summary-top-bar>
-                </div>
+    <app-header-tool
+        titleText="Product Management"
+        titleIcon="fas fa-file-invoice-dollar">
+    </app-header-tool>
+    <div class="product-tool-container">
+        <div class="check-container">
+            <div class="u-w-inherit">
+                <app-summary-top-bar
+                    [productChecked]="selectedAllRows"
+                    [config]="topPanelConfig"
+                    [filterList]="filterList"
+                    (addProduct)="addProduct()"
+                    (applyFilters)="applyFilters($event)"
+                    (resetFilters)="resetFilters()"
+                    (onEnter)="universalSearch($event)"
+                    (onClickAction)="onClickAction($event)"
+                    (excelExport)="excelExport()">
+                </app-summary-top-bar>
             </div>
         </div>
+        <div *ngIf="!isLoadingSummaryData || productToolSummary">
+            <app-summary-grid
+                [gridOptions] = "gridOptions"
+                [selectAllOption] = "true"
+                [checkAll] = "selectedAllRows"
+                (selectAllChanged) = "onSelectAllChanged($event)"
+                >
+            </app-summary-grid>
+        </div>
+        <div class="no-record-message" *ngIf="isLoadingSummaryData || !productToolSummary.length">
+            <i class="fas fa-surprise"></i>
+            <span>No Data Found</span>
+        </div>        
     </div>
 </div>
-

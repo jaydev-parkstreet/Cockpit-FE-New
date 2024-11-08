@@ -1,9 +1,67 @@
 <div class="summary-top-bar m-flex-direction mr-width">
-<div class="search-box-container m-margin" data-ng-hide="topBarConfig.hideSearch">
-    <app-search-bar>
-    </app-search-bar>
-</div>
-<app-excel-export
-        [tooltipText]="tooltipText">
+    <div class="search-box-container m-margin" data-ng-hide="config.hideSearch">
+        <app-search-bar
+            [config]="config"
+            (onEnter)="onEnter.emit($event)">
+        </app-search-bar>
+    </div>
+    <div *ngFor="let action of config.actions.extraActions" class="icon-container" [ngClass]="action.divClass">
+        <div *ngIf="productChecked">
+            <i [class]="action.icon + ' action-icon'"  [ngClass]="{'is-disabled': action.disabled}" *ngIf="action.type === 'icon'" 
+            (click)="onClickAction.emit(action)">
+            </i>
+            <span *ngIf="action.showTooltip" class="icon-tooltiptext" [ngClass]="action.className">
+            {{action.tooltipText}}
+            </span>
+        </div>
+    </div>
+    <app-excel-export 
+    [tooltipText]="tooltipText"
+    (onExcelSheet)="excelExport.emit()">
     </app-excel-export>
+    <div class="filter-results m-margin-top" *ngIf="config.actions['result'].type === 'result'">
+        <b>{{ config.totalResult }}</b>
+        <span>&nbsp;&nbsp; 
+        <span>{{ config.totalResult === 1 ? 'Result' : 'Results' }}</span>
+        </span>
+    </div>
+
+    <div>
+        <app-cmp-button [buttonIconLeft]="'fas fa-filter'" [buttonText]="'Filter'" [buttonClass]="'secondary'"
+            (click)="toggleFilter()">
+        </app-cmp-button>
+
+    </div>
+    <div>
+        <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" [buttonText]="'New Product'" [buttonClass]="'primary'"
+            (click)="addProduct.emit()">
+        </app-cmp-button>
+    </div>
+</div>
+
+<div class="filter-container" *ngIf="isExpandFilter">
+    <div class="row">
+        <div class="filter-item" [ngClass]="filter.divClass" *ngFor="let filter of config.filtersConfig">
+            <app-cmp-input-dropdown
+                [label]="filter.label"
+                [showSelectAll]="filter.showSelectAll == false ? false : true"
+                [showCheckboxes]="filter.showCheckboxes == false ? false : true"
+                [allowSingleSelect]="filter.allowSingleSelect == true ? true : false"
+                [showSearch]="filter.showSearch == false ? false : true "
+                [settings]="filter.setting"
+                [filteredItems]="filterList && filterList[filter.key]"
+                [selectedItems]="selectedFilters[filter.key] || []"
+                [isAllItemsSelected]="isAllItemsSelected"
+                (onDropDownChange)="onFilterChange(filter.key, $event)">
+            </app-cmp-input-dropdown>
+        </div>
+    </div>
+    <div class="u-flex u-align-center u-pg-py-2">
+        <app-cmp-button
+            [buttonClass]="'primary sm'"
+            [buttonText]=" 'Apply' "
+            (click)="applyFilterChanges()">
+        </app-cmp-button>
+        <div class="btn-link primary-link u-pg-ml-3" (click)="resetFilterChanges()">Clear</div>
+    </div>
 </div>

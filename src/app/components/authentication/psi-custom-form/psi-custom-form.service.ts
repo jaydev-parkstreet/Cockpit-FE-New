@@ -16,8 +16,4 @@ export class PsiCustomFormService {
       .toPromise();
   }
 
-  summary (summaryData):any {
-    debugger
-    return this.http.post("https://stgapi.parkstreet.com/v1/product-tool/summary",summaryData).toPromise();
-  }
 }

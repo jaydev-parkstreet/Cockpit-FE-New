@@ -13,5 +13,4 @@ export class HeaderToolComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void { }
-
 }

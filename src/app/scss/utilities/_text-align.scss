@@ -1,0 +1,72 @@
+/*
+
+
+
+
+TEXT ALIGN
+
+Base
+  t = text-align
+Modifiers
+  l = left
+  r = right
+  c = center
+  j = justify
+Media Query Extensions:
+  -xs = extra small
+  -sm  = small
+  -md  = medium
+  -lg  = large
+
+
+
+
+*/
+
+
+.u-tl  { text-align: left; }
+.u-tr  { text-align: right; }
+.u-tc  { text-align: center !important; }
+.u-tj  { text-align: justify; }
+
+@media (max-width: $screen-xs-max) {
+  // 767px and below
+
+  .u-tl-xs  { text-align: left; }
+  .u-tr-xs { text-align: right; }
+  .u-tc-xs  { text-align: center; }
+  .u-tj-xs  { text-align: justify; }
+
+}
+
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+  // Between 768px and 991px
+
+  .u-tl-sm  { text-align: left; }
+  .u-tr-sm { text-align: right; }
+  .u-tc-sm  { text-align: center; }
+  .u-tj-sm  { text-align: justify; }
+
+}
+
+
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
+  // Between 992px and 1199px
+
+  .u-tl-md  { text-align: left; }
+  .u-tr-md { text-align: right; }
+  .u-tc-md  { text-align: center; }
+  .u-tj-md  { text-align: justify; }
+
+}
+
+@media (min-width: $screen-lg-min) {
+  // 1200px and up
+
+  .u-tl-lg  { text-align: left; }
+  .u-tr-lg { text-align: right; }
+  .u-tc-lg  { text-align: center; }
+  .u-tj-lg  { text-align: justify; }
+
+}

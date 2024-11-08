@@ -1,0 +1,12 @@
+<div class="button-round">
+  <span
+      class="action-round"
+      [ngClass]="{ 'disabled': action.disabled }"
+      *ngFor="let action of actionButtons"
+      (click)="!action.disabled ? actionEvent(action) : null"
+      [attr.data-tooltip]="action.showTooltip ? action.tooltipText : null">
+      <i [ngClass]="action.icon"></i>
+      <!-- <span class="icon-tooltiptext" *ngIf="action.showTooltip">{{ action.tooltipText }}</span> -->
+  </span>
+</div>
+  

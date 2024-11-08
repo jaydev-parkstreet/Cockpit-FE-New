@@ -1,0 +1,37 @@
+/*
+
+
+
+BORDER RADIUS
+
+
+
+*/
+
+.u-br0 { border-radius: 0; }
+.u-br1 { border-radius: .125rem; }
+.u-br2 { border-radius: .25rem; }
+.u-br3 { border-radius: .5rem; }
+.u-br4 { border-radius: 1rem; }
+.u-br-100 { border-radius: 100%; }
+.u-br-pill { border-radius: 9999px; }
+
+.u-br--bottom {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.u-br--top {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.u-br--right {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.u-br--left {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}

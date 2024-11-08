@@ -1,0 +1,25 @@
+<div class="cards-layout-details">
+    <ng-container *ngFor="let data of rows" [ngClass]="data.loopClass">
+      <span class="u-title" *ngIf="data.title">{{ data.title }}</span>
+      <p class="field-bl-dtl">
+        <span class="u-ml3-left">
+          <span class="typography-body-black-medium" >{{ data.label }}</span>
+          <span class="icon-tooltip" *ngIf="data.tooltip">
+            <cmp-popover [tooltipConfig]="data.tooltip"></cmp-popover>
+          </span>
+        </span>
+        <span class="typography-body-black-regular u-ml3-right">
+          <span> {{data.value}} </span>
+          <!-- <span class="info-popover position-relative" *ngIf="data.missingTooltip.isMissing">
+            <i [ngClass]="[data.missingTooltip.icon, { 'on-hover': data.missingTooltip.isMissing }]"></i>
+            <span class="white-tooltip">
+              <span class="u-flex">
+                <span>{{ data.missingTooltip.content }}</span>
+              </span>
+            </span>
+          </span> -->
+        </span>
+      </p>
+    </ng-container>
+  </div>
+  

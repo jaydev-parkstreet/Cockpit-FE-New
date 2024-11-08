@@ -1,0 +1,42 @@
+/*
+
+
+
+INPUTS
+
+
+
+ */
+
+.c-label {
+  color: #4A4A4A;
+  font-size: 14px;
+}
+
+.c-input {
+  display: block;
+  width: 100%;
+  padding: 8px 9px;
+  box-sizing: border-box;
+  font-size: 14px;
+  text-align: left;
+  color: #47525d;
+  border: 1px solid rgba(37, 40, 43, 0.1);
+  border-radius: 3px;
+  background-color: white;
+  background-clip: padding-box;
+}
+
+.c-input:focus {
+  border-color: #72b6ec;
+  outline: 0;
+}
+
+.c-input--search {
+  padding: 5px 40px;
+  background: 1em 50%;
+  // background-image: url("src/assets/images/search-icon.svg");
+  background-repeat: no-repeat;
+  background-size: 1.3em; /*hello*/
+  -webkit-appearance: textfield !important;
+}
