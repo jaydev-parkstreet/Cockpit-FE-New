@@ -25,8 +25,8 @@ phases:
       - npm install --global gulp-cli
       - npm install -g @angular/cli@10.2.4 --unsafe-perm=true --allow-root
       - npm install
-      - gulp sass
-      - gulp views
+  #    - gulp sass
+  #    - gulp views
       - ng build --configuration=${env} --verbose
   post_build:
     commands:
