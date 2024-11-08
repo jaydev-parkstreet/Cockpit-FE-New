@@ -22,9 +22,8 @@ phases:
       - echo "Building the project..."
       - gem install ffi -v 1.16.3
       - gem install sass
-      - npm cache clean --force
       - npm install --global gulp-cli
-      - npm install -g @angular/cli@10.2.4
+      - npm install -g @angular/cli@10.2.4 --unsafe-perm=true --allow-root
       - npm install
       - gulp sass
       - gulp views
