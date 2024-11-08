@@ -21,7 +21,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() label: string;
   @Input() validationClasses: string;
   @Input() settings: any = {};
-  @Input() filteredItems: Item[]; 
+  @Input() filteredItems: Item[];
   @Input() formControl: FormControl;
   @Input() showSelectAll: boolean = true;
   @Input() showCheckboxes: boolean = true;
@@ -30,9 +30,9 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   @Output() onDropDownChange: EventEmitter<any> = new EventEmitter<any>();
   @Input() isActive: boolean = false;
   @Output() dropdownStateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() selectedItems: any[] = []; 
+  @Input() selectedItems: any[] = [];
   @Input() isAllItemsSelected: boolean = false;
-  @Input() disabled: boolean = false; 
+  @Input() disabled: boolean = false;
 
   isOpen: boolean = false;
   searchText: string = '';
@@ -56,35 +56,35 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.filteredItems = this.filteredItems || []
     this.updateFilteredItems(this.filteredItems);
     this.updateSelectAllState(this.filteredItems);
-    this.originalItems = [...this.filteredItems]; 
+    this.originalItems = [...this.filteredItems];
   }
-  
-//   ngOnChanges(changes: SimpleChanges): void {
-//     if (changes['isActive']) {
-//         this.isOpen = this.isActive || false; 
-//     }
-//     if (changes['filteredItems']) {
-//         const newItems = changes['filteredItems'].currentValue;
 
-//         if (newItems && Array.isArray(newItems)) {
-//             this.originalItems = [...newItems];
-//             this.updateFilteredItems(this.originalItems);
-//         } else {
-//             this.originalItems = []; 
-//             this.updateFilteredItems(this.originalItems);
-//         }
-//     }
-//     if (changes['isAllItemsSelected']) {
-//         this.isAllSelected = changes['isAllItemsSelected'].currentValue || false; 
-//     }
-//     this.updateSelectAllStates();
-// }
+  //   ngOnChanges(changes: SimpleChanges): void {
+  //     if (changes['isActive']) {
+  //         this.isOpen = this.isActive || false; 
+  //     }
+  //     if (changes['filteredItems']) {
+  //         const newItems = changes['filteredItems'].currentValue;
+
+  //         if (newItems && Array.isArray(newItems)) {
+  //             this.originalItems = [...newItems];
+  //             this.updateFilteredItems(this.originalItems);
+  //         } else {
+  //             this.originalItems = []; 
+  //             this.updateFilteredItems(this.originalItems);
+  //         }
+  //     }
+  //     if (changes['isAllItemsSelected']) {
+  //         this.isAllSelected = changes['isAllItemsSelected'].currentValue || false; 
+  //     }
+  //     this.updateSelectAllStates();
+  // }
 
   updateSelectAllStates(): void {
-    this.isAllSelected = this.selectedItems.length === this.filteredItems.length; 
+    this.isAllSelected = this.selectedItems.length === this.filteredItems.length;
   }
   toggleDropdown(): void {
-    if (this.disabled  || this.formControl?.disabled) return;
+    if (this.disabled || this.formControl?.disabled) return;
     if (CmpInputDropdownComponent.currentlyOpenDropdown && CmpInputDropdownComponent.currentlyOpenDropdown !== this) {
       CmpInputDropdownComponent.currentlyOpenDropdown.closeDropdown();
     }
@@ -92,7 +92,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     CmpInputDropdownComponent.currentlyOpenDropdown = this.isOpen ? this : null;
     this.dropdownStateChange.emit(this.isOpen);
   }
- 
+
   closeDropdown(): void {
     this.isOpen = false;
     this.dropdownStateChange.emit(this.isOpen);
@@ -132,7 +132,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     }
     this.isAllSelected = !this.isAllSelected;
     this.onDropDownChange.emit(this.selectedItems);
-    this.updateFormControl(); 
+    this.updateFormControl();
   }
 
   updateFormControl(): void {
@@ -146,11 +146,11 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.isAllSelected = this.selectedItems.length === items.length;
   }
   updateDropdownState(): void {
-   
+
     if (this.isActive && !this.disabled) {
-      this.isOpen = false; 
+      this.isOpen = false;
     } else {
-      this.isOpen = false; 
+      this.isOpen = false;
     }
   }
 
@@ -161,8 +161,8 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   filterItems(): void {
     const searchTextLower = this.searchText.toLowerCase();
     if (searchTextLower.trim().length === 0) {
-      this.filteredItems = [...this.originalItems]; 
-      this.hideList = false; 
+      this.filteredItems = [...this.originalItems];
+      this.hideList = false;
       return;
     }
     this.filteredItems = this.originalItems.filter((item: Item) =>
@@ -170,17 +170,13 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     );
     this.hideList = this.filteredItems.length === 0;
   }
-  
+
   clearSearch(event: Event): void {
     this.searchText = '';
     this.updateFilteredItems(this.originalItems);
     event.stopPropagation();
   }
 
-  //private updateFilteredItems(items): void {
-  //   this.filteredItems = [...items];
-  //   this.hideList = false;
-  // }
   updateFilteredItems(items): void {
     this.filteredItems = Array.isArray(items) ? [...items] : [];
     this.hideList = false;
@@ -209,7 +205,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
 
   writeValue(obj: any): void {
     this.selectedItems = obj || [];
-    this.updateFilteredItems(this.originalItems); 
+    this.updateFilteredItems(this.originalItems);
   }
 
   registerOnChange(fn: any): void {
@@ -220,17 +216,14 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     // Implement if needed
   }
 
-  // setDisabledState?(isDisabled: boolean): void {
-  //   this.isDisabled = isDisabled;
-  // }
   setDisabledState?(isDisabled: boolean): void {
     this.disabled = isDisabled;
     if (this.formControl) {
-        if (isDisabled) {
-            this.formControl.disable(); 
-        } else {
-            this.formControl.enable(); 
-        }
+      if (isDisabled) {
+        this.formControl.disable();
+      } else {
+        this.formControl.enable();
+      }
     }
-}
+  }
 }

@@ -33,17 +33,20 @@
                                                     {{ field.label }}
                                                 </label>
                                             </div>
-                                            <app-cmp-input-dropdown *ngIf="field?.type == 'multiselect-search'"
-                                                class="full-width" [showSelectAll]="false" [showCheckboxes]="false"
-                                                [allowSingleSelect]="true" [settings]="field.setting"
+                                            <app-cmp-input-dropdown
+                                                *ngIf="field?.type == 'multiselect-search'"
+                                                class="full-width"
+                                                [showSelectAll]="false"
+                                                [showCheckboxes]="false"
+                                                [allowSingleSelect]="true"
+                                                [settings]="field.setting"
                                                 [selectedItems]="sellectedData[field.id] || []"
                                                 [filteredItems]="filterList && filterList[field.key]"
                                                 [disabled]="productForm.get(field.name)?.disabled"
                                                 (onDropDownChange)="onDropdownStateChange(field.name, $event)">
                                             </app-cmp-input-dropdown>
                                             <div *ngIf="isFieldInvalid(field.name)" class="error-message">
-                                                <span
-                                                    *ngIf="productForm.get(field.name)?.errors?.required">Required</span>
+                                                <span *ngIf="productForm.get(field.name)?.errors?.required">Required</span>
                                             </div>
                                         </ng-container>
                                     </ng-container>

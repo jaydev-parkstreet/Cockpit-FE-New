@@ -1,11 +1,7 @@
 <div class="tab-group">
     <ul>
-        <li 
-            class="typography-h6-dark-regular"
-            *ngFor="let tab of tabGroupConfig"
-            [ngClass]="{'active': tab.key === activeTab}"
-            (click)="clickOnTab(tab)"
-        >
+        <li class="typography-h6-dark-regular" *ngFor="let tab of tabGroupConfig"
+            [ngClass]="{'active': tab.key === activeTab}" (click)="clickOnTab(tab)">
             {{ tab.label }}
         </li>
     </ul>

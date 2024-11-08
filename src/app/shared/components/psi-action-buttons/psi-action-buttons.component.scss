@@ -43,12 +43,15 @@
 
         &:hover {
             i {
-                color: $colors-neutral-black; /* Change icon color on hover */
+                color: $colors-neutral-black;
+                /* Change icon color on hover */
             }
 
             &::after {
-                visibility: visible; /* Show tooltip on hover */
-                opacity: 1; /* Make tooltip fully visible */
+                visibility: visible;
+                /* Show tooltip on hover */
+                opacity: 1;
+                /* Make tooltip fully visible */
             }
         }
 
@@ -56,7 +59,8 @@
             cursor: not-allowed;
 
             i {
-                color: $colors-neutral-dark; /* Maintain icon color on hover */
+                color: $colors-neutral-dark;
+                /* Maintain icon color on hover */
             }
         }
     }

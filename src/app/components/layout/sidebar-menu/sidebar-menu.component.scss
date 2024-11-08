@@ -6,9 +6,11 @@
     left: 0;
     z-index: 100;
     background-color: $colors-neutral-black;
+
     .sidebar-header {
         padding: 16px;
     }
+
     .sidebar-content .sidebar-menu #mainMenu {
         padding: 8px 16px;
         list-style: none;
@@ -62,12 +64,15 @@
             #mainMenu-items {
                 padding-left: 7px;
                 list-style: none;
+
                 .sidebar-submenu-item a {
                     height: 32px;
+
                     i {
                         font-size: 12px;
                         width: 16px;
                     }
+
                     span {
                         font-size: 13px;
                     }
@@ -80,15 +85,15 @@
 
             }
         }
-    } 
+    }
 }
 
-.expanded { 
+.expanded {
     width: 240px;
     top: 0;
 }
 
-.collapsed { 
+.collapsed {
     width: 65px;
     top: 38px;
 }

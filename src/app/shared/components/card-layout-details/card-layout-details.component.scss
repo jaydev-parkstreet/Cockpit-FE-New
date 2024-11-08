@@ -31,9 +31,10 @@
         color: #b90010;
     }
 
-    .position-relative{
+    .position-relative {
         position: relative;
     }
+
     .info-popover {
         .white-tooltip {
             visibility: hidden;
@@ -66,27 +67,30 @@
                 background-color: #b90010;
             }
         }
+
         &:hover i+.white-tooltip {
             visibility: visible;
         }
     }
-    .u-title{
+
+    .u-title {
         font-family: 'Helvetica';
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
         line-height: 20px;
     }
-    .mt-16{
+
+    .mt-16 {
         margin-top: 16px;
     }
 }
 
-.typography-body-black-regular{
+.typography-body-black-regular {
     color: $colors-neutral-black;
 }
 
-.typography-body-black-medium{
+.typography-body-black-medium {
     color: $colors-neutral-black;
     font-weight: 800;
     font-family: 'HelveticaNeue-Medium';

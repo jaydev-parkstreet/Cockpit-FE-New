@@ -16,4 +16,5 @@ export class PsiActionButtonsComponent implements OnInit {
   actionEvent(actionName: string) {
     this.actionClicked.emit(actionName);
   }
+
 }

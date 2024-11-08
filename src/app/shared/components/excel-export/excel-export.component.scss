@@ -2,19 +2,24 @@
 @import '../../../../styles/colors';
 @import '../../../scss/utilities/base';
 @import '../../../scss/utilities/colors';
-.export-excel-btn{
+
+.export-excel-btn {
     cursor: pointer;
+
     i.export-icon {
         margin-right: 8px;
         margin-left: 8px;
     }
+
     i.action-icon:hover~.icon-tooltiptext {
         visibility: visible;
     }
-    .disabledToolTip{
+
+    .disabledToolTip {
         background: black !important;
         color: $ps-dark-black !important;
     }
+
     .icon-tooltiptext {
         width: auto;
         height: 32px;

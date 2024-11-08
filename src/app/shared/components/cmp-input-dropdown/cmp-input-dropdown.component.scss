@@ -4,7 +4,7 @@
 .input-dropdown {
     position: relative;
 
-    .dropdown-label {  
+    .dropdown-label {
         color: $colors-neutral-black;
         font-family: $montserrat-regular !important;
         font-size: 12px;
@@ -29,7 +29,7 @@
         &:focus {
             border: none !important;
         }
-        
+
         &:focus-within {
             border-radius: 8px;
             border: 2px solid $colors-v2-base-secondary-v-medium;
@@ -186,28 +186,29 @@
             scroll-behavior: smooth;
             scroll-snap-type: y mandatory;
             margin-right: 5px !important;
-          
 
-           &::-webkit-scrollbar {
+
+            &::-webkit-scrollbar {
                 width: 30px;
             }
-        
+
             &::-webkit-scrollbar-track {
                 background: white;
                 border-radius: 10px;
             }
-        
+
             &::-webkit-scrollbar-thumb {
-                background: #fff2f1; 
+                background: #fff2f1;
                 border-radius: 10px;
-                height: 50px; 
+                height: 50px;
             }
-        
+
             &::-webkit-scrollbar-thumb:hover {
-                background: lighten(#fff2f1, 10%); 
-            }   
-            scrollbar-color: #fff2f1 white; 
-        
+                background: lighten(#fff2f1, 10%);
+            }
+
+            scrollbar-color: #fff2f1 white;
+
             .no-results {
                 color: #cbcbcb;
                 font-family: $montserrat-regular;
@@ -224,34 +225,34 @@
             }
 
             .checkbox {
-                background: $colors-v2-base-primary; 
-                height: 16px; 
-                width: 16px; 
-                color: $colors-neutral-white; 
+                background: $colors-v2-base-primary;
+                height: 16px;
+                width: 16px;
+                color: $colors-neutral-white;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border: 1px solid $colors-v2-base-primary; 
+                border: 1px solid $colors-v2-base-primary;
                 border-radius: 4px;
-                font-size: 12px; 
-                font-weight: bold; 
+                font-size: 12px;
+                font-weight: bold;
                 margin-right: 8px;
-                cursor: pointer; 
-                transition: background 0.3s; 
+                cursor: pointer;
+                transition: background 0.3s;
             }
 
             .checkbox.checked {
-                background: $colors-v2-base-primary; 
+                background: $colors-v2-base-primary;
             }
 
             .checkbox.unchecked {
-                background: #e74536; 
+                background: #e74536;
                 color: white;
-                font-weight: bold; 
+                font-weight: bold;
             }
 
             .checkbox:hover {
-                background: #d6362f; 
+                background: #d6362f;
             }
 
             .select-list {
@@ -260,8 +261,9 @@
                 padding: 8px;
                 display: flex;
                 align-items: center;
+
                 &:hover {
-                    background: #fff2f1; 
+                    background: #fff2f1;
                 }
             }
 
@@ -297,7 +299,7 @@
 
                 &:checked {
                     background-color: $colors-v2-base-primary;
-                    border-color: $colors-v2-base-primary; 
+                    border-color: $colors-v2-base-primary;
                 }
 
                 &:checked::before {
@@ -309,24 +311,23 @@
                 }
             }
         }
-        .dropdown-content > div { /* Assuming each item is in a div */
-            scroll-snap-align: start; /* Snap to the start of each item */
+
+        .dropdown-content>div {
+            scroll-snap-align: start;
         }
     }
 }
 
 .input-dropdown.disabled {
-    background-color: #fff2f1; 
-    // color: #a0a0a0;
+    background-color: #fff2f1;
     pointer-events: none;
-  }
-  
-  .input-dropdown.disabled .dropdown-header {
-    cursor: not-allowed;
-    color:$colors-neutral-dark-v-medium;
-  }
+}
 
-  
-  .input-dropdown.disabled .dropdown-list {
+.input-dropdown.disabled .dropdown-header {
+    cursor: not-allowed;
+    color: $colors-neutral-dark-v-medium;
+}
+
+.input-dropdown.disabled .dropdown-list {
     display: none;
-  }
+}

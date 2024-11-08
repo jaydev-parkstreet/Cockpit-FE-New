@@ -14,16 +14,16 @@ export class SummaryTopBarComponent implements OnInit {
   @Output() applyFilters = new EventEmitter<any>();
   @Output() resetFilters = new EventEmitter<any>();
   @Output() onEnter = new EventEmitter<any>();
-  @Output() onClickAction: EventEmitter<{action: any}> = new EventEmitter<{action: any}>();
+  @Output() onClickAction: EventEmitter<{ action: any }> = new EventEmitter<{ action: any }>();
   @Output() excelExport = new EventEmitter<any>();
-  topBarConfig : any;
-  tooltipText:any;
-  isExpandFilter = false; 
+  topBarConfig: any;
+  tooltipText: any;
+  isExpandFilter = false;
   dropdown1Label = 'Product Status';
   selectedFilters: { [key: string]: any[] } = {}
   isAllItemsSelected: boolean = false;
-  
-  constructor(private router:Router) { }
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -33,7 +33,6 @@ export class SummaryTopBarComponent implements OnInit {
   }
 
   onFilterChange(key: string, value: any) {
-    // Update the selected filter values when any filter changes
     this.selectedFilters[key] = value;
   }
 
@@ -46,4 +45,5 @@ export class SummaryTopBarComponent implements OnInit {
     this.isAllItemsSelected = false;
     this.resetFilters.emit();
   }
+
 }

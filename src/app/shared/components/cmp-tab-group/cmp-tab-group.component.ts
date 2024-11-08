@@ -6,8 +6,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./cmp-tab-group.component.scss']
 })
 export class CmpTabGroupComponent implements OnInit {
-  @Input() tabGroupConfig: Array<{ key: string; label: string }>; // Define appropriate type
-  @Input() activeTab: string; // Current active tab key
+  @Input() tabGroupConfig: Array<{ key: string; label: string }>;
+  @Input() activeTab: string;
   @Output() tabClick = new EventEmitter<{ tab: any }>();
   constructor() { }
 

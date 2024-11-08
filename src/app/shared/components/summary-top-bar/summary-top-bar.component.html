@@ -7,17 +7,19 @@
     </div>
     <div *ngFor="let action of config.actions.extraActions" class="icon-container" [ngClass]="action.divClass">
         <div *ngIf="productChecked">
-            <i [class]="action.icon + ' action-icon'"  [ngClass]="{'is-disabled': action.disabled}" *ngIf="action.type === 'icon'" 
-            (click)="onClickAction.emit(action)">
+            <i [class]="action.icon + ' action-icon'"
+                [ngClass]="{'is-disabled': action.disabled}"
+                *ngIf="action.type === 'icon'" 
+                (click)="onClickAction.emit(action)">
             </i>
             <span *ngIf="action.showTooltip" class="icon-tooltiptext" [ngClass]="action.className">
-            {{action.tooltipText}}
+                {{action.tooltipText}}
             </span>
         </div>
     </div>
-    <app-excel-export 
-    [tooltipText]="tooltipText"
-    (onExcelSheet)="excelExport.emit()">
+    <app-excel-export
+        [tooltipText]="tooltipText"
+        (onExcelSheet)="excelExport.emit()">
     </app-excel-export>
     <div class="filter-results m-margin-top" *ngIf="config.actions['result'].type === 'result'">
         <b>{{ config.totalResult }}</b>
@@ -25,7 +27,6 @@
         <span>{{ config.totalResult === 1 ? 'Result' : 'Results' }}</span>
         </span>
     </div>
-
     <div>
         <app-cmp-button [buttonIconLeft]="'fas fa-filter'" [buttonText]="'Filter'" [buttonClass]="'secondary'"
             (click)="toggleFilter()">

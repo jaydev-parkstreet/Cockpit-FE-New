@@ -23,6 +23,7 @@
     .row {
         margin-bottom: 16px;
     }
+
     .filter-item {
         padding: 8px;
     }
@@ -40,6 +41,7 @@
         }
     }
 }
+
 .app-cmp-button {
     height: 40px;
     width: auto;
@@ -148,7 +150,8 @@
     font-size: 14px;
     font-weight: 500;
     min-height: 25px;
-  }
+}
+
 .filter-results {
     display: flex;
     color: $colors-neutral-black;
@@ -163,29 +166,36 @@
         display: flex;
     }
 }
+
 .icon-container {
     position: relative;
+
     i.action-icon {
         margin: 0 8px;
         cursor: pointer;
         position: relative;
         color: #232323;
+
         &.is-disabled,
         &.is-disabled:hover {
             cursor: auto;
             color: #cbcbcb;
         }
+
         &:hover {
             color: #232323;
         }
     }
+
     i.action-icon:hover~.icon-tooltiptext {
         visibility: visible;
     }
-    .disabledToolTip{
+
+    .disabledToolTip {
         background: black !important;
         color: $ps-dark-black !important;
     }
+
     .icon-tooltiptext {
         width: auto;
         height: 32px;
@@ -210,9 +220,11 @@
         margin-left: 0;
         font-weight: normal;
     }
+
     .template-font {
         font-size: 21px !important;
     }
+
     .psi-button-group {
         margin-left: 8px;
     }

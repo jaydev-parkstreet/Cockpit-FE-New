@@ -9,11 +9,6 @@ import { ProductManagementDetailsComponent } from './components/product-manageme
 import { ApplicationComponent } from './components/layout/application/application.component';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: '/login',
-  //   pathMatch: 'full'
-  // },
   {
     path: 'login',
     component: LoginPageComponent
@@ -68,32 +63,7 @@ const routes: Routes = [
   {
     path: 'middle',
     component: MiddleComponent
-  },
-  // {
-  //   path: 'product-management',
-  //   canActivate: [AuthGuard],
-  //   children: [
-  //     {
-  //       path: '',
-  //       component: ProductManagementComponent
-  //     },
-  //     {
-  //       path: 'add',
-  //       component: ProductAddComponent
-  //     }]
-  // },
-  // {
-  //   path: 'product-management/:id',
-  //   component: ProductManagementDetailsComponent
-  // },
-  // {
-  //   path: 'product-tool/:id/edit',
-  //   component: ProductAddComponent
-  // },
-  // {
-  //   path: 'product-tool/:id/clone',
-  //   component: ProductAddComponent
-  // },
+  }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
