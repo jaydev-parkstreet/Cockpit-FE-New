@@ -88,6 +88,32 @@ export class CommonService {
     }
   }
 
+  getValuesByKey(list: any[], id: any) {
+    if (!Array.isArray(list)) {
+      return null; 
+    }
+  
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].id === id) {
+        return list[i].name;
+      }
+    }
+    return null; 
+  }
+  
+   getKeyByValue (list, value) {
+    if (!Array.isArray(list)) {
+      return null;
+    }
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].name === value) {
+          return list[i].id;
+      }
+    } 
+    return null; 
+  }
+
+
     showToastV2Message (show, message, icon = null, anyClass = '', time = 3000, actionRequired = false) {
         this.hideToastV2Message();
         this.toastV2.show = show;

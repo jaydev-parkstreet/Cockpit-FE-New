@@ -287,7 +287,11 @@ export class ProductManagementComponent implements OnInit {
 
   applyFilters(selectedFilters: any) {
 	this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
-        acc[key] = selectedFilters[key].map((item: any) => item.id); 
+        if (key == 'clients') {
+            acc['client'] = selectedFilters[key].map((item: any) => item.id);
+        }else{
+            acc[key] = selectedFilters[key].map((item: any) => item.id); 
+        }
         return acc;
     }, {});
     this.reportRequestObj = {
@@ -295,6 +299,7 @@ export class ProductManagementComponent implements OnInit {
       ...this.filtermodal
     };
     this.reportRequestObj.page = 1;
+    this.reportRequestObj.universal_search = this.topPanelConfig.searchText.trim();
     this.productToolSummary = [];
     if(selectedFilters.active_status){
       const isStatusTrue = selectedFilters.active_status[0].name === 'Inactive';
@@ -306,7 +311,7 @@ export class ProductManagementComponent implements OnInit {
   }
 
   resetFilters() {
-	this.filtermodal = [];
+	  this.filtermodal = {};
     this.reportRequestObj = {
       "page": 1,
       "pageSize": 25,
@@ -314,6 +319,7 @@ export class ProductManagementComponent implements OnInit {
       "order": "asc",
       "universal_search": ""
     }
+    this.topPanelConfig.searchText = '';
     this.productToolSummary = [];
     this.setDataSourceAgGrid();
   }
