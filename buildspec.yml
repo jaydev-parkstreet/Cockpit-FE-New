@@ -6,7 +6,6 @@ phases:
       # Install NVM
       - echo "Installing NVM..."
       - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-      - source ~/.bashrc  # Make sure NVM is available in the session
       - nvm --version  # Verify that NVM is installed
       # Install Node.js 10.24.1 using NVM
       - nvm install 10.24.1
