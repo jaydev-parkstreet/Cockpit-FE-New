@@ -6,13 +6,19 @@ phases:
       # Install NVM
       - echo "Installing NVM..."
       - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-      - export NVM_DIR="$HOME/.nvm" 
-      - [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 
-      - nvm --version 
+
+      # Set NVM_DIR and load NVM
+      - export NVM_DIR="$HOME/.nvm"
+      - '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'  # This loads NVM
+      - '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"'  # This loads NVM bash_completion
+      
+      - nvm --version  # Verify NVM installation
+
       # Install Node.js 10.24.1 using NVM
       - nvm install 10.24.1
       - nvm use 10.24.1  # Switch to Node.js version 10.24.1
       - nvm alias default 10.24.1  # Set it as the default version
+
       - node -v  # Verify the Node.js version installed
 
   pre_build:
