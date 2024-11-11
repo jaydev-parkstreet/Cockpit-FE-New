@@ -52,6 +52,7 @@ export class ProductAddComponent implements OnInit {
   subBrandProducts: any[] = []; 
   caseUnitOfMeasure: any; 
   uniqueId: any; 
+  productId:any
   edit: boolean = false; 
   defaultValues = { 
     compliance: 1,  
@@ -157,7 +158,7 @@ export class ProductAddComponent implements OnInit {
     this.filtersList = this.filterList || {}; 
     this.caseUnitOfMeasure = this.filtersList.case_unit_of_measure || [];
     this.filtersList.case_unit_of_measure = this.productmanagementService.formatDropdownValue(this.caseUnitOfMeasure);
-    this.modelFormat = this.productmanagementService.formatModelProductTool(this.model, this.filtersList, this.subBrandProducts, this.edit, this.uniqueId);
+    this.modelFormat = this.productmanagementService.formatModelProductTool(this.model, this.filtersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
 
   }
 
@@ -168,7 +169,6 @@ export class ProductAddComponent implements OnInit {
       cancelBtnLabel: AppConstant.PRODUCT.CANCEL_BUTTON,
       submitBtnLabel: AppConstant.PRODUCT.SUBMIT_BUTTON,
     };
-    console.log( this.formConfig)
     this.formConfig.schema.forEach(field => {
       if (field.disabled) {
           this.productForm.get(field.name)?.disable();
@@ -217,15 +217,15 @@ export class ProductAddComponent implements OnInit {
   async getProductData(productId) {
     this.productmanagementService.getDetails(productId).subscribe((productData) => {
         this.renderConditionalFields(productData.prod_type)
+         this.productId = productData.product_id;
         if (this.duplicate) {
           delete productData.product_id;
         }
         if (!this.duplicate) {
-            console.log("inside");
             this.uniqueId = productData.id;
         }
         console.log(this.uniqueId, this.edit, this.model,this.filterList, this.subBrandProducts,  productData.product_id);
-        this.modelFormat = this.productmanagementService.formatModelProductTool(productData, this.filtersList, this.subBrandProducts, this.edit, this.uniqueId);
+        this.modelFormat = this.productmanagementService.formatModelProductTool(productData, this.filtersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
         this.prefillForm(productData);
     });
   }
@@ -378,7 +378,9 @@ applyDisableEnableForBrandAndSubBrand() {
         this.filtersList,
         this.subBrandProducts,
         this.edit,
-        this.uniqueId
+        this.duplicate,
+        this.uniqueId,
+        this.productId
     );
       formattedModel.compliance = formattedModel.compliance ? 1 : 0;
       if (this.productForm.value.prod_type === 2 || this.productForm.value.prod_type === 4 || this.productForm.value.prod_type === 5) {
@@ -393,11 +395,12 @@ applyDisableEnableForBrandAndSubBrand() {
       this.productmanagementService.getProductManagementSystemSave(formattedModel).subscribe(response => {
         if (!response.hasError) {
           this.showError = false;
-          let productId = response.product_id;
-          this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle');
-          if (productId) {
+          let productId = response.product_id; 
+          if (this.edit) {
+            this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-exclamation-circle');
             this.router.navigateByUrl(`/product-management/${productId}`);
           } else {
+            this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle');
             this.router.navigateByUrl(`/product-management/${productId}`);
           }
 
@@ -405,7 +408,6 @@ applyDisableEnableForBrandAndSubBrand() {
       } else {
         // this.spinner.hide();
         // this.confirmPopupOpen = false;
-        console.log("inside else ", response);
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
         this.showError = true;
       }
@@ -477,16 +479,17 @@ confirmSubmission(form: FormGroup) {
 
   onDropdownStateChange(fieldName: string, selectedValue: any) {
       this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
-      if(fieldName == 'container_type' || fieldName == 'sub_brand_product_id' || fieldName == "client_id" || fieldName == "group" 
-        || fieldName == "is_organic" || fieldName == "producer_name" || fieldName == "case_unit_of_measure" || fieldName == "brand"){
+      if(fieldName == 'container_type'  || fieldName == "client_id" || fieldName == "group" 
+        || fieldName == "is_organic" || fieldName == "producer_name" || fieldName == "case_unit_of_measure" || fieldName == "brand"
+        || fieldName == "varietal" || fieldName ==  "vintage" || fieldName == "sub_type" || fieldName == "category" || fieldName == "source" 
+        || fieldName == "country"){
            this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
        }
        else {
            this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
        }
-     
+    
     const brandControl = this.productForm.get('brand');
-    console.log(this.productForm.get('brand'))
     const subBrandControl = this.productForm.get('sub_brand_product_id');
     this.clientId = selectedValue[0]?.class_id;
 
@@ -554,6 +557,7 @@ confirmSubmission(form: FormGroup) {
   updateSubBrandFilter() {
     if (this.sub_brand_product_id && this.sub_brand_product_id.length > 0) {
       this.filterList['sub_brand_product_id'] = this.sub_brand_product_id;
+      this.subBrandProducts = this.sub_brand_product_id;
     }
   }
 
