@@ -225,28 +225,14 @@ export class ProductAddComponent implements OnInit {
         if (!this.duplicate) {
             this.uniqueId = productData.id;
         }
-        console.log(this.uniqueId, this.edit, this.model,this.filterList, this.subBrandProducts,  productData.product_id);
         this.modelFormat = this.productmanagementService.formatModelProductTool(productData, this.filtersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
         this.prefillForm(productData);
     });
   }
   prefillForm(productData: any): void { 
-    if (productData.client_id) {
-      this.isBrandDisabled = false; 
-      this.productForm.get('brand').setValue("");  
-  } else {
-      this.isBrandDisabled = true;  
-      this.productForm.get('brand').setValue("");  
-  }
-  if (productData.brand_id) {
-      this.isSubBrandDisabled = false; 
-  } else {
-      this.isSubBrandDisabled = true; 
-  }
   this.applyDisableEnableForBrandAndSubBrand();
     this.productForm.patchValue({
       client_id: this.getDropDownArrayByIds(this.filterList?.clients, productData.client_id , 'client_id'),
-      sub_brand_product_id: this.getDropDownArrayByIds(this.filterList?.product_sub_type_other, productData.sub_brand_product_id, 'sub_brand_product_id'),
       description: productData.description,
       name: productData.fanciful_name,
       group: this.getDropDownArrayByIds(this.filterList?.groups, productData.group_id, 'group'),
@@ -288,18 +274,9 @@ export class ProductAddComponent implements OnInit {
       cases_per_layer: productData.cases_per_layer,
       cases_per_pallet: productData.cases_per_pallet,
     });
-    if (productData.client_id && productData.brand_id) {
-      this.productmanagementService.getBrands(productData.client_id).subscribe(brands => {
-          const selectedBrand = brands.find(brand => brand.id === productData.brand_id);
-          if (selectedBrand) {
-            this.productForm.get('brand')?.setValue(selectedBrand.name);
-          }
-          else{
-            this.productForm.get('brand')?.setValue(productData.brand);
-          }
-        
-      });
-    }
+    let clientId = this.productForm.value.client_id[0];
+    this.updateBrandAndSubBrandControls(clientId.class_id, productData.brand_id, productData.sub_brand_product_id);
+    this.productForm.get("client_id").setValue(clientId.id);
     this.productForm.updateValueAndValidity();
   }
 //   callSubBrandProduct(id) {
@@ -330,12 +307,12 @@ export class ProductAddComponent implements OnInit {
   getDropDownArrayByIds (list, value, name) {
     let result = [] ;
     for (let i = 0; i < list?.length; i++) {
-        if (list[i].id === value) {
-            result.push(list[i]);
-            this.sellectedData[name] = result
-            return result;
-        }
-        
+      if (list[i].id == value) {
+        result.push(list[i]);
+        this.sellectedData[name] = result
+        return result;
+      }
+      
     }
     return result.length === 0 ? null : result;
   }
@@ -530,7 +507,7 @@ confirmSubmission(form: FormGroup) {
       const brandId = selectedValue[0]?.id;
       if (isBrandSelected) {
 
-        this.productmanagementService.getSubBrandProducts(selectedValue[0]?.client_id, brandId).subscribe(subBrands => {
+        this.productmanagementService.getSubBrandProducts(selectedValue[0]?.client_id).subscribe(subBrands => {
           this.sub_brand_product_id = subBrands;
           this.updateSubBrandFilter(); 
         });
@@ -665,4 +642,26 @@ confirmSubmission(form: FormGroup) {
   trackByField(index: number, field: any): string {
     return field.name;
   }
+  
+    private updateFormControl(controlName: string, filterKey: string, id: string) {
+      const control = this.productForm.get(controlName);
+      control.enable();
+      this.productForm.patchValue({
+        [controlName]: this.getDropDownArrayByIds(this.filterList?.[filterKey], id, controlName),
+      });
+    }
+
+    updateBrandAndSubBrandControls(clientId: string, brandId: string, subBrandId: string) {
+      this.productmanagementService.getBrands(clientId).subscribe(brands => {
+        this.brand = Array.isArray(brands) && brands.length > 0 ? brands : [];
+        this.updateBrandFilter();
+        this.updateFormControl('brand', 'brand', brandId);
+
+        this.productmanagementService.getSubBrandProducts(clientId).subscribe(subBrands => {
+          this.sub_brand_product_id = subBrands;
+          this.updateSubBrandFilter();
+          this.updateFormControl('sub_brand_product_id', 'sub_brand_product_id', subBrandId);
+        });
+      });
+    }
 }
