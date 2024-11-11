@@ -117,6 +117,7 @@ export class ProductAddComponent implements OnInit {
     layers_per_pallet: [''],
     cases_per_layer: [''],
     cases_per_pallet: [''],
+    sub_brand_product_name: ['']
   });
 
 
@@ -486,7 +487,6 @@ confirmSubmission(form: FormGroup) {
        }
      
     const brandControl = this.productForm.get('brand');
-    console.log(this.productForm.get('brand'))
     const subBrandControl = this.productForm.get('sub_brand_product_id');
     this.clientId = selectedValue[0]?.class_id;
 
@@ -545,6 +545,9 @@ confirmSubmission(form: FormGroup) {
       }
 
       this.changeDetector.detectChanges();
+    }
+    if (fieldName == 'sub_brand_product_id') {
+      this.productForm.get('sub_brand_product_name')?.setValue(selectedValue[0].name);
     }
     if (fieldName === 'prod_type') {
       this.renderConditionalFields(selectedValue[0].name)

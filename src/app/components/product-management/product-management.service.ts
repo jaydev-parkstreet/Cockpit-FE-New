@@ -1,9 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdown/input-dropdown.service';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/core/services/common.service';
+import AppRoutes from 'src/app/app.routes';
 
 @Injectable({
     providedIn: 'root'
@@ -459,8 +460,9 @@ export class ProductManagementService {
     getSubBrandProducts(clientId: string,brandId) {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        let params = new HttpParams().set('client_id', clientId);
         return this.http
-            .get(`${environment.apiUrl}product-tool/get-sub-brands-client?client_id=${clientId}&brand_id=${brandId}`, { headers })
+            .get( environment.apiUrl + AppRoutes.PRODUCT_TOOL.GET_SUB_BRAND_PRODUCT_WITH_CLIENT_ID , { headers, params })
             .pipe(map((response :any) => response.data));
     }
 
