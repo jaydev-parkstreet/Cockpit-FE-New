@@ -460,7 +460,7 @@ export class ProductManagementService {
 }
     
     
-    getSubBrandProducts(clientId: string,brandId) {
+    getSubBrandProducts(clientId: string) {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         let params = new HttpParams().set('client_id', clientId);
