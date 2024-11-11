@@ -315,7 +315,7 @@ export class ProductManagementService {
         };
     }
    
-  formatModelProductTool(model: any, filtersList: any, subBrandProducts: any[], edit: boolean, id: number): any {
+  formatModelProductTool(model: any, filtersList: any, subBrandProducts: any[], edit: boolean, duplicate:boolean , id: number,productId:any): any {
         if (!Object.keys(model).length) {
             return {};  
         }    
@@ -332,10 +332,10 @@ export class ProductManagementService {
             product_id: model.product_id || "",
     
             // Dimensions 
-            unit_height: model.unit_height || "",
-            unit_length: model.unit_length || "",
-            unit_width: model.unit_width || "",
-            unit_weight: model.unit_weight || "",    
+            unit_height: edit ? model.unit_height || null : model.unit_height || "",
+            unit_length: edit ? model.unit_length || null : model.unit_length || "",
+            unit_width: edit ? model.unit_width || null : model.unit_width || "",
+            unit_weight: edit ? model.unit_weight || null : model.unit_weight || "",    
             case_width: model.case_width || "",
             case_length: model.case_length || "",
             case_height: model.case_height || "",
@@ -350,12 +350,12 @@ export class ProductManagementService {
             system_id: model.system_id || "",
             scc_code: model.scc_code || "",
             upc_code: model.upc_code || "",
-            client_id: model.client_id || "",         
-            // sub_brand_product_id: model.sub_brand_product_id || null,      
-            sub_brand_product_name: model.sub_brand_product_name || "",   
-            sub_brand_product_id: model.sub_brand_product_id || null,         
+            client_id: model.client_id || "",             
+            sub_brand_product_name: subBrandProducts[0]?.name || "",   
+            sub_brand_product_id: subBrandProducts[0]?.id|| null,         
             name: model.name || "",
-            group: model.group || null,          
+            group: Array.isArray(model.group) && model.group.length > 0  ? (model.group[0].id || null) 
+            : model.group  || null,       
             producer: model.producer ? model.producer.trim() : null,         
             case_unit_of_measure: Array.isArray(model.case_unit_of_measure) && model.case_unit_of_measure.length > 0 
             ? (model.case_unit_of_measure[0].id || null) 
@@ -364,12 +364,14 @@ export class ProductManagementService {
             ? (model.container_type[0].id || null) 
             : model.container_type || null,
             ex_works_cost: model.ex_works_cost || "",      
-            prod_type: model.prod_type || "", 
+            prod_type: Array.isArray(model.prod_type) && model.prod_type.length > 0  ? (model.prod_type[0].id || null) 
+            : model.prod_type  || null, 
             sub_type: model.sub_type || "",       
-            clone: model.clone || 0,
+          //  clone: model.clone || 0,
             manufactured_location_address: model.manufactured_location_address || null,
             manufactured_location_address_obj: model.manufactured_location_address_obj || null
         };
+        
         if (model.unit_length && model.unit_width && model.unit_height && model.unit_weight) {
             modelFormat.bottle_dimensions = 
                 `Length: ${model.unit_length} inches | Width: ${model.unit_width} inches | Height: ${model.unit_height} inches | Weight: ${model.unit_weight} lbs`;
@@ -383,23 +385,7 @@ export class ProductManagementService {
         if (model.pallet_length && model.pallet_width && model.pallet_height && model.pallet_weight) {
             modelFormat.pallet_dimensions =
                 `Length: ${model.pallet_length} inches | Width: ${model.pallet_width} inches | Height: ${model.pallet_height} inches | Weight: ${model.pallet_weight} lbs`;
-        }
-        if (edit) {
-            if (modelFormat.prod_type === 2) {
-                modelFormat.sub_type = this.commonService.getKeyByValue(filtersList.wine_sub_type, model.sub_type);
-            }
-            if (modelFormat.prod_type === 4) {
-                modelFormat.sub_type = this.commonService.getKeyByValue(filtersList.other_sub_type, model.sub_type);
-            }
-            if (modelFormat.prod_type === 1) {
-                modelFormat.sub_type = this.commonService.getKeyByValue(filtersList.spirits_sub_type, model.sub_type);
-            }
-            if (modelFormat.prod_type === 3) {
-                modelFormat.sub_type = this.commonService.getKeyByValue(filtersList.malt_sub_type, model.sub_type);
-            }
-            if (modelFormat.prod_type === 5) {
-                modelFormat.sub_type = this.commonService.getKeyByValue(filtersList.bulk_sub_type, model.sub_type);
-            }
+        }       
     
             if (model.bottle_dimensions == null) {
                 delete modelFormat.bottle_dimensions;
@@ -410,12 +396,29 @@ export class ProductManagementService {
             if (model.pallet_dimensions == null) {
                 delete modelFormat.pallet_dimensions;
             }
+            if(modelFormat.prod_type){
+            modelFormat.vintage =  model.vintage || null,
+            modelFormat.varietal = model.varietal || null,
+            modelFormat.sub_type =  model.sub_type || null,
+            modelFormat.category =  model.category || null,
             
+            modelFormat.source = model.source || null,
+            modelFormat.country = Array.isArray(model.country) && model.country.length > 0  ? (model.country[0].id || null) 
+            : model.country  || null,
+            modelFormat.producer = model.producer || null,
+            modelFormat.manufactured_location_address = model.manufactured_location_address || null,
+            modelFormat.manufactured_location_address_obj = model.manufactured_location_address_obj ? model.manufactured_location_address_obj : null;
+            }
+            if(edit && !duplicate){
             modelFormat.id = id;
-            modelFormat.temp_product_id = model.product_id
-            modelFormat.product_id = model.product_id
-            console.log(model.product_id);
-        }
+            modelFormat.temp_product_id = productId;
+            modelFormat.product_id = productId;
+            }
+            if(duplicate){
+                modelFormat.product_id = null
+                modelFormat.temp_product_id = productId;  
+            }
+        
         return modelFormat;
     }
     
