@@ -578,23 +578,19 @@ confirmSubmission(form: FormGroup) {
               { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'}
           ]
         };
-      //   const removeFields = (fieldsToRemove) => {
-      //     fieldsToRemove.forEach(fieldName => {
-      //         const fieldIndex = this.formConfig.schema.findIndex(field => field.name === fieldName);
-      //         if (fieldIndex !== -1) {
-      //             this.formConfig.schema.splice(fieldIndex, 1);
-      //         }
-      //     });
-      // };
-         const removeFields = (fieldsToRemove: string[]) => {
-             fieldsToRemove.forEach(fieldName => {
-                const control = this.productForm.get(fieldName);
-                 if (control) {
-                    control.clearValidators(); 
-                    control.updateValueAndValidity(); 
-                 }
-             });
-          };
+        const removeFields = (fieldsToRemove: string[]) => {
+          fieldsToRemove.forEach(fieldName => {          
+              const control = this.productForm.get(fieldName);
+              if (control) {
+                  control.clearValidators(); 
+                  control.updateValueAndValidity(); 
+              }
+              const fieldIndex = this.formConfig.schema.findIndex(field => field.name === fieldName);
+              if (fieldIndex !== -1) {
+                  this.formConfig.schema.splice(fieldIndex, 1);
+              }
+          });
+      };   
   
         const addFieldControl = (field) => {
             if (field.required) {

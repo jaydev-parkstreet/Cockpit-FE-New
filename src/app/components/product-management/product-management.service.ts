@@ -366,7 +366,7 @@ export class ProductManagementService {
             ex_works_cost: model.ex_works_cost || "",      
             prod_type: Array.isArray(model.prod_type) && model.prod_type.length > 0  ? (model.prod_type[0].id || null) 
             : model.prod_type  || null, 
-            sub_type: model.sub_type || "",       
+         //   sub_type: model.sub_type || "",       
           //  clone: model.clone || 0,
             manufactured_location_address: model.manufactured_location_address || null,
             manufactured_location_address_obj: model.manufactured_location_address_obj || null
