@@ -397,13 +397,18 @@ export class ProductManagementService {
                 delete modelFormat.pallet_dimensions;
             }
             if(modelFormat.prod_type){
-            modelFormat.vintage =  model.vintage || null,
-            modelFormat.varietal = model.varietal || null,
-            modelFormat.sub_type =  model.sub_type || null,
-            modelFormat.category =  model.category || null,
+            modelFormat.vintage =   Array.isArray(model.vintage) && model.vintage.length > 0  ? (model.vintage[0]?.id || null) 
+            : model.vintage  || null,
+            modelFormat.varietal =  Array.isArray(model.varietal) && model.varietal.length > 0  ? (model.varietal[0]?.id || null) 
+            : model.varietal  || null,
+            modelFormat.sub_type =   Array.isArray(model.sub_type) && model.sub_type.length > 0  ? (model.sub_type[0]?.id || null) 
+            : model.sub_type  || null,
+            modelFormat.category =  Array.isArray(model.category) && model.category.length > 0  ? (model.category[0]?.id || null) 
+            : model.category  || null,
             
-            modelFormat.source = model.source || null,
-            modelFormat.country = Array.isArray(model.country) && model.country.length > 0  ? (model.country[0].id || null) 
+            modelFormat.source =  Array.isArray(model.source) && model.source.length > 0  ? (model.source[0]?.id || null) 
+            : model.source  || null,
+            modelFormat.country = Array.isArray(model.country) && model.country.length > 0  ? (model.country[0]?.id || null) 
             : model.country  || null,
             modelFormat.producer = model.producer || null,
             modelFormat.manufactured_location_address = model.manufactured_location_address || null,
