@@ -306,44 +306,44 @@ export class ProductAddComponent implements OnInit {
 // 		}
 // 	});
 // }
-getDropDownArrayByIds (list, value, name) {
-  let result = [] ;
-  for (let i = 0; i < list?.length; i++) {
-    if (list[i].id == value) {
-      result.push(list[i]);
-      this.sellectedData[name] = result
-      return result;
+  getDropDownArrayByIds (list, value, name) {
+    let result = [] ;
+    for (let i = 0; i < list?.length; i++) {
+      if (list[i].id == value) {
+        result.push(list[i]);
+        this.sellectedData[name] = result
+        return result;
+      }
+      
     }
-    
+    return result.length === 0 ? null : result;
   }
-  return result.length === 0 ? null : result;
-}
-applyDisableEnableForBrandAndSubBrand() {
-    const brandControl = this.productForm.get('brand');
-    const subBrandControl = this.productForm.get('sub_brand_product_id');
+  applyDisableEnableForBrandAndSubBrand() {
+      const brandControl = this.productForm.get('brand');
+      const subBrandControl = this.productForm.get('sub_brand_product_id');
 
-    if (brandControl) {
-        if (this.isBrandDisabled) {
-            brandControl.disable();
-            brandControl.setValue('');
-            this.isSubBrandDisabled = true;
-            if (subBrandControl) {
-                subBrandControl.disable();
-                subBrandControl.setValue('');
-            }
-        } else {
-            brandControl.enable();
-        }
-    }
-    if (subBrandControl) {
-        if (this.isSubBrandDisabled) {
-            subBrandControl.disable();
-            subBrandControl.setValue('');
-        } else {
-            subBrandControl.enable();
-        }
-    }
-}
+      if (brandControl) {
+          if (this.isBrandDisabled) {
+              brandControl.disable();
+              brandControl.setValue('');
+              this.isSubBrandDisabled = true;
+              if (subBrandControl) {
+                  subBrandControl.disable();
+                  subBrandControl.setValue('');
+              }
+          } else {
+              brandControl.enable();
+          }
+      }
+      if (subBrandControl) {
+          if (this.isSubBrandDisabled) {
+              subBrandControl.disable();
+              subBrandControl.setValue('');
+          } else {
+              subBrandControl.enable();
+          }
+      }
+  }
   changeComplianceValue(isChecked: boolean, fieldName: string) {
     this.productForm.get(fieldName)?.setValue(isChecked ? '1' : '0');
   }
