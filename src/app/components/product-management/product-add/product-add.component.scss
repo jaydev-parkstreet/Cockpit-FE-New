@@ -190,9 +190,11 @@
                     color: #232323;
                     font-size: 12px;
                     font-weight: normal;
-                    margin-top: 8px;
+                    margin-top: 16px;
                     margin-bottom: 0;
                     font-family: $montserrat-regular;
+                    padding-left: 8px;
+                    margin-bottom: 8px;
                 }
 
                 label.ps-required-asterisk::before {
@@ -210,7 +212,8 @@
                     border-bottom: 2px solid #fff;
                     box-shadow: none;
                     border-radius: 8px;
-                    padding: 12px 12px;
+                    padding: 0px 16px;
+                    height: 40px;
                     border: 1px solid #cbcbcb;
                     font-size: 12px;
                     font-family: $montserrat-regular;
