@@ -63,6 +63,11 @@ const routes: Routes = [
   {
     path: 'middle',
     component: MiddleComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/product-management',
+    pathMatch: 'full'
   }
 ];
 @NgModule({
