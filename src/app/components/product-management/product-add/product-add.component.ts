@@ -123,12 +123,12 @@ export class ProductAddComponent implements OnInit {
 
 
   ngOnInit(): void {
-    let productId = this.route.snapshot.paramMap.get('id')
+    let productId = this.route.snapshot.paramMap.get('id');
+    this.filterList = this.route.snapshot.data['filterList'];
     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
     this.duplicate = this.route.snapshot.data.isDuplicate || false;
     this.initializeFormConfig();
     this.filters = this.createFormSchema();
-    this.getDropdown();
     if (productId) {
       this.edit =  true;
     }
@@ -397,20 +397,6 @@ export class ProductAddComponent implements OnInit {
       this.showError = true;
     }
   }
-
-
-  async getDropdown() {
-    const token = localStorage.getItem('authToken');
-    try {
-      const response: any = await this.productmanagementService.getDropdown(token);
-      this.dropdownData = response.data;
-    }
-    catch (error) {
-      console.error("Error fetching summary:", error);
-    }
-    this.filterList = this.dropdownData;
-  }
-
 
   isFieldInvalid(controlName: string): boolean {
     const control = this.productForm.get(controlName);
