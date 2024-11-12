@@ -86,12 +86,12 @@ export class ProductAddComponent implements OnInit {
     ex_works_cost: [''],
     is_organic: ['', [Validators.required]],
     prod_type: ['', [Validators.required]],
-    sub_type: [''],
-    category:  [''],
-    source:  [''],
-    country: [''],
-    vintage: [''],
-    varietal: [''],
+    sub_type: ['',[Validators.required]],
+    category:  ['',[Validators.required]],
+    source:  ['',[Validators.required]],
+    country: ['',[Validators.required]],
+    vintage:  ['',[Validators.required]],
+    varietal:  [''],
     compliance: [this.defaultValues.compliance, Validators.required],
     product_id: [''],
     abv: [''],
@@ -227,9 +227,8 @@ export class ProductAddComponent implements OnInit {
               this.uniqueId = productData.id;
           }
           this.modelFormat = this.productmanagementService.formatModelProductTool(productData, this.filtersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
-          this.prefillForm(productData);          
-         }, 100);
-       
+          this.prefillForm(productData);
+         }, 100);     
     });
   }
   prefillForm(productData: any): void { 
@@ -244,7 +243,7 @@ export class ProductAddComponent implements OnInit {
       container_type: this.getDropDownArrayByIds(this.filterList?.container_types, productData.container_type, 'container_type'),
       ex_works_cost: productData.ex_works_cost,
       is_organic: this.getDropDownArrayByIds(this.filterList?.organic, productData.is_organic, 'is_organic'),
-      prod_type: this.getDropDownArrayByIds(this.filterList?.product_type, productData.prod_type, 'prod_type'),
+      prod_type: this.getDropDownArrayByIds(this.filterList?.product_type, productData.prod_type, 'prod_type'),   
       sub_type: this.getDropDownArrayByIds(this.filterList?.product_sub_type, productData.sub_type, 'sub_type'),
       category: this.getDropDownArrayByIds(this.filterList?.categories, productData.category_id, 'category'),
       source: this.getDropDownArrayByIds(this.filterList?.source, productData.source, 'source'),
@@ -319,32 +318,32 @@ export class ProductAddComponent implements OnInit {
     }
     return result.length === 0 ? null : result;
   }
-applyDisableEnableForBrandAndSubBrand() {
-    const brandControl = this.productForm.get('brand');
-    const subBrandControl = this.productForm.get('sub_brand_product_id');
+  applyDisableEnableForBrandAndSubBrand() {
+      const brandControl = this.productForm.get('brand');
+      const subBrandControl = this.productForm.get('sub_brand_product_id');
 
-    if (brandControl) {
-        if (this.isBrandDisabled) {
-            brandControl.disable();
-            brandControl.setValue('');
-            this.isSubBrandDisabled = true;
-            if (subBrandControl) {
-                subBrandControl.disable();
-                subBrandControl.setValue('');
-            }
-        } else {
-            brandControl.enable();
-        }
-    }
-    if (subBrandControl) {
-        if (this.isSubBrandDisabled) {
-            subBrandControl.disable();
-            subBrandControl.setValue('');
-        } else {
-            subBrandControl.enable();
-        }
-    }
-}
+      if (brandControl) {
+          if (this.isBrandDisabled) {
+              brandControl.disable();
+              brandControl.setValue('');
+              this.isSubBrandDisabled = true;
+              if (subBrandControl) {
+                  subBrandControl.disable();
+                  subBrandControl.setValue('');
+              }
+          } else {
+              brandControl.enable();
+          }
+      }
+      if (subBrandControl) {
+          if (this.isSubBrandDisabled) {
+              subBrandControl.disable();
+              subBrandControl.setValue('');
+          } else {
+              subBrandControl.enable();
+          }
+      }
+  }
   changeComplianceValue(isChecked: boolean, fieldName: string) {
     this.productForm.get(fieldName)?.setValue(isChecked ? '1' : '0');
   }
@@ -521,7 +520,7 @@ confirmSubmission(form: FormGroup) {
     }
     if (fieldName === 'prod_type') {
       this.renderConditionalFields(selectedValue[0].name)
-    }
+    } 
   
   }
   updateSubBrandFilter() {
@@ -545,10 +544,10 @@ confirmSubmission(form: FormGroup) {
         };
 
         const baseFields = [
-            this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+            this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, true, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
             this.dropdownService.createFilterObj('category', 'categories', 'Category', 'Select Category', 'category', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
             this.dropdownService.createFilterObj('source', 'source', 'Source', 'Select Source', 'source', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
-            this.dropdownService.createFilterObj('country', 'countries', 'Country', 'Select Country', 'country', false, false, null, null, 'col-xs-3', true, false, false, '', false),
+            this.dropdownService.createFilterObj('country', 'countries', 'Country', 'Select Country', 'country', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
             { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', required: true },
             { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isCode: true, required: true },
             { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isCode: true },
@@ -563,23 +562,67 @@ confirmSubmission(form: FormGroup) {
                 this.dropdownService.createFilterObj('varietal', 'varietals', 'Varietal', 'Select Varietal', 'varietal', false, false, null, null, 'col-xs-3', true, false, false, '', false)
             ],
             malt: [
-                this.dropdownService.createFilterObj('varietal', 'varietals', 'Varietal', 'Select Varietal', 'varietal', false, false, null, null, 'col-xs-3', true, false, false, '', false) // only varietal
+              this.dropdownService.createFilterObj('vintage', 'vintages', 'Vintage', 'Select Vintage', 'vintage', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+               
+               // this.dropdownService.createFilterObj('varietal', 'varietals', 'Varietal', 'Select Varietal', 'varietal', false, false, null, null, 'col-xs-3', true, false, false, '', false) // only varietal
             ],
             spirits: [
                 this.dropdownService.createFilterObj('vintage', 'vintages', 'Vintage', 'Select Vintage', 'vintage', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false) // only vintage
-            ]
+            ],
+            bulk: [
+              this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+              { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' }
+          ],
+          other: [
+            this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+              { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'}
+          ]
         };
+      //   const removeFields = (fieldsToRemove) => {
+      //     fieldsToRemove.forEach(fieldName => {
+      //         const fieldIndex = this.formConfig.schema.findIndex(field => field.name === fieldName);
+      //         if (fieldIndex !== -1) {
+      //             this.formConfig.schema.splice(fieldIndex, 1);
+      //         }
+      //     });
+      // };
+         const removeFields = (fieldsToRemove: string[]) => {
+             fieldsToRemove.forEach(fieldName => {
+                const control = this.productForm.get(fieldName);
+                 if (control) {
+                    control.clearValidators(); 
+                    control.updateValueAndValidity(); 
+                 }
+             });
+          };
+  
+        const addFieldControl = (field) => {
+            if (field.required) {
+              this.productForm.addControl(
+                   field.name,
+                   new FormControl('', Validators.required) 
+               );
+              } else {
+                 this.productForm.addControl(field.name, new FormControl(''));
+              }
+           const control = this.productForm.get(field.name);
+              if (control) {
+               control.markAsTouched();
+             }
+          };
         
         switch (selectedValue) {
             case 'Wine':
                 baseFields.forEach(field => {
                     if (!fieldExists(field.name)) {
                         this.formConfig.schema.push(field);
-                    }
+                        addFieldControl(field);
+                    }                  
                 });
                 conditionalFields.wine.forEach(field => {
                     if (!fieldExists(field.name)) {
                         this.formConfig.schema.push(field);
+                        addFieldControl(field);
                     }
                 });
                 break;
@@ -587,34 +630,41 @@ confirmSubmission(form: FormGroup) {
                 baseFields.forEach(field => {
                     if (!fieldExists(field.name)) {
                         this.formConfig.schema.push(field);
+                        addFieldControl(field);
                     }
+       
                 });
                 conditionalFields.malt.forEach(field => {
                     if (!fieldExists(field.name)) {
                         this.formConfig.schema.push(field);
+                        addFieldControl(field);
                     }
                 });
+                removeFields([ 'varietal']);
                 break;
             case 'Spirits':
                 baseFields.forEach(field => {
                     if (!fieldExists(field.name)) {
                         this.formConfig.schema.push(field);
+                        addFieldControl(field);
                     }
                 });
                 conditionalFields.spirits.forEach(field => {
                     if (!fieldExists(field.name)) {
                         this.formConfig.schema.push(field);
+                        addFieldControl(field);
                     }
                 });
                 break;
             case 'Bulk':
-            case 'Others':
+            case 'Other':
                 if (!fieldExists('sub_type')) {
                     this.formConfig.schema.push(this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false));
                 }
                 if (!fieldExists('manufactured_location_address')) {
                     this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'});
                 }
+                removeFields(['vintage', 'varietal','category','source','country','abv']);
                 break;
             default:
                 if (!fieldExists('manufactured_location_address')) {
@@ -624,7 +674,7 @@ confirmSubmission(form: FormGroup) {
         }
     }
 
-  
+    
   /**
    * Function to track fields and prevent unnecessary re-renders
    */
