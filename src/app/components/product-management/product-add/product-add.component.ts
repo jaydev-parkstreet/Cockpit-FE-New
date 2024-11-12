@@ -219,14 +219,17 @@ export class ProductAddComponent implements OnInit {
     this.productmanagementService.getDetails(productId).subscribe((productData) => {
         this.renderConditionalFields(productData.prod_type)
          this.productId = productData.product_id;
-        if (this.duplicate) {
-          delete productData.product_id;
-        }
-        if (!this.duplicate) {
-            this.uniqueId = productData.id;
-        }
-        this.modelFormat = this.productmanagementService.formatModelProductTool(productData, this.filtersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
-        this.prefillForm(productData);
+         setTimeout(() => {
+          if (this.duplicate) {
+            delete productData.product_id;
+          }
+          if (!this.duplicate) {
+              this.uniqueId = productData.id;
+          }
+          this.modelFormat = this.productmanagementService.formatModelProductTool(productData, this.filtersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
+          this.prefillForm(productData);          
+         }, 100);
+       
     });
   }
   prefillForm(productData: any): void { 
