@@ -472,11 +472,15 @@ confirmSubmission(form: FormGroup) {
     this.clientId = selectedValue[0]?.class_id;
 
     if (fieldName === 'client_id' && selectedValue.length > 0) {
-      const isClientSelected = !!selectedValue;
-      this.isBrandDisabled = !isClientSelected;
-  
-
-      if (isClientSelected) {
+      this.isBrandDisabled = !selectedValue;
+      brandControl.setValue('');
+      subBrandControl.setValue('');
+      subBrandControl.disable();
+      this.updatesellectedData('brand','Select Brand');
+      this.updatesellectedData('sub_brand_product_id','Select Sub-Brand Product');
+      this.isSubBrandDisabled = true;
+      if (selectedValue && brandControl) {
+        brandControl.enable();
         this.productmanagementService.getBrands(this.clientId).subscribe(brands => {
           if (Array.isArray(brands) && brands.length > 0) {
             this.brand = brands;
@@ -487,46 +491,28 @@ confirmSubmission(form: FormGroup) {
           }
         });
       }
-      if (brandControl) {
-        if (this.isBrandDisabled) {
-          brandControl.disable();
-          brandControl.setValue('');
-          this.isSubBrandDisabled = true;
-          subBrandControl.disable();
-          subBrandControl.setValue('');
-        } else {
-          brandControl.enable();
-        }
-      }
       this.changeDetector.detectChanges();
     }
 
     if (fieldName === 'brand') {
-      const isBrandSelected = !!selectedValue;
-      this.isSubBrandDisabled = !isBrandSelected;
-      const brandId = selectedValue[0]?.id;
-      if (isBrandSelected) {
-
+      this.isSubBrandDisabled = !selectedValue;
+      this.updatesellectedData('sub_brand_product_id','Select Sub-Brand Product');
+      subBrandControl.setValue('');
+      if (!this.isSubBrandDisabled && subBrandControl) {
+        subBrandControl.enable();
         this.productmanagementService.getSubBrandProducts(selectedValue[0]?.client_id).subscribe(subBrands => {
           this.sub_brand_product_id = subBrands;
-          this.updateSubBrandFilter(); 
+          this.updateSubBrandFilter();
+          this.isSubBrandDisabled = false; 
         });
       } else {
         this.sub_brand_product_id = [];  
         this.updateSubBrandFilter();
+        subBrandControl.setValue('');
       }
-
-      if (subBrandControl) {
-        if (this.isSubBrandDisabled) {
-          subBrandControl.disable();
-          subBrandControl.setValue('');
-        } else {
-          subBrandControl.enable();
-        }
-      }
-
       this.changeDetector.detectChanges();
     }
+
     if (fieldName == 'sub_brand_product_id') {
       this.productForm.get('sub_brand_product_name')?.setValue(selectedValue[0].name);
     }
@@ -643,7 +629,7 @@ confirmSubmission(form: FormGroup) {
     return field.name;
   }
   
-    private updateFormControl(controlName: string, filterKey: string, id: string) {
+    updateFormControl(controlName: string, filterKey: string, id: string) {
       const control = this.productForm.get(controlName);
       control.enable();
       this.productForm.patchValue({
@@ -663,5 +649,9 @@ confirmSubmission(form: FormGroup) {
           this.updateFormControl('sub_brand_product_id', 'sub_brand_product_id', subBrandId);
         });
       });
+    }
+
+    updatesellectedData(key: string, defaultText:string) {
+      this.sellectedData[key] = [{name: defaultText}];
     }
 }
