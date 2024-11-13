@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, QueryList, ViewChildren, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { CmpInputDropdownComponent } from '../cmp-input-dropdown/cmp-input-dropdown.component';
 
 @Component({
   selector: 'app-summary-top-bar',
@@ -22,8 +23,10 @@ export class SummaryTopBarComponent implements OnInit {
   dropdown1Label = 'Product Status';
   selectedFilters: { [key: string]: any[] } = {}
   isAllItemsSelected: boolean = false;
-
-  constructor(private router: Router) { }
+  isIndeterminate: boolean = false;
+  @ViewChildren(CmpInputDropdownComponent) dropdowns: QueryList<CmpInputDropdownComponent>;
+  
+  constructor(private router: Router,private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
@@ -34,16 +37,44 @@ export class SummaryTopBarComponent implements OnInit {
 
   onFilterChange(key: string, value: any) {
     this.selectedFilters[key] = value;
+    this.isAllItemsSelected = value.length === this.filterList[key]?.length; 
+    this.isIndeterminate = value.length > 0 && value.length < this.filterList[key]?.length; 
+    this.applyFilterChanges(); 
   }
 
   applyFilterChanges() {
     this.applyFilters.emit(this.selectedFilters);
   }
 
-  resetFilterChanges() {
+  resetFilterChanges() {  
     this.selectedFilters = {};
     this.isAllItemsSelected = false;
+    this.isIndeterminate = false; 
+    if (this.config.allowSingleSelect) {
+      this.selectedFilters = {}; 
+    }
     this.resetFilters.emit();
+    this.cdRef.detectChanges();
+    setTimeout(() => {
+      this.selectedFilters = {};  
+      this.isAllItemsSelected = false; 
+      this.isIndeterminate = false; 
+      this.cdRef.detectChanges();    
+      this.resetDropdownsState();
+ 
+    }, 0);
+ 
+  }
+  resetDropdownsState() {
+    this.dropdowns.forEach((dropdown) => {
+      dropdown.resetDropdownState();
+    });
+  }
+  
+  updateSelectAllState(): void {
+    const allSelected = Object.values(this.selectedFilters).every(val => val.length === this.filterList[val[0]?.id]?.length);
+    this.isAllItemsSelected = allSelected;
+    this.isIndeterminate = !allSelected && Object.values(this.selectedFilters).some(val => val.length > 0);
   }
 
 }

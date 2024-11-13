@@ -186,7 +186,7 @@ export class ProductAddComponent implements OnInit {
       { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
       { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
       this.dropdownService.createFilterObj('group', 'groups', 'Group', 'Select Group', 'group', true, true, null, null, 'col-xs-3', null, false,false,'ps-required-asterisk'),
-      this.dropdownService.createFilterObj('producer_name', 'producers', 'Producer', 'Select Producer', 'producer', false, true, null, null, 'col-xs-3', null, false,false,''),
+      this.dropdownService.createFilterObj('producer', 'producers', 'Producer', 'Select Producer', 'producer', false, true, null, null, 'col-xs-3', null, false,false,''),
       this.dropdownService.createFilterObj('case_unit_of_measure', 'cases_uom', 'Case UOM', 'Select Type', 'case_unit_of_measure', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
       this.dropdownService.createFilterObj('container_type', 'container_types', 'Container Type', 'Select Type', 'container_type', true, true, null, null, 'col-xs-3', null,false,false, 'ps-required-asterisk'),
       { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
@@ -238,7 +238,7 @@ export class ProductAddComponent implements OnInit {
       description: productData.description,
       name: productData.fanciful_name,
       group: this.getDropDownArrayByIds(this.filterList?.groups, productData.group_id, 'group'),
-      producer: this.getDropDownArrayByIds(this.filterList?.producers, productData.producer_id, 'producer_name'),
+      producer: this.getDropDownArrayByIds(this.filterList?.producers, productData.producer_id, 'producer'),
       case_unit_of_measure: this.getDropDownArrayByIds(this.filterList?.cases_uom, productData.case_unit_of_measure, 'case_unit_of_measure'),
       container_type: this.getDropDownArrayByIds(this.filterList?.container_types, productData.container_type, 'container_type'),
       ex_works_cost: productData.ex_works_cost,
@@ -460,7 +460,7 @@ confirmSubmission(form: FormGroup) {
   onDropdownStateChange(fieldName: string, selectedValue: any) {
       this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
       if(fieldName == 'container_type'  || fieldName == "client_id" || fieldName == "group" 
-        || fieldName == "is_organic" || fieldName == "producer_name" || fieldName == "case_unit_of_measure" || fieldName == "brand"
+        || fieldName == "is_organic" || fieldName == "producer" || fieldName == "case_unit_of_measure" || fieldName == "brand"
         || fieldName == "varietal" || fieldName ==  "vintage" || fieldName == "sub_type" || fieldName == "category" || fieldName == "source" 
         || fieldName == "country"){
            this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
@@ -578,10 +578,12 @@ confirmSubmission(form: FormGroup) {
               { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'}
           ]
         };
+        
         const removeFields = (fieldsToRemove: string[]) => {
           fieldsToRemove.forEach(fieldName => {          
               const control = this.productForm.get(fieldName);
               if (control) {
+                  control.setValue(""); 
                   control.clearValidators(); 
                   control.updateValueAndValidity(); 
               }
@@ -606,13 +608,25 @@ confirmSubmission(form: FormGroup) {
                control.markAsTouched();
              }
           };
-        
+          const addValidators = (controlName: string) => {
+            const control = this.productForm.get(controlName);
+            if (control) {
+              control.setValidators([Validators.required]);
+              control.updateValueAndValidity();  // Re-validate the control
+            }
+          };
+            
         switch (selectedValue) {
             case 'Wine':
                 baseFields.forEach(field => {
                     if (!fieldExists(field.name)) {
                         this.formConfig.schema.push(field);
                         addFieldControl(field);
+                        addValidators('sub_type');
+                        addValidators('category');
+                        addValidators('source');
+                        addValidators('country');
+                        addValidators('vintage');
                     }                  
                 });
                 conditionalFields.wine.forEach(field => {

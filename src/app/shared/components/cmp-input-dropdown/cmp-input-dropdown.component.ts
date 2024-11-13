@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, forwardRef, HostListener, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 interface Item {
   id: number;
@@ -33,7 +33,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() selectedItems: any[] = [];
   @Input() isAllItemsSelected: boolean = false;
   @Input() disabled: boolean = false;
-
+  @Input() isIndeterminate: boolean = false;
   isOpen: boolean = false;
   searchText: string = '';
   isAllSelected: boolean = false;
@@ -46,6 +46,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     selectAll: 'Select All',
     uncheckAll: 'Uncheck All'
   };
+  constructor(private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.isOpen = false;
@@ -59,26 +60,25 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.originalItems = [...this.filteredItems];
   }
 
-  //   ngOnChanges(changes: SimpleChanges): void {
-  //     if (changes['isActive']) {
-  //         this.isOpen = this.isActive || false; 
-  //     }
-  //     if (changes['filteredItems']) {
-  //         const newItems = changes['filteredItems'].currentValue;
-
-  //         if (newItems && Array.isArray(newItems)) {
-  //             this.originalItems = [...newItems];
-  //             this.updateFilteredItems(this.originalItems);
-  //         } else {
-  //             this.originalItems = []; 
-  //             this.updateFilteredItems(this.originalItems);
-  //         }
-  //     }
-  //     if (changes['isAllItemsSelected']) {
-  //         this.isAllSelected = changes['isAllItemsSelected'].currentValue || false; 
-  //     }
-  //     this.updateSelectAllStates();
-  // }
+    ngOnChanges(changes: SimpleChanges): void {
+      if (changes['isActive']) {
+          this.isOpen = this.isActive || false; 
+      }
+      if (changes['filteredItems']) {
+          const newItems = changes['filteredItems'].currentValue;
+          if (newItems && Array.isArray(newItems)) {
+            this.originalItems = newItems && Array.isArray(newItems) ? [...newItems] : [];
+              this.updateFilteredItems(this.originalItems);
+          } else {
+              this.originalItems = []; 
+              this.updateFilteredItems(this.originalItems);
+          }
+      }
+      if (changes['isAllItemsSelected']) {
+        this.isAllSelected = this.isAllItemsSelected; 
+      }
+      this.updateSelectAllStates();
+  }
 
   updateSelectAllStates(): void {
     this.isAllSelected = this.selectedItems.length === this.filteredItems.length;
@@ -171,10 +171,24 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.hideList = this.filteredItems.length === 0;
   }
 
-  clearSearch(event: Event): void {
+  resetDropdownState() {
+    this.selectedItems = [];
+    this.isAllSelected = false;
+    this.isIndeterminate = false;
     this.searchText = '';
     this.updateFilteredItems(this.originalItems);
-    event.stopPropagation();
+    this.onDropDownChange.emit(this.selectedItems);
+  }
+  clearSearch(event: Event = null): void {
+    this.searchText = ''; 
+    this.updateFilteredItems(this.originalItems); 
+    this.hideList = false;
+    this.selectedItems = []; 
+    this.isAllSelected = false; 
+    this.isAllSelected = false; 
+    this.updateFormControl(); 
+    event.stopPropagation(); 
+    this.cdRef.detectChanges();
   }
 
   updateFilteredItems(items): void {
@@ -204,8 +218,12 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(obj: any): void {
-    this.selectedItems = obj || [];
-    this.updateFilteredItems(this.originalItems);
+    if (this.allowSingleSelect) {
+      this.selectedItems = obj ? [obj] : [];
+    } else {
+      this.selectedItems = obj || [];
+    }
+    this.updateFilteredItems(this.originalItems); 
   }
 
   registerOnChange(fn: any): void {
