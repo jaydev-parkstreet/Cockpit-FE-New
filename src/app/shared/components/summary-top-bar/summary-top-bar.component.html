@@ -53,7 +53,9 @@
                 [filteredItems]="filterList && filterList[filter.key]"
                 [selectedItems]="selectedFilters[filter.key] || []"
                 [isAllItemsSelected]="isAllItemsSelected"
-                (onDropDownChange)="onFilterChange(filter.key, $event)">
+                [isIndeterminate]="isIndeterminate"
+                (onDropDownChange)="onFilterChange(filter.key, $event)"
+              >
             </app-cmp-input-dropdown>
         </div>
     </div>

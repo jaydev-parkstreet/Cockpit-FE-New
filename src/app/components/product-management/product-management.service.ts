@@ -354,17 +354,18 @@ export class ProductManagementService {
             sub_brand_product_name: subBrandProducts[0]?.name || "",   
             sub_brand_product_id: subBrandProducts[0]?.id|| null,         
             name: model.name || "",
-            group: Array.isArray(model.group) && model.group.length > 0  ? (model.group[0].id || null) 
+            group: Array.isArray(model.group) && model.group.length > 0  ? (model.group[0]?.id || null) 
             : model.group  || null,       
-            producer: model.producer ? model.producer.trim() : null,         
+            producer: Array.isArray(model.producer) && model.producer.length > 0  ? (model.producer[0]?.id || null) 
+            : (model.producer ? model.producer.id || model.producer : null),       
             case_unit_of_measure: Array.isArray(model.case_unit_of_measure) && model.case_unit_of_measure.length > 0 
             ? (model.case_unit_of_measure[0].id || null) 
             : model.case_unit_of_measure || null,
             container_type: Array.isArray(model.container_type) && model.container_type.length > 0 
-            ? (model.container_type[0].id || null) 
+            ? (model.container_type[0]?.id || null) 
             : model.container_type || null,
             ex_works_cost: model.ex_works_cost || "",      
-            prod_type: Array.isArray(model.prod_type) && model.prod_type.length > 0  ? (model.prod_type[0].id || null) 
+            prod_type: Array.isArray(model.prod_type) && model.prod_type.length > 0  ? (model.prod_type[0]?.id || null) 
             : model.prod_type  || null,      
             manufactured_location_address: model.manufactured_location_address || null,
             manufactured_location_address_obj: model.manufactured_location_address_obj || null
@@ -408,7 +409,6 @@ export class ProductManagementService {
             : model.source  || null,
             modelFormat.country = Array.isArray(model.country) && model.country.length > 0  ? (model.country[0]?.id || null) 
             : model.country  || null,
-            modelFormat.producer = model.producer || null,
             modelFormat.manufactured_location_address = model.manufactured_location_address || null,
             modelFormat.manufactured_location_address_obj = model.manufactured_location_address_obj ? model.manufactured_location_address_obj : null;
             }

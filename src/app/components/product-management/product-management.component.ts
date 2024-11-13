@@ -302,7 +302,7 @@ export class ProductManagementComponent implements OnInit {
     this.reportRequestObj.universal_search = this.topPanelConfig.searchText.trim();
     this.productToolSummary = [];
     if(selectedFilters.active_status){
-      const isStatusTrue = selectedFilters.active_status[0].name === 'Inactive';
+      const isStatusTrue = selectedFilters.active_status[0]?.name === 'Inactive';
       this.topPanelConfig.actions.extraActions[3].tooltipText = isStatusTrue ? 'Activate' : 'Deactivate';
       this.topPanelConfig.actions.extraActions[3].icon = isStatusTrue ? 'fas fa-check-circle':'fas fa-times-circle';
       this.topPanelConfig.actions.extraActions[3].isActive = isStatusTrue ? true : false;
