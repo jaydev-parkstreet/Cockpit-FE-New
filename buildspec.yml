@@ -28,15 +28,16 @@ phases:
   #    - gulp sass
   #    - gulp views
       - ng build --configuration=${env} --verbose
+      - ls -ltrh dist
   post_build:
     commands:
       - bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"
       - aws s3 rm s3://${S3_BUCKET_COCKPIT} --recursive
-      - aws s3 cp dist/Cockpit-FE s3://${S3_BUCKET_COCKPIT} --recursive --acl public-read
+      - aws s3 cp dist/COCKPIT-FE s3://${S3_BUCKET_COCKPIT} --recursive --acl public-read
       - aws cloudfront create-invalidation --distribution-id ${CF_DISTRIBUTION_COCKPIT} --paths "/*"
       - echo "Build completed on $(date)"      
 
 artifacts:
   files:
     - '**/*'
-  base-directory: dist/Cockpit-FE
+  base-directory: dist/COCKPIT-FE

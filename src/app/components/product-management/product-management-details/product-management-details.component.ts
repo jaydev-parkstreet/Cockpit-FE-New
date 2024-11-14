@@ -129,7 +129,6 @@ export class ProductManagementDetailsComponent implements OnInit {
         this.productManagementService.getSyncStatusDetails(this.productDetails.product_id).subscribe(response => {
             if (!response.hasError) {
                 if (response.data) {
-                    console.log(response.data);
                     this.productDetails.sync_status = response.data.status
                     if (response.data.status === 1) {
                         this.commonService.showToastV2Message(true, 'Sync Successful', 'fas fa-exclamation-circle');
