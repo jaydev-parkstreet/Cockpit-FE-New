@@ -117,7 +117,7 @@ export class SidebarMenuComponent implements OnInit {
         iconPlus: true,
         submenuItems: [{
           submenuContent: 'State Registrations',
-          submenuLink: environment.oldCockpit +'/router.php/app/#!/cockpit/state-registrations'
+          href: environment.oldCockpit +'/router.php/app/#!/cockpit/state-registrations'
         },
         {
           submenuContent: 'Monthly Reports',
