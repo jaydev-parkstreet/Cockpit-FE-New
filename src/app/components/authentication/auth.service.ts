@@ -35,49 +35,51 @@ export class AuthService {
 
   logout(): void {
     debugger;
-    const logout = this.logoutCall();
-    setTimeout(() => {
-      logout.then((res) => {
-        console.log(res);
-        debugger
-        this.clearLocalStorage();
-        const iframe = document.getElementById('myframe') as HTMLInputElement;
-        iframe.src = environment.oldNavigator + '/router.php/logout';
+    const logout = Promise.resolve('Mock logout response'); // Mocked response
+    logout.then((res) => {
+      console.log(res);
+      debugger;
+      this.clearLocalStorage();
+      const iframe = document.getElementById('myframe') as HTMLInputElement;
+      iframe.src = environment.oldNavigator + '/router.php/logout';
   
-        let loginUrl = 'login';
-        const url = new URL(window.location.href);
+      let loginUrl = 'login';
+      const url = new URL(window.location.href);
   
-        if (url.searchParams.get('r')) {
-          loginUrl += '?r=' + url.searchParams.get('r');
-        }
+      if (url.searchParams.get('r')) {
+        loginUrl += '?r=' + url.searchParams.get('r');
+      }
   
-        if (url.searchParams.get('c')) {
-          loginUrl += loginUrl.includes('?') ? '&c=' : '?c=';
-          loginUrl += url.searchParams.get('c');
-        }
+      if (url.searchParams.get('c')) {
+        loginUrl += loginUrl.includes('?') ? '&c=' : '?c=';
+        loginUrl += url.searchParams.get('c');
+      }
   
-        if (url.searchParams.get('r') || url.searchParams.get('c')) {
-          window.location.href = loginUrl;
-        } else {
-          this.router.navigate(['/login'], { queryParams: { reload: true } });
-        }
-      }).catch(error => {
-        console.error('Logout failed:', error);
-      });
-    }, 5000);
-   
+      if (url.searchParams.get('r') || url.searchParams.get('c')) {
+        window.location.href = loginUrl;
+      } else {
+        this.router.navigate(['/login'], { queryParams: { reload: true } });
+      }
+    }).catch(error => {
+      console.error('Logout failed:', error);
+    });
   }
+  
 
   logoutCall() {
     debugger
     return this.http.get(environment.apiUrl + AppRoutes.AUTHENTICATION.LOGOUT)
       .toPromise()
-      .then(response => response)
+      .then(response => {
+        console.log('Logout API call response:', response);
+        return response;
+      })
       .catch(err => {
         console.error('Error during logout API call:', err);
         return true;
       });
   }
+  
 
   clearLocalStorage() {
     localStorage.removeItem('authToken');
