@@ -40,4 +40,4 @@ phases:
 artifacts:
   files:
     - '**/*'
-  base-directory: dist/Cockpit-FE
+  base-directory: dist/COCKPIT-FE
