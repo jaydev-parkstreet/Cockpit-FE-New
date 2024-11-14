@@ -11,6 +11,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { ProductManagementDetailsComponent } from './product-management-details/product-management-details.component';
 import { NotesTabComponent } from '../organism/notes-tab/notes-tab.component';
 import { RouterModule } from '@angular/router';
+import { ProductManagementRoutingModule } from './product-management-routing.module';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { RouterModule } from '@angular/router';
     SimpleModalModule.forRoot({container: "modal-container"}),
     StatelessModule,
     AgGridModule,
-    RouterModule
+    RouterModule,
+    ProductManagementRoutingModule
   ],
   entryComponents: [
   

@@ -17,14 +17,11 @@ import { SidebarMenuComponent } from './components/layout/sidebar-menu/sidebar-m
 import { ApplicationComponent } from './components/layout/application/application.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { MainHeaderComponent } from './components/layout/main-header/main-header.component';
+import { LayoutModule } from './components/layout/layout.module';
 @NgModule({
   declarations: [
     AppComponent,
     ConfirmationModalComponent,
-    SidebarMenuComponent,
-    ApplicationComponent,
-    FooterComponent,
-    MainHeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +35,7 @@ import { MainHeaderComponent } from './components/layout/main-header/main-header
     StatelessModule,
     AgGridModule,
     NgxSpinnerModule,
+    LayoutModule
 
   ],
   exports: [
