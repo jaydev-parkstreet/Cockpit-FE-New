@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import AppRoutes from 'src/app/app.routes';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +11,11 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
-
   private userData: any;
 
-  constructor(private http: HttpClient) { 
+  constructor(
+    private http: HttpClient,
+   private router: Router) {
     this.checkToken();
   }
 
@@ -24,11 +27,52 @@ export class AuthService {
   }
 
   logout(): void {
+    const logout = Promise.resolve();
+    logout.then((res) => {
+      this.clearLocalStorage();
+      const iframe = document.getElementById('myframe') as HTMLInputElement;
+      iframe.src = environment.oldNavigator + '/router.php/logout';
+      let loginUrl = 'login';
+      const url = new URL(window.location.href);
+  
+      if (url.searchParams.get('r')) {
+        loginUrl += '?r=' + url.searchParams.get('r');
+      }
+  
+      if (url.searchParams.get('c')) {
+        loginUrl += loginUrl.includes('?') ? '&c=' : '?c=';
+        loginUrl += url.searchParams.get('c');
+      }
+  
+      if (url.searchParams.get('r') || url.searchParams.get('c')) {
+        window.location.href = loginUrl;
+      } else {
+        this.router.navigate(['/login'], { queryParams: { reload: true } });
+      }
+    }).catch(error => {
+    });
+  }
+  
+
+  logoutCall() {
+    return this.http.get(environment.apiUrl + AppRoutes.AUTHENTICATION.LOGOUT)
+      .toPromise()
+      .then(response => {
+        return response;
+      })
+      .catch(err => {
+        return true;
+      });
+  }
+  
+
+  clearLocalStorage() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userData');
     this.userData = null;
     this.isAuthenticatedSubject.next(false);
   }
+  
 
   getToken(): string | null {
     return localStorage.getItem('authToken');
