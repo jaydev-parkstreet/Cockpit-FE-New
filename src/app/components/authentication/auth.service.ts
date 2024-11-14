@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   logout(): void {
-    const logout = Promise.resolve();
+    const logout = this.logoutCall();
     logout.then((res) => {
       this.clearLocalStorage();
       const iframe = document.getElementById('myframe') as HTMLInputElement;
@@ -47,14 +47,14 @@ export class AuthService {
       if (url.searchParams.get('r') || url.searchParams.get('c')) {
         window.location.href = loginUrl;
       } else {
-        this.router.navigate(['/login'], { queryParams: { reload: true } });
+       this.router.navigate(['/login'], { queryParams: { reload: true } });
       }
     }).catch(error => {
     });
   }
   
 
-  logoutCall() {
+  async logoutCall() {
     return this.http.get(environment.apiUrl + AppRoutes.AUTHENTICATION.LOGOUT)
       .toPromise()
       .then(response => {
