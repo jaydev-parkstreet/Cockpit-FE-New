@@ -75,7 +75,7 @@ export class SidebarMenuComponent implements OnInit {
         iconPlus: true,
         submenuItems: [{
           submenuContent: 'Bill Management',
-          href: 'http://cockpit.parkstreet.local/router.php/app#!/cockpit/bill-management'
+          href: 'https://stgcockpit.parkstreet.com/router.php/app#!/cockpit/bill-management'
         },
         {
           submenuContent: 'Invoice Management',
@@ -117,7 +117,7 @@ export class SidebarMenuComponent implements OnInit {
         iconPlus: true,
         submenuItems: [{
           submenuContent: 'State Registrations',
-          submenuLink: 'http://cockpit.parkstreet.local/router.php/app/#!/cockpit/state-registrations'
+          submenuLink: 'https://stgcockpit.parkstreet.com/router.php/app/#!/cockpit/state-registrations'
         },
         {
           submenuContent: 'Monthly Reports',

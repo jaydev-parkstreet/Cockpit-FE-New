@@ -24,7 +24,7 @@ export const environment = {
   fileServer: 'https://stgnavigator.parkstreet.com',
   // oldNavigator: 'http://navigator.parkstreet.local',
   oldNavigator: 'https://stgnavigator.parkstreet.com',
-  oldCockpit: 'http://cockpit.parkstreet.local',
+  oldCockpit: 'https://stgcockpit.parkstreet.com',
   satismeterKey: '1KnYa8ePvL1A1wE6',
   segmentKey: 'ho1DjJ5yr2ta8PuArLRAgaxqkEd5ARzA',
   host: (window.location.hostname === 'localhost') ? window.location.hostname + '/Navigator-FE' : window.location.hostname,
