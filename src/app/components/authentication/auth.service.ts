@@ -26,23 +26,12 @@ export class AuthService {
     this.isAuthenticatedSubject.next(true);
   }
 
-  // logout(): void {
-  //   localStorage.removeItem('authToken');
-  //   localStorage.removeItem('userData');
-  //   this.userData = null;
-  //   this.isAuthenticatedSubject.next(false);
-  // }
-
   logout(): void {
-    debugger;
-    const logout = Promise.resolve('Mock logout response'); // Mocked response
+    const logout = Promise.resolve();
     logout.then((res) => {
-      console.log(res);
-      debugger;
       this.clearLocalStorage();
       const iframe = document.getElementById('myframe') as HTMLInputElement;
       iframe.src = environment.oldNavigator + '/router.php/logout';
-  
       let loginUrl = 'login';
       const url = new URL(window.location.href);
   
@@ -61,21 +50,17 @@ export class AuthService {
         this.router.navigate(['/login'], { queryParams: { reload: true } });
       }
     }).catch(error => {
-      console.error('Logout failed:', error);
     });
   }
   
 
   logoutCall() {
-    debugger
     return this.http.get(environment.apiUrl + AppRoutes.AUTHENTICATION.LOGOUT)
       .toPromise()
       .then(response => {
-        console.log('Logout API call response:', response);
         return response;
       })
       .catch(err => {
-        console.error('Error during logout API call:', err);
         return true;
       });
   }
