@@ -133,33 +133,31 @@ export class ProductManagementDetailsComponent implements OnInit {
                     if (response.data.status === 1) {
                         this.commonService.showToastV2Message(true, 'Sync Successful', 'fas fa-exclamation-circle');
                         clearInterval(this.timerObj);
+                        this.timerObj = null;
                         this.syncStatusFail = false;
                     } else if (response.data.status === 3) {
                         this.commonService.showToastV2Message(true, 'Sync Failed', 'fas fa-exclamation-circle');
                         this.syncStatusFail = true;
                         clearInterval(this.timerObj);
+                        this.timerObj = null;
                         this.getProductData(this.productDetails.product_id);
                     }
                     this.actionButtons = this.getactionButtons(this.productDetails);
                 } else {
                     this.syncStatusFail = true;
                     clearInterval(this.timerObj);
+                    this.timerObj = null;
                     this.getProductData(this.productDetails.product_id);
                 }
             } else {
                 this.syncStatusFail = true;
                 clearInterval(this.timerObj);
+                this.timerObj = null;
                 this.getProductData(this.productDetails.product_id);
             }
         });
     }
     
-    clearInterval() {
-        if (this.timerObj) {
-          clearInterval(this.timerObj);
-          this.timerObj = null;
-        }
-    }
     getApproveAPI() {
         this.spinner.show();
         this.productManagementService.getApproveAPI(this.productDetails.product_id).subscribe(response => {

@@ -14,7 +14,7 @@ const AppConstant = {
 
     PRODUCT:{
         PAGE_TITLE: 'PRODUCT DETAILS' ,
-        SUBMIT_BUTTON: 'Review',
+        SUBMIT_BUTTON: 'Save',
         CANCEL_BUTTON: 'Cancel',
     }
 };
