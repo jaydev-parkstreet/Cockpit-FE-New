@@ -39,7 +39,6 @@ export class SummaryTopBarComponent implements OnInit {
     this.selectedFilters[key] = value;
     this.isAllItemsSelected = value.length === this.filterList[key]?.length; 
     this.isIndeterminate = value.length > 0 && value.length < this.filterList[key]?.length; 
-    this.applyFilterChanges(); 
   }
 
   applyFilterChanges() {

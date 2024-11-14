@@ -393,17 +393,13 @@ export class ProductManagementComponent implements OnInit {
     this.gridOptions.api.redrawRows();
   }
   onClickAction(event){
-    console.log("Event: ",event);
     if (event.key === 'notes') {
-      console.log("Notes Clicked");
     } else if (event.key === 'attachment') {
-      console.log("Attachments Clicked")
     } else if (event.key === 'active') {
       if (this.selectedRows && this.selectedRows.length > 0) {
         this.getActivateAPI(event.isActive);
       }
     } else if (event.key === 'mass-upload') {
-      console.log("Mass Upload Click");
     }
   }
 
