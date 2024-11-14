@@ -46,7 +46,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     selectAll: 'Select All',
     uncheckAll: 'Uncheck All'
   };
-  constructor(private cdRef: ChangeDetectorRef) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.isOpen = false;
@@ -188,7 +188,6 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.isAllSelected = false; 
     this.updateFormControl(); 
     event.stopPropagation(); 
-    this.cdRef.detectChanges();
   }
 
   updateFilteredItems(items): void {

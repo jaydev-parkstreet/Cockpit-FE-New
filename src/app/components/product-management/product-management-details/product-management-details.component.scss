@@ -8,11 +8,12 @@
     background-color: $colors-neutral-light;
     margin-bottom: 0px;
     padding: 10px;
+    font-family:$crimson-pro-regular;
 
     .product-tool-details-container {
         padding: 0 16px;
         font-weight: 500;
-        font-size: 16px;
+        font-size: 14px;
 
         .action-bar {
             display: flex;
@@ -22,11 +23,11 @@
 
             .back-link {
                 color: $colors-neutral-black;
-                font-family: $helvetica-neue !important;
+                font-family: $montserrat-regular !important;
 
                 &:hover {
                     .link-text {
-                        color: $colors-base-primary;
+                        color: $colors-base-primary-v-low;
                         text-decoration: underline;
                         cursor: pointer;
                     }
@@ -156,6 +157,12 @@
                         tr:nth-child(odd) {
                             background: $colors-neutral-light-v-low;
                         }
+                        th{
+                            font-family: $montserrat-regular !important;
+                        }
+                        td{
+                            font-family: $montserrat-regular !important;
+                        }
                     }
                 }
             }
@@ -179,7 +186,7 @@
                     left: 50%;
                     margin-left: -24px;
                     height: 32px;
-                    font-family: $helvetica-neue;
+                    font-family: $montserrat-regular;
                     font-size: 12px;
                     line-height: 16px;
                 }

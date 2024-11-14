@@ -88,11 +88,12 @@
 
 .typography-body-black-regular {
     color: $colors-neutral-black;
+    font-family: $montserrat-regular !important;
 }
 
 .typography-body-black-medium {
     color: $colors-neutral-black;
     font-weight: 800;
-    font-family: 'HelveticaNeue-Medium';
+    font-family: $montserrat-medium !important;
     width: 44%;
 }
