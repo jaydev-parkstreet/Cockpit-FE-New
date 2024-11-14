@@ -17,52 +17,11 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
-    component: ApplicationComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'product-management',
-        pathMatch: 'full'
-      },
-      {
-        path: 'product-management',
-        resolve: {
-          filterList: FilterListResolver
-        },
-        children: [
-              {
-                path: '',
-                component: ProductManagementComponent
-              },
-              {
-                path: 'add',
-                component: ProductAddComponent
-              },
-              {
-                path: ':id',
-                children:[
-                  {
-                    path: '',
-                    component: ProductManagementDetailsComponent
-                  },
-                  {
-                    path: 'add',
-                    component: ProductAddComponent
-                  },
-                  {
-                    path: 'edit',
-                    component: ProductAddComponent
-                  },
-                  {
-                    path: 'clone',
-                    component: ProductAddComponent,
-                    data: {
-                      isDuplicate: true
-                    }
-                  }
-                ]
-              }]
-      }]
+    loadChildren: () => import('./components/layout/layout.module').then(m => m.LayoutModule)
+  },
+  {
+    path: 'product-management',
+    loadChildren: () => import('./components/product-management/product-management.module').then(m => m.ProductManagementModule)
   },
   {
     path: 'middle',
