@@ -26,7 +26,7 @@ export class SummaryTopBarComponent implements OnInit {
   isIndeterminate: boolean = false;
   @ViewChildren(CmpInputDropdownComponent) dropdowns: QueryList<CmpInputDropdownComponent>;
   
-  constructor(private router: Router,private cdRef: ChangeDetectorRef) { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -53,12 +53,10 @@ export class SummaryTopBarComponent implements OnInit {
       this.selectedFilters = {}; 
     }
     this.resetFilters.emit();
-    this.cdRef.detectChanges();
     setTimeout(() => {
       this.selectedFilters = {};  
       this.isAllItemsSelected = false; 
       this.isIndeterminate = false; 
-      this.cdRef.detectChanges();    
       this.resetDropdownsState();
  
     }, 0);
