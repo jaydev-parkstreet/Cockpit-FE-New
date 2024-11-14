@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener, Output, EventEmitter } from '@angular/core';
 import { AuthService } from './../../../components/authentication/auth.service';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-main-header',
@@ -11,6 +12,7 @@ export class MainHeaderComponent implements OnInit {
   isSidebarExpanded = true;
   isDropdownOpen = false;
   currentUserData: any;
+  oldCockpit: string = environment.oldCockpit;
   @Output() menuState = new EventEmitter<any>();
   constructor(
     private authService:AuthService,
