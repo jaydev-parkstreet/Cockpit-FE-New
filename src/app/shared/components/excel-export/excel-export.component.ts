@@ -11,7 +11,6 @@ export class ExcelExportComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.tooltipText);
      
   }
 }

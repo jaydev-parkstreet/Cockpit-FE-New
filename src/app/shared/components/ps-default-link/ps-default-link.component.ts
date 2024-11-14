@@ -14,7 +14,6 @@ export class PsDefaultLinkComponent implements OnInit {
   }
 
   functionLink() {
-    console.log("inside");
   }
 
 }
