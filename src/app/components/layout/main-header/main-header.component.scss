@@ -72,8 +72,7 @@
         position: relative;
 
         .user-image {
-            width: 40px;
-            height: 40px;
+            width: 26px;
             border-radius: 50%;
             margin-right: 8px;
             vertical-align: middle;
@@ -91,13 +90,13 @@
     
         .dropdown {
             position: relative;
-        
+            cursor: pointer;
+
             .dropdown-toggle {
                 background: none;
                 border: none;
                 color: #fff;
                 font-size: 14px;
-                cursor: pointer;
         
                 .caret-large {
                     font-size: 16px;

@@ -21,7 +21,7 @@
         <div class="dropdown">
             <div (click)="toggleDropdown()">
                 <img *ngIf="currentUserData && currentUserData.PictureUrl" 
-                    [src]="currentUserData.PictureUrl" 
+                    [src]="oldCockpit + currentUserData.PictureUrl" 
                     alt="User Image" 
                     class="user-image" />
                 <span *ngIf="currentUserData" class="user-name">
