@@ -481,7 +481,6 @@ export class ProductManagementService {
     getPermission() {
         return this.http
         .get(environment.apiUrl + "product-tool/permissions")
-        .pipe(map((response :any) => response.data));
     }
 
     syncOrder(productId) {

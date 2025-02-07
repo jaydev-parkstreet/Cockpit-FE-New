@@ -55,6 +55,7 @@ export class ProductManagementComponent implements OnInit {
 
   ngOnInit(): void {   
     this.getDropdown();
+    this.getPermission();
     this.topPanelConfig = this.productManagementService.getTopPanelConfig();
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
@@ -158,6 +159,16 @@ export class ProductManagementComponent implements OnInit {
       console.error("Error fetching summary:", error);
     }
     this.filterList = this.dropdownData;
+  }
+  async getPermission(){
+    try {
+      await this.productManagementService.getPermission().subscribe(res => {
+        this.permissionObj 
+      });
+    }
+    catch (error) {
+      console.error("Error fetching Permission:", error);
+    }
   }
 
 
