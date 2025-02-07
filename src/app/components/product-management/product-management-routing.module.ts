@@ -4,43 +4,50 @@ import { ProductManagementComponent } from './product-management.component';
 import { ProductAddComponent } from './product-add/product-add.component';
 import { ProductManagementDetailsComponent } from './product-management-details/product-management-details.component';
 import { FilterListResolver } from '../../core/resolver/filter-list.resolver';
+import { PermissionResolver } from 'src/app/core/resolver/permission-resolver';
 
 const routes: Routes = [
   {
     path: '',
-    component: ProductManagementComponent,
     resolve: {
-      filterList: FilterListResolver  
-    }
-  },
-  {
-    path: 'add',
-    component: ProductAddComponent,
-    resolve: {
-      filterList: FilterListResolver  
-    }
-  },
-  {
-    path: ':id',
+      filterList: FilterListResolver,  
+      permissions: PermissionResolver  
+    },
     children: [
       {
         path: '',
-        component: ProductManagementDetailsComponent,
+        component: ProductManagementComponent
       },
       {
-        path: 'edit',
+        path: 'add',
         component: ProductAddComponent,
         resolve: {
-          filterList: FilterListResolver  
+          filterList: FilterListResolver
         }
       },
       {
-        path: 'clone',
-        component: ProductAddComponent,
-        data: { isDuplicate: true },
-        resolve: {
-          filterList: FilterListResolver  
-        }
+        path: ':id',
+        children: [
+          {
+            path: '',
+            component: ProductManagementDetailsComponent,
+          },
+          {
+            path: 'edit',
+            component: ProductAddComponent,
+            resolve: {
+              filterList: FilterListResolver
+            }
+          },
+          {
+            path: 'clone',
+            component: ProductAddComponent,
+            data: { isDuplicate: true },
+            resolve: {
+              filterList: FilterListResolver  
+            }
+          }
+        ]
       }
     ]
   }

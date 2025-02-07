@@ -9,7 +9,7 @@
         <div *ngIf="productChecked">
             <i [class]="action.icon + ' action-icon'"
                 [ngClass]="{'is-disabled': action.disabled}"
-                *ngIf="action.type === 'icon'" 
+                *ngIf="action.type === 'icon' && action.permission" 
                 (click)="onClickAction.emit(action)">
             </i>
             <span *ngIf="action.showTooltip" class="icon-tooltiptext" [ngClass]="action.className">
@@ -34,7 +34,7 @@
 
     </div>
     <div>
-        <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" [buttonText]="'New Product'" [buttonClass]="'primary'"
+        <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" *ngIf="config.permission.permissions.Create" [buttonText]="'New Product'" [buttonClass]="'primary'"
             (click)="addProduct.emit()">
         </app-cmp-button>
     </div>

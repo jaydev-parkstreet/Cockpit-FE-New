@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductManagementService } from './product-management.service';
 import { AuthService } from '../authentication/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ColDef } from 'ag-grid-community';
 import { RouterModule } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { saveAs } from 'file-saver';
 import { CommonService } from 'src/app/core/services/common.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-product-management',
@@ -41,6 +42,7 @@ export class ProductManagementComponent implements OnInit {
   scrollDisabled: boolean;
   topPanelConfig:any
   filterList: any = {};
+  permissions: any = {};
   FileSaver: any;
   downloading: boolean;
   filtermodal: any;
@@ -50,12 +52,14 @@ export class ProductManagementComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private spinner : NgxSpinnerService,
-    private commonService : CommonService
+    private commonService : CommonService,
+    private route: ActivatedRoute,
   ) { }
 
-  ngOnInit(): void {   
-    this.getDropdown();
-    this.topPanelConfig = this.productManagementService.getTopPanelConfig();
+  ngOnInit(): void {  
+    this.getDropdown(); 
+    this.permissions = this.route.snapshot.data['permissions'];
+    this.topPanelConfig = this.productManagementService.getTopPanelConfig(this.permissions);
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
       "pageSize": 25,

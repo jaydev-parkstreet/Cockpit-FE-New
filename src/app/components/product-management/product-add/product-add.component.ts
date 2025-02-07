@@ -49,6 +49,7 @@ export class ProductAddComponent implements OnInit {
   model: any = {}; 
   modelFormat: any = {}; 
   filtersList: any = {}; 
+  permissions: any = {}; 
   subBrandProducts: any[] = []; 
   caseUnitOfMeasure: any; 
   uniqueId: any; 
@@ -123,6 +124,10 @@ export class ProductAddComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.permissions = this.route.snapshot.data['permissions'];
+    if (!this.permissions.permissions.Create) {
+      this.router.navigate(['product-management']);
+    }
     let productId = this.route.snapshot.paramMap.get('id');
     this.filterList = this.route.snapshot.data['filterList'];
     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
