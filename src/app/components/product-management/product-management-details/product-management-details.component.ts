@@ -33,6 +33,7 @@ export class ProductManagementDetailsComponent implements OnInit {
     }
     syncStatusFail: boolean;
     timerObj: any;
+    permissions: any;
 
     constructor(
         private productManagementService: ProductManagementService,
@@ -43,6 +44,7 @@ export class ProductManagementDetailsComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+        this.permissions = this.route.snapshot.data['permissions'];
         this.IconHeaderStatus = 'Inactive';
         this.codesTitle = 'CODES';
         this.dimensionTitle = 'DIMENSIONS';
@@ -71,7 +73,7 @@ export class ProductManagementDetailsComponent implements OnInit {
                 this.productList = this.productFieldsDetail({ ...res });
                 this.getStatusUpdate();
                 this.getSyncStatusUpdate();
-                this.actionButtons = this.getactionButtons(this.productDetails);
+                this.actionButtons = this.getactionButtons(this.permissions ,this.productDetails);
                 this.headerTitle = this.productDetails.description;
             });
           }
@@ -142,7 +144,7 @@ export class ProductManagementDetailsComponent implements OnInit {
                         this.timerObj = null;
                         this.getProductData(this.productDetails.product_id);
                     }
-                    this.actionButtons = this.getactionButtons(this.productDetails);
+                    this.actionButtons = this.getactionButtons(this.permissions, this.productDetails);
                 } else {
                     this.syncStatusFail = true;
                     clearInterval(this.timerObj);
@@ -420,7 +422,7 @@ export class ProductManagementDetailsComponent implements OnInit {
         }
         return obj;
     }
-    getactionButtons(detail) {
+    getactionButtons(permissions, detail) {
         let syncbtnName = '';
         if (!detail.sync_status) {
             syncbtnName = this.SYNC_STATUS[3];
@@ -435,6 +437,7 @@ export class ProductManagementDetailsComponent implements OnInit {
                 icon: 'fas fa-clock',
                 showTooltip: true,
                 tooltipText: 'Needs Action-Waiting on Supplier',
+                permission: permissions.permissions.Update
                 });
         }
         if (detail.status === 'Approved') {
@@ -444,6 +447,7 @@ export class ProductManagementDetailsComponent implements OnInit {
               showTooltip: true,
               icon: (detail.sync_status === 2 ? 'fas fa-sync-alt fa-spin' :syncClass ),
               tooltipText: syncbtnName,
+              permission: permissions.permissions.Update
             });
         } else if (detail.status === 'Request Received' ||
             detail.status === 'Needs Action-Waiting on Supplier' ||
@@ -453,6 +457,7 @@ export class ProductManagementDetailsComponent implements OnInit {
               showTooltip: true,
               icon: 'fas fa-check-circle pointer',
               tooltipText: 'Pre-Approved',
+              permission: permissions.permissions.Update
             });
         } else {
             data.push({
@@ -460,6 +465,7 @@ export class ProductManagementDetailsComponent implements OnInit {
               showTooltip: true,
               icon: 'fas fa-check-circle pointer',
               tooltipText: 'Approve',
+              permission: permissions.permissions.Update
             });
         }
         {
@@ -469,12 +475,14 @@ export class ProductManagementDetailsComponent implements OnInit {
                 icon: 'fas fa-pen',
                 showTooltip: true,
                 tooltipText: 'Edit',
+                permission: permissions.permissions.Update
               },
               {
                 key: 'duplicate',
                 icon: 'fas fa-clone',
                 showTooltip: true,
                 tooltipText: 'Duplicate',
+                permission: permissions.permissions.Create
               }
             ); 
         }
@@ -484,6 +492,7 @@ export class ProductManagementDetailsComponent implements OnInit {
                 button: detail.is_active !== 1 ? 'Activate' : 'Deactivate',
                 showTooltip: true, 
                 tooltipText: detail.is_active !== 1 ? 'Activate' : 'Deactivate',
+                permission: permissions.permissions.Update
             })
         return data;
     }

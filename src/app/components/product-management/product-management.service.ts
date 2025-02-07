@@ -187,13 +187,14 @@ export class ProductManagementService {
       return '--';
     }
 
-    getTopPanelConfig(isActive = false) {
+    getTopPanelConfig(permission , isActive = false) {
         return {
             placeholder: 'Search',
             searchText: '',
             searchOptions: {},
             showFilter: false,
             totalResult: 0,
+            permission: permission,
             actions: {
                 result: {
                   key: 'result',
@@ -207,21 +208,21 @@ export class ProductManagementService {
                     tooltipText: 'Import bulk products',
                     icon: 'fas fa-layer-group',
                     key: 'mass-upload',
-                    permission: true,
+                    permission: permission.permissions.Create,
                   }, {
                     type: 'icon',
                     showTooltip: true,
                     tooltipText: 'Attach',
                     icon: 'fas fa-paperclip',
                     key: 'attachment',
-                    permission: true
+                    permission: permission.permissions.Update
                   }, {
                     type: 'icon',
                     showTooltip: true,
                     tooltipText: 'Note',
                     icon: 'fas fa-comment',
                     key: 'notes',
-                    permission: true
+                    permission: permission.permissions.Update
                   }, {
                     type: 'icon',
                     showTooltip: true,
@@ -229,7 +230,7 @@ export class ProductManagementService {
                     icon: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
                     key: 'active',
                     isActive,
-                    permission: true
+                    permission: permission.permissions.Update
                   }
                 ]
             },
@@ -480,7 +481,7 @@ export class ProductManagementService {
 
     getPermission() {
         return this.http
-        .get(environment.apiUrl + "product-tool/permissions")
+        .get(environment.apiUrl + "product-tool/permissions").toPromise();
     }
 
     syncOrder(productId) {
