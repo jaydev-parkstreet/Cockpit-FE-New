@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ElementRef, Renderer2, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PsiCustomFormService } from './psi-custom-form.service';
 import { environment } from 'src/environments/environment';
@@ -12,11 +12,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './psi-custom-form.component.html',
   styleUrls: ['./psi-custom-form.component.scss']
 })
-export class PsiCustomFormComponent implements OnInit {
+export class PsiCustomFormComponent implements OnInit, AfterViewInit {
   @Input() showTitle: boolean;
   @Input() formTitle: any;
   @Input() formConfig: any;
   @Output() togglePasswordVisibility = new EventEmitter<any>();
+  @ViewChildren('iconContainer') iconContainers!:  QueryList<ElementRef>;
+  @ViewChildren('inputElement') inputElements!: QueryList<ElementRef>;
 
   loginForm = new FormGroup({
     userName: new FormControl('', [Validators.required]),
@@ -29,14 +31,33 @@ export class PsiCustomFormComponent implements OnInit {
   bothInvalid: boolean = false;
   isShowLoginErrorMsg: boolean = false;
   showErrorMsg: string = '';
+  today: Date;
+  lastValues: any = {
+    userName: '',
+    password: ''
+  };
 
   constructor(
     public readonly PsiCustomFormService: PsiCustomFormService,
     public router: Router,
-    private authService: AuthService, private spinner: NgxSpinnerService
+    private authService: AuthService, private spinner: NgxSpinnerService,
+    private renderer: Renderer2
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.today = new Date();
+    this.loginForm.get('userName').valueChanges.subscribe( value => {
+      this.recalculatePaddingIfNeeded('userName', value);
+    });
+
+    this.loginForm.get('password').valueChanges.subscribe( value => {
+      this.recalculatePaddingIfNeeded('password', value);
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.adjustInputPadding();  
+  }
 
   onSubmit(form) {
     this.formSubmitted = true;
@@ -120,5 +141,38 @@ export class PsiCustomFormComponent implements OnInit {
   */
   trackByField(index: number, field: any): string {
     return field.name;
+  }
+
+  adjustInputPadding(inputName?: string) {
+
+    if(this.iconContainers && this.inputElements) {
+      const iconContainersArray = this.iconContainers.toArray();
+      const inputElementsArray = this.inputElements.toArray();
+      const extraPadding = 8;
+      inputElementsArray.forEach((inputElement, index) => {
+        const iconContainer = iconContainersArray[index];
+        const inputElementName = inputElement.nativeElement.name;
+        if((inputElement && iconContainer) && (!inputName || inputName === inputElementName)) {
+          const iconContainerWidth = iconContainer.nativeElement.offsetWidth;
+          const topPadding = inputElement.nativeElement.style.paddingTop || '12px';
+          const bottomPadding = inputElement.nativeElement.style.paddingBottom || '12px';
+          const leftPadding = inputElement.nativeElement.style.paddingLeft || '12px';
+          this.renderer.setStyle(inputElement.nativeElement, 'padding', `${topPadding} ${iconContainerWidth + extraPadding}px ${bottomPadding} ${leftPadding}`);
+        }
+      });
+    }
+  }
+
+  clearInput(fieldName: string): void {
+    this.loginForm.get(fieldName)?.setValue('');
+  }
+
+  recalculatePaddingIfNeeded(field: string, value: string) {
+    if(this.lastValues[field] === '') {
+      setTimeout(() => {
+        this.adjustInputPadding(field);
+      });
+      this.lastValues[field] = value;
+    }
   }
 }

@@ -19,8 +19,8 @@ export class LoginPageComponent implements OnInit {
     };
     this.formConfig = {
       schema: [
-        { type: 'text', name: 'userName', label: 'Email OR Username', placeholder: 'Email or Username', required: true },
-        { type: 'password', name: 'password', label: 'Password', placeholder: 'Password', required: true, passwordField: true, isPasswordVisible : false }
+        { type: 'text', name: 'userName', label: 'Username or Email', placeholder: 'Email or Username', required: true },
+        { type: 'password', name: 'password', label: 'Password', placeholder: 'Password', required: true, passwordField: true, isPasswordVisible : false, showtooltip: 'Show Password', hidetooltip: 'Hide Password'}
       ],
       submitBtnLabel: AppConstant.LOGIN.BUTTON_LABEL,
       socialButton: true,

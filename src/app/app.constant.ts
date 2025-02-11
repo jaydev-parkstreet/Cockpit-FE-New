@@ -1,8 +1,8 @@
 
 const AppConstant = {
     LOGIN: {
-        PAGE_TITLE: 'Log In',
-        PAGE_SUBTITLE: 'Welcome back to Park Street',
+        PAGE_TITLE: 'Sign In',
+        PAGE_SUBTITLE: 'Log in to access your account.',
         BUTTON_LABEL: 'Log In',
         LINKEDIN_BUTTON_LABEL: 'Log in with',
         NOTES: 'By clicking Log in, you agree to the Park Street Terms of use, Privacy Policy and Cookie Policy.',
