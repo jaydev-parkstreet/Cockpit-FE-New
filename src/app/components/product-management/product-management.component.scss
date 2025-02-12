@@ -5,7 +5,8 @@
 
 .product-management {
     background-color: #e2e7ea;
-
+    padding-top: 8px;
+    
     .header-background {
         background-color: $colors-neutral-black;
         color: $colors-neutral-white;
@@ -16,7 +17,8 @@
     }
 
     .product-tool-container {
-        border: 16px solid $colors-neutral-light-t-25;
+        margin: 16px;
+        padding: 0 16px;
         background-color: $colors-neutral-white;
         color: $colors-neutral-black;
 

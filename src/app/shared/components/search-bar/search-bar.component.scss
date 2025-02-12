@@ -64,7 +64,7 @@
 
     &:focus-within {
         border-radius: 8px;
-        border: 2px solid $colors-v2-base-secondary-v-medium;
+        outline: 2px solid $colors-v2-base-secondary-v-medium;
 
         input.form-control,
         button.search-icon {
@@ -78,7 +78,7 @@
 
     &:hover:not(:focus-within) {
         border-radius: 8px;
-        border: 2px solid $colors-neutral-dark;
+        outline: 2px solid $colors-neutral-dark;
 
         input.form-control,
         button.search-icon {
