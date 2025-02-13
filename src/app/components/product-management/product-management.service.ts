@@ -170,11 +170,11 @@ export class ProductManagementService {
   
     renderStatus(params) {
       const statusLabels = {
-        Approved: 'u-bg-light-green',
-        Pending: 'u-bg-light-yellow',
-        'Pre-Approved': 'u-bg-light-blue',
-        'Needs Action-Waiting on Supplier': 'u-bg-orange',
-        'Request Received': 'u-bg-light-gray',
+        Approved: 'u-bg-v2-base-success',
+        Pending: 'u-bg-v2-base-warinig',
+        'Pre-Approved': 'u-bg-v2-base-primary',
+        'Needs Action-Waiting on Supplier': 'u-bg-v2-base-warinig-v-low',
+        'Request Received': 'u-bg-v2-neutral-light',
       };
       
       let inActiveIcon = params.data && params.data.is_active === 0 

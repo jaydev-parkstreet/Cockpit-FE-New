@@ -4,7 +4,7 @@
 @import '../../scss/utilities/base';
 
 .product-management {
-    background-color: #e2e7ea;
+    background-color: $colors-neutral-light-v-low;
     padding-top: 8px;
     
     .header-background {
@@ -17,7 +17,7 @@
     }
 
     .product-tool-container {
-        margin: 16px;
+        margin: 8px 16px 8px;
         padding: 0 16px;
         background-color: $colors-neutral-white;
         color: $colors-neutral-black;
@@ -49,6 +49,10 @@
                 }
             }
 
+        }
+
+        .product-tool-grid {
+            padding-bottom: 16px;
         }
     }
 

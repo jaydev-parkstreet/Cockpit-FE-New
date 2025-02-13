@@ -237,15 +237,15 @@ export class ProductManagementDetailsComponent implements OnInit {
     getStatusUpdate() {
         this.status = this.productDetails.status;
         if (this.status === 'Approved') {
-            this.statusClass = 'badge med base-success';
+            this.statusClass = 'badge med u-bg-v2-base-success';
         } else if (this.status === 'Pending') {
-            this.statusClass = 'badge med warning-staus';
+            this.statusClass = 'badge med u-bg-v2-base-warinig';
         } else if (this.status === 'Pre-Approved') {
-            this.statusClass = 'badge med u-bg-light-blue';
+            this.statusClass = 'badge med u-bg-v2-base-primary';
         } else if (this.status === 'Needs Action-Waiting on Supplier') {
-            this.statusClass = 'badge med u-bg-orange';
+            this.statusClass = 'badge med u-bg-v2-base-warinig-v-low';
         } else if (this.status === 'Request Received') {
-            this.statusClass = 'badge med u-bg-light-gray';
+            this.statusClass = 'badge med u-bg-v2-neutral-light';
         }
         // this.getAuditTrailData();
     }
