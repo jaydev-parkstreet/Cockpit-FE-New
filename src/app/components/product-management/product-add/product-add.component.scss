@@ -142,6 +142,12 @@
                                     .dimension{
                                         padding-right: 16px;
                                         width: 50%;
+                                        margin-bottom: 16px;
+
+                                        label {
+                                            padding-left: 16px;
+                                            margin-bottom: 6px;
+                                        }
                                     }
                                     .dimension-sub-tittle{
                                         width: 100%;
@@ -150,11 +156,21 @@
                                         font-weight: 500;
                                         font-family: "Montserrat-Medium";
                                         p{
-                                            margin-top: 16px;
-                                            margin-bottom: 8px;
+                                            margin: 16px 0 24px 0;
                                         }
                                     }
+
+                                    .input-dropdown {
+                                        margin-bottom: 4px;
+                                    }
                                     
+                                    .codes-buttons {
+                                        margin-bottom: 16px;
+
+                                        label {
+                                            padding-left: 16px;
+                                        }
+                                    }
                                 }
                                 .right-main{
                                     display: flex;
@@ -217,27 +233,31 @@
                     font-size: 12px;
                     font-family: $montserrat-regular;
 
-                    &:focus-within {
-                        border-radius: 8px;
-                        border: 2px solid $colors-v2-base-secondary-v-medium;
+                    &:hover {
+                        outline: 2px solid $colors-neutral-dark;
+                        border: none;
+                    }
+
+                    &:focus {
+                        outline: 2px solid $colors-v2-base-secondary-v-medium;
+                        border: none;
                     }
 
                     &.ps-required-asterisk {
-                        background-color: #FFE3E3 !important;
+                        background-color: $colors-v2-base-error-t-10;
+                        outline: 2px solid $colors-v2-base-error;
+                        border: none;
 
                     }
+
                     &:disabled {
-                        background-color: #fff2f1;
+                        background-color: $colors-v2-base-primary-v-low-t-05;
                         cursor: not-allowed;
                     }
                 }
 
-                input:hover {
-                    border-radius: 8px;
-                    border: 2px solid $colors-neutral-dark;
-                }
-
                 .error-message {
+                    margin-top: 4px;
                     color: #c50000;
                     font-size: 12px;
                     background-image: url(../../../../../src/assets/images/high-importance-2.svg) !important;
@@ -248,57 +268,8 @@
                     display: block;
                 }
             }
-        
-    button {
-        background-color: #e74536;
-        width: 114px;
-        height: 40px;
-        color: #fff;
-        font-family: "CrimsonPro-Bold";
-        font-size: 16px;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #cbcbcb;
-        font-weight: 700;
-        border-radius: 8px;
-        float: right;
-    }
-
-    /* Hover state */
-    button:hover {
-        color: #fff;
-        background-color: #de1300;
-        outline: 0;
-        border-color: transparent;
-        cursor: pointer;
-    }
-
-    .cancel {
-        background-color: white;
-        width: 114px;
-        height: 40px;
-        color: #232323;
-        font-family: "CrimsonPro-Bold";
-        font-size: 16px;
-        padding: 0;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #cbcbcb;
-        font-weight: 700;
-        border-radius: 8px;
-        margin-right: 10px !important;
-
-        &:hover {
-
-            background-color: rgba(203, 203, 203, 0.1);
-            color: #232323;
-            border: 1px solid #cbcbcb;
         }
-
-    }
-}
 .c-checkbox {
-    margin-bottom: 20px;
     text-align: left;
 
     &.inline {

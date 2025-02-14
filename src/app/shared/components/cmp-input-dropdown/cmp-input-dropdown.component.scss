@@ -23,16 +23,24 @@
         color: $colors-neutral-black;
         font-family: $montserrat-regular;
         font-size: 12px;
-        border: 1px solid $colors-neutral-light !important;
+        border: 1px solid $colors-neutral-light;
         border-radius: 8px;
         transition: none;
 
         &:hover {
             outline: 2px solid $colors-neutral-dark;
+            border: 0;
         }
 
         &:focus {
             outline: 2px solid $colors-v2-base-secondary-v-medium;
+            border: 0;
+        }
+
+        &.ps-required-error {
+            background: $colors-v2-base-error-t-10;
+            outline: 2px solid $colors-v2-base-error;
+            border: 0;
         }
     }
 
@@ -102,7 +110,7 @@
                 box-shadow: none !important;
                 width: 100%;
                 padding-right: 72px;
-                caret-color: $colors-v2-base-secondary-v-high;
+                caret-color: $colors-v2-base-secondary-v-medium;
 
                 &::placeholder {
                     color: $colors-neutral-light;
@@ -113,10 +121,12 @@
                 &:hover {
                     outline: 2px solid $colors-neutral-dark;
                     border-radius: 8px;
+                    border: 0;
                 }
     
                 &:focus {
                     outline: 2px solid $colors-v2-base-secondary-v-medium;
+                    border: 0;
                 }
             }
 
@@ -281,8 +291,10 @@
 }
 
 .input-dropdown.disabled {
-    background-color: #fff2f1;
+    background-color: $colors-neutral-light-v-low;
     pointer-events: none;
+    border-radius: 8px;
+    cursor: not-allowed;
 }
 
 .input-dropdown.disabled .dropdown-header {

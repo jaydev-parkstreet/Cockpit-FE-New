@@ -43,6 +43,7 @@
                                                 [selectedItems]="sellectedData[field.id] || []"
                                                 [filteredItems]="filterList && filterList[field.key]"
                                                 [disabled]="productForm.get(field.name)?.disabled"
+                                                [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name)}"
                                                 (onDropDownChange)="onDropdownStateChange(field.name, $event)">
                                             </app-cmp-input-dropdown>
                                             <div *ngIf="isFieldInvalid(field.name)" class="error-message">
@@ -51,11 +52,18 @@
                                         </div>
                                     </ng-container>
                                 </div>
-                                <div class="form-submit-button">
-                                    <button type="submit" class="btn btn-primary">{{
-                                        formConfig.submitBtnLabel }}</button>
-                                    <button type="reset" class="cancel" (click)="openConfirmationPopup()">{{
-                                        formConfig.cancelBtnLabel }}</button>
+                                <div class="form-submit-button u-flex u-justify-flex-end u-pg-g-2">                                        
+                                    <app-cmp-button
+                                        [buttonText]="formConfig.cancelBtnLabel" 
+                                        [buttonClass]="'secondary w-lg'"
+                                        (click)="openConfirmationPopup()">
+                                    </app-cmp-button>
+
+                                    <app-cmp-button
+                                        [buttonText]="formConfig.submitBtnLabel" 
+                                        [buttonClass]="'primary w-lg'"
+                                        (click)="onSubmit(productForm)">
+                                    </app-cmp-button>
                                 </div>
                             </div>
                             <div class="column-right">
@@ -133,7 +141,7 @@
                                         </div>
                                         <div class="field-container">
                                             <ng-container *ngFor="let field of formConfig.schema">
-                                                <ng-container *ngIf="field.isCode">
+                                                <div *ngIf="field.isCode" class="d-flex flex-column w-100 codes-buttons">
                                                     <label [for]="field.name"
                                                         [ngClass]="{'ps-required-asterisk': field.required}"
                                                         [textContent]="field.label"></label>
@@ -142,7 +150,7 @@
                                                         [ngClass]="{'ps-required-asterisk': isFieldInvalid(field.name)}"
                                                         [id]="field.name" [formControlName]="field.name"
                                                         [placeholder]="field.placeholder" [required]="field.required" />
-                                                </ng-container>
+                                                </div>
                                             </ng-container>
                                         </div>
                                     </div>

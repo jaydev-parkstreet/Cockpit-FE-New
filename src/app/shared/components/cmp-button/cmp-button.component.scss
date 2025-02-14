@@ -8,7 +8,7 @@
     font-size: 16px;
     font-weight: normal;
     border-radius: 8px;
-    outline: none;
+    outline: 0;
     padding: 8px 32px;
 
     &.md {
@@ -95,6 +95,10 @@
 
     .icon {
         font-size: 20px;
+    }
+
+    &.w-lg {
+        width: 140px;
     }
 }
 
