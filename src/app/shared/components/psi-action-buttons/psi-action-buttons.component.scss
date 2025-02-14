@@ -32,13 +32,14 @@
             top: 120%;
             left: 50%;
             transform: translate(-50%, 0);
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: $colors-neutral-black;
             color: #fff;
             padding: 5px;
-            border-radius: 4px;
             white-space: nowrap;
             pointer-events: none;
             z-index: 100;
+            font-family: $montserrat-regular;
+            font-size: 12px;
         }
 
         &:hover {
