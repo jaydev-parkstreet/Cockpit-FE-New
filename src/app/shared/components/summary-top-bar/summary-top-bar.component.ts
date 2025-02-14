@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, QueryList, ViewChildren, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { CmpInputDropdownComponent } from '../cmp-input-dropdown/cmp-input-dropdown.component';
 
@@ -7,6 +7,7 @@ import { CmpInputDropdownComponent } from '../cmp-input-dropdown/cmp-input-dropd
   templateUrl: './summary-top-bar.component.html',
   styleUrls: ['./summary-top-bar.component.scss']
 })
+
 export class SummaryTopBarComponent implements OnInit {
   @Input() config: any;
   @Input() productChecked: any;
@@ -29,6 +30,7 @@ export class SummaryTopBarComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    this.tooltipText = 'Export To Excel';
   }
 
   toggleFilter() {

@@ -5,10 +5,10 @@
             (onEnter)="onEnter.emit($event)">
         </app-search-bar>
     </div>
-    <div *ngFor="let action of config.actions.extraActions" class="icon-container" [ngClass]="action.divClass">
+    <div *ngFor="let action of config.actions.extraActions; let first = first; let last = last;" class="icon-container u-flex u-pg-g-2" [ngClass]="action.divClass">
         <div *ngIf="productChecked">
             <i [class]="action.icon + ' action-icon'"
-                [ngClass]="{'is-disabled': action.disabled}"
+                [ngClass]="{'is-disabled': action.disabled, 'first': first, 'last': last}"
                 *ngIf="action.type === 'icon' && action.permission" 
                 (click)="onClickAction.emit(action)">
             </i>
@@ -27,13 +27,14 @@
         <span>{{ config.totalResult === 1 ? 'Result' : 'Results' }}</span>
         </span>
     </div>
-    <div>
-        <app-cmp-button [buttonIconLeft]="'fas fa-filter'" [buttonText]="'Filter'" [buttonClass]="'secondary'"
+    <div class="action-buttons u-flex u-pg-g-2">
+        <app-cmp-button 
+            [buttonIconLeft]="'fas fa-filter'" 
+            [buttonText]="'Filter'" 
+            [buttonClass]="isExpandFilter ? 'secondary filter-active' : 'secondary'"
             (click)="toggleFilter()">
         </app-cmp-button>
 
-    </div>
-    <div>
         <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" *ngIf="config.permission.permissions.Create" [buttonText]="'New Product'" [buttonClass]="'primary'"
             (click)="addProduct.emit()">
         </app-cmp-button>
@@ -59,9 +60,9 @@
             </app-cmp-input-dropdown>
         </div>
     </div>
-    <div class="u-flex u-align-center u-pg-py-2">
+    <div class="u-flex u-align-center u-pg-g-2">
         <app-cmp-button
-            [buttonClass]="'primary sm'"
+            [buttonClass]="'secondary sm'"
             [buttonText]=" 'Apply' "
             (click)="applyFilterChanges()">
         </app-cmp-button>

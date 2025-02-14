@@ -3,6 +3,23 @@
 @import '../../../scss/utilities/colors';
 @import '../../../scss/utilities/base';
 
+
+@mixin ag-icon-asc {
+    background: transparent url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJsb25nLWFycm93LWFsdC11cCIgY2xhc3M9InN2Zy1pbmxpbmUtLWZhIGZhLWxvbmctYXJyb3ctYWx0LXVwIGZhLXctOCIgcm9sZT0iaW1nIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgNTEyIj48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik04OCAxNjYuMDU5VjQ2OGMwIDYuNjI3IDUuMzczIDEyIDEyIDEyaDU2YzYuNjI3IDAgMTItNS4zNzMgMTItMTJWMTY2LjA1OWg0Ni4wNTljMjEuMzgyIDAgMzIuMDktMjUuODUxIDE2Ljk3MS00MC45NzFsLTg2LjA1OS04Ni4wNTljLTkuMzczLTkuMzczLTI0LjU2OS05LjM3My0zMy45NDEgMGwtODYuMDU5IDg2LjA1OWMtMTUuMTE5IDE1LjExOS00LjQxMSA0MC45NzEgMTYuOTcxIDQwLjk3MUg4OHoiPjwvcGF0aD48L3N2Zz4=) center no-repeat;
+    height: 11px;
+    width: 6px;
+    display: block !important;
+    margin: 2px 0 0 4px;
+}
+
+@mixin ag-icon-desc {
+    background: transparent url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJsb25nLWFycm93LWFsdC1kb3duIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtbG9uZy1hcnJvdy1hbHQtZG93biBmYS13LTgiIHJvbGU9ImltZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMjU2IDUxMiI+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTY4IDM0NS45NDFWNDRjMC02LjYyNy01LjM3My0xMi0xMi0xMmgtNTZjLTYuNjI3IDAtMTIgNS4zNzMtMTIgMTJ2MzAxLjk0MUg0MS45NDFjLTIxLjM4MiAwLTMyLjA5IDI1Ljg1MS0xNi45NzEgNDAuOTcxbDg2LjA1OSA4Ni4wNTljOS4zNzMgOS4zNzMgMjQuNTY5IDkuMzczIDMzLjk0MSAwbDg2LjA1OS04Ni4wNTljMTUuMTE5LTE1LjExOSA0LjQxMS00MC45NzEtMTYuOTcxLTQwLjk3MUgxNjh6Ij48L3BhdGg+PC9zdmc+) center no-repeat;
+    height: 11px;
+    width: 6px;
+    display: block !important;
+    margin: 2px 0 0 4px;
+}
+
 .checkbox-selectall {
     position: relative;
     display: block;
@@ -64,11 +81,38 @@
         background-color: white;
         text-transform: none;
         cursor: default;
-        font-family: $montserrat-medium;
+        font-family: $crimson-pro-medium;
+        font-weight: 500;
+        line-height: 24px !important;
 
         &:hover {
             background-color: unset !important;
             border: none !important;
+        }
+
+        .ag-icon-asc {
+            @include ag-icon-asc;
+
+            &::before {
+                content: '' !important;
+            }
+        }
+
+        .ag-icon-desc {
+            @include ag-icon-desc;
+
+            &::before {
+                content: '' !important;
+            }
+        }
+
+        
+        &:focus::after {
+            border: none !important;
+        }
+
+        &.ag-header-cell-moving {
+            background: $colors-neutral-white !important;
         }
     }
 
@@ -125,6 +169,7 @@
                 font-size: 16px;
                 line-height: 16px;
                 height: 16px;
+                top: -2px;
                 width: 16px;
             }
             .checkbox-container input[type="checkbox"] {
@@ -170,10 +215,10 @@
 
     .attachments-notes .fas.fa-file,
     .fas.fa-comment {
-        color: $colors-base-primary;
+        color: $colors-v2-base-primary;
 
         &:hover {
-            color: $colors-base-primary-v-high;
+            color: $colors-v2-base-primary-v-high;
         }
     }
 
@@ -328,9 +373,9 @@
     .ag-root ::-webkit-scrollbar-thumb {
         -webkit-border-radius: 4px;
         border-radius: 4px;
-        background: $colors-base-primary-t-10;
+        background: $colors-neutral-light-t-50;
         &:hover {
-            background: $colors-base-primary-t-25;
+            background: $colors-neutral-light;
         }
     }​   
     span.ag-header-icon.ag-sort-order {
@@ -349,7 +394,7 @@
 
     .note-modal,
     .show-attachment-modal {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .tooltip-cell {
@@ -403,7 +448,9 @@
 
     &:not(.gird-selected-row):hover {
         z-index: 5;
-        background: $colors-base-primary-v-low-t-05;
+        font-family: $crimson-pro-bold;
+        background-color: $colors-neutral-white;
+        color: $colors-neutral-black;
     }
 
     .ag-cell-focus,
@@ -412,4 +459,8 @@
         outline: none !important;
         box-shadow: none !important;
     }
+}
+
+.ag-dnd-dragging {
+    background-color: black !important;
 }

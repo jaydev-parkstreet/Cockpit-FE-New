@@ -34,6 +34,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() isAllItemsSelected: boolean = false;
   @Input() disabled: boolean = false;
   @Input() isIndeterminate: boolean = false;
+
   isOpen: boolean = false;
   searchText: string = '';
   isAllSelected: boolean = false;

@@ -60,7 +60,8 @@ import { AgGridModule } from 'ag-grid-angular'
     CardLayoutDetailsComponent,
     ProductSummaryDimensionsCardComponent,
     CmpTabGroupComponent,
-    SummaryGridComponent
+    SummaryGridComponent,
+    CmpButtonComponent
   ]
 })
 export class SharedModule { }

@@ -3,6 +3,8 @@
 @import '../../../../styles/variables';
 
 .product-management {
+    background: $colors-neutral-light-v-low;
+    padding-top: 8px;
     .header-background {
         background-color: $colors-neutral-black;
         color: $colors-neutral-white;
@@ -11,35 +13,32 @@
     }
 
     .product-tool-container {
-        background-color: $colors-neutral-white;
         color: $colors-neutral-black;
         display: flex;
         flex-direction: column;
-
+        margin: 8px 16px 0;
+        padding-bottom: 16px;
         .form-container {
             display: flex;
             justify-content: space-between;
 
             .psi-form {
                 flex: 1;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             }
 
             .headers-container {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                margin-bottom: 8px;
+
+                p {
+                    margin: 0;
+                }
             }
 
             .product-details-header,
             .codes-column {
                 width: 100%;
-                text-align: center;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 background-color: white;
-                padding: 10px;
-                margin: 0;
-                box-shadow: 0px 4px 8px rgba(74, 74, 74, 0.15);
+                padding: 14px 16px;
                 font-family: "Montserrat-Regular";
                 font-style: normal;
                 font-weight: 400;
@@ -58,7 +57,6 @@
 .form-wrapper {  
             .form-container {
                 padding: 0px;
-                background-color: #EDEDED;
 
                 .form-validation {
                     position: relative;
@@ -84,7 +82,6 @@
                     border-radius: 8px;
 
                     .form-group {
-                        margin-top: 10px;
                         .seperator {
                             text-align: center;
                             font-size: 14px;
@@ -101,7 +98,7 @@
 
                         .form-field {
                             margin-bottom: 16px;
-
+                            background: $colors-neutral-light-v-low;
                             .row {
                                 display: flex;
                                 flex-direction: row;
@@ -133,6 +130,10 @@
                                     margin-bottom: 10px;
                                     display: flex;
                                     flex-wrap: wrap;
+
+                                    .field-group {
+                                        margin-bottom: 16px;
+                                    }
                                     label,
                                     input,
                                     .full-width{
@@ -141,6 +142,12 @@
                                     .dimension{
                                         padding-right: 16px;
                                         width: 50%;
+                                        margin-bottom: 16px;
+
+                                        label {
+                                            padding-left: 16px;
+                                            margin-bottom: 6px;
+                                        }
                                     }
                                     .dimension-sub-tittle{
                                         width: 100%;
@@ -149,11 +156,21 @@
                                         font-weight: 500;
                                         font-family: "Montserrat-Medium";
                                         p{
-                                            margin-top: 16px;
-                                            margin-bottom: 8px;
+                                            margin: 16px 0 24px 0;
                                         }
                                     }
+
+                                    .input-dropdown {
+                                        margin-bottom: 4px;
+                                    }
                                     
+                                    .codes-buttons {
+                                        margin-bottom: 16px;
+
+                                        label {
+                                            padding-left: 16px;
+                                        }
+                                    }
                                 }
                                 .right-main{
                                     display: flex;
@@ -185,16 +202,14 @@
                 }
 
                 label {
-                    display: inline-block;
+                    display: block;
                     max-width: 100%;
-                    color: #232323;
+                    color: $colors-neutral-black;
                     font-size: 12px;
                     font-weight: normal;
-                    margin-top: 16px;
-                    margin-bottom: 0;
                     font-family: $montserrat-regular;
                     padding-left: 8px;
-                    margin-bottom: 8px;
+                    line-height: 16px;
                 }
 
                 label.ps-required-asterisk::before {
@@ -218,27 +233,31 @@
                     font-size: 12px;
                     font-family: $montserrat-regular;
 
-                    &:focus-within {
-                        border-radius: 8px;
-                        border: 2px solid $colors-v2-base-secondary-v-medium;
+                    &:hover {
+                        outline: 2px solid $colors-neutral-dark;
+                        border: none;
+                    }
+
+                    &:focus {
+                        outline: 2px solid $colors-v2-base-secondary-v-medium;
+                        border: none;
                     }
 
                     &.ps-required-asterisk {
-                        background-color: #FFE3E3 !important;
+                        background-color: $colors-v2-base-error-t-10;
+                        outline: 2px solid $colors-v2-base-error;
+                        border: none;
 
                     }
+
                     &:disabled {
-                        background-color: #fff2f1;
+                        background-color: $colors-v2-base-primary-v-low-t-05;
                         cursor: not-allowed;
                     }
                 }
 
-                input:hover {
-                    border-radius: 8px;
-                    border: 2px solid $colors-neutral-dark;
-                }
-
                 .error-message {
+                    margin-top: 4px;
                     color: #c50000;
                     font-size: 12px;
                     background-image: url(../../../../../src/assets/images/high-importance-2.svg) !important;
@@ -249,57 +268,8 @@
                     display: block;
                 }
             }
-        
-    button {
-        background-color: #e74536;
-        width: 114px;
-        height: 40px;
-        color: #fff;
-        font-family: "CrimsonPro-Bold";
-        font-size: 16px;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #cbcbcb;
-        font-weight: 700;
-        border-radius: 8px;
-        float: right;
-    }
-
-    /* Hover state */
-    button:hover {
-        color: #fff;
-        background-color: #de1300;
-        outline: 0;
-        border-color: transparent;
-        cursor: pointer;
-    }
-
-    .cancel {
-        background-color: white;
-        width: 114px;
-        height: 40px;
-        color: #232323;
-        font-family: "CrimsonPro-Bold";
-        font-size: 16px;
-        padding: 0;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #cbcbcb;
-        font-weight: 700;
-        border-radius: 8px;
-        margin-right: 10px !important;
-
-        &:hover {
-
-            background-color: rgba(203, 203, 203, 0.1);
-            color: #232323;
-            border: 1px solid #cbcbcb;
         }
-
-    }
-}
 .c-checkbox {
-    margin-bottom: 20px;
     text-align: left;
 
     &.inline {

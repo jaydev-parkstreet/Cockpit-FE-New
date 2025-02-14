@@ -259,6 +259,21 @@ COLORS
   background: $colors-neutral-light
 }
 
+.u-bg-v2-base-success {
+  background: $colors-v2-base-success;
+}
+.u-bg-v2-base-warinig {
+  background: $colors-v2-base-warning;
+}
+.u-bg-v2-base-primary {
+  background: $colors-v2-base-secondary;
+}
+.u-bg-v2-neutral-light {
+  background: $colors-neutral-light;
+}
+.u-bg-v2-base-warinig-v-low {
+  background: $colors-v2-base-warning-v-low;
+}
 @media (max-width: $screen-xs-max) {
   // 767px and below
 

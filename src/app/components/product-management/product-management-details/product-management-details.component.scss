@@ -5,13 +5,14 @@
 
 
 .product-tool-details {
-    background-color: $colors-neutral-light;
-    margin-bottom: 0px;
-    padding: 10px;
+    background-color: $colors-neutral-light-v-low;
+    padding-top: 8px;
+    margin-bottom: 16px;
     font-family:$crimson-pro-regular;
 
     .product-tool-details-container {
-        padding: 0 16px;
+        margin: 8px 16px 0;
+        padding-bottom: 16px;
         font-weight: 500;
         font-size: 14px;
 
@@ -22,13 +23,18 @@
             margin-top: 8px;
 
             .back-link {
-                color: $colors-neutral-black;
+                color: $colors-neutral-dark;
                 font-family: $montserrat-regular !important;
+                text-decoration: underline;
+                margin-left: 4px;
+                
+                .link-text {
+                    margin-left: 4px;
+                }
 
                 &:hover {
                     .link-text {
-                        color: $colors-base-primary-v-low;
-                        text-decoration: underline;
+                        color: $colors-neutral-black;
                         cursor: pointer;
                     }
                 }
@@ -37,10 +43,9 @@
         }
 
         .product-tool-details-wrapper {
-            padding: 16px 0;
             font-size: 12px;
             font-weight: 400;
-
+            margin-top: 8px;
 
             .header-widget {
                 height: 48px;
@@ -131,7 +136,7 @@
                         .col-type,
                         .col-code {
                             padding: 8px;
-                            background-color: $colors-base-primary-v-low-t-10;
+                            background-color: $colors-v2-base-primary-v-low-t-10;
                             font-weight: bold;
                             height: 32px;
                         }
@@ -141,7 +146,7 @@
 
                             .ftleft {
                                 padding-right: 8px;
-                                border-left: 1px solid $colors-neutral-light;
+                                border-left: 1px solid $colors-neutral-light-v-low;
                             }
                         }
 

@@ -8,9 +8,8 @@
     font-size: 16px;
     font-weight: normal;
     border-radius: 8px;
-    outline: none;
-    padding: 0 16px;
-    margin-right: 16px;
+    outline: 0;
+    padding: 8px 32px;
 
     &.md {
         height: 32px;
@@ -20,6 +19,7 @@
         height: 24px;
         font-size: 12px;
         border-radius: 4px;
+        font-family: $montserrat-regular;
     }
 
     &.xs {
@@ -39,55 +39,46 @@
     }
 
     &.primary {
-        background-color: #e74536;
-        color: rgb(255, 255, 255);
-        box-shadow: 0px 2px 8px 0px rgba(135, 0, 0, 0.15);
+        background: $colors-v2-base-primary;
+        color: $colors-neutral-white;
 
         &:hover {
-            background: #e74536
+            background: $colors-v2-base-primary-v-high;
         }
 
         &:focus {
-            background: $colors-base-primary;
-            outline: 2px solid rgb(52, 149, 215);
-        }
-
-        &:active {
-            background: $colors-base-primary;
-            border: 1px #e74536;
-            box-shadow: inset 1px 2px 1px 1px #e74536;
+            outline: 2px solid $colors-v2-base-secondary-v-medium;
         }
 
         &:disabled {
-            background: #e74536;
-            color: rgb(203, 203, 203);
+            background: $colors-v2-base-primary;
+            color: $colors-neutral-light;
         }
     }
 
     &.secondary {
-        background-color: $colors-neutral-white;
-        border: 1px solid rgb(203, 203, 203);
-        color: rgb(35, 35, 35);
-        box-shadow: 0px 2px 8px 0px rgba(74, 74, 74, 0.15);
+        background: $colors-neutral-white;
+        border: 1px solid $colors-neutral-light;
+        color: $colors-neutral-dark;
 
         &:hover {
-            background: rgb(203, 203, 203);
+            background: $colors-neutral-light-t-10;
         }
 
         &:focus {
-            background: rgba(255, 255, 255, 0.1);
-            outline: 2px solid rgb(52, 149, 215);
+            outline: 2px solid $colors-v2-base-secondary-v-medium;
         }
 
         &:active {
-            background: rgb(255, 255, 255);
-            border: 1px solid rgb(203, 203, 203);
-            box-shadow: inset 1px 2px 1px 1px rgba(235, 236, 237, 0.54);
+            box-shadow: none;
         }
 
         &:disabled {
-            background: rgba(255, 255, 255, 0.5);
-            color: rgb(203, 203, 203);
+            color: $colors-neutral-light;
+        }
+
+        &.filter-active {
+            background-color: $colors-v2-base-primary-v-low-t-05;
         }
     }
 
@@ -100,6 +91,14 @@
     &:disabled:active {
         box-shadow: none;
         border: none;
+    }
+
+    .icon {
+        font-size: 20px;
+    }
+
+    &.w-lg {
+        width: 140px;
     }
 }
 
