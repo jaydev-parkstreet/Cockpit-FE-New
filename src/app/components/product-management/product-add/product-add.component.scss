@@ -3,6 +3,8 @@
 @import '../../../../styles/variables';
 
 .product-management {
+    background: $colors-neutral-light-v-low;
+    padding-top: 8px;
     .header-background {
         background-color: $colors-neutral-black;
         color: $colors-neutral-white;
@@ -11,35 +13,32 @@
     }
 
     .product-tool-container {
-        background-color: $colors-neutral-white;
         color: $colors-neutral-black;
         display: flex;
         flex-direction: column;
-
+        margin: 8px 16px 0;
+        padding-bottom: 16px;
         .form-container {
             display: flex;
             justify-content: space-between;
 
             .psi-form {
                 flex: 1;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             }
 
             .headers-container {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                margin-bottom: 8px;
+
+                p {
+                    margin: 0;
+                }
             }
 
             .product-details-header,
             .codes-column {
                 width: 100%;
-                text-align: center;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 background-color: white;
-                padding: 10px;
-                margin: 0;
-                box-shadow: 0px 4px 8px rgba(74, 74, 74, 0.15);
+                padding: 14px 16px;
                 font-family: "Montserrat-Regular";
                 font-style: normal;
                 font-weight: 400;
@@ -58,7 +57,6 @@
 .form-wrapper {  
             .form-container {
                 padding: 0px;
-                background-color: #EDEDED;
 
                 .form-validation {
                     position: relative;
@@ -84,7 +82,6 @@
                     border-radius: 8px;
 
                     .form-group {
-                        margin-top: 10px;
                         .seperator {
                             text-align: center;
                             font-size: 14px;
@@ -101,7 +98,7 @@
 
                         .form-field {
                             margin-bottom: 16px;
-
+                            background: $colors-neutral-light-v-low;
                             .row {
                                 display: flex;
                                 flex-direction: row;
@@ -133,6 +130,10 @@
                                     margin-bottom: 10px;
                                     display: flex;
                                     flex-wrap: wrap;
+
+                                    .field-group {
+                                        margin-bottom: 16px;
+                                    }
                                     label,
                                     input,
                                     .full-width{
@@ -185,16 +186,14 @@
                 }
 
                 label {
-                    display: inline-block;
+                    display: block;
                     max-width: 100%;
-                    color: #232323;
+                    color: $colors-neutral-black;
                     font-size: 12px;
                     font-weight: normal;
-                    margin-top: 16px;
-                    margin-bottom: 0;
                     font-family: $montserrat-regular;
                     padding-left: 8px;
-                    margin-bottom: 8px;
+                    line-height: 16px;
                 }
 
                 label.ps-required-asterisk::before {

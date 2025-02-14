@@ -13,7 +13,7 @@
                                 </div>
                                 <div class="field-container">
                                     <ng-container *ngFor="let field of formConfig.schema">
-                                        <ng-container *ngIf="!field.isCode && !field.isDimension">
+                                        <div *ngIf="!field.isCode && !field.isDimension" class="d-flex flex-column w-100 field-group">
                                             <label *ngIf="field?.type != 'checkbox'" [for]="field.name"
                                                 [ngClass]="{'ps-required-asterisk': field.required}"
                                                 [textContent]="field.label"></label>
@@ -48,7 +48,7 @@
                                             <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                                                 <span *ngIf="productForm.get(field.name)?.errors?.required">Required</span>
                                             </div>
-                                        </ng-container>
+                                        </div>
                                     </ng-container>
                                 </div>
                                 <div class="form-submit-button">
