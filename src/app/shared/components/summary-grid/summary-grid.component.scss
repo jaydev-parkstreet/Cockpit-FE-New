@@ -1,5 +1,5 @@
-@import "../../../../../src/styles/typography";
-@import "../../../../../src/styles/colors";
+@import '../../../scss/variables/typography';
+@import '../../../scss/variables/colors';
 @import '../../../scss/utilities/colors';
 @import '../../../scss/utilities/base';
 
@@ -117,8 +117,8 @@
     }
 
     .ag-header {
-        background-color: $ps-washed-gray;
-        color: $ps-black;
+        background-color: $colors-neutral-light;
+        color: $colors-neutral-dark;
         text-transform: uppercase;
 
         .ag-header-viewport {
@@ -224,7 +224,7 @@
 
     .attachments-notes {
         .note-count {
-            background: $colors-base-error;
+            background: $colors-v2-base-error;
             height: 12px;
             width: 13%;
             border-radius: 50px;
@@ -232,7 +232,7 @@
 
             p {
                 color: $colors-neutral-white;
-                font-family: $helvetica-medium;
+                font-family: $montserrat-medium;
                 font-weight: 500;
                 font-size: 10px;
                 position: absolute;
@@ -253,7 +253,7 @@
 
     .attachments-notes {
         .note-count {
-            background: $colors-base-error;
+            background: $colors-v2-base-error;
             height: 12px;
             width: 13%;
             border-radius: 50px;
@@ -261,7 +261,7 @@
 
             p {
                 color: $colors-neutral-white;
-                font-family: $helvetica-medium;
+                font-family: $montserrat-medium;
                 font-weight: 500;
                 font-size: 10px;
                 position: absolute;
@@ -324,11 +324,11 @@
     }
 
     .grid-selected-row {
-        background: $colors-base-primary-v-low-t-10;
+        background: $colors-v2-base-primary-v-low-t-10;
     }
 
     .ag-row:hover {
-        background: $colors-base-primary-v-low-t-05;
+        background: $colors-v2-base-primary-v-low-t-05;
     }
 
     .ag-overlay {
@@ -339,7 +339,7 @@
                 color: #a5a5a5;
                 font-size: 14px;
                 margin-top: 100px;
-                font-family: $helvetica-medium;
+                font-family: $montserrat-medium;
                 display: flex;
                 flex-direction: column;
 
@@ -432,7 +432,7 @@
             border-radius: 0px;
             background-color: $colors-neutral-black;
             color: $colors-neutral-white !important;
-            font-family: $helvetica-neue;
+            font-family: $montserrat-regular;
             font-size: 14px;
             text-align: center;
             margin-top: -6px;

@@ -32,11 +32,11 @@
   }
 
   &[readonly] {
-      background-color: $colors-base-primary-v-low-t-05;
+      background-color: $colors-v2-base-primary-v-low-t-05;
   }
 
   &.invalid {
-      background: $colors-base-primary-v-low-t-10;
-      border: 1px solid $colors-base-error;
+      background: $colors-v2-base-primary-v-low-t-10;
+      border: 1px solid $colors-v2-base-error;
   }
 }

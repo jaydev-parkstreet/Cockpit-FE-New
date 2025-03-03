@@ -1,6 +1,5 @@
-@import "../../../../../src/styles/typography";
-@import "../../../../../src/styles/colors";
-@import '../../../../styles/variables';
+@import "../../../scss/variables/typography";
+@import "../../../scss/variables/colors";
 
 .product-management {
     background: $colors-neutral-light-v-low;

@@ -3,6 +3,7 @@
 COLORS
 
 */
+
 @import '../variables/media-queries';
 @import '../variables/colors';
 
@@ -33,6 +34,7 @@ COLORS
 .u-neutral-light {
   color: $colors-neutral-light;
 }
+
 .u-neutral-dark {
   color: $colors-neutral-dark;
 }
@@ -44,11 +46,11 @@ COLORS
 
 /* Background Colors */
 
-.u-bg-primary  {
+.u-bg-primary {
   background-color: $colors-v2-base-primary !important;
 }
 
-.u-bg-secondary  {
+.u-bg-secondary {
   background-color: $colors-v2-base-secondary !important;
 }
 
@@ -79,4 +81,3 @@ COLORS
 .u-bg-neutral-white {
   background: $colors-neutral-white;
 }
-

@@ -1,6 +1,5 @@
-@import "../../../../styles/variables";
-@import "../../../../styles/colors";
-@import "../../../../styles/typography";
+@import "../../../scss/variables/typography";
+@import "../../../scss/variables/colors";
 @import "../../../scss/mixin/respond_to";
 
 .form-wrapper {
@@ -18,7 +17,7 @@
     .form-validation {
         margin-bottom: 24px;
         .validation-msg {
-            background-color: $colors-base-error;
+            background-color: $colors-v2-base-error;
             padding: 16px;
             font-family: $montserrat-regular;
             color: $colors-neutral-white;
@@ -102,7 +101,7 @@
 
                         &.ps-required-asterisk::before {
                             content: "*";
-                            color: $colors-base-error;
+                            color: $colors-v2-base-error;
                             font-size: 15px;
                             padding-right: 3px;
                             vertical-align: middle;

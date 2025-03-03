@@ -1,5 +1,5 @@
-@import '../../../../styles/colors';
-@import '../../../../styles/variables';
+@import '../../../scss/variables/typography';
+@import '../../../scss/variables/colors';
 
 .app-cmp-button {
     height: 40px;
@@ -28,13 +28,13 @@
     }
 
     &.primary-border {
-        border: 1px solid $colors-base-primary;
+        border: 1px solid $colors-v2-base-primary;
         background-color: $colors-neutral-white;
-        color: $colors-base-primary;
+        color: $colors-v2-base-primary;
 
         &:disabled {
-            border: 1px solid $colors-base-primary-t-50;
-            color: $colors-base-primary-t-50;
+            border: 1px solid $colors-v2-base-primary-t-50;
+            color: $colors-v2-base-primary-t-50;
         }
     }
 
@@ -85,7 +85,7 @@
     &.active,
     &.active:active,
     &.active:focus {
-        background: $colors-base-primary-v-low-t-05;
+        background: $colors-v2-base-primary-v-low-t-05;
     }
 
     &:disabled:active {

@@ -1,5 +1,5 @@
-@import '../../../../styles/variables';
-@import '../../../../styles/colors';
+@import '../../../scss/variables/typography';
+@import '../../../scss/variables/colors';
 
 .input-dropdown {
     position: relative;
@@ -65,7 +65,7 @@
     }
 
     .text-overflow {
-        font-family: $helvetica-neue;
+        font-family: $montserrat-regular;
         font-size: 12px;
         overflow: hidden;
         text-overflow: ellipsis;
