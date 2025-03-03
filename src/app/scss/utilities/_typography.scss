@@ -29,17 +29,17 @@
 // As per zero height
 
 @mixin font-bold {
-  font-family: $helvetica-bold;
+  font-family: $montserrat-bold;
   font-weight: bold;
 }
 
 @mixin font-medium {
-  font-family: $helvetica-medium;
+  font-family: $montserrat-medium;
   font-weight: 500;
 }
 
 @mixin font-regular {
-  font-family: $helvetica-neue;
+  font-family: $montserrat-regular;
   font-weight: 400;
 }
 
@@ -106,7 +106,7 @@
 }
 
 [class^='typography-'][class*='-error-'] {
-  color: $colors-base-error;
+  color: $colors-v2-base-error;
 }
 
 [class^='typography-'][class*='-light-'] {
@@ -114,15 +114,15 @@
 }
 
 [class^='typography-'][class*='-primary-'] {
-  color: $colors-base-primary;
+  color: $colors-v2-base-primary;
 }
 
 [class^='typography-'][class*='-success-'] {
-  color: $colors-base-success;
+  color: $colors-v2-base-success;
 }
 
 [class^='typography-'][class*='-warning-'] {
-  color: $colors-base-warning;
+  color: $colors-v2-base-warning;
 }
 
 [class^='typography-'],[class*='-white-'] {
@@ -147,7 +147,7 @@
   cursor: pointer;
 
   &:hover {
-    color: $colors-base-primary;
+    color: $colors-v2-base-primary;
     text-decoration: underline;
   }
 }

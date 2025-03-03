@@ -34,7 +34,7 @@
 
     .tooltip-text {
         display: none;
-        color: $ps-white;
+        color: $colors-neutral-white;
         font-family: $montserrat-medium;
         font-size: 12px;
         position: absolute;
@@ -69,7 +69,7 @@
     .tooltip-text::-webkit-scrollbar-thumb {
         -webkit-border-radius: 3px;
         border-radius: 3px;
-        background: $ps-white;
+        background: $colors-neutral-white;
     }
 
     &::-webkit-scrollbar {
@@ -80,7 +80,7 @@
     &::-webkit-scrollbar-thumb {
         -webkit-border-radius: 5px !important;
         border-radius: 5px !important;
-        background: $ps-white !important;
+        background: $colors-neutral-white !important;
         padding: 10px;
         background-clip: padding-box;
     }
@@ -148,9 +148,9 @@
 
 
 .warning-staus {
-    background: $colors-base-warning !important;
+    background: $colors-v2-base-warning !important;
 }
 
 .base-success {
-    background: $colors-base-success !important;
+    background: $colors-v2-base-success !important;
 }
