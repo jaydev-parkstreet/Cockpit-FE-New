@@ -208,17 +208,22 @@
                     font-size: 12px;
                     font-weight: normal;
                     font-family: $montserrat-regular;
-                    padding-left: 8px;
+                    padding-left: 16px;
                     line-height: 16px;
+
+                    &.ps-required-asterisk {
+                        padding: 0;
+                    }
+
+                    &.ps-required-asterisk::before {
+                        content: "*";
+                        color: #c50000;
+                        font-size: 15px;
+                        padding: 0 2px 0 8px;
+                        vertical-align: middle;
+                    }
                 }
 
-                label.ps-required-asterisk::before {
-                    content: "*";
-                    color: #c50000;
-                    font-size: 15px;
-                    padding-right: 2px;
-                    vertical-align: middle;
-                }
 
                 input {
                     display: block;
@@ -232,7 +237,8 @@
                     border: 1px solid #cbcbcb;
                     font-size: 12px;
                     font-family: $montserrat-regular;
-
+                    caret-color: $colors-v2-base-secondary-v-medium;
+                    
                     &:hover {
                         outline: 2px solid $colors-neutral-dark;
                         border: none;
@@ -287,11 +293,7 @@
         position: relative;
         cursor: pointer;
         line-height: 20px;
-        color: rgb(35, 35, 35) !important;
-        font-size: 14px !important;
-        margin-top: 8px !important;
-        margin-left: 8px !important;
-        font-weight: 700 !important;
+        padding: 0 !important;
     }
 
     input {
