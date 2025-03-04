@@ -1,0 +1,28 @@
+<div class="psi-crud-form">
+    <div class=" col-sm-12">
+        <div class=" col-sm-6 lt-c">
+            <app-psi-page-column-header
+                [headerTitle]="leftHeaderTitle">
+            </app-psi-page-column-header>
+        </div>
+        <div class=" col-sm-6 rt-c">
+            <app-psi-page-column-header
+                [headerTitle]="rightHeaderTitle">
+            </app-psi-page-column-header>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div *ngFor="let field of crudFieldConfig.productSection">
+            <div *ngIf="field.type === 'multiselect-dropdown'">
+                <app-cmp-input-dropdown
+                    [label]="field.label"
+                    [settings]="field.inputSetting"
+                    [filteredItems]="field.options">
+                </app-cmp-input-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        Dimensions
+    </div>
+</div>
