@@ -30,6 +30,8 @@ export class ProductAddComponent implements OnInit {
   ) { }
 
   // Flags and configuration properties
+  leftTitle: string;
+    productTitle: string;
   isErrorRedirect: boolean = false;
   title: any;
   clientId: any
@@ -124,6 +126,8 @@ export class ProductAddComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.leftTitle = 'PRODUCT DETAILS';
+    this.productTitle = 'Dimensions';
     this.permissions = this.route.snapshot.data['permissions'];
     if (!this.permissions.permissions.Create) {
       this.router.navigate(['product-management']);

@@ -1,7 +1,17 @@
 <div class="product-management header-background">
-    <app-header-tool titleText="Product Tool" titleIcon="fas fa-file-invoice-dollar">
+    <app-header-tool
+        titleText="Product Management System"
+        titleIcon="fas fa-file-invoice-dollar">
     </app-header-tool>
-    <div class="product-tool-container form-wrapper">
+
+    <div class="form-container col-sm-12">
+        <app-psi-crud-form
+          [leftHeaderTitle]="leftTitle"
+          [rightHeaderTitle]="productTitle">
+      </app-psi-crud-form>
+    </div>
+
+    <!-- <div class="product-tool-container form-wrapper">
         <div class="form-container">
             <div class="psi-form">
                 <div class="form-group">
@@ -161,5 +171,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
