@@ -1,0 +1,4 @@
+<label [for]="field.name" class="w-100" [textContent]="field.label"></label>
+<input *ngIf="field?.type == 'text'"  class="w-100"
+    [type]="field.type" [id]="field.name" [placeholder]="field.placeholder"
+    [required]="field.required" />

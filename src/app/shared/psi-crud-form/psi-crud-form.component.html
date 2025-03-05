@@ -13,54 +13,51 @@
     </div>
     <div class="col-sm-6">
         <div *ngFor="let field of crudFieldConfig.productSection">
-            <div *ngIf="field.type === 'multiselect-dropdown'">
+            <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
                 <app-cmp-input-dropdown
                     [label]="field.label"
+                    [showSelectAll]="false"
+                    [showCheckboxes]="false"
+                    [allowSingleSelect]="true"
                     [settings]="field.inputSetting"
                     [filteredItems]="field.options">
                 </app-cmp-input-dropdown>
             </div>
-            <div *ngIf="field.type === 'text'">
-                <label [for]="field.name"
-                    [textContent]="field.label"></label>
-                <input *ngIf="field?.type == 'text'" [type]="field.type"
-                    [id]="field.name"
-                    [placeholder]="field.placeholder" [required]="field.required" />
+            <div *ngIf="field.type === 'text'" class="d-flex flex-column w-100 field-group">
+                <app-psi-input-text-field
+                [field]="field"
+                ></app-psi-input-text-field>
             </div>
         </div>
     </div>
     <div class="col-sm-6">
         <div *ngFor="let field of crudFieldConfig.dimensionsSection">
-            <div *ngIf="field.type === 'multiselect-dropdown'">
+            <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
                 <app-cmp-input-dropdown
                     [label]="field.label"
                     [settings]="field.inputSetting"
                     [filteredItems]="field.options">
                 </app-cmp-input-dropdown>
             </div>
-            <div *ngIf="field.type === 'text'">
-                <label [for]="field.name"
-                    [textContent]="field.label"></label>
-                <input *ngIf="field?.type == 'text'" [type]="field.type"
-                    [id]="field.name"
-                    [placeholder]="field.placeholder" [required]="field.required" />
+            <div *ngIf="field.type === 'text'" class="d-flex flex-column w-100 field-group">
+                <app-psi-input-text-field
+                [field]="field"
+                ></app-psi-input-text-field>
             </div>
         </div>
         <br>
         <div *ngFor="let field of crudFieldConfig.codeSection">
-            <div *ngIf="field.type === 'multiselect-dropdown'">
+            <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
                 <app-cmp-input-dropdown
                     [label]="field.label"
                     [settings]="field.inputSetting"
                     [filteredItems]="field.options">
                 </app-cmp-input-dropdown>
             </div>
-            <div *ngIf="field.type === 'text'">
-                <label [for]="field.name"
-                    [textContent]="field.label"></label>
-                <input *ngIf="field?.type == 'text'" [type]="field.type"
-                    [id]="field.name"
-                    [placeholder]="field.placeholder" [required]="field.required" />
+            <div *ngIf="field.type === 'text'" class="d-flex flex-column w-100 field-group">
+                <app-psi-input-text-field
+                [field]="field"
+                ></app-psi-input-text-field>
             </div>
         </div>
     </div>
