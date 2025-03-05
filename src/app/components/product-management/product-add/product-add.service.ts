@@ -10,7 +10,7 @@ export class ProductAddService {
 
   getCrudFieldConfig(crudFiltersList) {
     return {
-      productSection: [
+      rightSection: [
         {
           key: 'client_id',
           label: 'Supplier',
@@ -44,8 +44,8 @@ export class ProductAddService {
           isDisabled: false,
           inputSetting: this.commonService.getDropdownConfig('Select Sub-Brand Product', true)
         },
-        { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
-        { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
+        { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true, colClass: 'col-xs-12'},
+        { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false, colClass: 'col-xs-12'},
         {
           key: 'group',
           label: 'Group',
@@ -90,8 +90,8 @@ export class ProductAddService {
           isDisabled: false,
           inputSetting: this.commonService.getDropdownConfig('Select Type', true)
         },
-        { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false },
-        { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance' },
+        { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false, colClass: 'col-xs-12', },
+        { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', colClass: 'col-xs-12'},
         {
           key: 'is_organic',
           label: 'Organic',
@@ -115,30 +115,31 @@ export class ProductAddService {
           inputSetting: this.commonService.getDropdownConfig('Select Type', true)
         }
       ],
+
+      leftSection: [
+        { type: 'text', name: 'unit_length', label: 'Length', placeholder: 'Enter Length', required: false, isDimension: true, dimensionType: 'unit', colClass: 'col-xs-6'},
+        { type: 'text', name: 'unit_width', label: 'Width', placeholder: 'Enter Width', required: false, isVisible: true, isDimension: true, dimensionType: 'unit', colClass: 'col-xs-6' },
+        { type: 'text', name: 'unit_height', label: 'Height', placeholder: 'Enter Height', required: false, isDimension: true, dimensionType: 'unit', colClass: 'col-xs-6' },
+        { type: 'text', name: 'unit_weight', label: 'Weight', placeholder: 'Enter Weight', required: false, isDimension: true, dimensionType: 'unit' , colClass: 'col-xs-6'},
+        { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false, isDimension: true, dimensionType: 'pallet' , colClass: 'col-xs-6' },
+        { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false, isDimension: true, dimensionType: 'pallet' , colClass: 'col-xs-6' },
+        { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false, isDimension: true, dimensionType: 'pallet', colClass: 'col-xs-6' },
+        { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false, isDimension: true, dimensionType: 'pallet', colClass: 'col-xs-6' },
+        { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false, isDimension: true, dimensionType: 'layer' , colClass: 'col-xs-6'},
+        { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false, isDimension: true, dimensionType: 'layer', colClass: 'col-xs-6' },
+        { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false, isDimension: true, dimensionType: 'layer' , colClass: 'col-xs-6'},
+      ],
   
-      codeSection: [
+      lastSection: [
         { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: 'Product Code', isCode: true, disabled: true },
         { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isCode: true },
         { type: 'text', name: 'scc_code', label: 'SCC Code', placeholder: 'SCC Code', isCode: true },
         { type: 'text', name: 'system_id', label: 'Supplier Reference ID', placeholder: 'Supplier Reference ID', isCode: true }
       ],
-  
-      dimensionsSection: [
-        { type: 'text', name: 'unit_length', label: 'Length', placeholder: 'Enter Length', required: false, isDimension: true, dimensionType: 'unit' },
-        { type: 'text', name: 'unit_width', label: 'Width', placeholder: 'Enter Width', required: false, isVisible: true, isDimension: true, dimensionType: 'unit' },
-        { type: 'text', name: 'unit_height', label: 'Height', placeholder: 'Enter Height', required: false, isDimension: true, dimensionType: 'unit' },
-        { type: 'text', name: 'unit_weight', label: 'Weight', placeholder: 'Enter Weight', required: false, isDimension: true, dimensionType: 'unit' },
-        { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false, isDimension: true, dimensionType: 'pallet' },
-        { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false, isDimension: true, dimensionType: 'pallet' },
-        { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false, isDimension: true, dimensionType: 'pallet' },
-        { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false, isDimension: true, dimensionType: 'pallet' },
-        { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false, isDimension: true, dimensionType: 'layer' },
-        { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false, isDimension: true, dimensionType: 'layer' },
-        { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false, isDimension: true, dimensionType: 'layer' },
-      ],
-
-      cancelBtnLabel: "Cancel",
-      submitBtnLabel: "Submit"
+      btnLabel: [
+        { type: 'Btn', label: 'Cancel', class: 'secondary w-lg'},
+        { type: 'Btn', label: 'Submit', class: 'primary w-lg'}
+      ]
     };
   }
 }

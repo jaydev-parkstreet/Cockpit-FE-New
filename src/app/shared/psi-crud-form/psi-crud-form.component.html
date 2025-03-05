@@ -12,8 +12,8 @@
         </div>
     </div>
     <div class="col-sm-6 back-color p-0">
-        <div *ngFor="let field of crudFieldConfig.productSection">
-            <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
+        <div *ngFor="let field of crudFieldConfig.rightSection">
+            <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'multiselect-dropdown'">
                 <app-cmp-input-dropdown
                     [label]="field.label"
                     [showSelectAll]="false"
@@ -23,52 +23,49 @@
                     [filteredItems]="field.options">
                 </app-cmp-input-dropdown>
             </div>
-            <div *ngIf="field.type === 'text'" class="d-flex flex-column w-100 field-group">
+            <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'text'">
                 <app-psi-input-text-field
-                [field]="field"
-                ></app-psi-input-text-field>
+                    [field]="field">
+                </app-psi-input-text-field>
             </div>
         </div>
     </div>
     <div class="col-sm-6 back-color p-0">
-        <div *ngFor="let field of crudFieldConfig.dimensionsSection">
-            <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
+        <div *ngFor="let field of crudFieldConfig.leftSection">
+            <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'multiselect-dropdown'">
                 <app-cmp-input-dropdown
                     [label]="field.label"
                     [settings]="field.inputSetting"
                     [filteredItems]="field.options">
                 </app-cmp-input-dropdown>
             </div>
-            <div *ngIf="field.type === 'text'" class="d-flex flex-column w-100 field-group">
+            <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'text'">
                 <app-psi-input-text-field
                 [field]="field"
                 ></app-psi-input-text-field>
             </div>
         </div>
-        <div *ngFor="let field of crudFieldConfig.codeSection">
-            <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
+        <div *ngFor="let field of crudFieldConfig.lastSection">
+            <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'multiselect-dropdown'">
                 <app-cmp-input-dropdown
                     [label]="field.label"
                     [settings]="field.inputSetting"
                     [filteredItems]="field.options">
                 </app-cmp-input-dropdown>
             </div>
-            <div *ngIf="field.type === 'text'" class="d-flex flex-column w-100 field-group">
+            <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'text'">
                 <app-psi-input-text-field
                 [field]="field"
                 ></app-psi-input-text-field>
             </div>
         </div>
     </div>
-    <div class="form-submit-button u-flex u-justify-flex-end u-pg-g-2">                                        
-        <app-cmp-button
-            [buttonText]="crudFieldConfig.cancelBtnLabel" 
-            [buttonClass]="'secondary w-lg'">
-        </app-cmp-button>
-
-        <app-cmp-button
-            [buttonText]="crudFieldConfig.submitBtnLabel" 
-            [buttonClass]="'primary w-lg'">
-        </app-cmp-button>
+    <div class="col-sm-6 u-flex justify-content-end">
+        <div class="u-pg-g-2 form-submit-button" *ngFor="let field of crudFieldConfig.btnLabel">
+            <app-cmp-button
+              [buttonText]="field.label"
+              [buttonClass]="field.class">
+            </app-cmp-button>
+        </div>
     </div>
 </div>
