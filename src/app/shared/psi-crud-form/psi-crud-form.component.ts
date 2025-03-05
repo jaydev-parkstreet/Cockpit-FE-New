@@ -16,6 +16,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
   @Output() onDropDownChange = new EventEmitter<any>();
   showError: any;
   formSubmitted: any;
+  @Output() formSubmit = new EventEmitter<any>();
   
   constructor() { }
 
@@ -34,6 +35,17 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
 
   isFieldInvalid(controlName: string): boolean {
     const control = this.form.get(controlName);
-    return control?.invalid && (this.showError || this.formSubmitted);
+    return control?.invalid && this.formSubmitted;
   }
+  onButtonClicked(event) {
+    if (event === "Submit") {
+      this.formSubmitted = true
+      this.formSubmit.emit(this.form);
+    }
+  }
+
+  onInputChange(field, value) {
+    this.form.get(field).setValue(value);
+  }
+  
 }

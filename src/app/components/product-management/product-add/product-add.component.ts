@@ -25,52 +25,52 @@ export class ProductAddComponent implements OnInit {
     permissions: any;
     sellectedData: any= {};
     @Output() updateFilters = new EventEmitter<any>();
-//   duplicate: boolean = false;
-  constructor(
-    private ProductAddService: ProductAddService,
-    private changeDetector: ChangeDetectorRef,
-  //   private simpleModalService: SimpleModalService,
-    public router: Router,
-  //   private dropdownService: InputDropdownService,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private productmanagementService: ProductManagementService,
-	// private spinner : NgxSpinnerService,
-    private commonService : CommonService
-  ) { }
+    duplicate: boolean = false;
+    constructor(
+      private ProductAddService: ProductAddService,
+      private changeDetector: ChangeDetectorRef,
+    //   private simpleModalService: SimpleModalService,
+      public router: Router,
+    //   private dropdownService: InputDropdownService,
+      private route: ActivatedRoute,
+      private formBuilder: FormBuilder,
+      private productmanagementService: ProductManagementService,
+    // private spinner : NgxSpinnerService,
+      private commonService : CommonService
+    ) { }
 
 //   // Flags and configuration properties
 
 //   isErrorRedirect: boolean = false;
 //   title: any;
-  clientId: any;
+    clientId: any;
 //   formConfig: any;
 //   showError: boolean = false;
-  activeDropdownId: string | null = null;
+    activeDropdownId: string | null = null;
 //   formSubmitted: boolean = false;
 //   dropdownData: any
 //   @Input() filterList?: any;
 //   filters: any[] = [];
-  brand: any[] = [];
-  sub_brand_product_id: any[] = [];
+    brand: any[] = [];
+    sub_brand_product_id: any[] = [];
 //   @Output() dropdownStateChange = new EventEmitter<{ fieldName: string, isDisabled: boolean }>();
-  isBrandDisabled: boolean = true;
-  isSubBrandDisabled: boolean = true;
+    isBrandDisabled: boolean = true;
+    isSubBrandDisabled: boolean = true;
 //   product: any = {};
 //   model: any = {}; 
 //   modelFormat: any = {}; 
 //   filtersList: any = {}; 
 //   permissions: any = {}; 
-  subBrandProducts: any[] = []; 
+    subBrandProducts: any[] = []; 
 //   caseUnitOfMeasure: any; 
-//   uniqueId: any; 
-//   productId:any
-//   edit: boolean = false; 
-  defaultValues = { 
-    compliance: 1,  
-    use_up: false,
-    case_unit_of_measure: null
-  };
+    uniqueId: any; 
+    productId:any;
+    edit: boolean = false; 
+    defaultValues = { 
+      compliance: 1,  
+      use_up: false,
+      case_unit_of_measure: null
+    };
   
 
 //   // Dropdown configuration
@@ -144,18 +144,18 @@ export class ProductAddComponent implements OnInit {
 //     if (!this.permissions.permissions.Create) {
 //       this.router.navigate(['product-management']);
 //     }
-//     let productId = this.route.snapshot.paramMap.get('id');
+    let productId = this.route.snapshot.paramMap.get('id');
 //     this.filterList = this.route.snapshot.data['filterList'];
 //     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
-//     this.duplicate = this.route.snapshot.data.isDuplicate || false;
+    this.duplicate = this.route.snapshot.data.isDuplicate || false;
 //     this.initializeFormConfig();
 //     this.filters = this.createFormSchema();
-//     if (productId) {
-//       this.edit =  true;
-//     }
-//     else {
-//       this.edit =  false;
-//     } 
+    if (productId) {
+      this.edit =  true;
+    }
+    else {
+      this.edit =  false;
+    } 
 
 //     if (productId) {
 //         this.getProductData(productId);
@@ -166,16 +166,25 @@ export class ProductAddComponent implements OnInit {
 //         this.showError = false;
 //       }
 //     });  
-//     const controls = {};
-//     this.formConfig.schema.forEach(field => {
-//       const isDisabled = field.disabled || false;
-//       const formControl = new FormControl(
-//         { value: '', disabled: isDisabled },
-//         field.required ? Validators.required : null
-//       );
-//       controls[field.name] = formControl;
-//     }); 
-//     // this.productForm = new FormGroup(controls);
+// Now, build the form controls based on the updated sections
+const controls = {};
+
+const allFields = [
+  ...this.crudFieldConfig.rightSection,
+  ...this.crudFieldConfig.lastSection,
+  ...this.crudFieldConfig.leftSection
+];
+
+allFields.forEach(field => {
+  const isDisabled = field.isDisabled || false;
+  const formControl = new FormControl(
+    { value: '', disabled: isDisabled }, 
+    field.isRequired ? Validators.required : []
+  );
+  
+  controls[field.name] = formControl;
+});
+this.productForm = new FormGroup(controls);
 //     this.model = this.productForm.value; 
 //     this.filtersList = this.filterList || {}; 
 //     this.caseUnitOfMeasure = this.filtersList.case_unit_of_measure || [];
@@ -369,55 +378,56 @@ export class ProductAddComponent implements OnInit {
 //     this.productForm.get(fieldName)?.setValue(isChecked ? '1' : '0');
 //   }
 
-//   onSubmit(form: FormGroup) {
-//     this.formSubmitted = true;
-//     this.showError = false;
-//     if (form.valid) {
+  onSubmit(form: FormGroup) {
+    console.log(form.value);
+    console.log(form.valid);
+    console.log(form);
+    if (form.valid) {
    
-//       const formattedModel = this.productmanagementService.formatModelProductTool(
-//         this.productForm.value,
-//         this.filtersList,
-//         this.subBrandProducts,
-//         this.edit,
-//         this.duplicate,
-//         this.uniqueId,
-//         this.productId
-//     );
-//       formattedModel.compliance = formattedModel.compliance ? 1 : 0;
-//       if (this.productForm.value.prod_type === 2 || this.productForm.value.prod_type === 4 || this.productForm.value.prod_type === 5) {
-//         formattedModel.sub_type = formattedModel.sub_type1;
-//       } else if (this.productForm.value.prod_type === 1 || this.productForm.value.prod_type === 3) {
-//         formattedModel.sub_type = formattedModel.sub_type2;
-//       }
+      const formattedModel = this.productmanagementService.formatModelProductTool(
+        form.value,
+        this.crudFiltersList,
+        this.subBrandProducts,
+        this.edit,
+        this.duplicate,
+        this.uniqueId,
+        this.productId
+    );
+      // formattedModel.compliance = formattedModel.compliance ? 1 : 0;
+      // if (this.productForm.value.prod_type === 2 || this.productForm.value.prod_type === 4 || this.productForm.value.prod_type === 5) {
+      //   formattedModel.sub_type = formattedModel.sub_type1;
+      // } else if (this.productForm.value.prod_type === 1 || this.productForm.value.prod_type === 3) {
+      //   formattedModel.sub_type = formattedModel.sub_type2;
+      // }
 
-//       delete formattedModel.sub_type1;
-//       delete formattedModel.sub_type2;
-//       delete formattedModel.isShowMore;
-//       this.productmanagementService.getProductManagementSystemSave(formattedModel).subscribe(response => {
-//         if (!response.hasError) {
-//           this.showError = false;
-//           let productId = response.product_id; 
-//           if (this.edit) {
-//             this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-exclamation-circle');
-//             this.router.navigateByUrl(`/product-management/${productId}`);
-//           } else {
-//             this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle');
-//             this.router.navigateByUrl(`/product-management/${productId}`);
-//           }
+      // delete formattedModel.sub_type1;
+      // delete formattedModel.sub_type2;
+      // delete formattedModel.isShowMore;
+      this.productmanagementService.getProductManagementSystemSave(formattedModel).subscribe(response => {
+        if (!response.hasError) {
+          // this.showError = false;
+          let productId = response.product_id; 
+          if (this.edit) {
+            this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-exclamation-circle');
+            this.router.navigateByUrl(`/product-management/${productId}`);
+          } else {
+            this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle');
+            this.router.navigateByUrl(`/product-management/${productId}`);
+          }
 
 
-//       } else {
-//         // this.spinner.hide();
-//         // this.confirmPopupOpen = false;
-//         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
-//         this.showError = true;
-//       }
-//   });  
-//     this.showError = false;
-//     } else {
-//       this.showError = true;
-//     }
-//   }
+      } else {
+        // this.spinner.hide();
+        // this.confirmPopupOpen = false;
+        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+        // this.showError = true;
+      }
+  });  
+    // this.showError = false;
+    } else {
+      // this.showError = true;
+    }
+  }
 
 //   isFieldInvalid(controlName: string): boolean {
 //     const control = this.productForm.get(controlName);
@@ -546,7 +556,6 @@ export class ProductAddComponent implements OnInit {
   updateBrandFilter() {
     if (this.brand && this.brand.length > 0) {
       this.crudFiltersList['brand'] = this.brand;
-      console.log(this.crudFieldConfig.rightSection);
       this.crudFieldConfig.rightSection[1].options = this.brand
       this.crudFieldConfig.rightSection[1].isDisabled = false
       this.crudFieldConfig = { ...this.crudFieldConfig };
@@ -767,7 +776,6 @@ export class ProductAddComponent implements OnInit {
           ...this.crudFieldConfig.lastSection,
           ...this.crudFieldConfig.leftSection
         ];
-        console.log(allFields);
         return allFields.some(field => field.name === fieldName);
       };
     

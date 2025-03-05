@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-psi-input-text-field',
@@ -7,10 +7,15 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PsiInputTextFieldComponent implements OnInit {
   @Input() field: any;
+  @Output() valueChanged: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onValueChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.valueChanged.emit(value);
+  }
 }

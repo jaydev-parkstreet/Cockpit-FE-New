@@ -12,7 +12,8 @@
         [sellectedData]="sellectedData"
         [crudFieldConfig]="crudFieldConfig"
         [form]="productForm"
-        (onDropDownChange)="onDropdownStateChange($event.field , $event.event)">
+        (onDropDownChange)="onDropdownStateChange($event.field , $event.event)"
+        (formSubmit)="onSubmit($event)">
     </app-psi-crud-form> 
  
 

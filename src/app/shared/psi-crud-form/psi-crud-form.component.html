@@ -34,6 +34,7 @@
             <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'text'">
                 <app-psi-input-text-field
                 [field]="field"
+                (valueChanged)="onInputChange(field.name, $event)"
                 ></app-psi-input-text-field>
                 <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                     <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
@@ -64,6 +65,7 @@
             <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'text'">
                 <app-psi-input-text-field
                 [field]="field"
+                (valueChanged)="onInputChange(field.name, $event)"
                 ></app-psi-input-text-field>
                 <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                     <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
@@ -95,6 +97,7 @@
             <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'text'">
                 <app-psi-input-text-field
                 [field]="field"
+                (valueChanged)="onInputChange(field.name, $event)"
                 ></app-psi-input-text-field>
                 <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                     <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
@@ -106,7 +109,8 @@
         <div class="u-pg-g-2 form-submit-button" *ngFor="let field of crudFieldConfig.btnLabel">
             <app-cmp-button
               [buttonText]="field.label"
-              [buttonClass]="field.class">
+              [buttonClass]="field.class"
+              (onClick)="onButtonClicked($event)">
             </app-cmp-button>
         </div>
     </div>

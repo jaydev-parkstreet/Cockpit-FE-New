@@ -4,4 +4,4 @@
 </div>
 <input *ngIf="field?.type == 'text'"  class="w-100"
     [type]="field.type" [id]="field.name" [placeholder]="field.placeholder"
-    [required]="field.required" />
+    [required]="field.required" (input)="onValueChange($event)"/>
