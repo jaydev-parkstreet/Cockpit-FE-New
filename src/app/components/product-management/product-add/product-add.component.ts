@@ -536,8 +536,8 @@ export class ProductAddComponent implements OnInit {
     if (this.sub_brand_product_id && this.sub_brand_product_id.length > 0) {
       this.crudFiltersList['sub_brand_product_id'] = this.sub_brand_product_id;
       this.subBrandProducts = this.sub_brand_product_id;
-      this.crudFieldConfig.productSection[2].options = this.sub_brand_product_id;
-      this.crudFieldConfig.productSection[2].isDisabled = false
+      this.crudFieldConfig.rightSection[2].options = this.sub_brand_product_id;
+      this.crudFieldConfig.rightSection[2].isDisabled = false
       this.crudFieldConfig = { ...this.crudFieldConfig };
       this.changeDetector.detectChanges();
     }
@@ -546,9 +546,9 @@ export class ProductAddComponent implements OnInit {
   updateBrandFilter() {
     if (this.brand && this.brand.length > 0) {
       this.crudFiltersList['brand'] = this.brand;
-      console.log(this.crudFieldConfig.productSection);
-      this.crudFieldConfig.productSection[1].options = this.brand
-      this.crudFieldConfig.productSection[1].isDisabled = false
+      console.log(this.crudFieldConfig.rightSection);
+      this.crudFieldConfig.rightSection[1].options = this.brand
+      this.crudFieldConfig.rightSection[1].isDisabled = false
       this.crudFieldConfig = { ...this.crudFieldConfig };
       this.changeDetector.detectChanges();
     }
@@ -763,9 +763,9 @@ export class ProductAddComponent implements OnInit {
     renderConditionalFields(selectedValue: any , crudFiltersList, productForm) {
       const fieldExists = (fieldName: string) => {
         const allFields = [
-          ...this.crudFieldConfig.productSection,
-          ...this.crudFieldConfig.codeSection,
-          ...this.crudFieldConfig.dimensionsSection
+          ...this.crudFieldConfig.rightSection,
+          ...this.crudFieldConfig.lastSection,
+          ...this.crudFieldConfig.leftSection
         ];
         console.log(allFields);
         return allFields.some(field => field.name === fieldName);
@@ -915,14 +915,14 @@ export class ProductAddComponent implements OnInit {
         ]
       };
     
-    // Remove fields from the correct sections (productSection, codeSection, dimensionsSection)
+    // Remove fields from the correct sections (rightSection, lastSection, leftSection)
     const removeFields = (fieldsToRemove: string[]) => {
       fieldsToRemove.forEach(fieldName => {
         // Remove from all relevant sections
         const allSections = [
-          this.crudFieldConfig.productSection,
-          this.crudFieldConfig.codeSection,
-          this.crudFieldConfig.dimensionsSection
+          this.crudFieldConfig.rightSection,
+          this.crudFieldConfig.lastSection,
+          this.crudFieldConfig.leftSection
         ];
   
         allSections.forEach(section => {
@@ -942,13 +942,13 @@ export class ProductAddComponent implements OnInit {
       });
     };
   
-      // Add form control to the correct sections (productSection, codeSection, dimensionsSection)
+      // Add form control to the correct sections (rightSection, lastSection, leftSection)
       const addFieldControl = (field) => {
         // Add field to all relevant sections
         // const allSections = [
-        //   this.crudFieldConfig.productSection,
-        //   this.crudFieldConfig.codeSection,
-        //   this.crudFieldConfig.dimensionsSection
+        //   this.crudFieldConfig.rightSection,
+        //   this.crudFieldConfig.lastSection,
+        //   this.crudFieldConfig.leftSection
         // ];
   
         // allSections.forEach(section => {
@@ -970,7 +970,7 @@ export class ProductAddComponent implements OnInit {
         }
       };
   
-      // Add validators to the form control (productSection, codeSection, dimensionsSection)
+      // Add validators to the form control (rightSection, lastSection, leftSection)
       const addValidators = (controlName: string) => {
         const control = productForm.get(controlName);
         if (control) {
@@ -980,9 +980,9 @@ export class ProductAddComponent implements OnInit {
   
         // Add validators to the field in all sections
         const allSections = [
-          this.crudFieldConfig.productSection,
-          this.crudFieldConfig.codeSection,
-          this.crudFieldConfig.dimensionsSection
+          this.crudFieldConfig.rightSection,
+          this.crudFieldConfig.lastSection,
+          this.crudFieldConfig.leftSection
         ];
   
         allSections.forEach(section => {
@@ -994,16 +994,16 @@ export class ProductAddComponent implements OnInit {
       };
   
     
-      // Update productSection, codeSection, and dimensionsSection based on the selected value
+      // Update rightSection, lastSection, and leftSection based on the selected value
       switch (selectedValue) {
         case 'Wine':
-          // Add fields to productSection
+          // Add fields to rightSection
           baseFields.forEach(field => {
             if (!fieldExists(field.name)) {
               if (field.isCode) {
-                this.crudFieldConfig.codeSection.push(field);
+                this.crudFieldConfig.lastSection.push(field);
               } else {
-                this.crudFieldConfig.productSection.push(field);
+                this.crudFieldConfig.rightSection.push(field);
               }
               addFieldControl(field);
               addValidators('sub_type');
@@ -1015,7 +1015,7 @@ export class ProductAddComponent implements OnInit {
           });
           conditionalFields.wine.forEach(field => {
             if (!fieldExists(field.name)) {
-              this.crudFieldConfig.productSection.push(field);
+              this.crudFieldConfig.rightSection.push(field);
               addFieldControl(field);
             }
           });
@@ -1024,16 +1024,16 @@ export class ProductAddComponent implements OnInit {
           baseFields.forEach(field => {
             if (!fieldExists(field.name)) {
               if (field.isCode) {
-                this.crudFieldConfig.codeSection.push(field);
+                this.crudFieldConfig.lastSection.push(field);
               } else {
-                this.crudFieldConfig.productSection.push(field);
+                this.crudFieldConfig.rightSection.push(field);
               }
               addFieldControl(field);
             }
           });
           conditionalFields.malt.forEach(field => {
             if (!fieldExists(field.name)) {
-              this.crudFieldConfig.productSection.push(field);
+              this.crudFieldConfig.rightSection.push(field);
               addFieldControl(field);
             }
           });
@@ -1042,13 +1042,13 @@ export class ProductAddComponent implements OnInit {
         case 'Spirits':
           baseFields.forEach(field => {
             if (!fieldExists(field.name)) {
-              this.crudFieldConfig.productSection.push(field);
+              this.crudFieldConfig.rightSection.push(field);
               addFieldControl(field);
             }
           });
           conditionalFields.spirits.forEach(field => {
             if (!fieldExists(field.name)) {
-              this.crudFieldConfig.productSection.push(field);
+              this.crudFieldConfig.rightSection.push(field);
               addFieldControl(field);
             }
           });
@@ -1056,7 +1056,7 @@ export class ProductAddComponent implements OnInit {
         case 'Bulk':
         case 'Other':
           if (!fieldExists('sub_type')) {
-            this.crudFieldConfig.productSection.push(
+            this.crudFieldConfig.rightSection.push(
               {
                 key: 'sub_type',
                 name: 'sub_type',
@@ -1072,7 +1072,7 @@ export class ProductAddComponent implements OnInit {
             );
           }
           if (!fieldExists('manufactured_location_address')) {
-            this.crudFieldConfig.productSection.push({
+            this.crudFieldConfig.rightSection.push({
               type: 'text',
               name: 'manufactured_location_address',
               label: 'Manufactured Location Address',
@@ -1083,7 +1083,7 @@ export class ProductAddComponent implements OnInit {
           break;
         default:
           if (!fieldExists('manufactured_location_address')) {
-            this.crudFieldConfig.productSection.push({
+            this.crudFieldConfig.rightSection.push({
               type: 'text',
               name: 'manufactured_location_address',
               label: 'Manufactured Location Address',
