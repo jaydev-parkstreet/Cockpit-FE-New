@@ -34,6 +34,7 @@ export class ProductManagementDetailsComponent implements OnInit {
     syncStatusFail: boolean;
     timerObj: any;
     permissions: any;
+    backToProductsTitle: string = 'Back to Products';
 
     constructor(
         private productManagementService: ProductManagementService,
@@ -269,11 +270,19 @@ export class ProductManagementDetailsComponent implements OnInit {
     fieldsDetail(row) {
         let response = [];
         if (row) {
+            response.push({
+                label: 'Supplier',
+                value: this.valueChecker(row.client_name)
+            });
             response.push({ label: 'Brand', value: this.valueChecker(row.brand) });
             response.push({
                 label: 'Sub-Brand Product',
                 value: this.valueChecker(row.sub_brand_product_name),
             });
+            response.push({
+                label: 'Description',
+                value: this.valueChecker(row.description)
+            })
             response.push({
                 label: 'Fanciful Name',
                 value: this.valueChecker(row.fanciful_name),
@@ -315,13 +324,13 @@ export class ProductManagementDetailsComponent implements OnInit {
                 value: this.valueChecker(row.use_up_txt),
             });
             response = this.fieldsDetailResponse(row, response);
+            response.push({ label: 'Date Created', value: this.valueChecker(row.created_date) });
         }
         return response;
     }
 
     fieldsDetailResponse(row, response) {
         response.push({ label: 'Product Sub-Type', value: this.valueChecker(row.sub_type) });
-        response.push({ label: 'Date Created', value: this.valueChecker(row.created_date) });
         response.push({ label: 'Category', value: this.valueChecker(row.category_name) });
         response.push({ label: 'Source', value: this.valueChecker(row.source) });
         response.push({ label: 'Country of Origin', value: this.valueChecker(row.country_name) });

@@ -8,89 +8,73 @@
     background: $colors-neutral-white;
     padding: 0 16px;
     height: 48px;
-    margin-bottom: 8px;
     font-size: 14px;
     display: flex;
     align-items: center;
-    box-shadow: $colors-neutral-dark-t-75;
+    box-shadow: 0px 4px 8px 0px $colors-neutral-dark-t-15;
+
     justify-content: space-between;
 
     .header-widget-title {
-        width: 90%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        width: 87%;
         display: inline-block;
         -ms-text-overflow: ellipsis;
-        font-weight: 700;
         color: $colors-neutral-black;
-        font-family: $montserrat-regular !important;
+
+    }
+
+    .header-tooltip {
+        max-width: 82%;
         font-weight: 400;
     }
-
-    .header-widget-title.over:hover+.tooltip-text {
-        display: block;
-    }
-
+    
     .tooltip-text {
-        display: none;
         color: $colors-neutral-white;
-        font-family: $montserrat-medium;
+        font-family: $montserrat-regular;
         font-size: 12px;
         position: absolute;
-        background: $colors-neutral-black-t-75;
-        margin-top: 120px;
-        margin-left: 0px;
-        margin-right: 10px;
-        padding: 5px 10px;
-        line-height: 20px;
-        text-align: left;
+        line-height: 16px;
         z-index: 3;
-        min-width: auto;
-        font-weight: 400;
-        border-radius: 0px;
-        box-shadow: $colors-neutral-black-v-low;
+        box-shadow: 0px 4px 8px 0px $colors-neutral-light-t-15;
         height: auto;
-        min-height: 32px;
-        max-height: 90px;
+        max-height: 64px;
         overflow: auto;
-        word-break: break-all;
-
-        &:hover {
-            display: block;
-        }
     }
 
     .tooltip-text::-webkit-scrollbar {
         width: 8px;
-        height: 8px;
+        height: 4px;
     }
 
     .tooltip-text::-webkit-scrollbar-thumb {
         -webkit-border-radius: 3px;
         border-radius: 3px;
-        background: $colors-neutral-white;
-    }
+        background: $colors-neutral-light-t-50;
 
-    &::-webkit-scrollbar {
-        width: 8px !important;
-        height: 8px !important;
+        &:hover {
+            background: $colors-neutral-light;
+        }
     }
+    
+    .rightErrorIcon {
+        .right-error-tooltip {
+            right: 16px;
+            transform: translateY(-50%);
+            top: 50%;
+            width: 160px;
+            text-align: center;
+            visibility: hidden;
+        }
 
-    &::-webkit-scrollbar-thumb {
-        -webkit-border-radius: 5px !important;
-        border-radius: 5px !important;
-        background: $colors-neutral-white !important;
-        padding: 10px;
-        background-clip: padding-box;
+        &:hover {
+            .right-error-tooltip {
+                visibility: visible;
+            }
+        }
     }
-
 }
 
 .badge-wrapper {
-    display: flex;
-    justify-content: space-between;
-
     .badge {
         color: $colors-neutral-black;
         font-family: $montserrat-regular;
@@ -101,56 +85,3 @@
     }
 }
 
-.icon-class {
-    display: flex;
-    justify-content: space-between;
-    pointer-events: all;
-    cursor: pointer;
-}
-
-.custom_btns {
-    pointer-events: all;
-
-    button {
-        max-height: 30px !important;
-        font-size: 13px !important;
-        margin-right: 15px;
-        padding: 0px 20px !important;
-    }
-}
-
-.melio-button a {
-    height: 100% !important;
-    font-family: "HelveticaNeue" !important;
-    font-size: 13px !important;
-    font-weight: normal !important;
-    border-radius: 8px !important;
-    outline: none;
-    padding: 0 16px;
-    background-color: #8b0e04 !important;
-    color: white;
-    box-shadow: 0px 2px 8px 0px rgba(135, 0, 0, 0.15);
-    max-width: 170px;
-    margin-bottom: 0px !important;
-    vertical-align: middle !important;
-    max-height: 32px;
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    font-weight: 400 !important;
-    margin-right: 15px;
-    text-decoration: none;
-}
-
-.about {
-    display: none !important;
-}
-
-
-.warning-staus {
-    background: $colors-v2-base-warning !important;
-}
-
-.base-success {
-    background: $colors-v2-base-success !important;
-}

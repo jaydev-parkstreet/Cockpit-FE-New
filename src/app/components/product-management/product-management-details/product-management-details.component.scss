@@ -8,7 +8,6 @@
     background-color: $colors-neutral-light-v-low;
     padding-top: 8px;
     margin-bottom: 16px;
-    font-family:$crimson-pro-regular;
 
     .product-tool-details-container {
         margin: 8px 16px 0;
@@ -16,36 +15,9 @@
         font-weight: 500;
         font-size: 14px;
 
-        .action-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 8px;
-
-            .back-link {
-                color: $colors-neutral-dark;
-                font-family: $montserrat-regular !important;
-                text-decoration: underline;
-                margin-left: 4px;
-                
-                .link-text {
-                    margin-left: 4px;
-                }
-
-                &:hover {
-                    .link-text {
-                        color: $colors-neutral-black;
-                        cursor: pointer;
-                    }
-                }
-                
-            }
-        }
-
         .product-tool-details-wrapper {
             font-size: 12px;
             font-weight: 400;
-            margin-top: 8px;
 
             .header-widget {
                 height: 48px;
@@ -69,6 +41,7 @@
                 }
             }
             .left-side {
+                padding-right: 4px;
                 .tab-group {
                     margin-top: 8px;
                 }
@@ -123,13 +96,16 @@
                 }
             }
 
+            .right-side {
+                padding-left: 4px;
+            }
 
             .code-section {
-              margin-top: 8px;
                 .code-table {
                     background-color: $colors-neutral-white;
                     padding: 16px;
-
+                    box-shadow: 0px 4px 8px 0px $colors-neutral-dark-t-15;
+                    
                     table {
                         width: 100%;
 

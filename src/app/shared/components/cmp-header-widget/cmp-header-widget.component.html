@@ -1,11 +1,20 @@
-<div class="header-widget">
-  <div class="typography-body-black-regular header-widget-title text-uppercase">
+<div class="header-widget u-mb1">
+  <div #headerDiv
+    class="typography-body-black-regular header-widget-title text-uppercase u-truncate">
     {{ headerTitle }}
   </div>
 
-  <span *ngIf="showTooltip" class="tooltip-text">{{ headerTitle }}</span>
+  <span *ngIf="showTooltip && hasTooltip" class="tooltip-text header-tooltip u-pg-mt-8 typography-regular u-pg-p-1 u-bg-neutral-black">{{ headerTitle }}</span>
 
-  <div class="badge-wrapper">
+  <div class="badge-wrapper u-flex u-justify-between u-pg-g-1">
+    <div *ngIf="hasRightErrorIcon" class="u-flex-center">
+      <i [ngClass]="rightErrorIconClass || 'fa-solid fa-circle-exclamation'" class="position-relative rightErrorIcon">
+        <span *ngIf="rightErrorIconDescription" class="tooltip-text right-error-tooltip u-pg-p-1" [ngClass]="rightErrorIconDescriptionClass">{{rightErrorIconDescription}}</span>
+      </i>
+    </div>
+    <div class="icon-class u-flex u-justify-between u-csr-ptr" *ngIf="iconClass">
+      <i [ngClass]="iconClass"></i>
+    </div>
     <div *ngIf="badgeText" class="badge" [ngClass]="badgeClass">
       <span> {{badgeText}}</span>
       <i *ngIf="badgeIconClass" [ngClass]="badgeIconClass"></i>
@@ -16,15 +25,8 @@
     </i>
   </div>
 
-  <div class="custom_btns" *ngIf="paymentEnabled">
-    <div class="melio-button"
-      [attr.data-vendor-link]="'parkstreet'"
-      [attr.data-invoice-number]="invoiceData.data.invoice_details.invoice_num"
-      [attr.data-total-amount]="invoiceData.data.invoice_details.total">
-    </div>
+  <div class="icon-class u-flex u-justify-between u-csr-ptr" *ngIf="iconClass">
+    <i [ngClass]="iconClass"></i>
   </div>
 
-  <div class="icon-class">
-    <i *ngIf="iconClass" [ngClass]="iconClass"></i>
-  </div>
 </div>
