@@ -117,7 +117,7 @@ export class ProductAddService {
       ],
   
       codeSection: [
-        { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: '', isCode: true, disabled: true },
+        { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: 'Product Code', isCode: true, disabled: true },
         { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isCode: true },
         { type: 'text', name: 'scc_code', label: 'SCC Code', placeholder: 'SCC Code', isCode: true },
         { type: 'text', name: 'system_id', label: 'Supplier Reference ID', placeholder: 'Supplier Reference ID', isCode: true }
@@ -131,7 +131,10 @@ export class ProductAddService {
         { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false, isDimension: true, dimensionType: 'pallet' },
         { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false, isDimension: true, dimensionType: 'pallet' },
         { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false, isDimension: true, dimensionType: 'pallet' },
-        { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false, isDimension: true, dimensionType: 'pallet' }
+        { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false, isDimension: true, dimensionType: 'pallet' },
+        { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false, isDimension: true, dimensionType: 'layer' },
+        { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false, isDimension: true, dimensionType: 'layer' },
+        { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false, isDimension: true, dimensionType: 'layer' },
       ]
     };
   }

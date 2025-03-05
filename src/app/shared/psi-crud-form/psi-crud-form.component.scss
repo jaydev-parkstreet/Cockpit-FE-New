@@ -2,6 +2,7 @@
 @import "../../scss/variables/colors";
 
 .psi-crud-form {
+    margin: 0 16px;
     .lt-c {
       padding-right: 4px;
       padding-left: 0px;
@@ -10,7 +11,11 @@
       padding-left: 4px;
       padding-right: 0px;
     }
+    .back-color {
+      background-color: $colors-neutral-white;
+    }
 }
 .field-group {
   margin-bottom: 16px;
+  padding: 0 8px 0 8px;
 }

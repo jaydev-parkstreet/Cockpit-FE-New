@@ -1,5 +1,5 @@
 <div class="row psi-crud-form">
-    <div class=" col-sm-12">
+    <div class=" col-sm-12 p-0">
         <div class=" col-sm-6 lt-c">
             <app-psi-page-column-header
                 [headerTitle]="leftHeaderTitle">
@@ -11,7 +11,7 @@
             </app-psi-page-column-header>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 back-color p-0">
         <div *ngFor="let field of crudFieldConfig.productSection">
             <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
                 <app-cmp-input-dropdown
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 back-color p-0">
         <div *ngFor="let field of crudFieldConfig.dimensionsSection">
             <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
                 <app-cmp-input-dropdown
