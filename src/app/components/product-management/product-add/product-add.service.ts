@@ -135,7 +135,10 @@ export class ProductAddService {
         { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false, isDimension: true, dimensionType: 'layer' },
         { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false, isDimension: true, dimensionType: 'layer' },
         { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false, isDimension: true, dimensionType: 'layer' },
-      ]
+      ],
+
+      cancelBtnLabel: "Cancel",
+      submitBtnLabel: "Submit"
     };
   }
 }

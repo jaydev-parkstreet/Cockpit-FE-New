@@ -22,11 +22,12 @@ label {
       font-size: 12px;
       font-family: "Montserrat-Regular";
       caret-color: #2eb3bf;
+      &:hover {
+        outline: 2px solid #232323;
+        border: none;
+      }
       &:focus {
         outline: 2px solid #2eb3bf;
         border: none;
-      }
-      &:hover {
-        outline: 2px solid #232323;
       }
   }

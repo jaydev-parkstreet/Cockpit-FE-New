@@ -45,9 +45,6 @@
                 ></app-psi-input-text-field>
             </div>
         </div>
-        <app-psi-page-column-header
-            [headerTitle]="rightHeaderBottomTitle">
-        </app-psi-page-column-header>
         <div *ngFor="let field of crudFieldConfig.codeSection">
             <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
                 <app-cmp-input-dropdown
@@ -62,5 +59,16 @@
                 ></app-psi-input-text-field>
             </div>
         </div>
+    </div>
+    <div class="form-submit-button u-flex u-justify-flex-end u-pg-g-2">                                        
+        <app-cmp-button
+            [buttonText]="crudFieldConfig.cancelBtnLabel" 
+            [buttonClass]="'secondary w-lg'">
+        </app-cmp-button>
+
+        <app-cmp-button
+            [buttonText]="crudFieldConfig.submitBtnLabel" 
+            [buttonClass]="'primary w-lg'">
+        </app-cmp-button>
     </div>
 </div>
