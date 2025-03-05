@@ -11,7 +11,6 @@ export class PsiInputTextFieldComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.field);
   }
 
 }

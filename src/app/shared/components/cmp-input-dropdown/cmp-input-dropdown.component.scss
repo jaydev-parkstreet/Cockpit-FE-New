@@ -5,12 +5,21 @@
     position: relative;
 
     .dropdown-label {
+        display: flex;
         color: $colors-neutral-black;
         font-family: $montserrat-regular !important;
         font-size: 12px;
         border: none !important;
         margin: 0 0 6px 16px;
         line-height: 16px;
+        .required-asterisk {
+            color: #C50000;
+            font-size: 14px;
+            margin-right: 3px;
+        }
+    }
+    .asterisk-margin {
+        margin: 0 0 6px 8px;
     }
 
     .dropdown-header {
@@ -290,18 +299,14 @@
     }
 }
 
-.input-dropdown.disabled {
-    background-color: $colors-neutral-light-v-low;
+.input-dropdown .dropdown-header.disabled {
+    cursor: not-allowed;
     pointer-events: none;
     border-radius: 8px;
-    cursor: not-allowed;
-}
-
-.input-dropdown.disabled .dropdown-header {
-    cursor: not-allowed;
+    background-color: $colors-neutral-light-v-low;
     color: $colors-neutral-dark-v-medium;
 }
 
-.input-dropdown.disabled .dropdown-list {
+.input-dropdown .dropdown-header.disabled .dropdown-list {
     display: none;
 }

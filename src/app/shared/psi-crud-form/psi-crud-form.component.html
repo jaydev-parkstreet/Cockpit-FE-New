@@ -19,14 +19,25 @@
                     [showSelectAll]="false"
                     [showCheckboxes]="false"
                     [allowSingleSelect]="true"
+                    [selectedItems]="sellectedData[field.key] || []"
                     [settings]="field.inputSetting"
-                    [filteredItems]="field.options">
+                    [filteredItems]="field.options"
+                    [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
+                    [disabled]="field.isDisabled"
+                    [required]="field.isRequired"
+                    (onDropDownChange)="onDropdownStateChange(field.key, $event)">
                 </app-cmp-input-dropdown>
+                <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                    <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                </div>
             </div>
             <div *ngIf="field.type === 'text'" class="d-flex flex-column w-100 field-group">
                 <app-psi-input-text-field
                 [field]="field"
                 ></app-psi-input-text-field>
+                <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                    <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                </div>
             </div>
         </div>
     </div>
@@ -35,16 +46,33 @@
             <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
                 <app-cmp-input-dropdown
                     [label]="field.label"
+                    [showSelectAll]="false"
+                    [showCheckboxes]="false"
+                    [allowSingleSelect]="true"
+                    [selectedItems]="sellectedData[field.key] || []"
                     [settings]="field.inputSetting"
-                    [filteredItems]="field.options">
+                    [filteredItems]="field.options"
+                    [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
+                    [disabled]="field.isDisabled"
+                    [required]="field.isRequired"
+                    (onDropDownChange)="onDropdownStateChange(field.key, $event)">
                 </app-cmp-input-dropdown>
+                <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                    <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                </div>
             </div>
             <div *ngIf="field.type === 'text'" class="d-flex flex-column w-100 field-group">
                 <app-psi-input-text-field
                 [field]="field"
                 ></app-psi-input-text-field>
+                <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                    <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                </div>
             </div>
         </div>
+        <app-psi-page-column-header
+            [headerTitle]="rightHeaderBottomTitle">
+        </app-psi-page-column-header>
         <div *ngFor="let field of crudFieldConfig.codeSection">
             <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
                 <app-cmp-input-dropdown

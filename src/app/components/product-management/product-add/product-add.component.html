@@ -9,7 +9,10 @@
         [leftHeaderTitle]="leftTitle"
         [rightHeaderTitle]="productTitle"
         [rightHeaderBottomTitle]="rightHeaderBottomTitle"
-        [crudFieldConfig]="crudFieldConfig">
+        [sellectedData]="sellectedData"
+        [crudFieldConfig]="crudFieldConfig"
+        [form]="productForm"
+        (onDropDownChange)="onDropdownStateChange($event.field , $event.event)">
     </app-psi-crud-form> 
  
 

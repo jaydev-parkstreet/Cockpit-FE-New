@@ -1,13 +1,13 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
 // import AppConstant from 'src/app/app.constant';
-// import { CommonService } from 'src/app/core/services/common.service';
+import { CommonService } from 'src/app/core/services/common.service';
 // import { AuthService } from '../../authentication/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
 // import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdown/input-dropdown.service';
 // import { ConfirmationModalComponent } from '../../organism/confirmation-modal/confirmation-modal.component';
 // import { SimpleModalService } from 'ngx-simple-modal';
-// import { ProductManagementService } from '../product-management.service';
+import { ProductManagementService } from '../product-management.service';
 // import { NgxSpinnerService } from 'ngx-spinner';
 import { ProductAddService } from './product-add.service';
 
@@ -23,53 +23,54 @@ export class ProductAddComponent implements OnInit {
     crudFieldConfig: any;
     crudFiltersList: any;
     permissions: any;
-//   sellectedData: any= {};
+    sellectedData: any= {};
+    @Output() updateFilters = new EventEmitter<any>();
 //   duplicate: boolean = false;
   constructor(
     private ProductAddService: ProductAddService,
-  //   private changeDetector: ChangeDetectorRef,
+    private changeDetector: ChangeDetectorRef,
   //   private simpleModalService: SimpleModalService,
     public router: Router,
   //   private dropdownService: InputDropdownService,
     private route: ActivatedRoute,
-  //   private formBuilder: FormBuilder,
-  //   private productmanagementService: ProductManagementService,
+    private formBuilder: FormBuilder,
+    private productmanagementService: ProductManagementService,
 	// private spinner : NgxSpinnerService,
-  //   private commonService : CommonService
+    private commonService : CommonService
   ) { }
 
 //   // Flags and configuration properties
 
 //   isErrorRedirect: boolean = false;
 //   title: any;
-//   clientId: any
+  clientId: any;
 //   formConfig: any;
 //   showError: boolean = false;
-//   activeDropdownId: string | null = null;
+  activeDropdownId: string | null = null;
 //   formSubmitted: boolean = false;
 //   dropdownData: any
 //   @Input() filterList?: any;
 //   filters: any[] = [];
-//   brand: any[] = [];
-//   sub_brand_product_id: any[] = [];
+  brand: any[] = [];
+  sub_brand_product_id: any[] = [];
 //   @Output() dropdownStateChange = new EventEmitter<{ fieldName: string, isDisabled: boolean }>();
-//   isBrandDisabled: boolean = true;
-//   isSubBrandDisabled: boolean = true;
+  isBrandDisabled: boolean = true;
+  isSubBrandDisabled: boolean = true;
 //   product: any = {};
 //   model: any = {}; 
 //   modelFormat: any = {}; 
 //   filtersList: any = {}; 
 //   permissions: any = {}; 
-//   subBrandProducts: any[] = []; 
+  subBrandProducts: any[] = []; 
 //   caseUnitOfMeasure: any; 
 //   uniqueId: any; 
 //   productId:any
 //   edit: boolean = false; 
-//   defaultValues = { 
-//     compliance: 1,  
-//     use_up: false,
-//     case_unit_of_measure: null
-//   };
+  defaultValues = { 
+    compliance: 1,  
+    use_up: false,
+    case_unit_of_measure: null
+  };
   
 
 //   // Dropdown configuration
@@ -83,54 +84,54 @@ export class ProductAddComponent implements OnInit {
 
 
 //   // Reactive form initialization
-//   productForm = this.formBuilder.group({
-//     client_id: ['', [Validators.required]],
-//     // brand: ['', [Validators.required]],
-//     brand: [{ value: '', disabled: this.isBrandDisabled }, [Validators.required]],
-//     sub_brand_product_id: [{ value: '', disabled: this.isSubBrandDisabled }, [Validators.required]],
-//     description: ['', [Validators.required]],
-//     name: [''],
-//     group: ['', [Validators.required]],
-//     producer: [''],
-//     case_unit_of_measure: [this.defaultValues.case_unit_of_measure, [Validators.required]],
-//     container_type: ['', [Validators.required]],
-//     ex_works_cost: [''],
-//     is_organic: ['', [Validators.required]],
-//     prod_type: ['', [Validators.required]],
-//     sub_type: ['',[Validators.required]],
-//     category:  ['',[Validators.required]],
-//     source:  ['',[Validators.required]],
-//     country: ['',[Validators.required]],
-//     vintage:  ['',[Validators.required]],
-//     varietal:  [''],
-//     compliance: [this.defaultValues.compliance, Validators.required],
-//     product_id: [''],
-//     abv: [''],
-//     manufactured_location_address: [''],
-//     upc_code: [''],
-//     scc_code: [''],
-//     system_id: [''],
-//     cola_ttb_id: [''],
-//     nabca_code: [''],
-//     unimerc_code: [''],
-//     bdn_code: [''],
-//     unit_length: [''],
-//     unit_width: [''],
-//     unit_height: [''],
-//     unit_weight: [''],
-//     pallet_length: [''],
-//     pallet_width: [''],
-//     pallet_height: [''],
-//     pallet_weight: [''],
-//     case_length: [''],
-//     case_width: [''],
-//     case_height: [''],
-//     case_weight: [''],
-//     layers_per_pallet: [''],
-//     cases_per_layer: [''],
-//     cases_per_pallet: [''],
-//     sub_brand_product_name: ['']
-//   });
+  productForm = this.formBuilder.group({
+    client_id: ['', [Validators.required]],
+    // brand: ['', [Validators.required]],
+    brand: [{ value: '', disabled: this.isBrandDisabled }, [Validators.required]],
+    sub_brand_product_id: [{ value: '', disabled: this.isSubBrandDisabled }, [Validators.required]],
+    description: ['', [Validators.required]],
+    name: [''],
+    group: ['', [Validators.required]],
+    producer: [''],
+    case_unit_of_measure: [this.defaultValues.case_unit_of_measure, [Validators.required]],
+    container_type: ['', [Validators.required]],
+    ex_works_cost: [''],
+    is_organic: ['', [Validators.required]],
+    prod_type: ['', [Validators.required]],
+    sub_type: ['',[Validators.required]],
+    category:  ['',[Validators.required]],
+    source:  ['',[Validators.required]],
+    country: ['',[Validators.required]],
+    vintage:  ['',[Validators.required]],
+    varietal:  [''],
+    compliance: [this.defaultValues.compliance, Validators.required],
+    product_id: [''],
+    abv: [''],
+    manufactured_location_address: [''],
+    upc_code: [''],
+    scc_code: [''],
+    system_id: [''],
+    cola_ttb_id: [''],
+    nabca_code: [''],
+    unimerc_code: [''],
+    bdn_code: [''],
+    unit_length: [''],
+    unit_width: [''],
+    unit_height: [''],
+    unit_weight: [''],
+    pallet_length: [''],
+    pallet_width: [''],
+    pallet_height: [''],
+    pallet_weight: [''],
+    case_length: [''],
+    case_width: [''],
+    case_height: [''],
+    case_weight: [''],
+    layers_per_pallet: [''],
+    cases_per_layer: [''],
+    cases_per_pallet: [''],
+    sub_brand_product_name: ['']
+  });
 
 
   ngOnInit(): void {
@@ -235,21 +236,21 @@ export class ProductAddComponent implements OnInit {
 //     ];
 //   }
 
-//   async getProductData(productId) {
-//     this.productmanagementService.getDetails(productId).subscribe((productData) => {
-//         this.renderConditionalFields(productData.prod_type)
-//          this.productId = productData.product_id;
-//          setTimeout(() => {
-//           if (this.duplicate) {
-//             delete productData.product_id;
-//           }
-//           if (!this.duplicate) {
-//               this.uniqueId = productData.id;
-//           }
-//           this.modelFormat = this.productmanagementService.formatModelProductTool(productData, this.filtersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
-//           this.prefillForm(productData);
-//          }, 100);     
-//     });
+  // async getProductData(productId) {
+  //   this.productmanagementService.getDetails(productId).subscribe((productData) => {
+  //       this.renderConditionalFields(productData.prod_type)
+  //        this.productId = productData.product_id;
+  //        setTimeout(() => {
+  //         if (this.duplicate) {
+  //           delete productData.product_id;
+  //         }
+  //         if (!this.duplicate) {
+  //             this.uniqueId = productData.id;
+  //         }
+  //         this.modelFormat = this.productmanagementService.formatModelProductTool(productData, this.filtersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
+  //         this.prefillForm(productData);
+  //        }, 100);     
+  //   });
 //   }
 //   prefillForm(productData: any): void { 
 //   this.applyDisableEnableForBrandAndSubBrand();
@@ -326,18 +327,18 @@ export class ProductAddComponent implements OnInit {
 // // 		}
 // // 	});
 // // }
-//   getDropDownArrayByIds (list, value, name) {
-//     let result = [] ;
-//     for (let i = 0; i < list?.length; i++) {
-//       if (list[i].id == value) {
-//         result.push(list[i]);
-//         this.sellectedData[name] = result
-//         return result;
-//       }
+  getDropDownArrayByIds (list, value, name) {
+    let result = [] ;
+    for (let i = 0; i < list?.length; i++) {
+      if (list[i].id == value) {
+        result.push(list[i]);
+        this.sellectedData[name] = result
+        return result;
+      }
       
-//     }
-//     return result.length === 0 ? null : result;
-//   }
+    }
+    return result.length === 0 ? null : result;
+  }
 //   applyDisableEnableForBrandAndSubBrand() {
 //       const brandControl = this.productForm.get('brand');
 //       const subBrandControl = this.productForm.get('sub_brand_product_id');
@@ -463,84 +464,95 @@ export class ProductAddComponent implements OnInit {
 // 	// }
 //     // this.productForm.get(fieldName)?.setValue(field[0].name);
 
-//   onDropdownStateChange(fieldName: string, selectedValue: any) {
-//       this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
-//       if(fieldName == 'container_type'  || fieldName == "client_id" || fieldName == "group" 
-//         || fieldName == "is_organic" || fieldName == "producer" || fieldName == "case_unit_of_measure" || fieldName == "brand"
-//         || fieldName == "varietal" || fieldName ==  "vintage" || fieldName == "sub_type" || fieldName == "category" || fieldName == "source" 
-//         || fieldName == "country"){
-//            this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
-//        }
-//        else {
-//            this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
-//        }
+  onDropdownStateChange(fieldName: any, selectedValue: any) {
+      this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
+      if(fieldName == 'container_type'  || fieldName == "client_id" || fieldName == "group" 
+        || fieldName == "is_organic" || fieldName == "producer" || fieldName == "case_unit_of_measure" || fieldName == "brand"
+        || fieldName == "varietal" || fieldName ==  "vintage" || fieldName == "sub_type" || fieldName == "category" || fieldName == "source" 
+        || fieldName == "country"){
+           this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
+       }
+       else {
+           this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
+       }
     
-//     const brandControl = this.productForm.get('brand');
-//     const subBrandControl = this.productForm.get('sub_brand_product_id');
-//     this.clientId = selectedValue[0]?.class_id;
+    const brandControl = this.productForm.get('brand');
+    const subBrandControl = this.productForm.get('sub_brand_product_id');
+    this.clientId = selectedValue[0]?.class_id;
 
-//     if (fieldName === 'client_id' && selectedValue.length > 0) {
-//       this.isBrandDisabled = !selectedValue;
-//       brandControl.setValue('');
-//       subBrandControl.setValue('');
-//       subBrandControl.disable();
-//       this.updatesellectedData('brand','Select Brand');
-//       this.updatesellectedData('sub_brand_product_id','Select Sub-Brand Product');
-//       this.isSubBrandDisabled = true;
-//       if (selectedValue && brandControl) {
-//         brandControl.enable();
-//         this.productmanagementService.getBrands(this.clientId).subscribe(brands => {
-//           if (Array.isArray(brands) && brands.length > 0) {
-//             this.brand = brands;
-//             this.updateBrandFilter();
-//           } else {
-//             this.brand = [];
-//             this.updateBrandFilter();
-//           }
-//         });
-//       }
-//       this.changeDetector.detectChanges();
-//     }
+    if (fieldName === 'client_id' && selectedValue.length > 0) {
+      this.isBrandDisabled = !selectedValue;
+      brandControl.setValue('');
+      subBrandControl.setValue('');
+      subBrandControl.disable();
+      this.updatesellectedData('brand','Select Brand');
+      this.updatesellectedData('sub_brand_product_id','Select Sub-Brand Product');
+      this.isSubBrandDisabled = true;
+      if (selectedValue && brandControl) {
+        brandControl.enable();
+        this.productmanagementService.getBrands(this.clientId).subscribe(brands => {
+          if (Array.isArray(brands) && brands.length > 0) {
+            this.brand = brands;
+            this.updateBrandFilter();
+          } else {
+            this.brand = [];
+            this.updateBrandFilter();
+          }
+        });
+      }
+      this.changeDetector.detectChanges();
+    }
 
-//     if (fieldName === 'brand') {
-//       this.isSubBrandDisabled = !selectedValue;
-//       this.updatesellectedData('sub_brand_product_id','Select Sub-Brand Product');
-//       subBrandControl.setValue('');
-//       if (!this.isSubBrandDisabled && subBrandControl) {
-//         subBrandControl.enable();
-//         this.productmanagementService.getSubBrandProducts(selectedValue[0]?.client_id).subscribe(subBrands => {
-//           this.sub_brand_product_id = subBrands;
-//           this.updateSubBrandFilter();
-//           this.isSubBrandDisabled = false; 
-//         });
-//       } else {
-//         this.sub_brand_product_id = [];  
-//         this.updateSubBrandFilter();
-//         subBrandControl.setValue('');
-//       }
-//       this.changeDetector.detectChanges();
-//     }
+    if (fieldName === 'brand') {
+      this.isSubBrandDisabled = !selectedValue;
+      this.updatesellectedData('sub_brand_product_id','Select Sub-Brand Product');
+      subBrandControl.setValue('');
+      if (!this.isSubBrandDisabled && subBrandControl) {
+        subBrandControl.enable();
+        this.productmanagementService.getSubBrandProducts(selectedValue[0]?.client_id).subscribe(subBrands => {
+          this.sub_brand_product_id = subBrands;
+          this.updateSubBrandFilter();
+          this.isSubBrandDisabled = false; 
+        });
+      } else {
+        this.sub_brand_product_id = [];  
+        this.updateSubBrandFilter();
+        subBrandControl.setValue('');
+      }
+      this.changeDetector.detectChanges();
+    }
 
-//     if (fieldName == 'sub_brand_product_id') {
-//       this.productForm.get('sub_brand_product_name')?.setValue(selectedValue[0].name);
-//     }
-//     if (fieldName === 'prod_type') {
-//       this.renderConditionalFields(selectedValue[0].name)
-//     } 
+    if (fieldName == 'sub_brand_product_id') {
+      this.productForm.get('sub_brand_product_name')?.setValue(selectedValue[0].name);
+    }
+    if (fieldName === 'prod_type') {
+      this.renderConditionalFields(selectedValue[0].name , this.crudFiltersList , this.productForm);
+      this.crudFieldConfig = { ...this.crudFieldConfig };
+      this.changeDetector.detectChanges();
+    } 
   
-//   }
-//   updateSubBrandFilter() {
-//     if (this.sub_brand_product_id && this.sub_brand_product_id.length > 0) {
-//       this.filterList['sub_brand_product_id'] = this.sub_brand_product_id;
-//       this.subBrandProducts = this.sub_brand_product_id;
-//     }
-//   }
+  }
+  updateSubBrandFilter() {
+    if (this.sub_brand_product_id && this.sub_brand_product_id.length > 0) {
+      this.crudFiltersList['sub_brand_product_id'] = this.sub_brand_product_id;
+      this.subBrandProducts = this.sub_brand_product_id;
+      this.crudFieldConfig.productSection[2].options = this.sub_brand_product_id;
+      this.crudFieldConfig.productSection[2].isDisabled = false
+      this.crudFieldConfig = { ...this.crudFieldConfig };
+      this.changeDetector.detectChanges();
+    }
+  }
 
-//   updateBrandFilter() {
-//     if (this.brand && this.brand.length > 0) {
-//       this.filterList['brand'] = this.brand;
-//     }
-//   }
+  updateBrandFilter() {
+    if (this.brand && this.brand.length > 0) {
+      this.crudFiltersList['brand'] = this.brand;
+      console.log(this.crudFieldConfig.productSection);
+      this.crudFieldConfig.productSection[1].options = this.brand
+      this.crudFieldConfig.productSection[1].isDisabled = false
+      this.crudFieldConfig = { ...this.crudFieldConfig };
+      this.changeDetector.detectChanges();
+    }
+  }
   
 
 
@@ -562,165 +574,523 @@ export class ProductAddComponent implements OnInit {
 //             { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'},
 //         ];
 
-//         const conditionalFields = {
-//             wine: [
-//                 this.dropdownService.createFilterObj('vintage', 'vintages', 'Vintage', 'Select Vintage', 'vintage', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
-//                 this.dropdownService.createFilterObj('varietal', 'varietals', 'Varietal', 'Select Varietal', 'varietal', false, false, null, null, 'col-xs-3', true, false, false, '', false)
-//             ],
-//             malt: [
-//               this.dropdownService.createFilterObj('vintage', 'vintages', 'Vintage', 'Select Vintage', 'vintage', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+    //     const baseFields = [
+    //         {
+    //           key: 'sub_type',
+    //           label: 'Sub-Type',
+    //           type: 'multiselect-dropdown',
+    //           colClass: 'col-xs-12',
+    //           filters: { entity: [] },
+    //           options: this.crudFiltersList.product_sub_type || [],
+    //           isRequired: true,
+    //           isDisabled: false,
+    //           inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
+    //         }
+    //         this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, true, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+    //         this.dropdownService.createFilterObj('category', 'categories', 'Category', 'Select Category', 'category', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+    //         this.dropdownService.createFilterObj('source', 'source', 'Source', 'Select Source', 'source', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+    //         this.dropdownService.createFilterObj('country', 'countries', 'Country', 'Select Country', 'country', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+    //         { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', required: true },
+    //         { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isCode: true, required: true },
+    //         { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isCode: true },
+    //         { type: 'text', name: 'unimerc_code', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isCode: true },
+    //         { type: 'text', name: 'bdn_code', label: 'BDN Code', placeholder: 'BDN Code', isCode: true },
+    //         { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'},
+    //     ];
+
+    //     const conditionalFields = {
+    //         wine: [
+    //             this.dropdownService.createFilterObj('vintage', 'vintages', 'Vintage', 'Select Vintage', 'vintage', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+    //             this.dropdownService.createFilterObj('varietal', 'varietals', 'Varietal', 'Select Varietal', 'varietal', false, false, null, null, 'col-xs-3', true, false, false, '', false)
+    //         ],
+    //         malt: [
+    //           this.dropdownService.createFilterObj('vintage', 'vintages', 'Vintage', 'Select Vintage', 'vintage', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
                
-//                // this.dropdownService.createFilterObj('varietal', 'varietals', 'Varietal', 'Select Varietal', 'varietal', false, false, null, null, 'col-xs-3', true, false, false, '', false) // only varietal
-//             ],
-//             spirits: [
-//                 this.dropdownService.createFilterObj('vintage', 'vintages', 'Vintage', 'Select Vintage', 'vintage', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false) // only vintage
-//             ],
-//             bulk: [
-//               this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
-//               { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' }
-//           ],
-//           other: [
-//             this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
-//               { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'}
-//           ]
-//         };
+    //            // this.dropdownService.createFilterObj('varietal', 'varietals', 'Varietal', 'Select Varietal', 'varietal', false, false, null, null, 'col-xs-3', true, false, false, '', false) // only varietal
+    //         ],
+    //         spirits: [
+    //             this.dropdownService.createFilterObj('vintage', 'vintages', 'Vintage', 'Select Vintage', 'vintage', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false) // only vintage
+    //         ],
+    //         bulk: [
+    //           this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+    //           { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' }
+    //       ],
+    //       other: [
+    //         this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false),
+    //           { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'}
+    //       ]
+    //     };
         
-//         const removeFields = (fieldsToRemove: string[]) => {
-//           fieldsToRemove.forEach(fieldName => {          
-//               const control = this.productForm.get(fieldName);
-//               if (control) {
-//                   control.setValue(""); 
-//                   control.clearValidators(); 
-//                   control.updateValueAndValidity(); 
-//               }
-//               const fieldIndex = this.formConfig.schema.findIndex(field => field.name === fieldName);
-//               if (fieldIndex !== -1) {
-//                   this.formConfig.schema.splice(fieldIndex, 1);
-//               }
-//           });
-//       };   
+    //     const removeFields = (fieldsToRemove: string[]) => {
+    //       fieldsToRemove.forEach(fieldName => {          
+    //           const control = this.productForm.get(fieldName);
+    //           if (control) {
+    //               control.setValue(""); 
+    //               control.clearValidators(); 
+    //               control.updateValueAndValidity(); 
+    //           }
+    //           const fieldIndex = this.formConfig.schema.findIndex(field => field.name === fieldName);
+    //           if (fieldIndex !== -1) {
+    //               this.formConfig.schema.splice(fieldIndex, 1);
+    //           }
+    //       });
+    //   };   
   
-//         const addFieldControl = (field) => {
-//             if (field.required) {
-//               this.productForm.addControl(
-//                    field.name,
-//                    new FormControl('', Validators.required) 
-//                );
-//               } else {
-//                  this.productForm.addControl(field.name, new FormControl(''));
-//               }
-//            const control = this.productForm.get(field.name);
-//               if (control) {
-//                control.markAsTouched();
-//              }
-//           };
-//           const addValidators = (controlName: string) => {
-//             const control = this.productForm.get(controlName);
-//             if (control) {
-//               control.setValidators([Validators.required]);
-//               control.updateValueAndValidity();  // Re-validate the control
-//             }
-//           };
+    //     const addFieldControl = (field) => {
+    //         if (field.required) {
+    //           this.productForm.addControl(
+    //                field.name,
+    //                new FormControl('', Validators.required) 
+    //            );
+    //           } else {
+    //              this.productForm.addControl(field.name, new FormControl(''));
+    //           }
+    //        const control = this.productForm.get(field.name);
+    //           if (control) {
+    //            control.markAsTouched();
+    //          }
+    //       };
+    //       const addValidators = (controlName: string) => {
+    //         const control = this.productForm.get(controlName);
+    //         if (control) {
+    //           control.setValidators([Validators.required]);
+    //           control.updateValueAndValidity();  // Re-validate the control
+    //         }
+    //       };
             
-//         switch (selectedValue) {
-//             case 'Wine':
-//                 baseFields.forEach(field => {
-//                     if (!fieldExists(field.name)) {
-//                         this.formConfig.schema.push(field);
-//                         addFieldControl(field);
-//                         addValidators('sub_type');
-//                         addValidators('category');
-//                         addValidators('source');
-//                         addValidators('country');
-//                         addValidators('vintage');
-//                     }                  
-//                 });
-//                 conditionalFields.wine.forEach(field => {
-//                     if (!fieldExists(field.name)) {
-//                         this.formConfig.schema.push(field);
-//                         addFieldControl(field);
-//                     }
-//                 });
-//                 break;
-//             case 'Malt':
-//                 baseFields.forEach(field => {
-//                     if (!fieldExists(field.name)) {
-//                         this.formConfig.schema.push(field);
-//                         addFieldControl(field);
-//                     }
+    //     switch (selectedValue) {
+    //         case 'Wine':
+    //             baseFields.forEach(field => {
+    //                 if (!fieldExists(field.name)) {
+    //                     this.formConfig.schema.push(field);
+    //                     addFieldControl(field);
+    //                     addValidators('sub_type');
+    //                     addValidators('category');
+    //                     addValidators('source');
+    //                     addValidators('country');
+    //                     addValidators('vintage');
+    //                 }                  
+    //             });
+    //             conditionalFields.wine.forEach(field => {
+    //                 if (!fieldExists(field.name)) {
+    //                     this.formConfig.schema.push(field);
+    //                     addFieldControl(field);
+    //                 }
+    //             });
+    //             break;
+    //         case 'Malt':
+    //             baseFields.forEach(field => {
+    //                 if (!fieldExists(field.name)) {
+    //                     this.formConfig.schema.push(field);
+    //                     addFieldControl(field);
+    //                 }
        
-//                 });
-//                 conditionalFields.malt.forEach(field => {
-//                     if (!fieldExists(field.name)) {
-//                         this.formConfig.schema.push(field);
-//                         addFieldControl(field);
-//                     }
-//                 });
-//                 removeFields([ 'varietal']);
-//                 break;
-//             case 'Spirits':
-//                 baseFields.forEach(field => {
-//                     if (!fieldExists(field.name)) {
-//                         this.formConfig.schema.push(field);
-//                         addFieldControl(field);
-//                     }
-//                 });
-//                 conditionalFields.spirits.forEach(field => {
-//                     if (!fieldExists(field.name)) {
-//                         this.formConfig.schema.push(field);
-//                         addFieldControl(field);
-//                     }
-//                 });
-//                 break;
-//             case 'Bulk':
-//             case 'Other':
-//                 if (!fieldExists('sub_type')) {
-//                     this.formConfig.schema.push(this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false));
-//                 }
-//                 if (!fieldExists('manufactured_location_address')) {
-//                     this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'});
-//                 }
-//                 removeFields(['vintage', 'varietal','category','source','country','abv']);
-//                 break;
-//             default:
-//                 if (!fieldExists('manufactured_location_address')) {
-//                     this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'});
-//                 }
-//                 break;
-//         }
-//     }
+    //             });
+    //             conditionalFields.malt.forEach(field => {
+    //                 if (!fieldExists(field.name)) {
+    //                     this.formConfig.schema.push(field);
+    //                     addFieldControl(field);
+    //                 }
+    //             });
+    //             removeFields([ 'varietal']);
+    //             break;
+    //         case 'Spirits':
+    //             baseFields.forEach(field => {
+    //                 if (!fieldExists(field.name)) {
+    //                     this.formConfig.schema.push(field);
+    //                     addFieldControl(field);
+    //                 }
+    //             });
+    //             conditionalFields.spirits.forEach(field => {
+    //                 if (!fieldExists(field.name)) {
+    //                     this.formConfig.schema.push(field);
+    //                     addFieldControl(field);
+    //                 }
+    //             });
+    //             break;
+    //         case 'Bulk':
+    //         case 'Other':
+    //             if (!fieldExists('sub_type')) {
+    //                 this.formConfig.schema.push(this.dropdownService.createFilterObj('sub_type', 'product_sub_type', 'Sub-Type', 'Select Sub-Type', 'sub_type', true, false, null, null, 'col-xs-3', true, false, false, 'ps-required-asterisk', false));
+    //             }
+    //             if (!fieldExists('manufactured_location_address')) {
+    //                 this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'});
+    //             }
+    //             removeFields(['vintage', 'varietal','category','source','country','abv']);
+    //             break;
+    //         default:
+    //             if (!fieldExists('manufactured_location_address')) {
+    //                 this.formConfig.schema.push({ type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address'});
+    //             }
+    //             break;
+    //     }
+    // }
 
     
-//   /**
-//    * Function to track fields and prevent unnecessary re-renders
-//    */
-//   trackByField(index: number, field: any): string {
-//     return field.name;
-//   }
+  /**
+   * Function to track fields and prevent unnecessary re-renders
+   */
+  trackByField(index: number, field: any): string {
+    return field.name;
+  }
   
-//     updateFormControl(controlName: string, filterKey: string, id: string) {
-//       const control = this.productForm.get(controlName);
-//       control.enable();
-//       this.productForm.patchValue({
-//         [controlName]: this.getDropDownArrayByIds(this.filterList?.[filterKey], id, controlName),
-//       });
-//     }
+    updateFormControl(controlName: string, filterKey: string, id: string) {
+      const control = this.productForm.get(controlName);
+      control.enable();
+      this.productForm.patchValue({
+        [controlName]: this.getDropDownArrayByIds(this.crudFiltersList?.[filterKey], id, controlName),
+      });
+    }
 
-//     updateBrandAndSubBrandControls(clientId: string, brandId: string, subBrandId: string) {
-//       this.productmanagementService.getBrands(clientId).subscribe(brands => {
-//         this.brand = Array.isArray(brands) && brands.length > 0 ? brands : [];
-//         this.updateBrandFilter();
-//         this.updateFormControl('brand', 'brand', brandId);
+    updateBrandAndSubBrandControls(clientId: string, brandId: string, subBrandId: string) {
+      this.productmanagementService.getBrands(clientId).subscribe(brands => {
+        this.brand = Array.isArray(brands) && brands.length > 0 ? brands : [];
+        this.updateBrandFilter();
+        this.updateFormControl('brand', 'brand', brandId);
 
-//         this.productmanagementService.getSubBrandProducts(clientId).subscribe(subBrands => {
-//           this.sub_brand_product_id = subBrands;
-//           this.updateSubBrandFilter();
-//           this.updateFormControl('sub_brand_product_id', 'sub_brand_product_id', subBrandId);
-//         });
-//       });
-//     }
+        this.productmanagementService.getSubBrandProducts(clientId).subscribe(subBrands => {
+          this.sub_brand_product_id = subBrands;
+          this.updateSubBrandFilter();
+          this.updateFormControl('sub_brand_product_id', 'sub_brand_product_id', subBrandId);
+        });
+      });
+    }
 
-//     updatesellectedData(key: string, defaultText:string) {
-//       this.sellectedData[key] = [{name: defaultText}];
-//     }
+    updatesellectedData(key: string, defaultText:string) {
+      this.sellectedData[key] = [{name: defaultText}];
+    }
+
+    renderConditionalFields(selectedValue: any , crudFiltersList, productForm) {
+      const fieldExists = (fieldName: string) => {
+        const allFields = [
+          ...this.crudFieldConfig.productSection,
+          ...this.crudFieldConfig.codeSection,
+          ...this.crudFieldConfig.dimensionsSection
+        ];
+        console.log(allFields);
+        return allFields.some(field => field.name === fieldName);
+      };
+    
+      const baseFields = [
+        {
+          key: 'sub_type',
+          name: 'sub_type',
+          label: 'Sub-Type',
+          type: 'multiselect-dropdown',
+          colClass: 'col-xs-12',
+          filters: { entity: [] },
+          options: crudFiltersList.product_sub_type || [],
+          isRequired: true,
+          isDisabled: false,
+          inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
+        },
+        {
+          key: 'category',
+          name: 'category',
+          label: 'Category',
+          type: 'multiselect-dropdown',
+          colClass: 'col-xs-12',
+          filters: { entity: [] },
+          options: crudFiltersList.categories || [],
+          isRequired: true,
+          isDisabled: false,
+          inputSetting: this.commonService.getDropdownConfig('Select Category', true)
+        },
+        {
+          key: 'source',
+          name: 'source',
+          label: 'Source',
+          type: 'multiselect-dropdown',
+          colClass: 'col-xs-12',
+          filters: { entity: [] },
+          options: crudFiltersList.source || [],
+          isRequired: true,
+          isDisabled: false,
+          inputSetting: this.commonService.getDropdownConfig('Select Source', true)
+        },
+        {
+          key: 'country',
+          name: 'country',
+          label: 'Country',
+          type: 'multiselect-dropdown',
+          colClass: 'col-xs-12',
+          filters: { entity: [] },
+          options: crudFiltersList.countries || [],
+          isRequired: true,
+          isDisabled: false,
+          inputSetting: this.commonService.getDropdownConfig('Select Country', true)
+        },
+        { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', required: true },
+        { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isCode: true, required: true },
+        { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isCode: true },
+        { type: 'text', name: 'unimerc_code', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isCode: true },
+        { type: 'text', name: 'bdn_code', label: 'BDN Code', placeholder: 'BDN Code', isCode: true },
+        { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' },
+      ];
+    
+      const conditionalFields = {
+        wine: [
+          {
+            key: 'vintage',
+            name: 'vintage',
+            label: 'Vintage',
+            type: 'multiselect-dropdown',
+            colClass: 'col-xs-12',
+            filters: { entity: [] },
+            options: crudFiltersList.vintages || [],
+            isRequired: true,
+            isDisabled: false,
+            inputSetting: this.commonService.getDropdownConfig('Select Vintage', true)
+          },
+          {
+            key: 'varietal',
+            name: 'varietal',
+            label: 'Varietal',
+            type: 'multiselect-dropdown',
+            colClass: 'col-xs-12',
+            filters: { entity: [] },
+            options: crudFiltersList.varietals || [],
+            isRequired: false,
+            isDisabled: false,
+            inputSetting: this.commonService.getDropdownConfig('Select Varietal', true)
+          }
+        ],
+        malt: [
+          {
+            key: 'vintage',
+            name: 'vintage',
+            label: 'Vintage',
+            type: 'multiselect-dropdown',
+            colClass: 'col-xs-12',
+            filters: { entity: [] },
+            options: crudFiltersList.vintages || [],
+            isRequired: true,
+            isDisabled: false,
+            inputSetting: this.commonService.getDropdownConfig('Select Vintage', true)
+          }
+        ],
+        spirits: [
+          {
+            key: 'vintage',
+            name: 'vintage',
+            label: 'Vintage',
+            type: 'multiselect-dropdown',
+            colClass: 'col-xs-12',
+            filters: { entity: [] },
+            options: crudFiltersList.vintages || [],
+            isRequired: true,
+            isDisabled: false,
+            inputSetting: this.commonService.getDropdownConfig('Select Vintage', true)
+          }
+        ],
+        bulk: [
+          {
+            key: 'sub_type',
+            name: 'sub_type',
+            label: 'Sub-Type',
+            type: 'multiselect-dropdown',
+            colClass: 'col-xs-12',
+            filters: { entity: [] },
+            options: crudFiltersList.product_sub_type || [],
+            isRequired: true,
+            isDisabled: false,
+            inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
+          },
+          { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' }
+        ],
+        other: [
+          {
+            key: 'sub_type',
+            name: 'sub_type',
+            label: 'Sub-Type',
+            type: 'multiselect-dropdown',
+            colClass: 'col-xs-12',
+            filters: { entity: [] },
+            options: crudFiltersList.product_sub_type || [],
+            isRequired: true,
+            isDisabled: false,
+            inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
+          },
+          { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' }
+        ]
+      };
+    
+    // Remove fields from the correct sections (productSection, codeSection, dimensionsSection)
+    const removeFields = (fieldsToRemove: string[]) => {
+      fieldsToRemove.forEach(fieldName => {
+        // Remove from all relevant sections
+        const allSections = [
+          this.crudFieldConfig.productSection,
+          this.crudFieldConfig.codeSection,
+          this.crudFieldConfig.dimensionsSection
+        ];
+  
+        allSections.forEach(section => {
+          const fieldIndex = section.findIndex(field => field.name === fieldName);
+          if (fieldIndex !== -1) {
+            section.splice(fieldIndex, 1);  // Remove field from section
+          }
+        });
+  
+        // Remove from the productForm
+        const control = productForm.get(fieldName);
+        if (control) {
+          control.setValue('');
+          control.clearValidators();
+          control.updateValueAndValidity();
+        }
+      });
+    };
+  
+      // Add form control to the correct sections (productSection, codeSection, dimensionsSection)
+      const addFieldControl = (field) => {
+        // Add field to all relevant sections
+        // const allSections = [
+        //   this.crudFieldConfig.productSection,
+        //   this.crudFieldConfig.codeSection,
+        //   this.crudFieldConfig.dimensionsSection
+        // ];
+  
+        // allSections.forEach(section => {
+        //   if (!section.some(f => f.name === field.name)) {
+        //     section.push(field); // Add field to section
+        //   }
+        // });
+  
+        // Add field control to the form
+        if (field.required) {
+          productForm.addControl(field.name, new FormControl('', Validators.required));
+        } else {
+          productForm.addControl(field.name, new FormControl(''));
+        }
+  
+        const control = productForm.get(field.name);
+        if (control) {
+          control.markAsTouched();
+        }
+      };
+  
+      // Add validators to the form control (productSection, codeSection, dimensionsSection)
+      const addValidators = (controlName: string) => {
+        const control = productForm.get(controlName);
+        if (control) {
+          control.setValidators([Validators.required]);
+          control.updateValueAndValidity(); // Re-validate the control
+        }
+  
+        // Add validators to the field in all sections
+        const allSections = [
+          this.crudFieldConfig.productSection,
+          this.crudFieldConfig.codeSection,
+          this.crudFieldConfig.dimensionsSection
+        ];
+  
+        allSections.forEach(section => {
+          // const field = section.find(f => f.name === controlName);
+          // if (field) {
+          //   // You can apply additional logic to add validators to the field if necessary
+          // }
+        });
+      };
+  
+    
+      // Update productSection, codeSection, and dimensionsSection based on the selected value
+      switch (selectedValue) {
+        case 'Wine':
+          // Add fields to productSection
+          baseFields.forEach(field => {
+            if (!fieldExists(field.name)) {
+              if (field.isCode) {
+                this.crudFieldConfig.codeSection.push(field);
+              } else {
+                this.crudFieldConfig.productSection.push(field);
+              }
+              addFieldControl(field);
+              addValidators('sub_type');
+              addValidators('category');
+              addValidators('source');
+              addValidators('country');
+              addValidators('vintage');
+            }
+          });
+          conditionalFields.wine.forEach(field => {
+            if (!fieldExists(field.name)) {
+              this.crudFieldConfig.productSection.push(field);
+              addFieldControl(field);
+            }
+          });
+          break;
+        case 'Malt':
+          baseFields.forEach(field => {
+            if (!fieldExists(field.name)) {
+              if (field.isCode) {
+                this.crudFieldConfig.codeSection.push(field);
+              } else {
+                this.crudFieldConfig.productSection.push(field);
+              }
+              addFieldControl(field);
+            }
+          });
+          conditionalFields.malt.forEach(field => {
+            if (!fieldExists(field.name)) {
+              this.crudFieldConfig.productSection.push(field);
+              addFieldControl(field);
+            }
+          });
+          removeFields(['varietal']);
+          break;
+        case 'Spirits':
+          baseFields.forEach(field => {
+            if (!fieldExists(field.name)) {
+              this.crudFieldConfig.productSection.push(field);
+              addFieldControl(field);
+            }
+          });
+          conditionalFields.spirits.forEach(field => {
+            if (!fieldExists(field.name)) {
+              this.crudFieldConfig.productSection.push(field);
+              addFieldControl(field);
+            }
+          });
+          break;
+        case 'Bulk':
+        case 'Other':
+          if (!fieldExists('sub_type')) {
+            this.crudFieldConfig.productSection.push(
+              {
+                key: 'sub_type',
+                name: 'sub_type',
+                label: 'Sub-Type',
+                type: 'multiselect-dropdown',
+                colClass: 'col-xs-12',
+                filters: { entity: [] },
+                options: crudFiltersList.product_sub_type || [],
+                isRequired: true,
+                isDisabled: false,
+                inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
+              }
+            );
+          }
+          if (!fieldExists('manufactured_location_address')) {
+            this.crudFieldConfig.productSection.push({
+              type: 'text',
+              name: 'manufactured_location_address',
+              label: 'Manufactured Location Address',
+              placeholder: 'Enter Manufactured Location Address'
+            });
+          }
+          removeFields(['vintage', 'varietal', 'category', 'source', 'country', 'abv']);
+          break;
+        default:
+          if (!fieldExists('manufactured_location_address')) {
+            this.crudFieldConfig.productSection.push({
+              type: 'text',
+              name: 'manufactured_location_address',
+              label: 'Manufactured Location Address',
+              placeholder: 'Enter Manufactured Location Address'
+            });
+          }
+          break;
+      }
+    }
 }

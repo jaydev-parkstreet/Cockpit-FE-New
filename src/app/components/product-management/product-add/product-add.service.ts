@@ -1,18 +1,24 @@
 import { Injectable } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/core/services/common.service';
+import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdown/input-dropdown.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductAddService {
 
-  constructor(private commonService: CommonService) { }
+  constructor(
+    private commonService: CommonService,
+    private dropdownService: InputDropdownService,
+  ) { }
 
   getCrudFieldConfig(crudFiltersList) {
     return {
       productSection: [
         {
           key: 'client_id',
+          name: 'client_id',
           label: 'Supplier',
           type: 'multiselect-dropdown',
           colClass: 'col-xs-12',
@@ -24,30 +30,33 @@ export class ProductAddService {
         },
         {
           key: 'brand',
+          name: 'brand',
           label: 'Brand',
           type: 'multiselect-dropdown',
           colClass: 'col-xs-12',
           filters: { entity: [] },
           options: crudFiltersList.brand || [],
           isRequired: true,
-          isDisabled: false,
+          isDisabled: true,
           inputSetting: this.commonService.getDropdownConfig('Select Brand', true)
         },
         {
           key: 'sub_brand_product_id',
+          name: 'sub_brand_product_id',
           label: 'Sub-Brand Product',
           type: 'multiselect-dropdown',
           colClass: 'col-xs-12',
           filters: { entity: [] },
           options: crudFiltersList.sub_brand_product_id || [],
           isRequired: true,
-          isDisabled: false,
+          isDisabled: true,
           inputSetting: this.commonService.getDropdownConfig('Select Sub-Brand Product', true)
         },
         { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true },
         { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false },
         {
           key: 'group',
+          name: 'group',
           label: 'Group',
           type: 'multiselect-dropdown',
           colClass: 'col-xs-12',
@@ -59,17 +68,19 @@ export class ProductAddService {
         },
         {
           key: 'producer',
+          name: 'producer',
           label: 'producer',
           type: 'multiselect-dropdown',
           colClass: 'col-xs-12',
           filters: { entity: [] },
           options: crudFiltersList.producers || [],
-          isRequired: true,
+          isRequired: false,
           isDisabled: false,
           inputSetting: this.commonService.getDropdownConfig('Select producer', true)
         },
         {
           key: 'case_unit_of_measure',
+          name: 'case_unit_of_measure',
           label: 'Case UOM',
           type: 'multiselect-dropdown',
           colClass: 'col-xs-12',
@@ -81,6 +92,7 @@ export class ProductAddService {
         },
         {
           key: 'container_type',
+          name: 'container_type',
           label: 'Container Type',
           type: 'multiselect-dropdown',
           colClass: 'col-xs-12',
@@ -94,6 +106,7 @@ export class ProductAddService {
         { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance' },
         {
           key: 'is_organic',
+          name: 'is_organic',
           label: 'Organic',
           type: 'multiselect-dropdown',
           colClass: 'col-xs-12',
@@ -105,6 +118,7 @@ export class ProductAddService {
         },
         {
           key: 'prod_type',
+          name: 'prod_type',
           label: 'Product Type',
           type: 'multiselect-dropdown',
           colClass: 'col-xs-12',
