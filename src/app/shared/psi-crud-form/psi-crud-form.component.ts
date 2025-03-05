@@ -9,11 +9,12 @@ export class PsiCrudFormComponent implements OnInit {
 
   @Input() leftHeaderTitle: string;
   @Input() rightHeaderTitle: string;
+  @Input() rightHeaderBottomTitle: string;
   @Input() crudFieldConfig: any;
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.crudFieldConfig);
+    console.log(this.rightHeaderBottomTitle);
   }
 
 }

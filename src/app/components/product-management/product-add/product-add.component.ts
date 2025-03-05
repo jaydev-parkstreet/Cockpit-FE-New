@@ -19,6 +19,7 @@ import { ProductAddService } from './product-add.service';
 export class ProductAddComponent implements OnInit {
     leftTitle: string;
     productTitle: string;
+    rightHeaderBottomTitle: string;
     crudFieldConfig: any;
     crudFiltersList: any;
     permissions: any;
@@ -138,6 +139,7 @@ export class ProductAddComponent implements OnInit {
     this.crudFieldConfig = this.ProductAddService.getCrudFieldConfig(this.crudFiltersList);
     this.leftTitle = 'PRODUCT DETAILS';
     this.productTitle = 'Dimensions';
+    this.rightHeaderBottomTitle = 'Codes';
 //     if (!this.permissions.permissions.Create) {
 //       this.router.navigate(['product-management']);
 //     }

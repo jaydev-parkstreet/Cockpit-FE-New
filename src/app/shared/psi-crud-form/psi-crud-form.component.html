@@ -45,7 +45,9 @@
                 ></app-psi-input-text-field>
             </div>
         </div>
-        <br>
+        <app-psi-page-column-header
+            [headerTitle]="rightHeaderBottomTitle">
+        </app-psi-page-column-header>
         <div *ngFor="let field of crudFieldConfig.codeSection">
             <div *ngIf="field.type === 'multiselect-dropdown'"  class="d-flex flex-column w-100 field-group">
                 <app-cmp-input-dropdown
