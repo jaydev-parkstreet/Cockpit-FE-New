@@ -23,20 +23,20 @@ export class ProductAddComponent implements OnInit {
     crudFieldConfig: any;
     crudFiltersList: any;
     permissions: any;
-    sellectedData: any= {};
+    sellectedData: any = {};
     @Output() updateFilters = new EventEmitter<any>();
     duplicate: boolean = false;
     constructor(
-      private ProductAddService: ProductAddService,
-      private changeDetector: ChangeDetectorRef,
-    //   private simpleModalService: SimpleModalService,
-      public router: Router,
-    //   private dropdownService: InputDropdownService,
-      private route: ActivatedRoute,
-      private formBuilder: FormBuilder,
-      private productmanagementService: ProductManagementService,
-    // private spinner : NgxSpinnerService,
-      private commonService : CommonService
+        private ProductAddService: ProductAddService,
+        private changeDetector: ChangeDetectorRef,
+        //   private simpleModalService: SimpleModalService,
+        public router: Router,
+        //   private dropdownService: InputDropdownService,
+        private route: ActivatedRoute,
+        private formBuilder: FormBuilder,
+        private productmanagementService: ProductManagementService,
+        // private spinner : NgxSpinnerService,
+        private commonService: CommonService
     ) { }
 
 //   // Flags and configuration properties
@@ -63,13 +63,13 @@ export class ProductAddComponent implements OnInit {
 //   permissions: any = {}; 
     subBrandProducts: any[] = []; 
 //   caseUnitOfMeasure: any; 
-    uniqueId: any; 
-    productId:any;
-    edit: boolean = false; 
-    defaultValues = { 
-      compliance: 1,  
-      use_up: false,
-      case_unit_of_measure: null
+    uniqueId: any;
+    productId: any;
+    edit: boolean = false;
+    defaultValues = {
+        compliance: 1,
+        use_up: false,
+        case_unit_of_measure: null
     };
   
 
@@ -83,115 +83,65 @@ export class ProductAddComponent implements OnInit {
 
 
 
-//   // Reactive form initialization
-  productForm = this.formBuilder.group({
-    client_id: ['', [Validators.required]],
-    // brand: ['', [Validators.required]],
-    brand: [{ value: '', disabled: this.isBrandDisabled }, [Validators.required]],
-    sub_brand_product_id: [{ value: '', disabled: this.isSubBrandDisabled }, [Validators.required]],
-    description: ['', [Validators.required]],
-    name: [''],
-    group: ['', [Validators.required]],
-    producer: [''],
-    case_unit_of_measure: [this.defaultValues.case_unit_of_measure, [Validators.required]],
-    container_type: ['', [Validators.required]],
-    ex_works_cost: [''],
-    is_organic: ['', [Validators.required]],
-    prod_type: ['', [Validators.required]],
-    sub_type: ['',[Validators.required]],
-    category:  ['',[Validators.required]],
-    source:  ['',[Validators.required]],
-    country: ['',[Validators.required]],
-    vintage:  ['',[Validators.required]],
-    varietal:  [''],
-    compliance: [this.defaultValues.compliance, Validators.required],
-    product_id: [''],
-    abv: [''],
-    manufactured_location_address: [''],
-    upc_code: [''],
-    scc_code: [''],
-    system_id: [''],
-    cola_ttb_id: [''],
-    nabca_code: [''],
-    unimerc_code: [''],
-    bdn_code: [''],
-    unit_length: [''],
-    unit_width: [''],
-    unit_height: [''],
-    unit_weight: [''],
-    pallet_length: [''],
-    pallet_width: [''],
-    pallet_height: [''],
-    pallet_weight: [''],
-    case_length: [''],
-    case_width: [''],
-    case_height: [''],
-    case_weight: [''],
-    layers_per_pallet: [''],
-    cases_per_layer: [''],
-    cases_per_pallet: [''],
-    sub_brand_product_name: ['']
-  });
+  productForm = this.formBuilder.group({});
 
 
-  ngOnInit(): void {
-    this.permissions = this.route.snapshot.data['permissions'];
-    this.crudFiltersList = this.route.snapshot.data['filterList'];
-    this.crudFieldConfig = this.ProductAddService.getCrudFieldConfig(this.crudFiltersList);
-    this.leftTitle = 'PRODUCT DETAILS';
-    this.productTitle = 'Dimensions';
-    this.rightHeaderBottomTitle = 'Codes';
-//     if (!this.permissions.permissions.Create) {
-//       this.router.navigate(['product-management']);
-//     }
-    let productId = this.route.snapshot.paramMap.get('id');
-//     this.filterList = this.route.snapshot.data['filterList'];
-//     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
-    this.duplicate = this.route.snapshot.data.isDuplicate || false;
-//     this.initializeFormConfig();
-//     this.filters = this.createFormSchema();
-    if (productId) {
-      this.edit =  true;
+    ngOnInit(): void {
+        this.permissions = this.route.snapshot.data['permissions'];
+        this.crudFiltersList = this.route.snapshot.data['filterList'];
+        this.crudFieldConfig = this.ProductAddService.getCrudFieldConfig(this.crudFiltersList);
+        this.leftTitle = 'PRODUCT DETAILS';
+        this.productTitle = 'Dimensions';
+        this.rightHeaderBottomTitle = 'Codes';
+        //     if (!this.permissions.permissions.Create) {
+        //       this.router.navigate(['product-management']);
+        //     }
+        let productId = this.route.snapshot.paramMap.get('id');
+        //     this.filterList = this.route.snapshot.data['filterList'];
+        //     this.title = { firstline: AppConstant.PRODUCT.PAGE_TITLE };
+        this.duplicate = this.route.snapshot.data.isDuplicate || false;
+        //     this.initializeFormConfig();
+        //     this.filters = this.createFormSchema();
+        if (productId) {
+            this.edit = true;
+        }
+        else {
+            this.edit = false;
+        }
+
+        //     if (productId) {
+        //         this.getProductData(productId);
+        //     }
+
+        //     this.productForm.valueChanges.subscribe(() => {
+        //       if (this.formSubmitted) {
+        //         this.showError = false;
+        //       }
+        //     });  
+        // Now, build the form controls based on the updated sections
+        const controls = {};
+
+        const allFields = [
+            ...this.crudFieldConfig.rightSection,
+            ...this.crudFieldConfig.leftSection
+        ];
+
+        allFields.forEach(field => {
+            const isDisabled = field.isDisabled || false;
+            const formControl = new FormControl(
+                { value: '', disabled: isDisabled },
+                field.isRequired ? Validators.required : []
+            );
+
+            controls[field.name] = formControl;
+        });
+        this.productForm = new FormGroup(controls);
+        //     this.model = this.productForm.value; 
+        //     this.filtersList = this.filterList || {}; 
+        //     this.caseUnitOfMeasure = this.filtersList.case_unit_of_measure || [];
+        //     this.filtersList.case_unit_of_measure = this.productmanagementService.formatDropdownValue(this.caseUnitOfMeasure);
+        //     this.modelFormat = this.productmanagementService.formatModelProductTool(this.model, this.filtersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
     }
-    else {
-      this.edit =  false;
-    } 
-
-//     if (productId) {
-//         this.getProductData(productId);
-//     }
-
-//     this.productForm.valueChanges.subscribe(() => {
-//       if (this.formSubmitted) {
-//         this.showError = false;
-//       }
-//     });  
-// Now, build the form controls based on the updated sections
-const controls = {};
-
-const allFields = [
-  ...this.crudFieldConfig.rightSection,
-  ...this.crudFieldConfig.lastSection,
-  ...this.crudFieldConfig.leftSection
-];
-
-allFields.forEach(field => {
-  const isDisabled = field.isDisabled || false;
-  const formControl = new FormControl(
-    { value: '', disabled: isDisabled }, 
-    field.isRequired ? Validators.required : []
-  );
-  
-  controls[field.name] = formControl;
-});
-this.productForm = new FormGroup(controls);
-//     this.model = this.productForm.value; 
-//     this.filtersList = this.filterList || {}; 
-//     this.caseUnitOfMeasure = this.filtersList.case_unit_of_measure || [];
-//     this.filtersList.case_unit_of_measure = this.productmanagementService.formatDropdownValue(this.caseUnitOfMeasure);
-//     this.modelFormat = this.productmanagementService.formatModelProductTool(this.model, this.filtersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
-
-  }
 
 
 //   initializeFormConfig(): void {
@@ -336,18 +286,18 @@ this.productForm = new FormGroup(controls);
 // // 		}
 // // 	});
 // // }
-  getDropDownArrayByIds (list, value, name) {
-    let result = [] ;
-    for (let i = 0; i < list?.length; i++) {
-      if (list[i].id == value) {
-        result.push(list[i]);
-        this.sellectedData[name] = result
-        return result;
-      }
-      
+    getDropDownArrayByIds(list, value, name) {
+        let result = [];
+        for (let i = 0; i < list?.length; i++) {
+            if (list[i].id == value) {
+                result.push(list[i]);
+                this.sellectedData[name] = result
+                return result;
+            }
+
+        }
+        return result.length === 0 ? null : result;
     }
-    return result.length === 0 ? null : result;
-  }
 //   applyDisableEnableForBrandAndSubBrand() {
 //       const brandControl = this.productForm.get('brand');
 //       const subBrandControl = this.productForm.get('sub_brand_product_id');
@@ -474,94 +424,94 @@ this.productForm = new FormGroup(controls);
 // 	// }
 //     // this.productForm.get(fieldName)?.setValue(field[0].name);
 
-  onDropdownStateChange(fieldName: any, selectedValue: any) {
-      this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
-      if(fieldName == 'container_type'  || fieldName == "client_id" || fieldName == "group" 
-        || fieldName == "is_organic" || fieldName == "producer" || fieldName == "case_unit_of_measure" || fieldName == "brand"
-        || fieldName == "varietal" || fieldName ==  "vintage" || fieldName == "sub_type" || fieldName == "category" || fieldName == "source" 
-        || fieldName == "country"){
-           this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
-       }
-       else {
-           this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
-       }
-    
-    const brandControl = this.productForm.get('brand');
-    const subBrandControl = this.productForm.get('sub_brand_product_id');
-    this.clientId = selectedValue[0]?.class_id;
+    onDropdownStateChange(fieldName: any, selectedValue: any) {
+        this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
+        if (fieldName == 'container_type' || fieldName == "client_id" || fieldName == "group"
+            || fieldName == "is_organic" || fieldName == "producer" || fieldName == "case_unit_of_measure" || fieldName == "brand"
+            || fieldName == "varietal" || fieldName == "vintage" || fieldName == "sub_type" || fieldName == "category" || fieldName == "source"
+            || fieldName == "country") {
+            this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
+        }
+        else {
+            this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
+        }
 
-    if (fieldName === 'client_id' && selectedValue.length > 0) {
-      this.isBrandDisabled = !selectedValue;
-      brandControl.setValue('');
-      subBrandControl.setValue('');
-      subBrandControl.disable();
-      this.updatesellectedData('brand','Select Brand');
-      this.updatesellectedData('sub_brand_product_id','Select Sub-Brand Product');
-      this.isSubBrandDisabled = true;
-      if (selectedValue && brandControl) {
-        brandControl.enable();
-        this.productmanagementService.getBrands(this.clientId).subscribe(brands => {
-          if (Array.isArray(brands) && brands.length > 0) {
-            this.brand = brands;
-            this.updateBrandFilter();
-          } else {
-            this.brand = [];
-            this.updateBrandFilter();
-          }
-        });
-      }
-      this.changeDetector.detectChanges();
+        const brandControl = this.productForm.get('brand');
+        const subBrandControl = this.productForm.get('sub_brand_product_id');
+        this.clientId = selectedValue[0]?.class_id;
+
+        if (fieldName === 'client_id' && selectedValue.length > 0) {
+            this.isBrandDisabled = !selectedValue;
+            brandControl.setValue('');
+            subBrandControl.setValue('');
+            subBrandControl.disable();
+            this.updatesellectedData('brand', 'Select Brand');
+            this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
+            this.isSubBrandDisabled = true;
+            if (selectedValue && brandControl) {
+                brandControl.enable();
+                this.productmanagementService.getBrands(this.clientId).subscribe(brands => {
+                    if (Array.isArray(brands) && brands.length > 0) {
+                        this.brand = brands;
+                        this.updateBrandFilter();
+                    } else {
+                        this.brand = [];
+                        this.updateBrandFilter();
+                    }
+                });
+            }
+            this.changeDetector.detectChanges();
+        }
+
+        if (fieldName === 'brand') {
+            this.isSubBrandDisabled = !selectedValue;
+            this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
+            subBrandControl.setValue('');
+            if (!this.isSubBrandDisabled && subBrandControl) {
+                subBrandControl.enable();
+                this.productmanagementService.getSubBrandProducts(selectedValue[0]?.client_id).subscribe(subBrands => {
+                    this.sub_brand_product_id = subBrands;
+                    this.updateSubBrandFilter();
+                    this.isSubBrandDisabled = false;
+                });
+            } else {
+                this.sub_brand_product_id = [];
+                this.updateSubBrandFilter();
+                subBrandControl.setValue('');
+            }
+            this.changeDetector.detectChanges();
+        }
+
+        if (fieldName == 'sub_brand_product_id') {
+            this.productForm.get('sub_brand_product_name')?.setValue(selectedValue[0].name);
+        }
+        if (fieldName === 'prod_type') {
+            this.renderConditionalFields(selectedValue[0].name, this.crudFiltersList, this.productForm);
+            this.crudFieldConfig = { ...this.crudFieldConfig };
+            this.productForm = new FormGroup(this.productForm.controls);
+            this.changeDetector.detectChanges();
+        }
+    }
+    updateSubBrandFilter() {
+        if (this.sub_brand_product_id && this.sub_brand_product_id.length > 0) {
+            this.crudFiltersList['sub_brand_product_id'] = this.sub_brand_product_id;
+            this.subBrandProducts = this.sub_brand_product_id;
+            this.crudFieldConfig.leftSection[3].options = this.sub_brand_product_id;
+            this.crudFieldConfig.leftSection[3].isDisabled = false
+            this.crudFieldConfig = { ...this.crudFieldConfig };
+            this.changeDetector.detectChanges();
+        }
     }
 
-    if (fieldName === 'brand') {
-      this.isSubBrandDisabled = !selectedValue;
-      this.updatesellectedData('sub_brand_product_id','Select Sub-Brand Product');
-      subBrandControl.setValue('');
-      if (!this.isSubBrandDisabled && subBrandControl) {
-        subBrandControl.enable();
-        this.productmanagementService.getSubBrandProducts(selectedValue[0]?.client_id).subscribe(subBrands => {
-          this.sub_brand_product_id = subBrands;
-          this.updateSubBrandFilter();
-          this.isSubBrandDisabled = false; 
-        });
-      } else {
-        this.sub_brand_product_id = [];  
-        this.updateSubBrandFilter();
-        subBrandControl.setValue('');
-      }
-      this.changeDetector.detectChanges();
+    updateBrandFilter() {
+        if (this.brand && this.brand.length > 0) {
+            this.crudFiltersList['brand'] = this.brand;
+            this.crudFieldConfig.leftSection[2].options = this.brand
+            this.crudFieldConfig.leftSection[2].isDisabled = false
+            this.crudFieldConfig = { ...this.crudFieldConfig };
+            this.changeDetector.detectChanges();
+        }
     }
-
-    if (fieldName == 'sub_brand_product_id') {
-      this.productForm.get('sub_brand_product_name')?.setValue(selectedValue[0].name);
-    }
-    if (fieldName === 'prod_type') {
-      this.renderConditionalFields(selectedValue[0].name , this.crudFiltersList , this.productForm);
-      this.crudFieldConfig = { ...this.crudFieldConfig };
-      this.changeDetector.detectChanges();
-    } 
-  
-  }
-  updateSubBrandFilter() {
-    if (this.sub_brand_product_id && this.sub_brand_product_id.length > 0) {
-      this.crudFiltersList['sub_brand_product_id'] = this.sub_brand_product_id;
-      this.subBrandProducts = this.sub_brand_product_id;
-      this.crudFieldConfig.rightSection[2].options = this.sub_brand_product_id;
-      this.crudFieldConfig.rightSection[2].isDisabled = false
-      this.crudFieldConfig = { ...this.crudFieldConfig };
-      this.changeDetector.detectChanges();
-    }
-  }
-
-  updateBrandFilter() {
-    if (this.brand && this.brand.length > 0) {
-      this.crudFiltersList['brand'] = this.brand;
-      this.crudFieldConfig.rightSection[1].options = this.brand
-      this.crudFieldConfig.rightSection[1].isDisabled = false
-      this.crudFieldConfig = { ...this.crudFieldConfig };
-      this.changeDetector.detectChanges();
-    }
-  }
   
 
 
@@ -736,369 +686,169 @@ this.productForm = new FormGroup(controls);
     // }
 
     
-  /**
-   * Function to track fields and prevent unnecessary re-renders
-   */
-  trackByField(index: number, field: any): string {
-    return field.name;
-  }
+    /**
+     * Function to track fields and prevent unnecessary re-renders
+     */
+    trackByField(index: number, field: any): string {
+        return field.name;
+    }
   
     updateFormControl(controlName: string, filterKey: string, id: string) {
-      const control = this.productForm.get(controlName);
-      control.enable();
-      this.productForm.patchValue({
-        [controlName]: this.getDropDownArrayByIds(this.crudFiltersList?.[filterKey], id, controlName),
-      });
+        const control = this.productForm.get(controlName);
+        control.enable();
+        this.productForm.patchValue({
+            [controlName]: this.getDropDownArrayByIds(this.crudFiltersList?.[filterKey], id, controlName),
+        });
     }
 
     updateBrandAndSubBrandControls(clientId: string, brandId: string, subBrandId: string) {
-      this.productmanagementService.getBrands(clientId).subscribe(brands => {
-        this.brand = Array.isArray(brands) && brands.length > 0 ? brands : [];
-        this.updateBrandFilter();
-        this.updateFormControl('brand', 'brand', brandId);
+        this.productmanagementService.getBrands(clientId).subscribe(brands => {
+            this.brand = Array.isArray(brands) && brands.length > 0 ? brands : [];
+            this.updateBrandFilter();
+            this.updateFormControl('brand', 'brand', brandId);
 
-        this.productmanagementService.getSubBrandProducts(clientId).subscribe(subBrands => {
-          this.sub_brand_product_id = subBrands;
-          this.updateSubBrandFilter();
-          this.updateFormControl('sub_brand_product_id', 'sub_brand_product_id', subBrandId);
+            this.productmanagementService.getSubBrandProducts(clientId).subscribe(subBrands => {
+                this.sub_brand_product_id = subBrands;
+                this.updateSubBrandFilter();
+                this.updateFormControl('sub_brand_product_id', 'sub_brand_product_id', subBrandId);
+            });
         });
-      });
     }
 
-    updatesellectedData(key: string, defaultText:string) {
-      this.sellectedData[key] = [{name: defaultText}];
+    updatesellectedData(key: string, defaultText: string) {
+        this.sellectedData[key] = [{ name: defaultText }];
     }
 
-    renderConditionalFields(selectedValue: any , crudFiltersList, productForm) {
-      const fieldExists = (fieldName: string) => {
-        const allFields = [
-          ...this.crudFieldConfig.rightSection,
-          ...this.crudFieldConfig.lastSection,
-          ...this.crudFieldConfig.leftSection
-        ];
-        return allFields.some(field => field.name === fieldName);
-      };
-    
-      const baseFields = [
-        {
-          key: 'sub_type',
-          name: 'sub_type',
-          label: 'Sub-Type',
-          type: 'multiselect-dropdown',
-          colClass: 'col-xs-12',
-          filters: { entity: [] },
-          options: crudFiltersList.product_sub_type || [],
-          isRequired: true,
-          isDisabled: false,
-          inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
-        },
-        {
-          key: 'category',
-          name: 'category',
-          label: 'Category',
-          type: 'multiselect-dropdown',
-          colClass: 'col-xs-12',
-          filters: { entity: [] },
-          options: crudFiltersList.categories || [],
-          isRequired: true,
-          isDisabled: false,
-          inputSetting: this.commonService.getDropdownConfig('Select Category', true)
-        },
-        {
-          key: 'source',
-          name: 'source',
-          label: 'Source',
-          type: 'multiselect-dropdown',
-          colClass: 'col-xs-12',
-          filters: { entity: [] },
-          options: crudFiltersList.source || [],
-          isRequired: true,
-          isDisabled: false,
-          inputSetting: this.commonService.getDropdownConfig('Select Source', true)
-        },
-        {
-          key: 'country',
-          name: 'country',
-          label: 'Country',
-          type: 'multiselect-dropdown',
-          colClass: 'col-xs-12',
-          filters: { entity: [] },
-          options: crudFiltersList.countries || [],
-          isRequired: true,
-          isDisabled: false,
-          inputSetting: this.commonService.getDropdownConfig('Select Country', true)
-        },
-        { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', required: true },
-        { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isCode: true, required: true },
-        { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isCode: true },
-        { type: 'text', name: 'unimerc_code', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isCode: true },
-        { type: 'text', name: 'bdn_code', label: 'BDN Code', placeholder: 'BDN Code', isCode: true },
-        { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' },
-      ];
-    
-      const conditionalFields = {
-        wine: [
-          {
-            key: 'vintage',
-            name: 'vintage',
-            label: 'Vintage',
-            type: 'multiselect-dropdown',
-            colClass: 'col-xs-12',
-            filters: { entity: [] },
-            options: crudFiltersList.vintages || [],
-            isRequired: true,
-            isDisabled: false,
-            inputSetting: this.commonService.getDropdownConfig('Select Vintage', true)
-          },
-          {
-            key: 'varietal',
-            name: 'varietal',
-            label: 'Varietal',
-            type: 'multiselect-dropdown',
-            colClass: 'col-xs-12',
-            filters: { entity: [] },
-            options: crudFiltersList.varietals || [],
-            isRequired: false,
-            isDisabled: false,
-            inputSetting: this.commonService.getDropdownConfig('Select Varietal', true)
-          }
-        ],
-        malt: [
-          {
-            key: 'vintage',
-            name: 'vintage',
-            label: 'Vintage',
-            type: 'multiselect-dropdown',
-            colClass: 'col-xs-12',
-            filters: { entity: [] },
-            options: crudFiltersList.vintages || [],
-            isRequired: true,
-            isDisabled: false,
-            inputSetting: this.commonService.getDropdownConfig('Select Vintage', true)
-          }
-        ],
-        spirits: [
-          {
-            key: 'vintage',
-            name: 'vintage',
-            label: 'Vintage',
-            type: 'multiselect-dropdown',
-            colClass: 'col-xs-12',
-            filters: { entity: [] },
-            options: crudFiltersList.vintages || [],
-            isRequired: true,
-            isDisabled: false,
-            inputSetting: this.commonService.getDropdownConfig('Select Vintage', true)
-          }
-        ],
-        bulk: [
-          {
-            key: 'sub_type',
-            name: 'sub_type',
-            label: 'Sub-Type',
-            type: 'multiselect-dropdown',
-            colClass: 'col-xs-12',
-            filters: { entity: [] },
-            options: crudFiltersList.product_sub_type || [],
-            isRequired: true,
-            isDisabled: false,
-            inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
-          },
-          { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' }
-        ],
-        other: [
-          {
-            key: 'sub_type',
-            name: 'sub_type',
-            label: 'Sub-Type',
-            type: 'multiselect-dropdown',
-            colClass: 'col-xs-12',
-            filters: { entity: [] },
-            options: crudFiltersList.product_sub_type || [],
-            isRequired: true,
-            isDisabled: false,
-            inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
-          },
-          { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' }
-        ]
-      };
-    
-    // Remove fields from the correct sections (rightSection, lastSection, leftSection)
-    const removeFields = (fieldsToRemove: string[]) => {
-      fieldsToRemove.forEach(fieldName => {
-        // Remove from all relevant sections
-        const allSections = [
-          this.crudFieldConfig.rightSection,
-          this.crudFieldConfig.lastSection,
-          this.crudFieldConfig.leftSection
-        ];
-  
-        allSections.forEach(section => {
-          const fieldIndex = section.findIndex(field => field.name === fieldName);
-          if (fieldIndex !== -1) {
-            section.splice(fieldIndex, 1);  // Remove field from section
-          }
-        });
-  
-        // Remove from the productForm
-        const control = productForm.get(fieldName);
-        if (control) {
-          control.setValue('');
-          control.clearValidators();
-          control.updateValueAndValidity();
-        }
-      });
-    };
-  
-      // Add form control to the correct sections (rightSection, lastSection, leftSection)
-      const addFieldControl = (field) => {
-        // Add field to all relevant sections
-        // const allSections = [
-        //   this.crudFieldConfig.rightSection,
-        //   this.crudFieldConfig.lastSection,
-        //   this.crudFieldConfig.leftSection
-        // ];
-  
-        // allSections.forEach(section => {
-        //   if (!section.some(f => f.name === field.name)) {
-        //     section.push(field); // Add field to section
-        //   }
-        // });
-  
-        // Add field control to the form
-        if (field.required) {
-          productForm.addControl(field.name, new FormControl('', Validators.required));
-        } else {
-          productForm.addControl(field.name, new FormControl(''));
-        }
-  
-        const control = productForm.get(field.name);
-        if (control) {
-          control.markAsTouched();
-        }
-      };
-  
-      // Add validators to the form control (rightSection, lastSection, leftSection)
-      const addValidators = (controlName: string) => {
-        const control = productForm.get(controlName);
-        if (control) {
-          control.setValidators([Validators.required]);
-          control.updateValueAndValidity(); // Re-validate the control
-        }
-  
-        // Add validators to the field in all sections
-        const allSections = [
-          this.crudFieldConfig.rightSection,
-          this.crudFieldConfig.lastSection,
-          this.crudFieldConfig.leftSection
-        ];
-  
-        allSections.forEach(section => {
-          // const field = section.find(f => f.name === controlName);
-          // if (field) {
-          //   // You can apply additional logic to add validators to the field if necessary
-          // }
-        });
-      };
-  
-    
-      // Update rightSection, lastSection, and leftSection based on the selected value
-      switch (selectedValue) {
-        case 'Wine':
-          // Add fields to rightSection
-          baseFields.forEach(field => {
-            if (!fieldExists(field.name)) {
-              if (field.isCode) {
-                this.crudFieldConfig.lastSection.push(field);
-              } else {
-                this.crudFieldConfig.rightSection.push(field);
-              }
-              addFieldControl(field);
-              addValidators('sub_type');
-              addValidators('category');
-              addValidators('source');
-              addValidators('country');
-              addValidators('vintage');
-            }
-          });
-          conditionalFields.wine.forEach(field => {
-            if (!fieldExists(field.name)) {
-              this.crudFieldConfig.rightSection.push(field);
-              addFieldControl(field);
-            }
-          });
-          break;
-        case 'Malt':
-          baseFields.forEach(field => {
-            if (!fieldExists(field.name)) {
-              if (field.isCode) {
-                this.crudFieldConfig.lastSection.push(field);
-              } else {
-                this.crudFieldConfig.rightSection.push(field);
-              }
-              addFieldControl(field);
-            }
-          });
-          conditionalFields.malt.forEach(field => {
-            if (!fieldExists(field.name)) {
-              this.crudFieldConfig.rightSection.push(field);
-              addFieldControl(field);
-            }
-          });
-          removeFields(['varietal']);
-          break;
-        case 'Spirits':
-          baseFields.forEach(field => {
-            if (!fieldExists(field.name)) {
-              this.crudFieldConfig.rightSection.push(field);
-              addFieldControl(field);
-            }
-          });
-          conditionalFields.spirits.forEach(field => {
-            if (!fieldExists(field.name)) {
-              this.crudFieldConfig.rightSection.push(field);
-              addFieldControl(field);
-            }
-          });
-          break;
-        case 'Bulk':
-        case 'Other':
-          if (!fieldExists('sub_type')) {
-            this.crudFieldConfig.rightSection.push(
-              {
-                key: 'sub_type',
-                name: 'sub_type',
-                label: 'Sub-Type',
-                type: 'multiselect-dropdown',
-                colClass: 'col-xs-12',
-                filters: { entity: [] },
-                options: crudFiltersList.product_sub_type || [],
-                isRequired: true,
-                isDisabled: false,
-                inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
-              }
-            );
-          }
-          if (!fieldExists('manufactured_location_address')) {
-            this.crudFieldConfig.rightSection.push({
-              type: 'text',
-              name: 'manufactured_location_address',
-              label: 'Manufactured Location Address',
-              placeholder: 'Enter Manufactured Location Address'
+    renderConditionalFields(selectedValue: any, crudFiltersList, productForm) {
+        const fieldExists = (fieldName: string) => {
+            const allFields = [
+                ...this.crudFieldConfig.rightSection,
+                ...this.crudFieldConfig.leftSection
+            ];
+            return allFields.some(field => field.name === fieldName);
+        };
+
+        const baseFields = this.ProductAddService.getCrudBaseFields(crudFiltersList);
+        const conditionalFields = this.ProductAddService.getCrudConditionalFields(crudFiltersList);
+        const subTypeField = this.ProductAddService.getSubTypeField(crudFiltersList);
+        const manufacturedLocationField = this.ProductAddService.getManufacturedLocationField();
+
+        const removeFields = (fieldsToRemove: string[]) => {
+            fieldsToRemove.forEach(fieldName => {
+                const allSections = [
+                    this.crudFieldConfig.rightSection,
+                    this.crudFieldConfig.leftSection
+                ];
+                allSections.forEach(section => {
+                    const fieldIndex = section.findIndex(field => field.name === fieldName);
+                    if (fieldIndex !== -1) {
+                        section.splice(fieldIndex, 1);
+                    }
+                });
+                const control = productForm.get(fieldName);
+                if (control) {
+                    control.setValue('');
+                    control.clearValidators();
+                    control.updateValueAndValidity();
+                }
             });
-          }
-          removeFields(['vintage', 'varietal', 'category', 'source', 'country', 'abv']);
-          break;
-        default:
-          if (!fieldExists('manufactured_location_address')) {
-            this.crudFieldConfig.rightSection.push({
-              type: 'text',
-              name: 'manufactured_location_address',
-              label: 'Manufactured Location Address',
-              placeholder: 'Enter Manufactured Location Address'
-            });
-          }
-          break;
-      }
+        };
+
+        const addFieldControl = (field) => {
+            if (field.required) {
+                productForm.addControl(field.name, new FormControl('', Validators.required));
+            } else {
+                productForm.addControl(field.name, new FormControl(''));
+            }
+            const control = productForm.get(field.name);
+            if (control) {
+                control.markAsTouched();
+            }
+        };
+
+        const addValidators = (controlName: string) => {
+            const control = productForm.get(controlName);
+            if (control) {
+                control.setValidators([Validators.required]);
+                control.updateValueAndValidity(); // Re-validate the control
+            }
+        };
+
+        const addCommonValidators = () => {
+            ['sub_type', 'category', 'source', 'country', 'vintage'].forEach(addValidators);
+        };
+
+        switch (selectedValue) {
+            case 'Wine':
+                baseFields.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        if (field.isCode) {
+                            this.crudFieldConfig.rightSection.push(field);
+                        } else {
+                            this.crudFieldConfig.leftSection.push(field);
+                        }
+                        addFieldControl(field);
+                        addCommonValidators();
+                    }
+                });
+                conditionalFields.wine.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        this.crudFieldConfig.leftSection.push(field);
+                        addFieldControl(field);
+                    }
+                });
+                break;
+            case 'Malt':
+                baseFields.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        if (field.isCode) {
+                            this.crudFieldConfig.rightSection.push(field);
+                        } else {
+                            this.crudFieldConfig.leftSection.push(field);
+                        }
+                        addFieldControl(field);
+                    }
+                });
+                conditionalFields.malt.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        this.crudFieldConfig.leftSection.push(field);
+                        addFieldControl(field);
+                    }
+                });
+                removeFields(['varietal']);
+                break;
+            case 'Spirits':
+                baseFields.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        this.crudFieldConfig.leftSection.push(field);
+                        addFieldControl(field);
+                    }
+                });
+                conditionalFields.spirits.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        this.crudFieldConfig.leftSection.push(field);
+                        addFieldControl(field);
+                    }
+                });
+                break;
+            case 'Bulk':
+            case 'Other':
+                if (!fieldExists('sub_type')) {
+                    this.crudFieldConfig.leftSection.push(subTypeField);
+                    addFieldControl(subTypeField);
+                }
+                if (!fieldExists('manufactured_location_address')) {
+                    this.crudFieldConfig.leftSection.push(manufacturedLocationField);
+                }
+                addFieldControl(manufacturedLocationField);
+                removeFields(['vintage', 'varietal', 'category', 'source', 'country', 'abv']);
+                break;
+            default:
+                if (!fieldExists('manufactured_location_address')) {
+                    this.crudFieldConfig.leftSection.push(manufacturedLocationField);
+                }
+                addFieldControl(manufacturedLocationField);
+                break;
+        }
     }
 }
