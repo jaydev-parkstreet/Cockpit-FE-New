@@ -8,15 +8,11 @@ import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdo
 })
 export class ProductAddService {
 
-  constructor(
-    private commonService: CommonService,
-    private dropdownService: InputDropdownService,
-  ) { }
+  constructor(private commonService: CommonService) { }
 
   getCrudFieldConfig(crudFiltersList) {
     return {
       leftSection: [
-        { isHeader: true, label: 'Supplier'},
         {
           key: 'client_id',
           name: 'client_id',
@@ -79,7 +75,6 @@ export class ProductAddService {
           isDisabled: false,
           inputSetting: this.commonService.getDropdownConfig('Select producer', true)
         },
-        { isSectionHeader: true, label: '123'},
         {
           key: 'case_unit_of_measure',
           name: 'case_unit_of_measure',
@@ -105,7 +100,8 @@ export class ProductAddService {
           inputSetting: this.commonService.getDropdownConfig('Select Type', true)
         },
         {  type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false, colClass: 'col-sm-12'},
-        {  type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', colClass: 'col-sm-12'},
+        {  type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', colClass: 'col-sm-4'},
+        {  type: 'checkbox', name: 'use_up', label: 'Use up', placeholder: 'Use up', colClass: 'col-sm-4'},
         {
           key: 'is_organic',
           name: 'is_organic',
@@ -131,19 +127,25 @@ export class ProductAddService {
           inputSetting: this.commonService.getDropdownConfig('Select Type', true)
         }
       ],
-      RightSection: [
+      rightSection: [
         { isHeader: true, label: 'Bottle/Unit'},
         { type: 'text', name: 'unit_length', label: 'Length', placeholder: 'Enter Length', required: false, isDimension: true, dimensionType: 'unit', colClass: 'col-sm-6'},
         { type: 'text', name: 'unit_width', label: 'Width', placeholder: 'Enter Width', required: false, isVisible: true, isDimension: true, dimensionType: 'unit', colClass: 'col-sm-6' },
         { type: 'text', name: 'unit_height', label: 'Height', placeholder: 'Enter Height', required: false, isDimension: true, dimensionType: 'unit', colClass: 'col-sm-6' },
         { type: 'text', name: 'unit_weight', label: 'Weight', placeholder: 'Enter Weight', required: false, isDimension: true, dimensionType: 'unit' , colClass: 'col-sm-6'},
         
-        { isHeader: true, label: 'Case'},
+        { isHeader: true, label: 'Pallet'},
         { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false, isDimension: true, dimensionType: 'pallet' , colClass: 'col-sm-6' },
         { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false, isDimension: true, dimensionType: 'pallet' , colClass: 'col-sm-6' },
         { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false, isDimension: true, dimensionType: 'pallet', colClass: 'col-sm-6' },
         { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false, isDimension: true, dimensionType: 'pallet', colClass: 'col-sm-6' },
-        
+
+        { isHeader: true, label: 'Case'},
+        { type: 'text', name: 'case_length', label: 'Case Length', placeholder: 'Enter Case Length', required: false, isDimension: true, dimensionType: 'case', colClass: 'col-sm-6' },
+        { type: 'text', name: 'case_width', label: 'Case Width', placeholder: 'Enter Case Width', required: false, isDimension: true, dimensionType: 'case', colClass: 'col-sm-6' },
+        { type: 'text', name: 'case_height', label: 'Case Height', placeholder: 'Enter Case Height', required: false, isDimension: true, dimensionType: 'case', colClass: 'col-sm-6' },
+        { type: 'text', name: 'case_weight', label: 'Case Weight', placeholder: 'Enter Case Weight', required: false, isDimension: true, dimensionType: 'case', colClass: 'col-sm-6' },
+
         { isHeader: true, label: 'Layer'},
         { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false, isDimension: true, dimensionType: 'layer' , colClass: 'col-sm-6'},
         { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false, isDimension: true, dimensionType: 'layer', colClass: 'col-sm-6' },
@@ -213,12 +215,12 @@ export class ProductAddService {
                 isDisabled: false,
                 inputSetting: this.commonService.getDropdownConfig('Select Country', true)
             },
-            { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', required: true },
-            { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isCode: true, required: true },
-            { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isCode: true },
-            { type: 'text', name: 'unimerc_code', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isCode: true },
-            { type: 'text', name: 'bdn_code', label: 'BDN Code', placeholder: 'BDN Code', isCode: true },
-            { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' },
+            { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', required: true, colClass: 'col-sm-12'  },
+            { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isCode: true, required: true, colClass: 'col-sm-12'  },
+            { type: 'text', name: 'nabca_code', label: 'NABCA Code', placeholder: 'NABCA Code', isCode: true, colClass: 'col-sm-12'  },
+            { type: 'text', name: 'unimerc_code', label: 'UNIMERC Code', placeholder: 'UNIMERC Code', isCode: true, colClass: 'col-sm-12'  },
+            { type: 'text', name: 'bdn_code', label: 'BDN Code', placeholder: 'BDN Code', isCode: true, colClass: 'col-sm-12'  },
+            { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address', colClass: 'col-sm-12'  },
         ];
     }
 
@@ -306,7 +308,7 @@ export class ProductAddService {
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
                 },
-                { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' }
+                { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address', colClass: 'col-sm-12'  }
             ]
         };
     }
@@ -331,7 +333,8 @@ export class ProductAddService {
             type: 'text',
             name: 'manufactured_location_address',
             label: 'Manufactured Location Address',
-            placeholder: 'Enter Manufactured Location Address'
+            placeholder: 'Enter Manufactured Location Address',
+            colClass: 'col-sm-12' 
         }
     }
 }

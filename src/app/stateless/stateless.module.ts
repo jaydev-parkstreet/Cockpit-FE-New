@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PsiAgGridComponent } from './psi-ag-grid/psi-ag-grid.component';
 import { PsiPageColumnHeaderComponent } from './psi-page-column-header/psi-page-column-header.component';
 import { PsiInputTextFieldComponent } from './psi-input-text-field/psi-input-text-field.component';
+import { PsiCheckboxComponent } from './psi-checkbox/psi-checkbox.component';
 
 
 
@@ -10,7 +11,8 @@ import { PsiInputTextFieldComponent } from './psi-input-text-field/psi-input-tex
   declarations: [
     PsiAgGridComponent,
     PsiPageColumnHeaderComponent,
-    PsiInputTextFieldComponent
+    PsiInputTextFieldComponent,
+    PsiCheckboxComponent
   ],
   imports: [
     CommonModule
@@ -18,7 +20,8 @@ import { PsiInputTextFieldComponent } from './psi-input-text-field/psi-input-tex
   exports: [
     PsiAgGridComponent,
     PsiPageColumnHeaderComponent,
-    PsiInputTextFieldComponent
+    PsiInputTextFieldComponent,
+    PsiCheckboxComponent
   ]
 })
 export class StatelessModule { }

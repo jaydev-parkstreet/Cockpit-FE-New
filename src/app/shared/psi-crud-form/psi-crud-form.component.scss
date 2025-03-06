@@ -15,14 +15,14 @@
   .container-body {
     .left-section {
       padding: 0;
-      background-color:  $colors-neutral-white;
+      background-color: $colors-neutral-white;
       width: 49.7%;
       margin-right:4px
       
     }
     .right-section {
       padding: 0;
-      background-color:  $colors-neutral-white;
+      background-color: $colors-neutral-white;
       width: 49.7%;;
       margin-left:4px
       
@@ -49,7 +49,7 @@
 
 .error-message {
   margin-top: 4px;
-  color: #c50000;
+  color: $colors-v2-base-error;
   font-size: 12px;
   background-repeat: no-repeat !important;
   background-size: 12px;

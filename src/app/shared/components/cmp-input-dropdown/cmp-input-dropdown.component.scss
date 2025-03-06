@@ -300,13 +300,21 @@
 }
 
 .input-dropdown .dropdown-header.disabled {
-    cursor: not-allowed;
-    pointer-events: none;
     border-radius: 8px;
     background-color: $colors-neutral-light-v-low;
     color: $colors-neutral-dark-v-medium;
-}
+    cursor: not-allowed;
+    
+    .dropdown-list {
+        pointer-events: none;
+        display: none;
+    }
 
-.input-dropdown .dropdown-header.disabled .dropdown-list {
-    display: none;
+    &:hover,
+    &:focus {
+        color: $colors-neutral-dark-v-medium;
+        border: 1px solid $colors-neutral-light;
+        outline: none;
+        box-shadow: none;
+    }
 }

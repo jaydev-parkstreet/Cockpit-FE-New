@@ -7,6 +7,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class PsiInputTextFieldComponent implements OnInit {
   @Input() field: any;
+  @Input() validationClasses: any;
+  @Input() form: any;
   @Output() valueChanged: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }

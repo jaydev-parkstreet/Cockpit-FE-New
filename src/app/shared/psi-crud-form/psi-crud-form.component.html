@@ -12,7 +12,7 @@
             </app-psi-page-column-header>
         </div>
     </div>
-    
+
     <div class=" col-sm-12 p-0 container-body">
         <!-- left section -->
         <div class="col-sm-6 left-section">  
@@ -48,18 +48,28 @@
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
+                        [form]="form"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
                         (valueChanged)="onInputChange(field.name, $event)">
                     </app-psi-input-text-field>
                     <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass"  *ngIf="field?.type == 'checkbox'">
+                    <app-psi-checkbox
+                    [field]="field"
+                    [form]="form"
+                    [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                    (valueChanged)="onCheckedInput(field.name, $event)">
+                    </app-psi-checkbox>
+                </div>
             </div>
         </div>
 
         <!-- Right section -->
         <div class="col-sm-6 right-section">
-            <div *ngFor="let field of crudFieldConfig.RightSection">
+            <div *ngFor="let field of crudFieldConfig.rightSection">
                 <div class="typography-body-dark-regular u-pg-ml-2" *ngIf="field.isHeader ">
                     {{field.label}}
                 </div>
@@ -79,7 +89,7 @@
                         [selectedItems]="sellectedData[field.key] || []"
                         [settings]="field.inputSetting"
                         [filteredItems]="field.options"
-                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
                         [disabled]="field.isDisabled"
                         [required]="field.isRequired"
                         (onDropDownChange)="onDropdownStateChange(field.key, $event)">
@@ -91,6 +101,8 @@
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
+                        [form]="form"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
                         (valueChanged)="onInputChange(field.name, $event)">
                     </app-psi-input-text-field>
                     <div *ngIf="isFieldInvalid(field.name)" class="error-message">
@@ -98,8 +110,7 @@
                     </div>
                 </div>
             </div>
-                
-          
+
         </div>
     </div>
 

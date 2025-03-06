@@ -319,10 +319,16 @@ export class ProductManagementService {
   formatModelProductTool(model: any, filtersList: any, subBrandProducts: any[], edit: boolean, duplicate:boolean , id: number,productId:any): any {
         if (!Object.keys(model).length) {
             return {};  
-        }    
+        }
+        const getSubBrandDetails = (subBrandProducts, sub_brand_product_id) => {
+            const subBrand = subBrandProducts.find(product => product.name === sub_brand_product_id);
+          
+            return subBrand ? { id: subBrand.id, name: subBrand.name } : null; // Return null if not found
+        };
+        const result = getSubBrandDetails(subBrandProducts, model.sub_brand_product_id); 
         let modelFormat: any = {
-            compliance: model.compliance === true ? 1 : 1,
-            use_up: model.use_up === true ? 1 : 0,  
+            compliance: model.compliance === "1" ? 1 : 0,
+            use_up: model.use_up === "1" ? 1 : 0,  
             is_organic: model.is_organic ? 1 : 0, 
             abv: model.abv || "", 
             cola_ttb_id: model.cola_ttb_id || "",
@@ -352,8 +358,8 @@ export class ProductManagementService {
             scc_code: model.scc_code || "",
             upc_code: model.upc_code || "",
             client_id: model.client_id || "",             
-            sub_brand_product_name: subBrandProducts[0]?.name || "",   
-            sub_brand_product_id: subBrandProducts[0]?.id|| null,         
+            sub_brand_product_name: result ? result.name : subBrandProducts[0]?.name || "",
+            sub_brand_product_id: result ? result.id : subBrandProducts[0]?.id || null,                   
             name: model.name || "",
             group: Array.isArray(model.group) && model.group.length > 0  ? (model.group[0]?.id || null) 
             : model.group  || null,       
@@ -425,7 +431,6 @@ export class ProductManagementService {
         
         return modelFormat;
     }
-    
     
     formatDropdownValue(values, name = '') {
         let dropdown = [];
