@@ -12,9 +12,10 @@
             </app-psi-page-column-header>
         </div>
     </div>
-    <!-- left section -->
-    <div class="col-sm-6 lt-c ">
-        <div class="back-color">
+    
+    <div class=" col-sm-12 p-0 container-body">
+        <!-- left section -->
+        <div class="col-sm-6 left-section">  
             <div *ngFor="let field of crudFieldConfig.leftSection">
                 <div class="typography-body-dark-regular u-pg-ml-2" *ngIf="field.isHeader ">
                     {{field.label}}
@@ -26,7 +27,7 @@
                         </app-psi-page-column-header>
                     </div>
                 </div>
-                <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'multiselect-dropdown'">
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'multiselect-dropdown'">
                     <app-cmp-input-dropdown
                         [label]="field.label"
                         [showSelectAll]="false"
@@ -55,12 +56,10 @@
                 </div>
             </div>
         </div>
-    </div>
-   
-    <!-- Right section -->
-    <div class="col-sm-6 rt-c">
-        <div class="back-color">
-            <div *ngFor="let field of crudFieldConfig.rightSection">
+
+        <!-- Right section -->
+        <div class="col-sm-6 right-section">
+            <div *ngFor="let field of crudFieldConfig.RightSection">
                 <div class="typography-body-dark-regular u-pg-ml-2" *ngIf="field.isHeader ">
                     {{field.label}}
                 </div>
@@ -71,7 +70,7 @@
                         </app-psi-page-column-header>
                     </div>
                 </div>
-                <div class="d-flex flex-column w-100 field-group" *ngIf="field.type === 'multiselect-dropdown'">
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'multiselect-dropdown'">
                     <app-cmp-input-dropdown
                         [label]="field.label"
                         [showSelectAll]="false"
@@ -99,9 +98,11 @@
                     </div>
                 </div>
             </div>
+                
+          
         </div>
     </div>
-    
+
     <!-- Footer section -->
     <div class="col-sm-6 u-flex justify-content-end">
         <div class="u-pg-g-2 form-submit-button" *ngFor="let field of crudFieldConfig.btnLabel">

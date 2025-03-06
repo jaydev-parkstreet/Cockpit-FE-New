@@ -11,27 +11,40 @@
     padding-left: 4px;
     padding-right: 0px;
   }
-  
-  .section-header{
-    background-color: $colors-neutral-light-v-low;
-    padding: 0 ;
-  }
-  .back-color {
-    background-color: $colors-neutral-white;
-  }
-  .right-section {
-    background-color: $colors-neutral-white;
-  }
-  .field-group {
-    margin:16px 0px;
-    padding: 0 8px 0 8px;
+
+  .container-body {
+    .left-section {
+      padding: 0;
+      background-color:  $colors-neutral-white;
+      width: 49.7%;
+      margin-right:4px
+      
+    }
+    .right-section {
+      padding: 0;
+      background-color:  $colors-neutral-white;
+      width: 49.7%;;
+      margin-left:4px
+      
+    }
+    .section-header{
+      background-color: $colors-neutral-light-v-low;
+      padding: 0 ;
+    }
+
+    .field-group {
+      margin:16px 0px;
+      padding: 0 8px 0 8px;
+    }
+    
+   
   }
   
   .form-submit-button {
     background-color: $colors-neutral-light-v-low;
     padding: 16px;
     justify-content: right;
-  }   
+  }  
 }
 
 .error-message {
