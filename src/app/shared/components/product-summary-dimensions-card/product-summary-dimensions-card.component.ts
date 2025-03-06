@@ -7,6 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ProductSummaryDimensionsCardComponent implements OnInit {
   @Input() rows: any;
+  @Input() cardClass: string;
+  
   constructor() { }
 
   ngOnInit(): void {

@@ -6,92 +6,36 @@
 
 .product-summary-dimensions-card {
   background: $colors-neutral-white;
-  padding: 32px 16px 24px 16px;
   box-shadow: 0px 4px 8px 0px $colors-neutral-dark-t-15;
   
   .psi-fields-detail {
-    color: $colors-neutral-black;
-    font-size: 14px;
-    line-height: 14px;
-    margin-bottom: 24px;
-
-    .header-label {
-      .field-bl-dtl {
-        .h-left {
-          color: $colors-neutral-black;
-          font-family: $montserrat-medium;
-          font-size: 14px;
-          font-weight: 500;
-          line-height: 14px;
-          text-decoration: underline;
-        }
-      }
-    }
-
-    .field-bl-dtl {
-      display: flex;
-
-      .underline {
-        text-decoration: underline;
-      }
-
-      .u-ml3-left {
-        font-family: $montserrat-medium;
-        font-weight: 500;
-        width: 44%;
-      }
-
-      .u-ml3-right {
-        text-align: right;
-        font-family: $montserrat-regular;
-        width: 54%;
-      }
-    }
-
     table {
-      margin-top: 15px;
-      width: 100%;
       border-collapse: collapse;
     }
 
     th {
       background: $colors-v2-base-primary-v-low-t-10;
-
-      span {
-        height: 12px;
-        color: $colors-neutral-black;
-        font-size: 12px;
-        font-weight: bold;
-        line-height: 14px;
-      }
-
-      .ftleft {
-        float: left;
-        font-family: $montserrat-bold;
-      }
-
       .ftright {
-        text-align: right;
-        float: right;
-        border-left: 1px solid #9999;
-      }
-    }
-
-    td {
-      span {
-        width: 144px;
-        height: 12px;
-        color: $colors-neutral-dark;
-        font-size: 12px;
-        font-family: $montserrat-regular;
-        line-height: 12px;
+        border-left: 1px solid $colors-neutral-light;
       }
     }
 
     td,
     th {
-      padding: 6px;
+      padding: 7px;
       text-align: left;
     }
+
+    tr:nth-child(odd) {
+      background: $colors-neutral-white;
+    }
+
+    tr:nth-child(even) {
+        background: $colors-neutral-light-v-low;
+    }
+  }
+
+  &.default-padding {
+    padding: 16px;
   }
 }

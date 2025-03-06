@@ -1,10 +1,10 @@
-<div class="header-widget u-mb1">
+<div class="typography-body header-widget u-mb1 u-flex u-align-center u-justify-between u-pg-px-2 u-bg-neutral-white">
   <div #headerDiv
-    class="typography-body-black-regular header-widget-title text-uppercase u-truncate">
+    class="typography-body-black-regular header-widget-title text-uppercase u-truncate d-inline-block u-neutral-black">
     {{ headerTitle }}
   </div>
 
-  <span *ngIf="showTooltip && hasTooltip" class="tooltip-text header-tooltip u-pg-mt-8 typography-regular u-pg-p-1 u-bg-neutral-black">{{ headerTitle }}</span>
+  <span *ngIf="showTooltip && hasTooltip" class="typography-regular tooltip-text header-tooltip u-pg-mt-8 u-pg-p-1 u-bg-neutral-black">{{ headerTitle }}</span>
 
   <div class="badge-wrapper u-flex u-justify-between u-pg-g-1">
     <div *ngIf="hasRightErrorIcon" class="u-flex-center">
@@ -12,21 +12,8 @@
         <span *ngIf="rightErrorIconDescription" class="tooltip-text right-error-tooltip u-pg-p-1" [ngClass]="rightErrorIconDescriptionClass">{{rightErrorIconDescription}}</span>
       </i>
     </div>
-    <div class="icon-class u-flex u-justify-between u-csr-ptr" *ngIf="iconClass">
-      <i [ngClass]="iconClass"></i>
-    </div>
-    <div *ngIf="badgeText" class="badge" [ngClass]="badgeClass">
+    <div *ngIf="badgeText" class="typography-paragraph-black-medium badge" [ngClass]="badgeClass">
       <span> {{badgeText}}</span>
-      <i *ngIf="badgeIconClass" [ngClass]="badgeIconClass"></i>
     </div>
-
-    <i *ngIf="badgeIconClass" [ngClass]="['icon-cst-cls', badgeIconClass]">
-      <span *ngIf="iconShowTooltip" class="icon-tooltip-text">{{ iconHeaderStatus }}</span>
-    </i>
   </div>
-
-  <div class="icon-class u-flex u-justify-between u-csr-ptr" *ngIf="iconClass">
-    <i [ngClass]="iconClass"></i>
-  </div>
-
 </div>

@@ -10,10 +10,8 @@ export class CmpHeaderWidgetComponent implements AfterViewInit {
   @Input() hasTooltip: boolean;
   @Input() badgeText: string;
   @Input() badgeClass: string;
-  @Input() badgeIconClass: string;
   @Input() iconShowTooltip: boolean;
   @Input() iconHeaderStatus: string;
-  @Input() iconClass: string;
   @Input() hasRightErrorIcon: string;
   @Input() rightErrorIconClass: string;
   @Input() rightErrorIconDescription: string;  

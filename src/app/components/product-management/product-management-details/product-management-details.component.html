@@ -1,8 +1,8 @@
-<div ui-view class="product-tool-details">
+<div ui-view class="product-tool-details u-pg-pt-1 u-pg-mb-2">
     <app-header-tool titleText="Product Management System" titleIcon="fas fa-wine-bottle">
     </app-header-tool>
 
-    <div class="product-tool-details-container">
+    <div class="product-tool-details-container u-pg-pb-2">
         <div class="action-bar u-flex u-flex u-justify-between u-align-center u-pg-mt-1">
             <div class="back-link">
                 <i class="fas fa-chevron-left"></i>
@@ -69,20 +69,11 @@
                             [rows]="productList">
                         </app-product-summary-dimensions-card>
                     </div>
-                    <div class="code-section u-pg-mt-1">
+                    <div class="u-pg-mt-1">
                         <app-cmp-header-widget [headerTitle]="codesTitle"></app-cmp-header-widget>
-                        <div class="code-table">
-                            <table id="customers">
-                                <tr>
-                                    <th class="typography-paragraph-black-regular col-type">Type</th>
-                                    <th class="typography-paragraph-black-regular col-code"><span class="ftleft"></span>Code</th>
-                                </tr>
-                                <tr class="odd-event-row" *ngFor="let code of productCodeDetail">
-                                    <td class="typography-paragraph-dark-regular type-val">{{code.label}}</td>
-                                    <td class="typography-paragraph-dark-regula code-val">{{code.val}}</td>
-                                </tr>
-                            </table>
-                        </div>
+                        <app-product-summary-dimensions-card 
+                            [rows]="productCodeDetail">
+                        </app-product-summary-dimensions-card>
                     </div>
                 </div>
             </div>

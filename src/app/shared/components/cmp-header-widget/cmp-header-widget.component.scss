@@ -5,27 +5,15 @@
 @import '../../../scss/utilities/typography';
 
 .header-widget {
-    background: $colors-neutral-white;
-    padding: 0 16px;
     height: 48px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
     box-shadow: 0px 4px 8px 0px $colors-neutral-dark-t-15;
-
-    justify-content: space-between;
 
     .header-widget-title {
         width: 87%;
-        display: inline-block;
-        -ms-text-overflow: ellipsis;
-        color: $colors-neutral-black;
-
     }
 
     .header-tooltip {
         max-width: 82%;
-        font-weight: 400;
     }
     
     .tooltip-text {
@@ -72,16 +60,10 @@
             }
         }
     }
-}
-
-.badge-wrapper {
-    .badge {
-        color: $colors-neutral-black;
-        font-family: $montserrat-regular;
-        font-size: 12px;
-        line-height: 16px;
-        font-weight: 500;
-        border-radius: 0px;
+    .badge-wrapper {
+        .badge {
+            line-height: 16px;
+            border-radius: 0px;
+        }
     }
 }
-
