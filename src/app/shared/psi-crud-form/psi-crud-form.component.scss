@@ -10,13 +10,20 @@
   .rt-c {
     padding-left: 4px;
     padding-right: 0px;
-  }   
+  }
+  
+  .section-header{
+    background-color: $colors-neutral-light-v-low;
+    padding: 0 ;
+  }
   .back-color {
+    background-color: $colors-neutral-white;
+  }
+  .right-section {
     background-color: $colors-neutral-white;
   }
   .field-group {
     margin:16px 0px;
-   // margin-bottom: 16px;
     padding: 0 8px 0 8px;
   }
   
@@ -26,16 +33,7 @@
     justify-content: right;
   }   
 }
-.field-group {
-  margin-bottom: 16px;
-  padding: 0 8px 0 8px;
-}
 
-.form-submit-button {
-  background-color: white;
-  padding: 16px;
-  justify-content: center;
-}
 .error-message {
   margin-top: 4px;
   color: #c50000;

@@ -2,6 +2,6 @@
     <span *ngIf="field.required" class="required-asterisk">*</span>
     <span class="d-block" [textContent]="field.label"></span>
 </div>
-<input *ngIf="field?.type == 'text'"  class="w-100"
+    <input *ngIf="field?.type == 'text'"  class="w-100"
     [type]="field.type" [id]="field.name" [placeholder]="field.placeholder"
     [required]="field.required" (input)="onValueChange($event)"/>

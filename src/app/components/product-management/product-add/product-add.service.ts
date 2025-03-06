@@ -15,7 +15,8 @@ export class ProductAddService {
 
   getCrudFieldConfig(crudFiltersList) {
     return {
-      rightSection: [
+      leftSection: [
+        { isHeader: true, label: 'Supplier'},
         {
           key: 'client_id',
           name: 'client_id',
@@ -78,6 +79,7 @@ export class ProductAddService {
           isDisabled: false,
           inputSetting: this.commonService.getDropdownConfig('Select producer', true)
         },
+        { isSectionHeader: true, label: '123'},
         {
           key: 'case_unit_of_measure',
           name: 'case_unit_of_measure',
@@ -102,8 +104,8 @@ export class ProductAddService {
           isDisabled: false,
           inputSetting: this.commonService.getDropdownConfig('Select Type', true)
         },
-        { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false, colClass: 'col-xs-12', },
-        { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', colClass: 'col-xs-12'},
+        {  type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false, colClass: 'col-xs-12'},
+        {  type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', colClass: 'col-xs-12'},
         {
           key: 'is_organic',
           name: 'is_organic',
@@ -129,26 +131,30 @@ export class ProductAddService {
           inputSetting: this.commonService.getDropdownConfig('Select Type', true)
         }
       ],
+      RightSection: [
+        { isHeader: true, label: 'Bottle/Unit'},
+        { type: 'text', name: 'unit_length', label: 'Length', placeholder: 'Enter Length', required: false, isDimension: true, dimensionType: 'unit', colClass: 'col-sm-6'},
+        { type: 'text', name: 'unit_width', label: 'Width', placeholder: 'Enter Width', required: false, isVisible: true, isDimension: true, dimensionType: 'unit', colClass: 'col-sm-6' },
+        { type: 'text', name: 'unit_height', label: 'Height', placeholder: 'Enter Height', required: false, isDimension: true, dimensionType: 'unit', colClass: 'col-sm-6' },
+        { type: 'text', name: 'unit_weight', label: 'Weight', placeholder: 'Enter Weight', required: false, isDimension: true, dimensionType: 'unit' , colClass: 'col-sm-6'},
+        
+        { isHeader: true, label: 'Case'},
+        { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false, isDimension: true, dimensionType: 'pallet' , colClass: 'col-sm-6' },
+        { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false, isDimension: true, dimensionType: 'pallet' , colClass: 'col-sm-6' },
+        { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false, isDimension: true, dimensionType: 'pallet', colClass: 'col-sm-6' },
+        { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false, isDimension: true, dimensionType: 'pallet', colClass: 'col-sm-6' },
+        
+        { isHeader: true, label: 'Layer'},
+        { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false, isDimension: true, dimensionType: 'layer' , colClass: 'col-sm-6'},
+        { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false, isDimension: true, dimensionType: 'layer', colClass: 'col-sm-6' },
+        { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false, isDimension: true, dimensionType: 'layer' , colClass: 'col-sm-6'},
+        
+        { isSectionHeader: true,label: 'CODES'},
+        { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: 'Product Code', isCode: true, disabled: true, colClass: 'col-sm-12'},
+        { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isCode: true, colClass: 'col-sm-12' },
+        { type: 'text', name: 'scc_code', label: 'SCC Code', placeholder: 'SCC Code', isCode: true, colClass: 'col-sm-12' },
+        { type: 'text', name: 'system_id', label: 'Supplier Reference ID', placeholder: 'Supplier Reference ID', isCode: true, colClass: 'col-sm-12' }
 
-      leftSection: [
-        { type: 'text', name: 'unit_length', label: 'Length', placeholder: 'Enter Length', required: false, isDimension: true, dimensionType: 'unit', colClass: 'col-xs-6'},
-        { type: 'text', name: 'unit_width', label: 'Width', placeholder: 'Enter Width', required: false, isVisible: true, isDimension: true, dimensionType: 'unit', colClass: 'col-xs-6' },
-        { type: 'text', name: 'unit_height', label: 'Height', placeholder: 'Enter Height', required: false, isDimension: true, dimensionType: 'unit', colClass: 'col-xs-6' },
-        { type: 'text', name: 'unit_weight', label: 'Weight', placeholder: 'Enter Weight', required: false, isDimension: true, dimensionType: 'unit' , colClass: 'col-xs-6'},
-        { type: 'text', name: 'pallet_length', label: 'Pallet Length', placeholder: 'Enter Pallet Length', required: false, isDimension: true, dimensionType: 'pallet' , colClass: 'col-xs-6' },
-        { type: 'text', name: 'pallet_width', label: 'Pallet Width', placeholder: 'Enter Pallet Width', required: false, isDimension: true, dimensionType: 'pallet' , colClass: 'col-xs-6' },
-        { type: 'text', name: 'pallet_height', label: 'Pallet Height', placeholder: 'Enter Pallet Height', required: false, isDimension: true, dimensionType: 'pallet', colClass: 'col-xs-6' },
-        { type: 'text', name: 'pallet_weight', label: 'Pallet Weight', placeholder: 'Enter Pallet Weight', required: false, isDimension: true, dimensionType: 'pallet', colClass: 'col-xs-6' },
-        { type: 'text', name: 'layers_per_pallet', label: 'Layers per Pallet', placeholder: 'Enter Layers per Pallet', required: false, isDimension: true, dimensionType: 'layer' , colClass: 'col-xs-6'},
-        { type: 'text', name: 'cases_per_layer', label: 'Cases per Layer', placeholder: 'Enter Cases per Layer', required: false, isDimension: true, dimensionType: 'layer', colClass: 'col-xs-6' },
-        { type: 'text', name: 'cases_per_pallet', label: 'Cases per Pallet', placeholder: 'Enter Cases per Pallet', required: false, isDimension: true, dimensionType: 'layer' , colClass: 'col-xs-6'},
-      ],
-  
-      lastSection: [
-        { type: 'text', name: 'product_id', label: 'Park Street Product Code', placeholder: 'Product Code', isCode: true, disabled: true },
-        { type: 'text', name: 'upc_code', label: 'UPC Code', placeholder: 'UPC Code', isCode: true },
-        { type: 'text', name: 'scc_code', label: 'SCC Code', placeholder: 'SCC Code', isCode: true },
-        { type: 'text', name: 'system_id', label: 'Supplier Reference ID', placeholder: 'Supplier Reference ID', isCode: true }
       ],
       btnLabel: [
         { type: 'Btn', label: 'Cancel', class: 'secondary w-lg'},
