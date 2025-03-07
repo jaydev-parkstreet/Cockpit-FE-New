@@ -37,3 +37,29 @@ UTILITIES
 .u-tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+.u-csr-ptr {
+  cursor: pointer;
+}
+
+.back-link {
+  color: $colors-neutral-dark;
+  text-decoration: underline;
+  margin-left: 4px;
+  
+  .link-text {
+      margin-left: 4px;
+  }
+
+  &:hover {
+      .link-text {
+          color: $colors-neutral-black;
+          cursor: pointer;
+      }
+  }
+  
+}
+
+.u-text-underline {
+  text-decoration: underline;
+}

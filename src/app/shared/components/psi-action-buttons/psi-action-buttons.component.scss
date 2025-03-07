@@ -5,20 +5,12 @@
 @import '../../../scss/utilities/typography';
 
 .button-round {
-    display: flex;
-
     .action-round {
         height: 32px;
         width: 32px;
-        display: flex;
-        margin-left: 16px;
         background: $colors-neutral-white;
         border-radius: 50%;
-        justify-content: center;
-        align-items: center;
         box-shadow: $colors-shadows-black-25;
-        cursor: pointer;
-        position: relative;
 
         i {
             color: $colors-neutral-dark;
@@ -45,14 +37,11 @@
         &:hover {
             i {
                 color: $colors-neutral-black;
-                /* Change icon color on hover */
             }
 
             &::after {
                 visibility: visible;
-                /* Show tooltip on hover */
                 opacity: 1;
-                /* Make tooltip fully visible */
             }
         }
 
@@ -61,8 +50,11 @@
 
             i {
                 color: $colors-neutral-dark;
-                /* Maintain icon color on hover */
             }
+        }
+
+        &.last-action-button::after {
+           left: -12%;
         }
     }
 }
