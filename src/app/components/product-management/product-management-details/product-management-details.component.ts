@@ -3,6 +3,7 @@ import { ProductManagementService } from '../product-management.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from 'src/app/core/services/common.service';
+import { ProductMangementDetailService } from './product-mangement-detail.service';
 
 @Component({
     selector: 'app-product-management-details',
@@ -38,6 +39,7 @@ export class ProductManagementDetailsComponent implements OnInit {
 
     constructor(
         private productManagementService: ProductManagementService,
+        private productManagementDetailService: ProductMangementDetailService,
         private route: ActivatedRoute,
         private router: Router,
         private spinner :NgxSpinnerService,
@@ -52,19 +54,16 @@ export class ProductManagementDetailsComponent implements OnInit {
         const productId = this.route.snapshot.paramMap.get('id');
         this.tabGroupConfig = this.getTabGroupConfig();
         this.activeTab = this.tabGroupConfig[0].key;
-        // this.statusIcon = 'fas fa-ban u-mt1 u-ml2 neutral-light';
-        this.productManagementService.getDetails(productId).subscribe((res: any) => {
-            this.productDetails = res;
-            this.detailProduct = this.fieldsDetail(res);
-            this.productCodeDetail = this.prepareProductCodeDetails(res);
-            this.productList = this.productFieldsDetail({ ...res });
-            this.getStatusUpdate();
-            this.getSyncStatusUpdate();
-            this.headerTitle = this.productDetails.description;
-        });
         this.getProductData(productId);
     }
 
+    /**
+     * Function to get product data
+     * 
+     * @param productId 
+     * @returns void
+     * @author PSI-Enhancement
+     */
     async getProductData(productId : string) {
         try {
             await this.productManagementService.getDetails(productId).subscribe((res: any) => {
@@ -83,6 +82,12 @@ export class ProductManagementDetailsComponent implements OnInit {
           }
     }
 
+    /**
+     * Checks the synchronization status of a product and sets up periodic status updates.
+     *
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
     getSyncStatusUpdate() {
         if (this.productDetails.sync_status === 2) {
             this.timerObj = setInterval(() => {
@@ -93,6 +98,13 @@ export class ProductManagementDetailsComponent implements OnInit {
         }
     }
 
+    /**
+     * Handles the click event for performing an action.
+     *
+     * @param string
+     * @returns {boolean | void}
+     * @author PSI-Enhancement
+     */
     onClickAction(action) {
         if (action.key === 'Sync') {
             this.syncOrder();
@@ -114,13 +126,19 @@ export class ProductManagementDetailsComponent implements OnInit {
         }
     }
 
+    /**
+     * Synchronizes the order data with the server.
+     *
+     * @returns {boolean}
+     * @author PSI-Enhancement
+     */
     syncOrder() {
         if (this.productDetails.sync_status === 1 || this.productDetails.sync_status === 2 || this.actionButtons[0].button === this.SYNC_STATUS[2]) {
             return false;
         }
         this.actionButtons[0].class = 'fas fa-sync fa-spin';
         this.actionButtons[0].button = this.SYNC_STATUS[2];
-        this.productManagementService.syncOrder(this.productDetails.id).subscribe( (result) =>{
+        this.productManagementDetailService.syncOrder(this.productDetails.id).subscribe( (result) =>{
             this.timerObj= setInterval(() => {
                 this.getSyncStatusDetails();
             }, 30000);
@@ -128,8 +146,14 @@ export class ProductManagementDetailsComponent implements OnInit {
         return true;
     }
 
+    /**
+     * Fetches the synchronization status details for a product.
+     *
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
     getSyncStatusDetails() {
-        this.productManagementService.getSyncStatusDetails(this.productDetails.product_id).subscribe(response => {
+        this.productManagementDetailService.getSyncStatusDetails(this.productDetails.product_id).subscribe(response => {
             if (!response.hasError) {
                 if (response.data) {
                     this.productDetails.sync_status = response.data.status
@@ -160,22 +184,16 @@ export class ProductManagementDetailsComponent implements OnInit {
             }
         });
     }
-    
+
+    /**
+     * Fetches the "Approve" API data for a product and updates the product data.
+     *
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
     getApproveAPI() {
         this.spinner.show();
-        this.productManagementService.getApproveAPI(this.productDetails.product_id).subscribe(response => {
-            this.spinner.hide();
-            if (!response.hasError) {
-                this.getProductData(this.productDetails.product_id);
-                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
-            } else {
-                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
-            }
-        });
-    }
-    getPreApproveAPI() {
-        this.spinner.show();
-        this.productManagementService.getPreApproveAPI(this.productDetails.product_id).subscribe((response) => {
+        this.productManagementDetailService.getApproveAPI(this.productDetails.product_id).subscribe(response => {
             this.spinner.hide();
             if (!response.hasError) {
                 this.getProductData(this.productDetails.product_id);
@@ -186,9 +204,15 @@ export class ProductManagementDetailsComponent implements OnInit {
         });
     }
 
-    getNeedActionAPI() {
+    /**
+     * Fetches the "Pre-Approve" API data for a product and updates the product data.
+     *
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
+    getPreApproveAPI() {
         this.spinner.show();
-        this.productManagementService.getNeedActionAPI(this.productDetails.product_id).subscribe((response) => {
+        this.productManagementDetailService.getPreApproveAPI(this.productDetails.product_id).subscribe((response) => {
             this.spinner.hide();
             if (!response.hasError) {
                 this.getProductData(this.productDetails.product_id);
@@ -198,6 +222,32 @@ export class ProductManagementDetailsComponent implements OnInit {
             }
         });
     }
+
+    /**
+     * Fetches the "Need Action" API data for a product and updates the product data.
+     *
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
+    getNeedActionAPI() {
+        this.spinner.show();
+        this.productManagementDetailService.getNeedActionAPI(this.productDetails.product_id).subscribe((response) => {
+            this.spinner.hide();
+            if (!response.hasError) {
+                this.getProductData(this.productDetails.product_id);
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+            } else {
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+            }
+        });
+    }
+
+    /**
+     * Activates or deactivates a product via an API call and updates the product data.
+     *
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
     getActivateAPI() {
         this.spinner.show();
         this.productManagementService.getActivateAPI([this.productDetails.product_id], this.productDetails.is_active).subscribe((response) => {
@@ -211,6 +261,12 @@ export class ProductManagementDetailsComponent implements OnInit {
         });
     }
 
+    /**
+     * Navigates to the product edit page based on the current route if a product ID is present.
+     *
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
     navigateToEdit() {
         if (this.productDetails.product_id) {
             const currentPath = this.route.snapshot.pathFromRoot
@@ -222,6 +278,12 @@ export class ProductManagementDetailsComponent implements OnInit {
         }
     }
 
+    /**
+     * Navigates to the product clone page based on the current route if a product ID is present.
+     *
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
     navigateToClone() {
         if (this.productDetails.product_id) {
             const currentPath = this.route.snapshot.pathFromRoot
@@ -232,9 +294,23 @@ export class ProductManagementDetailsComponent implements OnInit {
             this.router.navigate([clonePath]);
         }
     }
+
+    /**
+     * Navigates to the product management page when the back button is clicked.
+     *
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
     onClickback() {
         this.router.navigate(['/product-management']);
     }
+
+    /**
+     * Updates the status and assigns the corresponding CSS class based on the product's status.
+     *
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
     getStatusUpdate() {
         this.status = this.productDetails.status;
         if (this.status === 'Approved') {
@@ -248,9 +324,14 @@ export class ProductManagementDetailsComponent implements OnInit {
         } else if (this.status === 'Request Received') {
             this.statusClass = 'badge med u-bg-v2-neutral-light';
         }
-        // this.getAuditTrailData();
     }
 
+    /**
+     * Returns the configuration for the tab group, including keys and labels.
+     *
+     * @returns {Array} An array of tab configuration objects, each containing a key and label for the tab.
+     * @author PSI-Enhancement
+     */
     getTabGroupConfig() {
         const tabConfig = [{
             key: 'notes',
@@ -264,10 +345,25 @@ export class ProductManagementDetailsComponent implements OnInit {
         }];
         return tabConfig;
     }
+
+    /**
+     * Sets the active tab based on the selected tab.
+     *
+     * @param {Object} tab - The selected tab object.
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
     clickTabGroup(tab) {
         this.activeTab = tab.tab.key
     }
 
+    /**
+     * Maps and processes product fields to generate a response array with corresponding labels and values.
+     *
+     * @param {Object} row - The row of product data.
+     * @returns {Array} The response array with labels and formatted values for the fields.
+     * @author PSI-Enhancement
+     */
     fieldsDetail(row) {
         if(!row) return [];
         let fieldMappings = [
@@ -298,6 +394,15 @@ export class ProductManagementDetailsComponent implements OnInit {
         return response;
     }
 
+    /**
+     * Processes the product details and adds relevant fields to the response array 
+     * based on the product type and its attributes.
+     *
+     * @param {Object} row - The row of product data.
+     * @param {Array} response - The array to which the product details will be added.
+     * @returns {Array} The updated response array with the relevant product details.
+     * @author PSI-Enhancement
+     */
     fieldsDetailResponse(row, response) {
         const prodTypeSubType = ['Bulk', 'Other', 'Wine', 'Malt', 'Spirits'];
         const prodTypeCategory = ['Wine', 'Spirits', 'Malt'];
@@ -333,6 +438,14 @@ export class ProductManagementDetailsComponent implements OnInit {
         return response;
     }
 
+    /**
+     * Checks the product type and adds relevant details to the response array.
+     * 
+     * @param {Object} row - The row of product data.
+     * @param {Array} response - The array to which details will be added.
+     * @returns {Array} The updated response array with the relevant product details.
+     * @author PSI-Enhancement
+     */
     fieldsDetailResponseCheck(row, response) {
         if (row.prod_type === 'Wine' || row.prod_type === 'Malt') {
             response.push({ 
@@ -358,6 +471,14 @@ export class ProductManagementDetailsComponent implements OnInit {
         return response;
     }
 
+    /**
+     * Checks and formats a value based on its content and an optional key.
+     *
+     * @param {string|number} value - The value to be checked and formatted.
+     * @param {string} [key=''] - The optional key to determine if special formatting is required (e.g., 'abv').
+     * @returns {string} The formatted value or '--' if the value is invalid.
+     * @author PSI-Enhancement
+     */
     valueChecker(value, key = '') {
         if (value && value !== '-') {
             if (key && key === 'abv') {
@@ -370,7 +491,21 @@ export class ProductManagementDetailsComponent implements OnInit {
         }
     }
 
-
+    /**
+     * Prepares the product code details for display by organizing the fields into a table format.
+     *
+     * @param {Object} productDetails - The details of the product.
+     * @param {string} productDetails.product_id - The product ID.
+     * @param {string} productDetails.cola_ttb_id - The COLA TTB ID.
+     * @param {string} productDetails.upc_code - The UPC code.
+     * @param {string} productDetails.scc_code - The SCC code.
+     * @param {string} productDetails.supplier_ref_id - The supplier reference ID.
+     * @param {string} productDetails.nabca_code - The NABCA code.
+     * @param {string} productDetails.unimerc_code - The UNIMERC code.
+     * @param {string} productDetails.bdn_code - The BDN code.
+     * @returns {Array} A configuration object containing the table headings and values of product code details.
+     * @author PSI-Enhancement
+     */
     prepareProductCodeDetails(productDetails) {
         const productCodeDetailFields = [
             { label: 'Park Street Product Code', val: productDetails.product_id || '--' },
@@ -393,7 +528,15 @@ export class ProductManagementDetailsComponent implements OnInit {
 
         return productCodeDetailsConfig;
     }
-
+    
+    /**
+     * Processes the rows of data and formats them into a configuration for displaying product dimensions.
+     *
+     * @param {Object} rows - The rows of data to be processed.
+     * @param {Array} rows.dimensions - An array of dimensions for the product.
+     * @returns {Array} An array of configuration objects for each dimension, with headings and values formatted.
+     * @author PSI-Enhancement
+     */
     productFieldsDetail(rows) {
         if(!rows) return [];
         let dimensionsDataConfig = [];
@@ -423,7 +566,15 @@ export class ProductManagementDetailsComponent implements OnInit {
         }
         return dimensionsDataConfig;
     }
-    
+
+    /**
+     * Function to get action buttons.
+     *
+     * @param {object} permissions 
+     * @param {object} detail 
+     * @returns {object} button-config
+     * @author PSI-Enhancement
+     */
     getactionButtons(permissions, detail) {
         let syncbtnName = '';
         if (!detail.sync_status) {
@@ -499,6 +650,13 @@ export class ProductManagementDetailsComponent implements OnInit {
         return data;
     }
 
+    /**
+     * Formats a given key by replacing underscores with spaces and capitalizing each word.
+     *
+     * @param {string} key 
+     * @returns {string}
+     * @author PSI-Enhancement
+     */
     formatKey(key) {
         return key
             .replace(/_/g, ' ')

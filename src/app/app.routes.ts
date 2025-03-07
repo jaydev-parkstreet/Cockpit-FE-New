@@ -11,6 +11,7 @@ const AppRoutes = {
         DROPDOWN: 'product-tool/dropdown',
         SUMMARY: 'product-tool/summary',
         NS_SYNC: 'product-tool/ns-sync',
+        NS_SYNC_STATUS: 'product-tool/ns-sync-status?id=',
         DETAILS: 'product-tool?product_id=',
         PRODUCT_APPROVE: 'product-tool/approve/product',
         PRODUCT_PRE_APPROVE: 'product-tool/pre-approve/product',
