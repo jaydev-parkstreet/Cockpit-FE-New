@@ -78,7 +78,7 @@ export class ProductAddService {
                 {
                     key: 'producer',
                     name: 'producer',
-                    label: 'producer',
+                    label: 'Producer',
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
