@@ -112,8 +112,8 @@ export class ProductAddService {
                     inputSetting: this.commonService.getDropdownConfig('Select Type', true)
                 },
                 { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false, colClass: 'col-sm-12' },
-                { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', colClass: 'col-sm-4' },
-                { type: 'checkbox', name: 'use_up', label: 'Use up', placeholder: 'Use up', colClass: 'col-sm-4' },
+                { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', colClass: 'col-sm-3' },
+                { type: 'checkbox', name: 'use_up', label: 'Use up', placeholder: 'Use up', colClass: 'col-sm-3' },
                 {
                     key: 'is_organic',
                     name: 'is_organic',

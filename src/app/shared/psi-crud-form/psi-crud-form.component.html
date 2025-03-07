@@ -17,7 +17,7 @@
         <!-- left section -->
         <div class="col-sm-6 left-section">  
             <div *ngFor="let field of crudFieldConfig.leftSection">
-                <div class="typography-body-dark-regular u-pg-ml-2" *ngIf="field.isHeader ">
+                <div class="typography-body-dark-regular u-pg-ml-2 u-pg-my-1" *ngIf="field.isHeader ">
                     {{field.label}}
                 </div>
                 <div *ngIf="field.isSectionHeader ">
@@ -70,7 +70,7 @@
         <!-- Right section -->
         <div class="col-sm-6 right-section">
             <div *ngFor="let field of crudFieldConfig.rightSection">
-                <div class="typography-body-dark-regular u-pg-ml-2" *ngIf="field.isHeader ">
+                <div class="typography-body-dark-regular u-pg-ml-2 u-pg-my-1" *ngIf="field.isHeader ">
                     {{field.label}}
                 </div>
                 <div *ngIf="field.isSectionHeader ">
