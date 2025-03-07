@@ -18,6 +18,13 @@ export class PsiCheckboxComponent implements OnInit {
     console.log(this.form);
   }
 
+  /**
+   * Handles the change event from the checkbox. Emits the value to the parent
+   * component.
+   *
+   * @param {boolean} checked
+   * @author psi-enhancement
+   */
   onChangeValue(checked) {
     console.log(checked);
     this.valueChanged.emit(checked);

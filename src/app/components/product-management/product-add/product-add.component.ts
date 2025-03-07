@@ -189,7 +189,7 @@ export class ProductAddComponent implements OnInit {
                 this.productId
             );
             this.spinner.show()
-            this.productmanagementService.getProductManagementSystemSave(formattedModel).subscribe(response => {
+            this.ProductAddService.getProductManagementSystemSave(formattedModel).subscribe(response => {
                 if (!response.hasError) {
                     this.spinner.hide();
                     let productId = response.product_id;

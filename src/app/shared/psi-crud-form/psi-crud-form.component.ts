@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
@@ -31,16 +30,40 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         this.formSubmitted = false
     }
 
+    /**
+     * Responds to changes in data-bound input properties.
+     * @param changes
+     * @author psi-enhancement
+     */
     ngOnChanges(changes: SimpleChanges) {
     }
+
+    /**
+     * Emits an event when the state of a dropdown changes.
+     * @param field
+     * @param event
+     * @author psi-enhancement
+     */
     onDropdownStateChange(field, event) {
         this.onDropDownChange.emit({ field, event });
     }
 
+    /**
+     * Returns true if the field is invalid and the form has been submitted.
+     * @param controlName
+     * @returns boolean
+     * @author psi-enhancement
+     */
     isFieldInvalid(controlName: string): boolean {
         const control = this.form.get(controlName);
         return control?.invalid && this.formSubmitted;
     }
+
+    /**
+     * Handles button click events by performing actions based on the event type.
+     * @param event
+     * @author psi-enhancement
+     */
     onButtonClicked(event) {
         if (event === "Submit") {
             this.formSubmitted = true
@@ -50,6 +73,11 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
             this.openConfirmationPopup()
         }
     }
+
+    /**
+     * Opens a confirmation popup modal asking the user if they wish to exit.
+     * @author psi-enhancement
+     */
     openConfirmationPopup() {
         let modalData;
 
@@ -70,10 +98,24 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
             });
     }
 
+    /**
+     * Updates the form control value based on the input change.
+     *
+     * @param field
+     * @param value
+     * @author psi-enhancement
+     */
     onInputChange(field, value) {
         this.form.get(field).setValue(value);
     }
 
+    /**
+     * Updates the form control value based on the checkbox state.
+     *
+     * @param field
+     * @param isChecked
+     * @author psi-enhancement
+     */
     onCheckedInput(field, isChecked) {
         console.log(field, isChecked);
         this.form.get(field)?.setValue(isChecked ? '1' : '0');
