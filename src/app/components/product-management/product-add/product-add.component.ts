@@ -279,7 +279,6 @@ export class ProductAddComponent implements OnInit {
         }
         if (fieldName === 'prod_type') {
             this.renderConditionalFields(selectedValue[0].name, this.crudFiltersList, this.productForm);
-            this.getFormControl();
             this.crudFieldConfig = { ...this.crudFieldConfig };
             this.productForm = new FormGroup(this.productForm.controls);
             this.changeDetector.detectChanges();
