@@ -16,6 +16,11 @@ export class PsiInputTextFieldComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Handles input change events, emitting the new value to the valueChanged output.
+   * @param event
+   * @author psi-enhancement
+   */
   onValueChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.valueChanged.emit(value);

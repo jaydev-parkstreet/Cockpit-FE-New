@@ -227,3 +227,8 @@ input:-webkit-autofill:active {
 .modal {
     background: url("../src/assets/images/Popup-Shadow.png");
 }
+.required-asterisk {
+    color: $colors-v2-base-error;
+    font-size: 14px;
+    margin-right: 3px;
+}

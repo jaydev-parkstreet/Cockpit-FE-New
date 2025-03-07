@@ -99,7 +99,6 @@ export class ProductAddComponent implements OnInit {
      * @author psi-enhancement
      */
     prefillForm(productData: any): void {
-        console.log(productData);
         this.productForm.patchValue({
             client_id: this.getDropDownArrayByIds(this.crudFiltersList?.clients, productData.client_id, 'client_id'),
             description: productData.description,
@@ -124,7 +123,7 @@ export class ProductAddComponent implements OnInit {
             manufactured_location_address: productData?.manufactured_location_address,
             upc_code: productData.upc_code,
             scc_code: productData.scc_code,
-            system_id: productData.system_id,
+            system_id: productData.supplier_ref_id,
             cola_ttb_id: productData.cola_ttb_id,
             nabca_code: productData.nabca_code,
             unimerc_code: productData?.unimerc_code,
@@ -189,7 +188,7 @@ export class ProductAddComponent implements OnInit {
                 this.productId
             );
             this.spinner.show()
-            this.productmanagementService.getProductManagementSystemSave(formattedModel).subscribe(response => {
+            this.ProductAddService.getProductManagementSystemSave(formattedModel).subscribe(response => {
                 if (!response.hasError) {
                     this.spinner.hide();
                     let productId = response.product_id;
