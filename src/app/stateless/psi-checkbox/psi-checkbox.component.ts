@@ -15,7 +15,6 @@ export class PsiCheckboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.form);
   }
 
   /**
@@ -26,7 +25,6 @@ export class PsiCheckboxComponent implements OnInit {
    * @author psi-enhancement
    */
   onChangeValue(checked) {
-    console.log(checked);
     this.valueChanged.emit(checked);
   }
 }

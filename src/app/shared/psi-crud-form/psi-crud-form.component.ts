@@ -117,7 +117,6 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      * @author psi-enhancement
      */
     onCheckedInput(field, isChecked) {
-        console.log(field, isChecked);
         this.form.get(field)?.setValue(isChecked ? '1' : '0');
     }
 }
