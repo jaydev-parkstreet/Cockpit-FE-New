@@ -7,12 +7,10 @@
     <app-psi-crud-form
         [leftHeaderTitle]="leftTitle"
         [rightHeaderTitle]="productTitle"
-        [rightHeaderBottomTitle]="rightHeaderBottomTitle"
         [sellectedData]="sellectedData"
         [crudFieldConfig]="crudFieldConfig"
         [form]="productForm"
         (onDropDownChange)="onDropdownStateChange($event.field , $event.event)"
         (formSubmit)="onSubmit($event)">
     </app-psi-crud-form> 
-
 </div>

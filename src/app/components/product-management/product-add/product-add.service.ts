@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { CommonService } from 'src/app/core/services/common.service';
-import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdown/input-dropdown.service';
+import AppRoutes from 'src/app/app.routes';
+import { environment } from 'src/environments/environment';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductAddService {
 
-  constructor(private commonService: CommonService) { }
+  constructor(
+    private commonService: CommonService,
+    private http: HttpClient
+  ) { }
 
   getCrudFieldConfig(crudFiltersList) {
     return {

@@ -12,6 +12,8 @@ import { ProductAddService } from './product-add.service';
   styleUrls: ['./product-add.component.scss'],
 })
 export class ProductAddComponent implements OnInit {
+    @Output() updateFilters = new EventEmitter<any>();
+
     leftTitle: string;
     productTitle: string;
     rightHeaderBottomTitle: string;
@@ -19,7 +21,6 @@ export class ProductAddComponent implements OnInit {
     crudFiltersList: any;
     permissions: any;
     sellectedData: any = {};
-    @Output() updateFilters = new EventEmitter<any>();
     duplicate: boolean = false;
     clientId: any;
     activeDropdownId: string | null = null;
@@ -48,10 +49,9 @@ export class ProductAddComponent implements OnInit {
     ngOnInit(): void {
         this.permissions = this.route.snapshot.data['permissions'];
         this.crudFiltersList = this.route.snapshot.data['filterList'];
-        this.crudFieldConfig = this.ProductAddService.getCrudFieldConfig(this.crudFiltersList);
         this.leftTitle = 'PRODUCT DETAILS';
         this.productTitle = 'Dimensions';
-        this.rightHeaderBottomTitle = 'Codes';
+        this.crudFieldConfig = this.ProductAddService.getCrudFieldConfig(this.crudFiltersList);
         if (!this.permissions.permissions.Create) {
             this.router.navigate(['product-management']);
         }
@@ -76,7 +76,7 @@ export class ProductAddComponent implements OnInit {
      * @param productId
      * @author psi-enhancement
      */
-    async getProductData(productId) {
+    async getProductData (productId) {
         this.productmanagementService.getDetails(productId).subscribe((productData) => {
             this.renderConditionalFields(productData.prod_type, this.crudFiltersList, this.productForm)
             this.productId = productData.product_id;
