@@ -354,7 +354,7 @@ export class ProductManagementDetailsComponent implements OnInit {
      * @author PSI-Enhancement
      */
     clickTabGroup(tab) {
-        this.activeTab = tab.tab.key
+        this.activeTab = tab.key
     }
 
     /**
