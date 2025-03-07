@@ -8,7 +8,9 @@ import { ProductManagementService } from "src/app/components/product-management/
 
 export class FilterListResolver implements Resolve<any> {
     
-    constructor(private productManagementService: ProductManagementService) {};
+    constructor(
+        private productManagementService: ProductManagementService
+    ) {};
 
     resolve() {
         const token = localStorage.getItem('authToken');
