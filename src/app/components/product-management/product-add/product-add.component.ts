@@ -79,7 +79,6 @@ export class ProductAddComponent implements OnInit {
     async getProductData (productId) {
         this.productmanagementService.getDetails(productId).subscribe((productData) => {
             this.renderConditionalFields(productData.prod_type, this.crudFiltersList, this.productForm);
-            this.getFormControl();
             this.productId = productData.product_id;
             setTimeout(() => {
                 if (this.duplicate) {
