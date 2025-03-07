@@ -34,6 +34,7 @@ export class ProductManagementDetailsComponent implements OnInit {
     syncStatusFail: boolean;
     timerObj: any;
     permissions: any;
+    backToProductsTitle: string = 'Back to Products';
 
     constructor(
         private productManagementService: ProductManagementService,
@@ -266,74 +267,94 @@ export class ProductManagementDetailsComponent implements OnInit {
     clickTabGroup(tab) {
         this.activeTab = tab.tab.key
     }
+
     fieldsDetail(row) {
-        let response = [];
-        if (row) {
-            response.push({ label: 'Brand', value: this.valueChecker(row.brand) });
-            response.push({
-                label: 'Sub-Brand Product',
-                value: this.valueChecker(row.sub_brand_product_name),
-            });
-            response.push({
-                label: 'Fanciful Name',
-                value: this.valueChecker(row.fanciful_name),
-            });
-            response.push({
-                label: 'Group',
-                value: this.valueChecker(row.group_name),
-            });
-            response.push({
-                label: 'Producer',
-                value: this.valueChecker(row.producer_name),
-            });
-            response.push({
-                label: 'Case UOM',
-                value: this.valueChecker(row.case_unit_of_measure),
-            });
-            response.push({
-                label: 'Container Type',
-                value: this.valueChecker(row.container_type_name),
-            });
-            response.push({
-                label: 'Announced Price',
-                value: this.valueChecker(row.ex_works_cost_formatted),
-            });
-            response.push({
-                label: 'Organic',
-                value: this.valueChecker(row.is_organic_txt),
-            });
-            response.push({
-                label: 'Product Type',
-                value: this.valueChecker(row.prod_type),
-            });
-            response.push({
-                label: 'Compliance',
-                value: this.valueChecker(row.compliance_txt),
-            });
-            response.push({
-                label: 'Use Up',
-                value: this.valueChecker(row.use_up_txt),
-            });
-            response = this.fieldsDetailResponse(row, response);
-        }
+        if(!row) return [];
+        let fieldMappings = [
+            { label: 'Supplier', key: 'client_name' },
+            { label: 'Brand', key: 'brand' },
+            { label: 'Sub-Brand Product', key: 'sub_brand_product_name' },
+            { label: 'Description', key: 'description' },
+            { label: 'Fanciful Name', key: 'fanciful_name' },
+            { label: 'Group', key: 'group_name' },
+            { label: 'Producer', key: 'producer_name' },
+            { label: 'Case UOM', key: 'case_unit_of_measure' },
+            { label: 'Container Type', key: 'container_type_name' },
+            { label: 'Announced Price', key: 'ex_works_cost_formatted' },
+            { label: 'Organic', key: 'is_organic_txt' },
+            { label: 'Product Type', key: 'prod_type' },
+            { label: 'Compliance', key: 'compliance_txt' },
+            { label: 'Use Up', key: 'use_up_txt' }
+        ];
+
+        let response = fieldMappings.map(({ label, key }) => ({
+            label,
+            value: this.valueChecker(row[key])
+        }));
+
+        response = this.fieldsDetailResponse(row, response);
+        response.push({ label: 'Date Created', value: this.valueChecker(row.created_date) });
+
         return response;
     }
 
     fieldsDetailResponse(row, response) {
-        response.push({ label: 'Product Sub-Type', value: this.valueChecker(row.sub_type) });
-        response.push({ label: 'Date Created', value: this.valueChecker(row.created_date) });
-        response.push({ label: 'Category', value: this.valueChecker(row.category_name) });
-        response.push({ label: 'Source', value: this.valueChecker(row.source) });
-        response.push({ label: 'Country of Origin', value: this.valueChecker(row.country_name) });
-        response.push({ label: 'Manufactured Location', value: this.valueChecker(row.manufactured_location_address) });
-        this.fieldsDetailResponseCheck(row, response);
+        const prodTypeSubType = ['Bulk', 'Other', 'Wine', 'Malt', 'Spirits'];
+        const prodTypeCategory = ['Wine', 'Spirits', 'Malt'];
+
+        if(prodTypeSubType.includes(row.prod_type)) {
+            response.push({
+                label: 'Product Sub-Type',
+                value: this.valueChecker(row.sub_type)
+            });
+        }
+
+        if(prodTypeCategory.includes(row.prod_type)) {
+            response.push({ 
+                label: 'Category',
+                value: this.valueChecker(row.category_name) 
+            });
+            response.push({ 
+                label: 'Source',
+                value: this.valueChecker(row.source) 
+            });
+            response.push({ 
+                label: 'Country of Origin',
+                value: this.valueChecker(row.country_name) 
+            });
+        }
+
+        response.push({ 
+            label: 'Manufactured Location',
+            value: this.valueChecker(row.manufactured_location_address) 
+        });
+
+        response = this.fieldsDetailResponseCheck(row, response);
         return response;
     }
 
     fieldsDetailResponseCheck(row, response) {
-        response.push({ label: 'Vintage', value: this.valueChecker(row.vintage_text) });
-        response.push({ label: 'Varietal', value: this.valueChecker(row.varietal) });
-        response.push({ label: 'ABV %', value: this.valueChecker(row.abv, 'abv') });
+        if (row.prod_type === 'Wine' || row.prod_type === 'Malt') {
+            response.push({ 
+                label: 'Vintage',
+                value: this.valueChecker(row.vintage_text)
+            });
+        }
+
+        if (row.prod_type === 'Wine') {
+            response.push({ 
+                label: 'Varietal',
+                value: this.valueChecker(row.varietal)
+            });
+        }
+
+        if (row.prod_type === 'Wine' || row.prod_type === 'Spirits' || row.prod_type === 'Malt') {
+            response.push({ 
+                label: 'ABV %',
+                value: this.valueChecker(row.abv, 'abv')
+            });
+        }
+
         return response;
     }
 
@@ -350,78 +371,59 @@ export class ProductManagementDetailsComponent implements OnInit {
     }
 
 
-    prepareProductCodeDetails(detail: any = {}) {
-        return [
-            { label: 'Park Street Product Code', val: detail.product_id || '--' },
-            { label: 'COLA TTB', val: detail.cola_ttb_id || '--' },
-            { label: 'UPC Code', val: detail.upc_code || '--' },
-            { label: 'SCC Code', val: detail.scc_code || '--' },
-            { label: 'Supplier Reference ID', val: detail.supplier_ref_id || '--' },
-            { label: 'NABCA Code', val: detail.nabca_code || '--' },
-            { label: 'UNIMERC Code', val: detail.unimerc_code || '--' },
-            { label: 'BDN Code', val: detail.bdn_code || '--' }
+    prepareProductCodeDetails(productDetails) {
+        const productCodeDetailFields = [
+            { label: 'Park Street Product Code', val: productDetails.product_id || '--' },
+            { label: 'COLA TTB', val: productDetails.cola_ttb_id || '--' },
+            { label: 'UPC Code', val: productDetails.upc_code || '--' },
+            { label: 'SCC Code', val: productDetails.scc_code || '--' },
+            { label: 'Supplier Reference ID', val: productDetails.supplier_ref_id || '--' },
+            { label: 'NABCA Code', val: productDetails.nabca_code || '--' },
+            { label: 'UNIMERC Code', val: productDetails.unimerc_code || '--' },
+            { label: 'BDN Code', val: productDetails.bdn_code || '--' }
         ];
+    
+        const productCodeDetailsConfig = [{
+            table_headings: [
+                { value: 'Type' },
+                { value: 'Code' }
+            ],
+            table_values: productCodeDetailFields.map(field => [field.label, this.valueChecker(field.val)])
+        }];
+
+        return productCodeDetailsConfig;
     }
 
-    productFieldsDetail(row) {
-        let response = [];
-        let obj = {}
-        let productData = [];
-        if (!row) return response;
-        if (row.dimensions && row.dimensions[0] && row.dimensions[0].desc) {
-            for (let i = 0; i < row.dimensions.length; i++) {
-                obj = this.productFieldsDetailObj(row, productData, obj, i);
-                response.push(obj);
-            }
+    productFieldsDetail(rows) {
+        if(!rows) return [];
+        let dimensionsDataConfig = [];
+
+        if(rows.dimensions) {
+            rows.dimensions.forEach((row: any) => {
+                let rowConfig: any = {
+                    table_headings: [],
+                    table_values: []
+                };
+                let table_values_row_array = [];
+                
+                Object.entries(row).forEach(([key, value]) => {
+                    if (key === 'desc') {
+                        rowConfig.headerName = (value === 'Unit') ? "Bottle / Unit" : this.formatKey(value);
+                    } else {
+                        rowConfig.table_headings.push({
+                            key,
+                            value: this.formatKey(key)
+                        });
+                        table_values_row_array.push(this.valueChecker(value));
+                    }
+                });
+                rowConfig.table_values.push(table_values_row_array);
+                dimensionsDataConfig.push(rowConfig);
+            });
         }
-        return response;
+        return dimensionsDataConfig;
     }
-    productFieldsDetailObj(row, productData, obj, i) {
-        if (row.dimensions[i].desc !== "Layer") {
-            obj = {
-                column1: 'Length',
-                value1: this.valueChecker(row.dimensions[i].length),
-                hideColumn1: false,
-                column2: 'Width',
-                value2: this.valueChecker(row.dimensions[i].width),
-                hideColumn2: false,
-                column3: 'Height',
-                value3: this.valueChecker(row.dimensions[i].height),
-                hideColumn3: false,
-                column4: 'Weight',
-                value4: this.valueChecker(row.dimensions[i].weight),
-                hideColumn4: false,
-                hideColumn5: true,
-                products: productData,
-                cardHeader: row.dimensions[i].desc === 'Unit' ? 'Bottle / Unit' : row.dimensions[i].desc,
-                headerClass: 'h-l',
-                headerAl: 'tx-s',
-                showHeader: true,
-                status: '',
-            }
-        } else {
-            obj = {
-                column1: 'Layers per Pallet',
-                value1: this.valueChecker(row.dimensions[i].layers_per_pallet),
-                hideColumn1: false,
-                column2: 'Cases per Layer',
-                value2: this.valueChecker(row.dimensions[i].cases_per_layer),
-                hideColumn2: false,
-                column3: 'Cases per Pallet',
-                value3: this.valueChecker(row.dimensions[i].cases_per_pallet),
-                hideColumn3: false,
-                hideColumn4: true,
-                hideColumn5: true,
-                products: productData,
-                cardHeader: row.dimensions[i].desc === 'Unit' ? 'Bottle / Unit' : row.dimensions[i].desc,
-                headerClass: 'h-l',
-                headerAl: 'tx-s',
-                showHeader: true,
-                status: ''
-            }
-        }
-        return obj;
-    }
+    
     getactionButtons(permissions, detail) {
         let syncbtnName = '';
         if (!detail.sync_status) {
@@ -497,13 +499,9 @@ export class ProductManagementDetailsComponent implements OnInit {
         return data;
     }
 
-        // [
-    //     { key:'Sync', showTooltip: true, icon: 'fas fa-sync-alt fa-spin', tooltipText: 'Sync' }, //need to update as per conditions
-    //     { key: 'Approve', showTooltip: true, icon: 'fas fa-check-circle pointer', tooltipText: 'Approve'},        
-    //     { key: 'Needs Action-Waiting on Supplier', icon: 'fas fa-clock', showTooltip: true, tooltipText: 'Needs Action-Waiting on Supplier'},
-    //     { key: 'Pre-Approved', showTooltip: true, icon: 'fas fa-check-circle pointer', tooltipText: 'Pre-Approved'},
-    //     { key: 'inactivate', icon: 'fas fa-ban', showTooltip: true, tooltipText: 'Deactivate' },
-    //     { key: 'duplicate', icon: 'fas fa-clone', showTooltip: true, tooltipText: 'Duplicate' },
-    //     { key: 'edit', icon: 'fas fa-pen', showTooltip: true, tooltipText: 'Edit' },
-    // ];
+    formatKey(key) {
+        return key
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, char => char.toUpperCase());
+    }
 }
