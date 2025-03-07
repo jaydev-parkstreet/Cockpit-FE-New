@@ -1,5 +1,5 @@
 <button type="button" class="btn app-cmp-button d-flex justify-content-center align-items-center"
-    [class]="buttonClass" (click)="onClick.emit()" [disabled]="isDisable">
+    [class]="buttonClass" (click)="onClick.emit(buttonText)" [disabled]="isDisable">
     <i *ngIf="buttonIconLeft" class="u-pg-mr-1 icon" [class]="buttonIconLeft"></i>
     <span [textContent]="buttonText"></span>
     <i *ngIf="buttonIconRight" class="u-pg-ml-1 icon" [class]="buttonIconRight"></i>

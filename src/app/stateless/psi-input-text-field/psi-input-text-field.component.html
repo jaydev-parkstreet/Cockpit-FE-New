@@ -1,0 +1,11 @@
+<div class="dropdown-label" [ngClass]="{'asterisk-margin': field.required}">
+    <span *ngIf="field.required" class="required-asterisk">*</span>
+    <span class="d-block" [textContent]="field.label"></span>
+</div>
+<div [ngClass]="{'disabled' : field.disabled}">
+    <input *ngIf="field?.type == 'text'"  class="w-100"
+    [ngClass]="validationClasses"
+    [value]="form.value[field.name]"
+    [type]="field.type" [id]="field.name" [placeholder]="field.placeholder"
+    [required]="field.required" (input)="onValueChange($event)"/>
+</div>

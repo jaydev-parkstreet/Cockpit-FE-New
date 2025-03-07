@@ -1,0 +1,59 @@
+@import "../../scss/variables/typography";
+@import "../../scss/variables/colors";
+
+.psi-crud-form {
+  margin: 0 16px;
+  .lt-c {
+    padding-right: 4px;
+    padding-left: 0px;
+  }
+  .rt-c {
+    padding-left: 4px;
+    padding-right: 0px;
+  }
+
+  .container-body {
+    .left-section {
+      padding: 0;
+      background-color: $colors-neutral-white;
+      width: 49.7%;
+      margin-right:4px
+      
+    }
+    .right-section {
+      padding: 0;
+      background-color: $colors-neutral-white;
+      width: 49.7%;;
+      margin-left:4px
+      
+    }
+    .section-header{
+      background-color: $colors-neutral-light-v-low;
+      padding: 0 ;
+    }
+
+    .field-group {
+      margin:16px 0px;
+      padding: 0 8px 0 8px;
+    }
+    
+   
+  }
+  
+  .form-submit-button {
+    background-color: $colors-neutral-light-v-low;
+    padding: 16px;
+    justify-content: right;
+  }  
+}
+
+.error-message {
+  margin-top: 4px;
+  color: $colors-v2-base-error;
+  font-size: 12px;
+  background-repeat: no-repeat !important;
+  background-size: 12px;
+  padding: 0px 20px;
+  background-position: left center;
+  display: block;
+}

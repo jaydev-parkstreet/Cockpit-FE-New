@@ -1,0 +1,15 @@
+<div class="c-checkbox">
+    <label class="label-checkbox u-flex u-align-center">
+        <input [type]="field.type"
+            [id]="field.name"
+            [ngClass]="validationClasses"
+            [placeholder]="field.placeholder"
+            [required]="field.required"
+            [checked]="form.value[field.name]"
+            (change)="onChangeValue($event.target.checked)"/>
+        <span class="c-checkbox__item">
+            <em class="fas fa-check"></em>
+        </span>
+        {{ field.label }}
+    </label>
+</div>
