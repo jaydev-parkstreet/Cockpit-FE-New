@@ -23,13 +23,19 @@ input {
     font-size: 12px;
     font-family: $montserrat-regular;
     caret-color: $colors-v2-base-secondary-v-medium;
+
     &:hover {
-    outline: 2px solid $colors-neutral-black;
-    border: none;
+        outline: 2px solid $colors-neutral-black;
+        border: none;
     }
     &:focus {
-    outline: 2px solid $colors-v2-base-secondary-v-medium;
-    border: none;
+        outline: 2px solid $colors-v2-base-secondary-v-medium;
+        border: none;
+    }
+    &::placeholder {
+        color: $colors-neutral-light;
+        font-family: $montserrat-regular;
+        font-size: 12px;
     }
 }
 .ps-required-error {

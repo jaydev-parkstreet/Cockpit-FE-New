@@ -13,14 +13,14 @@
         </div>
     </div>
 
-    <div class=" col-sm-12 p-0 container-body">
+    <div class="p-0 container-body">
         <!-- left section -->
-        <div class="col-sm-6 left-section">  
+        <div class="left-section">  
             <div *ngFor="let field of crudFieldConfig.leftSection">
-                <div class="typography-body-dark-regular u-pg-ml-2 u-pg-my-1" *ngIf="field.isHeader ">
+                <div class="typography-body-dark-regular col-sm-12" [ngClass]="field.colClass" *ngIf="field.isHeader">
                     {{field.label}}
                 </div>
-                <div *ngIf="field.isSectionHeader ">
+                <div  *ngIf="field.isSectionHeader ">
                     <div class="col-sm-12 section-header u-pg-mt-1">
                         <app-psi-page-column-header
                             [headerTitle]="field.label">
@@ -68,9 +68,9 @@
         </div>
 
         <!-- Right section -->
-        <div class="col-sm-6 right-section">
+        <div class="right-section">
             <div *ngFor="let field of crudFieldConfig.rightSection">
-                <div class="typography-body-dark-regular u-pg-ml-2 u-pg-my-1" *ngIf="field.isHeader ">
+                <div class="typography-body-dark-regular col-sm-12" [ngClass]="field.colClass" *ngIf="field.isHeader">
                     {{field.label}}
                 </div>
                 <div *ngIf="field.isSectionHeader ">
