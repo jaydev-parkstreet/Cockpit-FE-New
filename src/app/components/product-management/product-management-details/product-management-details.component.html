@@ -1,5 +1,7 @@
 <div ui-view class="product-tool-details u-pg-pt-1 u-pg-mb-2">
-    <app-header-tool titleText="Product Management System" titleIcon="fas fa-wine-bottle">
+    <app-header-tool
+        titleText="Product Management System"
+        titleIcon="fas fa-wine-bottle">
     </app-header-tool>
 
     <div class="product-tool-details-container u-pg-pb-2">
@@ -37,29 +39,7 @@
                         [activeTab]="activeTab"
                         (tabClick)="clickTabGroup($event)">
                     </app-cmp-tab-group>
-                    <!-- <notes-tab data-ng-show="$ctrl.activeTabGroup == $ctrl.tabGroupConfig[0].key"
-                        entity="$ctrl.productData.product_id" permissions="$ctrl.permissions" show-new-notes="true"
-                        show-privacy-icon="true" filters-list="$ctrl.filtersList">
-                    </notes-tab> -->
-                    <!-- <app-notes-tab >
-                    </app-notes-tab>  -->
-                    <!-- <attachments-tab data-ng-show="$ctrl.activeTabGroup == $ctrl.tabGroupConfig[1].key"
-                        entity="$ctrl.productData.product_id" permissions="$ctrl.permissions"
-                        show-file-type="true" file-types="$ctrl.permissions.entity_kinds" show-privacy-icon="true" filters-list="$ctrl.filtersList">
-                    </attachments-tab> -->
-                    <!-- <audit-tab data-ng-show="$ctrl.activeTabGroup == $ctrl.tabGroupConfig[2].key"
-                        row-object-keys-detail="$ctrl.rowAuditTrailConfigApiRequest" audit-list="$ctrl.auditList"
-                        loader-enabled="$ctrl.loaderEnabledAuditTrail">
-                    </audit-tab> -->
-
-                    <!-- <app-notes-tab 
-                   
-               
-                 
-              >
-                  </app-notes-tab> -->
                 </div>
-                
                 <div class="col-sm-6 u-pl2 right-side u-pg-pl-2">
                     <div>
                         <app-cmp-header-widget 
@@ -70,7 +50,9 @@
                         </app-product-summary-dimensions-card>
                     </div>
                     <div class="u-pg-mt-1">
-                        <app-cmp-header-widget [headerTitle]="codesTitle"></app-cmp-header-widget>
+                        <app-cmp-header-widget
+                            [headerTitle]="codesTitle">
+                        </app-cmp-header-widget>
                         <app-product-summary-dimensions-card 
                             [rows]="productCodeDetail">
                         </app-product-summary-dimensions-card>
