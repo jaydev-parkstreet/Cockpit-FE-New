@@ -225,7 +225,7 @@ export class ProductAddComponent implements OnInit {
     
      /**
      * Opens a confirmation popup modal asking the user if they wish to exit.
-     * @author psi-enhancement
+     * @author PSI-Enhancements
      */
     openConfirmationPopup() {
         const modalData = this.ProductAddService.getModalData();
