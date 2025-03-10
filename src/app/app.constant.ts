@@ -16,6 +16,12 @@ const AppConstant = {
         PAGE_TITLE: 'PRODUCT DETAILS' ,
         SUBMIT_BUTTON: 'Save',
         CANCEL_BUTTON: 'Cancel',
+        SYNC_STATUS: {
+            1: 'Synced',
+            2: 'Syncing',
+            3: 'Sync',
+            4: 'Sync'
+        }
     }
 };
 

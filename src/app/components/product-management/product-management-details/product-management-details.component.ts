@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ProductMangementDetailService } from './product-mangement-detail.service';
+import AppConstant from 'src/app/app.constant';
 
 @Component({
     selector: 'app-product-management-details',
@@ -26,12 +27,6 @@ export class ProductManagementDetailsComponent implements OnInit {
     productDetails: any;
     detailProduct: any;
     actionButtons: any = [];
-    SYNC_STATUS: any = {
-        1: 'Synced',
-        2: 'Syncing',
-        3: 'Sync',
-        4: 'Sync'
-    }
     syncStatusFail: boolean;
     timerObj: any;
     permissions: any;
@@ -69,7 +64,7 @@ export class ProductManagementDetailsComponent implements OnInit {
             await this.productManagementService.getDetails(productId).subscribe((res: any) => {
                 this.productDetails = res;
                 this.detailProduct = this.fieldsDetail(res);
-                this.productCodeDetail = this.prepareProductCodeDetails(res); 
+                this.productCodeDetail = this.getProductCodeDetails(res); 
                 this.productList = this.productFieldsDetail({ ...res });
                 this.getStatusUpdate();
                 this.getSyncStatusUpdate();
@@ -133,11 +128,11 @@ export class ProductManagementDetailsComponent implements OnInit {
      * @author PSI-Enhancement
      */
     syncOrder() {
-        if (this.productDetails.sync_status === 1 || this.productDetails.sync_status === 2 || this.actionButtons[0].button === this.SYNC_STATUS[2]) {
+        if (this.productDetails.sync_status === 1 || this.productDetails.sync_status === 2 || this.actionButtons[0].button === AppConstant.PRODUCT.SYNC_STATUS[2]) {
             return false;
         }
         this.actionButtons[0].class = 'fas fa-sync fa-spin';
-        this.actionButtons[0].button = this.SYNC_STATUS[2];
+        this.actionButtons[0].button = AppConstant.PRODUCT.SYNC_STATUS[2];
         this.productManagementDetailService.syncOrder(this.productDetails.id).subscribe( (result) =>{
             this.timerObj= setInterval(() => {
                 this.getSyncStatusDetails();
@@ -314,15 +309,15 @@ export class ProductManagementDetailsComponent implements OnInit {
     getStatusUpdate() {
         this.status = this.productDetails.status;
         if (this.status === 'Approved') {
-            this.statusClass = 'badge med u-bg-v2-base-success';
+            this.statusClass = 'badge med u-bg-success';
         } else if (this.status === 'Pending') {
-            this.statusClass = 'badge med u-bg-v2-base-warinig';
+            this.statusClass = 'badge med u-bg-warning';
         } else if (this.status === 'Pre-Approved') {
-            this.statusClass = 'badge med u-bg-v2-base-primary';
+            this.statusClass = 'badge med u-bg-primary';
         } else if (this.status === 'Needs Action-Waiting on Supplier') {
-            this.statusClass = 'badge med u-bg-v2-base-warinig-v-low';
+            this.statusClass = 'badge med u-bg-warinig-medium';
         } else if (this.status === 'Request Received') {
-            this.statusClass = 'badge med u-bg-v2-neutral-light';
+            this.statusClass = 'badge med u-bg-neutral-light';
         }
     }
 
@@ -333,17 +328,7 @@ export class ProductManagementDetailsComponent implements OnInit {
      * @author PSI-Enhancement
      */
     getTabGroupConfig() {
-        const tabConfig = [{
-            key: 'notes',
-            label: 'Notes'
-        }, {
-            key: 'attachments',
-            label: 'Attachments'
-        }, {
-            key: 'auditTrail',
-            label: 'Audit Trail'
-        }];
-        return tabConfig;
+        return this.productManagementDetailService.getTabGroupConfig();
     }
 
     /**
@@ -358,175 +343,25 @@ export class ProductManagementDetailsComponent implements OnInit {
     }
 
     /**
-     * Maps and processes product fields to generate a response array with corresponding labels and values.
+     * Get product fields to get a response array with corresponding labels and values.
      *
      * @param {Object} row - The row of product data.
      * @returns {Array} The response array with labels and formatted values for the fields.
      * @author PSI-Enhancement
      */
     fieldsDetail(row) {
-        if(!row) return [];
-        let fieldMappings = [
-            { label: 'Supplier', key: 'client_name' },
-            { label: 'Brand', key: 'brand' },
-            { label: 'Sub-Brand Product', key: 'sub_brand_product_name' },
-            { label: 'Description', key: 'description' },
-            { label: 'Fanciful Name', key: 'fanciful_name' },
-            { label: 'Group', key: 'group_name' },
-            { label: 'Producer', key: 'producer_name' },
-            { label: 'Case UOM', key: 'case_unit_of_measure' },
-            { label: 'Container Type', key: 'container_type_name' },
-            { label: 'Announced Price', key: 'ex_works_cost_formatted' },
-            { label: 'Organic', key: 'is_organic_txt' },
-            { label: 'Product Type', key: 'prod_type' },
-            { label: 'Compliance', key: 'compliance_txt' },
-            { label: 'Use Up', key: 'use_up_txt' }
-        ];
-
-        let response = fieldMappings.map(({ label, key }) => ({
-            label,
-            value: this.valueChecker(row[key])
-        }));
-
-        response = this.fieldsDetailResponse(row, response);
-        response.push({ label: 'Date Created', value: this.valueChecker(row.created_date) });
-
-        return response;
+        return this.productManagementDetailService.getFieldsDetail(row);
     }
 
     /**
-     * Processes the product details and adds relevant fields to the response array 
-     * based on the product type and its attributes.
-     *
-     * @param {Object} row - The row of product data.
-     * @param {Array} response - The array to which the product details will be added.
-     * @returns {Array} The updated response array with the relevant product details.
-     * @author PSI-Enhancement
-     */
-    fieldsDetailResponse(row, response) {
-        const prodTypeSubType = ['Bulk', 'Other', 'Wine', 'Malt', 'Spirits'];
-        const prodTypeCategory = ['Wine', 'Spirits', 'Malt'];
-
-        if(prodTypeSubType.includes(row.prod_type)) {
-            response.push({
-                label: 'Product Sub-Type',
-                value: this.valueChecker(row.sub_type)
-            });
-        }
-
-        if(prodTypeCategory.includes(row.prod_type)) {
-            response.push({ 
-                label: 'Category',
-                value: this.valueChecker(row.category_name) 
-            });
-            response.push({ 
-                label: 'Source',
-                value: this.valueChecker(row.source) 
-            });
-            response.push({ 
-                label: 'Country of Origin',
-                value: this.valueChecker(row.country_name) 
-            });
-        }
-
-        response.push({ 
-            label: 'Manufactured Location',
-            value: this.valueChecker(row.manufactured_location_address) 
-        });
-
-        response = this.fieldsDetailResponseCheck(row, response);
-        return response;
-    }
-
-    /**
-     * Checks the product type and adds relevant details to the response array.
-     * 
-     * @param {Object} row - The row of product data.
-     * @param {Array} response - The array to which details will be added.
-     * @returns {Array} The updated response array with the relevant product details.
-     * @author PSI-Enhancement
-     */
-    fieldsDetailResponseCheck(row, response) {
-        if (row.prod_type === 'Wine' || row.prod_type === 'Malt') {
-            response.push({ 
-                label: 'Vintage',
-                value: this.valueChecker(row.vintage_text)
-            });
-        }
-
-        if (row.prod_type === 'Wine') {
-            response.push({ 
-                label: 'Varietal',
-                value: this.valueChecker(row.varietal)
-            });
-        }
-
-        if (row.prod_type === 'Wine' || row.prod_type === 'Spirits' || row.prod_type === 'Malt') {
-            response.push({ 
-                label: 'ABV %',
-                value: this.valueChecker(row.abv, 'abv')
-            });
-        }
-
-        return response;
-    }
-
-    /**
-     * Checks and formats a value based on its content and an optional key.
-     *
-     * @param {string|number} value - The value to be checked and formatted.
-     * @param {string} [key=''] - The optional key to determine if special formatting is required (e.g., 'abv').
-     * @returns {string} The formatted value or '--' if the value is invalid.
-     * @author PSI-Enhancement
-     */
-    valueChecker(value, key = '') {
-        if (value && value !== '-') {
-            if (key && key === 'abv') {
-                return value + '%';
-            } else {
-                return value;
-            }
-        } else {
-            return '--';
-        }
-    }
-
-    /**
-     * Prepares the product code details for display by organizing the fields into a table format.
+     * Get the product code details for display by organizing the fields into a table format.
      *
      * @param {Object} productDetails - The details of the product.
-     * @param {string} productDetails.product_id - The product ID.
-     * @param {string} productDetails.cola_ttb_id - The COLA TTB ID.
-     * @param {string} productDetails.upc_code - The UPC code.
-     * @param {string} productDetails.scc_code - The SCC code.
-     * @param {string} productDetails.supplier_ref_id - The supplier reference ID.
-     * @param {string} productDetails.nabca_code - The NABCA code.
-     * @param {string} productDetails.unimerc_code - The UNIMERC code.
-     * @param {string} productDetails.bdn_code - The BDN code.
      * @returns {Array} A configuration object containing the table headings and values of product code details.
      * @author PSI-Enhancement
      */
-    prepareProductCodeDetails(productDetails) {
-        const productCodeDetailFields = [
-            { label: 'Park Street Product Code', val: productDetails.product_id || '--' },
-            { label: 'COLA TTB', val: productDetails.cola_ttb_id || '--' },
-            { label: 'UPC Code', val: productDetails.upc_code || '--' },
-            { label: 'SCC Code', val: productDetails.scc_code || '--' },
-            { label: 'Supplier Reference ID', val: productDetails.supplier_ref_id || '--' },
-            { label: 'NABCA Code', val: productDetails.nabca_code || '--' },
-            { label: 'UNIMERC Code', val: productDetails.unimerc_code || '--' },
-            { label: 'BDN Code', val: productDetails.bdn_code || '--' }
-        ];
-    
-        const productCodeDetailsConfig = [{
-            table_headings: [
-                { value: 'Type' },
-                { value: 'Code' }
-            ],
-            table_values: productCodeDetailFields.map(field => [field.label, this.valueChecker(field.val)])
-        }];
-
-        return productCodeDetailsConfig;
+    getProductCodeDetails(productDetails) {
+        return this.productManagementDetailService.prepareProductCodeDetails(productDetails);
     }
     
     /**
@@ -551,13 +386,13 @@ export class ProductManagementDetailsComponent implements OnInit {
                 
                 Object.entries(row).forEach(([key, value]) => {
                     if (key === 'desc') {
-                        rowConfig.headerName = (value === 'Unit') ? "Bottle / Unit" : this.formatKey(value);
+                        rowConfig.headerName = (value === 'Unit') ? "Bottle / Unit" : this.productManagementDetailService.formatKey(value);
                     } else {
                         rowConfig.table_headings.push({
                             key,
-                            value: this.formatKey(key)
+                            value: this.productManagementDetailService.formatKey(key)
                         });
-                        table_values_row_array.push(this.valueChecker(value));
+                        table_values_row_array.push(this.productManagementDetailService.valueChecker(value));
                     }
                 });
                 rowConfig.table_values.push(table_values_row_array);
@@ -576,90 +411,6 @@ export class ProductManagementDetailsComponent implements OnInit {
      * @author PSI-Enhancement
      */
     getactionButtons(permissions, detail) {
-        let syncbtnName = '';
-        if (!detail.sync_status) {
-            syncbtnName = this.SYNC_STATUS[3];
-        } else {
-            syncbtnName = this.SYNC_STATUS[detail.sync_status];
-        }
-        let data = [];
-        if (detail.status !== 'Approved' &&
-            detail.status !== 'Needs Action-Waiting on Supplier') {
-            data.push({
-                key: 'Needs Action-Waiting on Supplier',
-                icon: 'fas fa-clock',
-                showTooltip: true,
-                tooltipText: 'Needs Action-Waiting on Supplier',
-                permission: permissions.permissions.Update
-                });
-        }
-        if (detail.status === 'Approved') {
-            let syncClass = detail.sync_status === 1 ? 'fas fa-sync-alt' : 'fas fa-sync-alt pointer';
-            data.push({
-              key: 'Sync',
-              showTooltip: true,
-              icon: (detail.sync_status === 2 ? 'fas fa-sync-alt fa-spin' :syncClass ),
-              tooltipText: syncbtnName,
-              permission: permissions.permissions.Update
-            });
-        } else if (detail.status === 'Request Received' ||
-            detail.status === 'Needs Action-Waiting on Supplier' ||
-            detail.status === 'Pending') {
-            data.push({
-              key: 'Pre-Approved',
-              showTooltip: true,
-              icon: 'fas fa-check-circle pointer',
-              tooltipText: 'Pre-Approved',
-              permission: permissions.permissions.Update
-            });
-        } else {
-            data.push({
-              key: 'Approve',
-              showTooltip: true,
-              icon: 'fas fa-check-circle pointer',
-              tooltipText: 'Approve',
-              permission: permissions.permissions.Update
-            });
-        }
-        {
-            data.push(
-              {
-                key: 'edit',
-                icon: 'fas fa-pen',
-                showTooltip: true,
-                tooltipText: 'Edit',
-                permission: permissions.permissions.Update
-              },
-              {
-                key: 'duplicate',
-                icon: 'fas fa-clone',
-                showTooltip: true,
-                tooltipText: 'Duplicate',
-                permission: permissions.permissions.Create
-              }
-            ); 
-        }
-            data.push({
-                key:'Activate',
-                icon:detail.is_active !== 1 ? 'fas fa-check-circle':'fas fa-times-circle',
-                button: detail.is_active !== 1 ? 'Activate' : 'Deactivate',
-                showTooltip: true, 
-                tooltipText: detail.is_active !== 1 ? 'Activate' : 'Deactivate',
-                permission: permissions.permissions.Update
-            })
-        return data;
-    }
-
-    /**
-     * Formats a given key by replacing underscores with spaces and capitalizing each word.
-     *
-     * @param {string} key 
-     * @returns {string}
-     * @author PSI-Enhancement
-     */
-    formatKey(key) {
-        return key
-            .replace(/_/g, ' ')
-            .replace(/\b\w/g, char => char.toUpperCase());
+        return this.productManagementDetailService.getActionButtons(permissions, detail);
     }
 }
