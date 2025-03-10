@@ -17,7 +17,7 @@
             *ngFor="let btn of modalData.btnLabel"
             [buttonText]="btn.label"
             [buttonClass]="btn.class"
-            (click)="btn.label === 'No' ? cancel() : confirm()">
+            (click)="onClickBtn(btn)">
         </app-cmp-button>
     </div>
 </div>

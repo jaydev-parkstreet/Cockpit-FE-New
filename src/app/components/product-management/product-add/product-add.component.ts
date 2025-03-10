@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, Injector} from '@angular/core';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
@@ -48,8 +48,11 @@ export class ProductAddComponent implements OnInit {
         private productmanagementService: ProductManagementService,
         private spinner : NgxSpinnerService,
         private commonService: CommonService,
-        private simpleModalService: SimpleModalService
-    ) { }
+        private simpleModalService: SimpleModalService,
+        private injector: Injector
+    ) {
+        this.simpleModalService = injector.get<SimpleModalService>(SimpleModalService);
+     }
 
     ngOnInit(): void {
         this.permissions = this.route.snapshot.data['permissions'];
@@ -228,7 +231,7 @@ export class ProductAddComponent implements OnInit {
         const modalData = this.ProductAddService.getModalData();
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
-                if (result.confirm) {
+                if (result.btn.label === 'Yes') {
                     this.router.navigate(["/product-management"]);
                 }
             });

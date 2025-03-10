@@ -393,7 +393,7 @@ export class ProductAddService {
             ]
         };
     }
-
+ 
     /**
      * Calls the API to save the product details.
      * 
