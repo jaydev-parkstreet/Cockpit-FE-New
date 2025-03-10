@@ -1,27 +1,23 @@
 <div class="modal-content content">
     <div class="modal-body">
         <div class="popup-header">
-            <i [ngClass]="modalData.icon ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'"></i>
-            <span [innerText]="modalData.title"></span>
+            <i [ngClass]="modalData.iconClass || 'fas fa-exclamation-circle'"></i>
+            <span *ngIf="modalData.title" [innerText]="modalData.title"></span>
         </div>
         <div class="popup-body">
-            <span [innerText]="modalData.body"></span>
+            <span *ngIf="modalData.body" [innerText]="modalData.body"></span>
             <span *ngIf="modalData.body1" [innerText]="modalData.body1"></span>
         </div>
     </div>
-    <div class="seperator"></div>  
+
+    <div class="seperator"></div>
+
     <div class="modal-footer footer w-100">
         <app-cmp-button
-            *ngIf="modalData.closeBtnName"
-            [buttonText]="modalData.closeBtnName" 
-            [buttonClass]="'secondary w-lg'"
-            (click)="cancel()">
-        </app-cmp-button>
-        <app-cmp-button
-            *ngIf="modalData.confirmBtnName"
-            [buttonText]="modalData.confirmBtnName" 
-            [buttonClass]="'primary w-lg'"
-            (click)="confirm()">
+            *ngFor="let btn of modalData.btnLabel"
+            [buttonText]="btn.label"
+            [buttonClass]="btn.class"
+            (click)="btn.label === 'No' ? cancel() : confirm()">
         </app-cmp-button>
     </div>
 </div>
