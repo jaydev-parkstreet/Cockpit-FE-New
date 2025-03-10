@@ -23,7 +23,6 @@
     }
   
     input {
-  
         &[type="checkbox"],
         &[type="radio"] {
             position: absolute;
@@ -40,13 +39,23 @@
         width: 16px;
         height: 16px;
         background: $colors-neutral-white;
-        border: 1px solid $colors-v2-base-primary;
+        border: 1px solid $colors-neutral-dark;
         position: relative;
         border-radius: 4px;
         transition: box-shadow 180ms ease;
         box-shadow: inset 0 0 0 12px $colors-neutral-white;
         top: 2px;
         float: left;
+    }
+
+    .label {
+        font-family: $montserrat-regular;
+        color: $colors-neutral-black;
+        font-weight: 400;
+        font-size: 12px;
+        padding: 0px;
+        margin-left: 4px;
+        line-height: 16px;
     }
   
     .fa-check {
@@ -67,4 +76,4 @@
             padding-left: 1px;        
         }
     }
-  }
+}

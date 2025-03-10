@@ -78,7 +78,8 @@ export class ProductAddComponent implements OnInit {
      */
     async getProductData (productId) {
         this.productmanagementService.getDetails(productId).subscribe((productData) => {
-            this.renderConditionalFields(productData.prod_type, this.crudFiltersList, this.productForm)
+            this.renderConditionalFields(productData.prod_type, this.crudFiltersList, this.productForm);
+            this.getFormControl();
             this.productId = productData.product_id;
             setTimeout(() => {
                 if (this.duplicate) {
@@ -278,6 +279,7 @@ export class ProductAddComponent implements OnInit {
         }
         if (fieldName === 'prod_type') {
             this.renderConditionalFields(selectedValue[0].name, this.crudFiltersList, this.productForm);
+            this.getFormControl();
             this.crudFieldConfig = { ...this.crudFieldConfig };
             this.productForm = new FormGroup(this.productForm.controls);
             this.changeDetector.detectChanges();

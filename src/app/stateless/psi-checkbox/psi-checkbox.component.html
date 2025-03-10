@@ -5,11 +5,11 @@
             [ngClass]="validationClasses"
             [placeholder]="field.placeholder"
             [required]="field.required"
-            [checked]="form.value[field.name]"
+            [attr.checked]="form.value[field.name] == '1' ? true : null"
             (change)="onChangeValue($event.target.checked)"/>
         <span class="c-checkbox__item">
             <em class="fas fa-check"></em>
         </span>
-        {{ field.label }}
+        <span class="label">{{ field.label }}</span>
     </label>
 </div>
