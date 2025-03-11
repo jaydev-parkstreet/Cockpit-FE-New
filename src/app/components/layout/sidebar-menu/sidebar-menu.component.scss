@@ -97,7 +97,14 @@
     &__content {
         font-family: $crimson-pro-regular;
         font-size: 16px;
+
+        .sidebar-menu {
+            height: 80vh;
+
+        }
        .sidebar-menu-list {
+            overflow-y: auto;
+            height: 100%;
             padding: 8px;
             .sidebar-menu-item {
                 color: #FFFFFF;
@@ -124,10 +131,19 @@
                     a {
                         display: block;
                         width: 100%;
-                        padding: 2px 4px 2px 28px;
+                        padding: 2px 4px 2px 32px;
                         border-radius: 8px;
+                        height: 24px;
+                        em {
+                            margin-top: 2px;
+                        }
                         &:hover {
                             background-color: #CBCBCB40;
+
+                            span {
+                                font-family: $montserrat-medium;
+                                font-weight: 500;
+                            }
                         }
                     }
                     ul {
@@ -144,12 +160,14 @@
                         width: 240px;
                         border-radius: 8px;
                         margin-left: 8px;
+                        padding: 16px 16px 8px;
                         
                         li {
-                            padding: 8px 20px;
+                            padding: 2px 4px;
                             height: 24px;
+                            margin-bottom: 8px;
                             a {
-                                padding: 0;
+                                padding-left: 4px;
                             }
                         }
                     }   
