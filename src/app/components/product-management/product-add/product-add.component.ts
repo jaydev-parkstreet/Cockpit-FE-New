@@ -5,6 +5,8 @@ import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/
 import { ProductManagementService } from '../product-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ProductAddService } from './product-add.service';
+import { SimpleModalService } from 'ngx-simple-modal';
+import { PsiBrandModalComponent } from '../../organism/psi-brand-modal/psi-brand-modal.component';
 
 @Component({
   selector: 'app-product-add',
@@ -34,7 +36,8 @@ export class ProductAddComponent implements OnInit {
     productId: any;
     edit: boolean = false;
     productForm = this.formBuilder.group({});
-
+    brandModalData: any;
+    brandModalConfig: any;
     constructor(
         private ProductAddService: ProductAddService,
         private changeDetector: ChangeDetectorRef,
@@ -43,7 +46,8 @@ export class ProductAddComponent implements OnInit {
         private formBuilder: FormBuilder,
         private productmanagementService: ProductManagementService,
         private spinner : NgxSpinnerService,
-        private commonService: CommonService
+        private commonService: CommonService,
+        private simpleModalService: SimpleModalService
     ) { }
 
     ngOnInit(): void {
@@ -229,8 +233,11 @@ export class ProductAddComponent implements OnInit {
 
         const brandControl = this.productForm.get('brand');
         const subBrandControl = this.productForm.get('sub_brand_product_id');
-        this.clientId = selectedValue[0]?.class_id;
-
+        if (selectedValue[0]?.class_id) {
+            this.clientId = selectedValue[0]?.class_id;
+        } else if (selectedValue[0]?.client_id) {
+            this.clientId = selectedValue[0]?.client_id;
+        }
         if (fieldName === 'client_id' && selectedValue.length > 0) {
             this.isBrandDisabled = !selectedValue;
             brandControl.setValue('');
@@ -243,13 +250,13 @@ export class ProductAddComponent implements OnInit {
                 brandControl.enable();
                 this.productmanagementService.getBrands(this.clientId).subscribe(brands => {
                     if (Array.isArray(brands) && brands.length > 0) {
-                        this.brand = brands;
-                        this.updateBrandFilter();
+                        this.brand = [...brands, {id: '', name: 'Create New', isNew: true}];
                     } else {
-                        this.brand = [];
-                        this.updateBrandFilter();
+                        this.brand = [{id: '', name: 'Create New', isNew: true}];
                     }
+                    this.updateBrandFilter();
                 });
+                
             }
             this.changeDetector.detectChanges();
         }
@@ -258,15 +265,26 @@ export class ProductAddComponent implements OnInit {
             this.isSubBrandDisabled = !selectedValue;
             this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
             subBrandControl.setValue('');
+            if (selectedValue[0]?.isNew) {
+                this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
+                this.updateConfig(this.brandModalConfig.brand, false);
+                this.updateConfig(this.brandModalConfig.new_brands, true);
+                this.updateConfig(this.brandModalConfig.sub_brand_product_id, false);
+                this.updateConfig(this.brandModalConfig.new_sub_brand, false);
+                this.updateConfig(this.brandModalConfig.net_contents, false);
+                this.updateConfig(this.brandModalConfig.units_cases, false);
+                this.brandModalData = this.ProductAddService.getBrandModalData(this.brandModalConfig)
+                this.openCreateBrandPopup(this.clientId);
+            }
             if (!this.isSubBrandDisabled && subBrandControl) {
                 subBrandControl.enable();
-                this.productmanagementService.getSubBrandProducts(selectedValue[0]?.client_id).subscribe(subBrands => {
-                    this.sub_brand_product_id = subBrands;
+                this.productmanagementService.getSubBrandProducts(selectedValue[0]?.client_id, selectedValue[0]?.id).subscribe(subBrands => {
+                    this.sub_brand_product_id = [...subBrands, { id: '', name: 'Create New', isNew: true }];
                     this.updateSubBrandFilter();
                     this.isSubBrandDisabled = false;
                 });
             } else {
-                this.sub_brand_product_id = [];
+                this.sub_brand_product_id = [{id: '', name: 'Create New', isNew: true }];
                 this.updateSubBrandFilter();
                 subBrandControl.setValue('');
             }
@@ -274,6 +292,17 @@ export class ProductAddComponent implements OnInit {
         }
 
         if (fieldName == 'sub_brand_product_id') {
+            if (selectedValue[0]?.isNew) {
+                this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
+                this.updateConfig(this.brandModalConfig.brand, true);
+                this.updateConfig(this.brandModalConfig.new_brands, false);
+                this.updateConfig(this.brandModalConfig.sub_brand_product_id, true);
+                this.updateConfig(this.brandModalConfig.new_sub_brand, false);
+                this.updateConfig(this.brandModalConfig.net_contents, true);
+                this.updateConfig(this.brandModalConfig.units_cases, true);
+                this.brandModalData = this.ProductAddService.getBrandModalData(this.brandModalConfig)
+                this.openCreateBrandPopup(this.clientId);
+            }
             this.productForm.get('sub_brand_product_name')?.setValue(selectedValue[0].name);
         }
         if (fieldName === 'prod_type') {
@@ -374,7 +403,7 @@ export class ProductAddComponent implements OnInit {
             this.updateBrandFilter();
             this.updateFormControl('brand', 'brand', brandId);
 
-            this.productmanagementService.getSubBrandProducts(clientId).subscribe(subBrands => {
+            this.productmanagementService.getSubBrandProducts(clientId, brandId).subscribe(subBrands => {
                 this.sub_brand_product_id = subBrands;
                 this.updateSubBrandFilter();
                 this.updateFormControl('sub_brand_product_id', 'sub_brand_product_id', subBrandId);
@@ -536,4 +565,22 @@ export class ProductAddComponent implements OnInit {
                 break;
         }
     }
+
+    openCreateBrandPopup(clientId) {
+        this.brandModalData.client_id = clientId;
+        let modalData = this.brandModalData;
+        this.simpleModalService.addModal(PsiBrandModalComponent, { modalData })
+        .subscribe((result) => {
+            console.log('Modal Result:', result);
+    
+            if (result?.confirm) {
+                console.log('Creating brand with data:', modalData.model);
+            }
+        });
+    }
+
+    updateConfig = (config, isDisplayed) => {
+        config.display = isDisplayed;
+        config.isRequired = isDisplayed;
+    };
 }

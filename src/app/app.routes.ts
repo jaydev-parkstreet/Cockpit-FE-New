@@ -18,6 +18,8 @@ const AppRoutes = {
         PRODUCT_ACTIVE_DEACTIVATE: 'product-tool/active-deactivate/product',
         EXCEL_EXPORT: 'product-tool/excel-export',
         PRODUCT_TOOL_GET_BRANDS: 'product-tool/get-brands-client',
+        CHECK_BRAND_EXISTS: 'product-tool/brand-exists',
+        CHECK_SUB_BRAND_EXISTS: 'product-tool/sub-brand-exists'
     }
 };
 

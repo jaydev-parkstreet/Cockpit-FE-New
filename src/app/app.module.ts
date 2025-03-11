@@ -18,10 +18,12 @@ import { ApplicationComponent } from './components/layout/application/applicatio
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { MainHeaderComponent } from './components/layout/main-header/main-header.component';
 import { LayoutModule } from './components/layout/layout.module';
+import { PsiBrandModalComponent } from './components/organism/psi-brand-modal/psi-brand-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
     ConfirmationModalComponent,
+    PsiBrandModalComponent,
   ],
   imports: [
     BrowserModule,

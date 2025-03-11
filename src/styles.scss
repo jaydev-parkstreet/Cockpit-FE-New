@@ -235,3 +235,13 @@ input:-webkit-autofill:active {
 .asterisk-margin {
     margin: 0 0 6px 8px !important;
 }
+.error-message {
+    margin-top: 4px;
+    color: $colors-v2-base-error;
+    font-size: 12px;
+    background-repeat: no-repeat !important;
+    background-size: 12px;
+    padding: 0px 20px;
+    background-position: left center;
+    display: block;
+}

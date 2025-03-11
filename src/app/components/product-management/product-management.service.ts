@@ -565,10 +565,12 @@ export class ProductManagementService {
      * @returns An Observable containing the data of sub-brand products.
      * @author psi-enhancement
      */
-    getSubBrandProducts(clientId: string) {
+    getSubBrandProducts(clientId: string , brandID: string) {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        let params = new HttpParams().set('client_id', clientId);
+        const params = new HttpParams()
+            .set('client_id', clientId)
+            .set('brand_id', brandID);
         return this.http
             .get( environment.apiUrl + AppRoutes.PRODUCT_TOOL.GET_SUB_BRAND_PRODUCT_WITH_CLIENT_ID , { headers, params })
             .pipe(map((response :any) => response.data));

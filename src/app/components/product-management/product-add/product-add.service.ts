@@ -388,4 +388,120 @@ export class ProductAddService {
             .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.SAVE_API, obj)
             .pipe(map((response :any) => response));
     }
+
+    getBrandSubBrandList(crudFiltersList) {
+        return {
+            brand: {
+                key: 'brand',
+                name: 'brand',
+                label: 'Brand',
+                type: 'multiselect-dropdown',
+                isRequired: true,
+                colClass: 'col-xs-12',
+                inputSetting: this.commonService.getDropdownConfig('Select Brand', true),
+                isDisabled: false,
+                display: true,
+                filters: { entity: [] },
+                options: crudFiltersList.brand || []
+            },
+            new_brands: {
+                type: 'text',
+                name: 'new_brands',
+                label: 'New Brand',
+                display: true,
+                isRequired: true,
+                placeholder: 'Enter Brand Name',
+                colClass: 'col-sm-12'
+            },
+            sub_brand_product_id: {
+                key: 'sub_brand_product_id',
+                name: 'sub_brand_product_id',
+                label: 'Sub-Brand',
+                type: 'multiselect-dropdown',
+                isRequired: true,
+                colClass: 'col-xs-12',
+                inputSetting: this.commonService.getDropdownConfig('Select Sub-Brand', true),
+                isDisabled: true,
+                display: true,
+                filters: { entity: [] },
+                options: crudFiltersList.sub_brand_product_id || []
+            },
+            new_sub_brand: {
+                type: 'text',
+                name: 'new_sub_brand',
+                label: 'New Sub-Brand',
+                placeholder: 'Enter Sub-Brand Name',
+                isRequired: true,
+                display: true,
+                colClass: 'col-sm-12'
+            },
+            net_contents: {
+                key: 'net_contents',
+                name: 'net_contents',
+                label: 'Net Contents',
+                type: 'multiselect-dropdown',
+                isRequired: true,
+                colClass: 'col-xs-6 nopaddingleft',
+                inputSetting: this.commonService.getDropdownConfig('Select Option', true),
+                isDisabled: true,
+                display: true,
+                options: crudFiltersList.net_container_sizes || []
+            },
+            units_cases: {
+                key: 'units_cases',
+                name: 'units_cases',
+                label: 'Units/Cases',
+                type: 'multiselect-dropdown',
+                isRequired: true,
+                colClass: 'col-xs-6 nopaddingright',
+                inputSetting: this.commonService.getDropdownConfig('Select Option', true),
+                isDisabled: true,
+                display: true,
+                options: crudFiltersList.units_per_case || []
+            }
+        };
+    }
+
+    getBrandModalData(config) {
+        return {
+            titleIcon: 'fas fa-info-circle',
+            title: 'Create New Brand',
+            config: config,
+            buttons : [
+                {
+                    action: 'Cancel',
+                    class: 'secondary',
+                    isDisable: false
+                }, {
+                    action: 'Create',
+                    class: 'primary',
+                    isDisable: false
+                }
+            ]
+        }
+    }
+
+    /**
+     * Function to verify if Brand exist
+     *
+     * @createdDate 16-05-2022
+     * @author PSI-Enhancements
+     */
+    getBrandExist(params) {
+        return this.http
+            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.CHECK_BRAND_EXISTS, params)
+            .pipe(map((response :any) => response));
+    }
+
+    /**
+     * Function to verify if Sub-Brand exist
+     *
+     * @createdDate 16-05-2022
+     * @author PSI-Enhancements
+     */
+    getSubBrandExist(params) {
+        return this.http
+            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.CHECK_SUB_BRAND_EXISTS, params)
+            .pipe(map((response :any) => response));
+    }
 }
