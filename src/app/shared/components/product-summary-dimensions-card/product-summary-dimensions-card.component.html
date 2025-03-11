@@ -2,12 +2,10 @@
     <div class="typography-body-black-medium psi-fields-detail u-pg-mb-3" 
         *ngFor="let row of rows; let last= last"
         [ngClass]="{ 'u-pg-mb-3': !last }">
-        <div class="header-label" [ngClass]="row.headerClass" *ngIf="row.headerName">
-            <p class="u-flex">
-                <span class="typography-body-black-medium u-text-underline" [ngClass]="row.headerStyle">
-                    {{ row.headerName }}
-                </span>
-            </p>
+        <div class="header-label u-flex u-pg-mb-2" [ngClass]="row.headerClass" *ngIf="row.headerName">
+            <span class="typography-body-black-medium u-text-underline" [ngClass]="row.headerStyle">
+                {{ row.headerName }}
+            </span>
         </div>
         <table class="w-100" [ngClass]="row.tableClass">
             <thead>

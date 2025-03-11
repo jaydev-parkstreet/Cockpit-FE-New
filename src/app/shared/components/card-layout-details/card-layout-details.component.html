@@ -1,18 +1,27 @@
 <div class="cards-layout-details u-pg-p-2">
   <ng-container *ngFor="let data of rows; let i = index" [ngClass]="data.loopClass">
-    <span 
-      class="typography-v2-cr-body-dark-regular u-title  u-pg-mb-2 d-block" 
-      *ngIf="data.title"
-      [ngClass]="{'u-pg-mb-2': i === 0, 'u-title-margin': i !== 0}">
-      {{ data.title }}
-    </span>
-    <p class="u-flex u-pg-mb-1">
-      <span class="w-50">
-        <span class="typography-body-black-medium w-100">{{ data.label }}</span>
+    <div class="header-label u-flex" 
+      *ngIf="data.isHeader"
+      [ngClass]="[i === 0 ? 'u-pg-mb-2' : 'u-pg-my-2', data.headerClass]">
+      <span class="typography-body-dark-regular" [ngClass]="data.headerStyle">
+          {{ data.label }}
       </span>
-      <span class="typography-body-dark-regular w-50 text-end text-break">
-        <span> {{data.value}} </span>
+    </div>
+    <ng-container *ngIf="!data.isHeader">
+      <span 
+        class="typography-v2-cr-body-dark-regular u-title  u-pg-mb-2 d-block" 
+        *ngIf="data.title"
+        [ngClass]="{'u-pg-mb-2': i === 0, 'u-title-margin': i !== 0}">
+        {{ data.title }}
       </span>
-    </p>
+      <p class="u-flex u-pg-mb-1">
+        <span class="w-50">
+          <span class="typography-body-black-medium w-100">{{ data.label }}</span>
+        </span>
+        <span class="typography-body-dark-regular w-50 text-end text-break">
+          <span> {{data.value}} </span>
+        </span>
+      </p>
+    </ng-container>
   </ng-container>
 </div>

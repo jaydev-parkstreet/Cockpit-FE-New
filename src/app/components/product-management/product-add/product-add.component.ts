@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ProductAddService } from './product-add.service';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { PsiBrandModalComponent } from '../../organism/psi-brand-modal/psi-brand-modal.component';
+import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-product-add',
@@ -21,6 +22,7 @@ export class ProductAddComponent implements OnInit {
     rightHeaderBottomTitle: string;
     crudFieldConfig: any;
     crudFiltersList: any;
+    modalData: any;
     permissions: any;
     sellectedData: any = {};
     duplicate: boolean = false;
@@ -38,6 +40,8 @@ export class ProductAddComponent implements OnInit {
     productForm = this.formBuilder.group({});
     brandModalData: any;
     brandModalConfig: any;
+    formSubmitted: boolean = false;
+
     constructor(
         private ProductAddService: ProductAddService,
         private changeDetector: ChangeDetectorRef,
@@ -56,6 +60,7 @@ export class ProductAddComponent implements OnInit {
         this.leftTitle = 'PRODUCT DETAILS';
         this.productTitle = 'Dimensions';
         this.crudFieldConfig = this.ProductAddService.getCrudFieldConfig(this.crudFiltersList);
+        this.modalData = this.ProductAddService.getModalData()
         if (!this.permissions.permissions.Create) {
             this.router.navigate(['product-management']);
         }
@@ -176,43 +181,61 @@ export class ProductAddComponent implements OnInit {
     }
 
     /**
-     * Called when the form is submitted.
+     * Function to submit Form.
      * @param form The form object.
      * @author psi-enhancement
      */
-    onSubmit(form: FormGroup) {
-        if (form.valid) {
-            const formattedModel = this.productmanagementService.formatModelProductTool(
-                form.value,
-                this.crudFiltersList,
-                this.subBrandProducts,
-                this.edit,
-                this.duplicate,
-                this.uniqueId,
-                this.productId
-            );
-            this.spinner.show()
-            this.ProductAddService.getProductManagementSystemSave(formattedModel).subscribe(response => {
-                if (!response.hasError) {
-                    this.spinner.hide();
-                    let productId = response.product_id;
-                    if (this.edit) {
-                        this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-exclamation-circle');
-                        this.router.navigateByUrl(`/product-management/${productId}`);
+    onSubmit(event) {
+        if (event  === "Submit") {
+            this.formSubmitted = true;
+            if (this.productForm.valid) {
+                const formattedModel = this.productmanagementService.formatModelProductTool(
+                    this.productForm.value,
+                    this.crudFiltersList,
+                    this.subBrandProducts,
+                    this.edit,
+                    this.duplicate,
+                    this.uniqueId,
+                    this.productId
+                );
+                this.spinner.show()
+                this.ProductAddService.getProductManagementSystemSave(formattedModel).subscribe(response => {
+                    if (!response.hasError) {
+                        this.spinner.hide();
+                        let productId = response.product_id;
+                        if (this.edit) {
+                            this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-exclamation-circle');
+                            this.router.navigateByUrl(`/product-management/${productId}`);
+                        } else {
+                            this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle');
+                            this.router.navigateByUrl(`/product-management/${productId}`);
+                        }
                     } else {
-                        this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle');
-                        this.router.navigateByUrl(`/product-management/${productId}`);
+                        this.spinner.hide();
+                        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                     }
-                } else {
-                    this.spinner.hide();
-                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                });
+            } else {
+                this.commonService.showToastV2Message(true, "Please provide The required Fields", 'fas fa-exclamation-circle');
+            }
+        } else {
+            this.openConfirmationPopup();
+        } 
+    }
+    
+    /**
+     * Opens a confirmation popup modal asking the user if they wish to exit.
+     * @author PSI-Enhancements
+     */
+    openConfirmationPopup() {
+        const modalData = this.ProductAddService.getModalData();
+        this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+            .subscribe((result) => {
+                if (result.btn.label === 'Yes') {
+                    this.router.navigate(["/product-management"]);
                 }
             });
-        } else {
-            this.commonService.showToastV2Message(true, "Please provide The required Fields", 'fas fa-exclamation-circle');
-        }
     }
-
     /**
      * This function is called when the dropdown selection changes.
      * @param fieldName
