@@ -1,10 +1,11 @@
-@import '../../../../styles/variables';
-@import '../../../../styles/colors';
+@import '../../../scss/variables/typography';
+@import '../../../scss/variables/colors';
 
 .input-dropdown {
     position: relative;
 
     .dropdown-label {
+        display: flex;
         color: $colors-neutral-black;
         font-family: $montserrat-regular !important;
         font-size: 12px;
@@ -65,7 +66,7 @@
     }
 
     .text-overflow {
-        font-family: $helvetica-neue;
+        font-family: $montserrat-regular;
         font-size: 12px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -290,18 +291,22 @@
     }
 }
 
-.input-dropdown.disabled {
-    background-color: $colors-neutral-light-v-low;
-    pointer-events: none;
+.input-dropdown .dropdown-header.disabled {
     border-radius: 8px;
-    cursor: not-allowed;
-}
-
-.input-dropdown.disabled .dropdown-header {
-    cursor: not-allowed;
+    background-color: $colors-neutral-light-v-low;
     color: $colors-neutral-dark-v-medium;
-}
+    cursor: not-allowed;
+    
+    .dropdown-list {
+        pointer-events: none;
+        display: none;
+    }
 
-.input-dropdown.disabled .dropdown-list {
-    display: none;
+    &:hover,
+    &:focus {
+        color: $colors-neutral-dark-v-medium;
+        border: 1px solid $colors-neutral-light;
+        outline: none;
+        box-shadow: none;
+    }
 }

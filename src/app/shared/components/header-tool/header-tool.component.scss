@@ -1,42 +1,22 @@
-@import '../../../../../src/styles/typography';
-@import '../../../../../src/styles/colors';
+@import '../../../scss/variables/typography';
+@import '../../../scss/variables/colors';
 
 .header-tool {
     height: 48px;
     display: flex;
     justify-content: space-between;
     padding: 10px 16px;
-    margin: 0 16px;
     align-items: center;
     background-color: $colors-neutral-white;
-    color: $colors-neutral-black;
-    font-family: $crimson-pro-regular;
-    font-size: 20px;
-    box-shadow: $colors-neutral-dark-t-25;
+    box-shadow: rgba(74, 74, 74, 0.15);
+
     .title-text {
         i {
             margin-right: 8px;
         }
     }
 
-    .u-w-inherit button.logout {
-        font-size: 14px;
-        font-weight: 700;
-        color: #fff;
-        background-color: #e74536;
-        border-color: transparent;
-        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.5);
-        font-family: "CrimsonPro-Bold";
-        outline: 0;
-        padding: 8px 32px;
-        border-radius: 8px;
-        margin-left: 8px;
-
-        &:hover {
-            color: #fff;
-            background-color: #de1300;
-            outline: 0;
-            border-color: transparent;
-        }
+    .Redirect-page {
+        font-size: 16px;
     }
 }

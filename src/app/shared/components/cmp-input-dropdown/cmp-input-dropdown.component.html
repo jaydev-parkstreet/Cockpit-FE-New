@@ -1,5 +1,8 @@
-  <div class="input-dropdown" [ngClass]="{'disabled': disabled || formControl?.disabled}">
-  <span class="dropdown-label d-block" [textContent]="label" *ngIf="label"></span>
+  <div class="input-dropdown" >
+    <div class="dropdown-label" [ngClass]="{'asterisk-margin': required}">
+      <span *ngIf="required" class="required-asterisk">*</span>
+      <span class="d-block" [textContent]="label" *ngIf="label"></span>
+    </div>
   <div class="dropdown-header" [ngClass]="validationClasses" (click)="!disabled && !formControl?.disabled && toggleDropdown()" tabindex="0">
     {{ getSelectedDisplayText() }}
     <button class="dropdown-button" *ngIf="settings.versionStyle !== 'smart-search'" (click)="onChevronClick($event)">

@@ -1,54 +1,31 @@
-<div class="product-summary-dimensions-card">
-    <div class="psi-fields-detail" *ngFor="let data of rows">
-        <div class="header-label" [ngClass]="data.headerClass" *ngIf="data.showHeader">
-            <p class="field-bl-dtl">
-                <span class="h-left" [ngClass]="data.headerAl">
-                    {{ data.cardHeader }}
-                </span>
-            </p>
+<div class="product-summary-dimensions-card" [ngClass]="cardClass ? cardClass : 'default-padding'">
+    <div class="typography-body-black-medium psi-fields-detail u-pg-mb-3" 
+        *ngFor="let row of rows; let last= last"
+        [ngClass]="{ 'u-pg-mb-3': !last }">
+        <div class="header-label u-flex u-pg-mb-2" [ngClass]="row.headerClass" *ngIf="row.headerName">
+            <span class="typography-body-black-medium u-text-underline" [ngClass]="row.headerStyle">
+                {{ row.headerName }}
+            </span>
         </div>
-        <table height="48px" width="464px">
+        <table class="w-100" [ngClass]="row.tableClass">
             <thead>
-                <tr class="tbheading">
-                    <th height="24px" width="75.29px" *ngIf="!data.hideColumn1">
-                        <div>
-                            <span class="ftleft">{{ data.column1 }}</span>
-                            <span *ngIf="!data.hideColumn2" class="ftright"></span>
-                        </div>
-                    </th>
-                    <th height="24px" width="75.29px" *ngIf="!data.hideColumn2">
-                        <div>
-                            <span class="ftleft">{{ data.column2 }}</span>
-                            <span *ngIf="!data.hideColumn3" class="ftright"></span>
-                        </div>
-                    </th>
-                    <th height="24px" width="63.29px" *ngIf="!data.hideColumn3">
-                        <div>
-                            <span class="ftleft">{{ data.column3 }}</span>
-                            <span *ngIf="!data.hideColumn4" class="ftright"></span>
-                        </div>
-                    </th>
-                    <th height="24px" width="63.29px" *ngIf="!data.hideColumn4">
-                        <div>
-                            <span class="ftleft">{{ data.column4 }}</span>
-                            <span *ngIf="!data.hideColumn5" class="ftright"></span>
+                <tr>
+                    <th 
+                        *ngFor="let tableHeading of row.table_headings; let last = last"
+                        [style.width.%]="100 / row.table_headings.length">
+                        <div class="u-flex u-justify-between">
+                            <span class="typography-paragraph-black-bold">{{ tableHeading.value }}</span>
+                            <span *ngIf =!last class="ftright"></span>
                         </div>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="text-cell" *ngIf="!data.hideColumn1">
-                        <span>{{ data.value1 }}</span>
-                    </td>
-                    <td class="text-cell" *ngIf="!data.hideColumn2">
-                        <span>{{ data.value2 }}</span>
-                    </td>
-                    <td class="text-cell" *ngIf="!data.hideColumn3">
-                        <span>{{ data.value3 }}</span>
-                    </td>
-                    <td class="text-cell" *ngIf="!data.hideColumn4">
-                        <span>{{ data.value4 }}</span>
+                <tr *ngFor="let tableRowValues of row.table_values">
+                    <td class="typography-paragraph-dark-regular" 
+                        *ngFor="let tableRowValue of tableRowValues"
+                        [style.width.%]="100 / tableRowValues.length">
+                        <span>{{ tableRowValue ? tableRowValue : "--" }}</span>
                     </td>
                 </tr>
             </tbody>

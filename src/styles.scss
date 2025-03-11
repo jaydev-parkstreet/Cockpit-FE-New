@@ -3,10 +3,6 @@
 @import "./app/scss/variables/typography";
 @import "./app/scss/components/buttons";
 @import "./app/scss/components/inputs";
-@import "./styles/colors";
-@import "./styles/variables";
-@import "./styles/typography";
-@import "./styles/utilities";
 @import "~ag-grid-community/dist/styles/ag-grid.css";
 @import "~ag-grid-community/dist/styles/ag-theme-balham.css";
 @import "~ag-grid-community/dist/styles/ag-theme-material.css";
@@ -40,16 +36,17 @@
 @import "./app/scss/utilities/vertical-align";
 @import "./app/scss/utilities/white-space";
 @import "./app/scss/utilities/widths";
+@import "./app/scss/8-point-grid/8-point-grid.scss";
 
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
 }
-// body {
-//     width: 100%;
-//     height: 100vh;
-// }
+
+html {
+    font-size: 16px;
+}
 
 @font-face {
     font-family: "Montserrat-Regular";
@@ -229,4 +226,12 @@ input:-webkit-autofill:active {
 
 .modal {
     background: url("../src/assets/images/Popup-Shadow.png");
+}
+.required-asterisk {
+    color: $colors-v2-base-error;
+    font-size: 14px;
+    margin-right: 3px;
+}
+.asterisk-margin {
+    margin: 0 0 6px 8px !important;
 }

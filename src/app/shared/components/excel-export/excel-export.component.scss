@@ -1,5 +1,5 @@
-@import '../../../../styles/variables';
-@import '../../../../styles/colors';
+@import '../../../scss/variables/typography';
+@import '../../../scss/variables/colors';
 @import '../../../scss/utilities/base';
 @import '../../../scss/utilities/colors';
 
@@ -16,7 +16,7 @@
 
     .disabledToolTip {
         background: black !important;
-        color: $ps-dark-black !important;
+        color: $colors-neutral-black !important;
     }
 
     .icon-tooltiptext {

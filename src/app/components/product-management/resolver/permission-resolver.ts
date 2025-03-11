@@ -12,7 +12,6 @@ export class PermissionResolver implements Resolve<any> {
     constructor(private productManagementService: ProductManagementService) {};
 
     resolve() {
-        console.log("I wa called");
         return this.productManagementService.getPermission()
         .then((response: any) => {
             if (response && response.data && !response.data.permissions.Read) {

@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./header-tool.component.scss']
 })
 export class HeaderToolComponent implements OnInit {
-  oldCockpitPMS : string = environment.oldCockpit +"/router.php/app#!/cockpit/product-management";;
+  oldCockpitPMSTool : string = environment.oldCockpit +"/router.php/app#!/cockpit/product-management";;
   @Input() titleText: string;
   @Input() titleIcon: string;
 

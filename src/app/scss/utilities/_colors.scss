@@ -1,338 +1,91 @@
 /*
 
-
-
-
 COLORS
 
-
-
-
 */
+
 @import '../variables/media-queries';
 @import '../variables/colors';
-.u-primary-red {
-  color: $ps-primary-red !important;
-}
-
-.u-red {
-  color: $ps-red !important;
-}
-
-.u-washed-red {
-  color: $ps-washed-red !important;
-}
-
-.u-green {
-  color: $ps-green !important;
-}
-
-.u-washed-green {
-  color: $ps-washed-green !important;
-}
-
-.u-default-black {
-  color: $black;
-}
-
-.u-black {
-  color: $ps-black !important;
-}
-
-.u-dark-black {
-  color: $ps-dark-black !important;
-}
-
-.u-gray {
-  color: $ps-gray !important;
-}
-
-.u-dark-gray {
-  color: $ps-dark-gray !important;
-}
-
-.u-light-gray {
-  color: $ps-light-gray !important;
-}
-
-.u-washed-gray {
-  color: $ps-washed-gray !important;
-}
-
-.u-near-white {
-  color: $ps-near-white !important;
-}
-
-.u-white {
-  color: $ps-white !important;
-}
-
-.u-blue {
-  color: $ps-blue !important;
-}
-
-.u-dark-blue {
-  color: $ps-dark-blue !important;
-}
-
-.u-light-blue {
-  color: $ps-light-blue !important;
-}
-
-.u-yellow {
-  color: $ps-yellow !important;
-}
-
-.u-orange {
-  color: $ps-orange !important;
-}
-.u-light-red {
-  color: $ps-light-red !important;
-}
 
 .u-base-primary {
-  color: $colors-base-primary !important;
+  color: $colors-v2-base-primary !important;
 }
-.u-base-primary-low {
-  color: $colors-base-primary-v-low;
+
+.u-base-secondary {
+  color: $colors-v2-base-secondary !important;
 }
-.u-base-error {
-  color: $colors-base-error;
+
+.u-base-success {
+  color: $colors-v2-base-success !important;
 }
+
 .u-base-warning {
-  color: $colors-base-warning;
+  color: $colors-v2-base-warning !important;
 }
-.u-base-warning-high3 {
-  color: $colors-base-warning-v-high-3;
+
+.u-base-error {
+  color: $colors-v2-base-error;
 }
-.u-base-secondary-vh{
-  color: $colors-base-secondary-v-high
+
+.u-neutral-black {
+  color: $colors-neutral-black;
 }
 
 .u-neutral-light {
   color: $colors-neutral-light;
 }
+
 .u-neutral-dark {
   color: $colors-neutral-dark;
 }
-.u-neutral-dark-medium {
-  color: $colors-neutral-dark-v-medium;
+
+.u-neutral-white {
+  color: $colors-neutral-white;
 }
+
 
 /* Background Colors */
 
-.u-bg-primary-red {
-  background-color: $ps-primary-red !important;
-}
-
-.u-bg-base-primary {
-  background-color: $colors-base-primary !important;
-}
-
-.u-bg-red {
-  background-color: $ps-red !important;
-}
-
-.u-bg-light-red {
-  background-color: $ps-light-red !important;
-}
-
-.u-bg-washed-red {
-  background-color: $ps-washed-red !important;
-}
-
-.u-bg-green {
-  background-color: $ps-green !important;
-}
-
-.u-bg-light-green {
-  background-color: $ps-light-green !important;
-}
-
-.u-bg-dark-yellow {
-  background-color: $ps-dark-yellow;
-}
-
-
-.u-bg-washed-green {
-  background-color: $ps-washed-green !important;
-}
-
-.u-bg-black {
-  background-color: $ps-black !important;
-}
-
-.u-bg-dark-black {
-  background-color: $ps-dark-black !important;
-}
-
-
-.u-bg-gray {
-  background-color: $ps-gray !important;
-}
-
-.u-bg-dark-gray {
-  background-color: $ps-dark-gray !important;
-}
-
-.u-bg-light-gray {
-  background-color: $ps-light-gray !important;
-}
-
-.u-bg-washed-gray {
-  background-color: $ps-washed-gray !important;;
-}
-
-.u-washed-gray {
-  background-color: $ps-washed-gray !important;;
-}
-
-.u-bg-near-white {
-  background-color: $ps-near-white !important;
-}
-
-.u-bg-white {
-  background-color: $ps-white !important;
-}
-
-.u-bg-blue {
-  background-color: $ps-blue !important;
-}
-
-.u-bg-dark-blue {
-  background-color: $ps-dark-blue !important;
-}
-
-
-.u-bg-light-blue {
-  background-color: $ps-light-blue !important;
-}
-
-.u-bg-yellow {
-  background-color: $ps-yellow !important;
-}
-
-.u-bg-light-yellow {
-  background-color: $ps-light-yellow !important;
-}
-
-.u-bg-lighter-blue {
-  background-color: $ps-lighter-blue !important;
-}
-
-
-.u-bg-orange {
-  background-color: $ps-orange !important;
-}
-
-.u-text-primary-base {
-  color: $colors-base-primary !important;
-}
-
-.u-primary-v-low-t-10 {
-  background-color: rgba(229, 17, 0, 0.10);
-}
-
-.u-bg-success {
-  background: $colors-base-success;
-}
-.u-bg-success-vh-2 {
-  background: $colors-base-success-v-high-2
-}
-
-
-.u-bg-warning {
-  background: $colors-base-warning;
-}
-
-.u-bg-error {
-  background: $colors-base-error;
+.u-bg-primary {
+  background-color: $colors-v2-base-primary !important;
 }
 
 .u-bg-secondary {
-  background: $colors-base-secondary;
-}
-.u-bg-secondary-vh-2 {
-  background: $colors-base-secondary-v-high-2;
-}
-.u-bg-light {
-  background: $colors-neutral-light
+  background-color: $colors-v2-base-secondary !important;
 }
 
-.u-bg-v2-base-success {
+.u-bg-success {
   background: $colors-v2-base-success;
 }
-.u-bg-v2-base-warinig {
+
+.u-bg-warning {
   background: $colors-v2-base-warning;
 }
-.u-bg-v2-base-primary {
-  background: $colors-v2-base-secondary;
+
+.u-bg-error {
+  background: $colors-v2-base-error;
 }
-.u-bg-v2-neutral-light {
+
+.u-bg-neutral-black {
+  background: $colors-neutral-black;
+}
+
+.u-bg-neutral-dark {
+  background: $colors-neutral-dark;
+}
+
+.u-bg-neutral-light {
   background: $colors-neutral-light;
 }
-.u-bg-v2-base-warinig-v-low {
-  background: $colors-v2-base-warning-v-low;
-}
-@media (max-width: $screen-xs-max) {
-  // 767px and below
 
-  .u-bg-near-white-xs {
-
-    background-color: $ps-near-white !important;
-
-  }
-
-  .u-bg-white-xs {
-    background-color: $ps-white !important;
-  }
+.u-bg-neutral-light-v-low {
+  background-color: $colors-neutral-light-v-low;
 }
 
-@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-  // Between 768px and 991px
-
-  .u-bg-near-white-sm {
-
-    background-color: $ps-near-white !important;
-
-  }
-
-  .u-bg-white-sm {
-    background-color: $ps-white !important;
-  }
-
+.u-bg-neutral-white {
+  background: $colors-neutral-white;
 }
 
-
-@media (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-  // Between 992px and 1199px
-
-  .u-bg-near-white-md {
-
-    background-color: $ps-near-white !important;
-
-  }
-
-  .u-bg-white-md {
-    background-color: $ps-white !important;
-  }
-
-}
-
-@media (min-width: $screen-lg-min) {
-  // 1200px and up
-
-  .u-bg-near-white-lg {
-
-    background-color: $ps-near-white !important;
-  }
-
-  .u-bg-white-md {
-    background-color: $ps-white !important;
-
-  }
-
-  .u-bg-white-lg {
-    background-color: $ps-white !important;
-  }
+.u-bg-warinig-medium {
+  background: $colors-v2-base-warning-v-medium;
 }

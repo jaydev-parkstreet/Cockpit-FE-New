@@ -87,6 +87,11 @@ export class ProductManagementService {
         ];
     }
   
+    /**
+     * Gets the grid options for the product summary table.
+     * @returns {any}
+     * @author PSI-Enhancements
+     */
     getGridOption() {
         return {
             components: {
@@ -126,6 +131,13 @@ export class ProductManagementService {
             getRowId: (params) => params.data.product_id,
         };
     }
+
+    /**
+     * Renders a checkbox in the grid column, checked or unchecked depending on the row data.
+     * @param {object} params
+     * @returns {string}
+     * @author psi-enhancement
+     */
     renderCheckbox(params) {
         let checkboxSelection = '';
         if (params.data) {
@@ -152,6 +164,14 @@ export class ProductManagementService {
         return checkboxSelection;
     }
   
+    /**
+     * Render a dash when there is no value, otherwise render the value inside
+     * a text ellipsis container with a tooltip.
+     *
+     * @param {object} params
+     * @returns {string}
+     * @author psi-enhancement
+     */
     renderDash(params) {
         if (params.value) {
             return `<div class="text-ellipsis"><span>${params.value}</span>
@@ -160,6 +180,13 @@ export class ProductManagementService {
         return '--';
     }
   
+    /**
+     * Creates an anchor link element for the product ID.
+     *
+     * @param params
+     * @returns {string}
+     * @author psi-enhancement
+     */
     renderId(params) {
       if (params.value) {
         return `<a target="_blank" style="color: black;text-decoration: none;" onmouseover="this.style.textDecoration='underline'"
@@ -168,6 +195,12 @@ export class ProductManagementService {
       return '-';
     }
   
+    /**
+     * Returns the status of the product with an associated color.
+     * @param {Object} params
+     * @returns {String}
+     * @author psi-enhancement
+     */
     renderStatus(params) {
       const statusLabels = {
         Approved: 'u-bg-v2-base-success',
@@ -187,6 +220,13 @@ export class ProductManagementService {
       return '--';
     }
 
+    /**
+     * This function returns the config for top panel which includes search bar, filter dropdowns and action buttons.
+     * @param permission
+     * @param isActive
+     * @returns {object} The config object for top panel.
+     * @author psi-enhancement
+     */
     getTopPanelConfig(permission , isActive = false) {
         return {
             placeholder: 'Search',
@@ -298,6 +338,14 @@ export class ProductManagementService {
         };
     }
 
+    /**
+     * Generates a configuration object for multi-select dropdowns.
+     *
+     * @param placeholdertext
+     * @param name
+     * @returns An object
+     * @author psi-enhancement
+     */
     getMultiSelectConfig(placeholdertext, name = 'name') {
         return {
             enableSearch: true,
@@ -316,13 +364,31 @@ export class ProductManagementService {
         };
     }
    
-  formatModelProductTool(model: any, filtersList: any, subBrandProducts: any[], edit: boolean, duplicate:boolean , id: number,productId:any): any {
+    /**
+     * Format the model for the product tool API.
+     * @param model the model data
+     * @param filtersList the filters list
+     * @param subBrandProducts the sub brand products list
+     * @param edit whether the form is in edit mode
+     * @param duplicate whether the form is in duplicate mode
+     * @param id the product id
+     * @param productId the product id
+     * @returns the formatted model
+     * @author psi-enhancement
+     */
+    formatModelProductTool(model: any, filtersList: any, subBrandProducts: any[], edit: boolean, duplicate:boolean , id: number,productId:any): any {
         if (!Object.keys(model).length) {
             return {};  
-        }    
+        }
+        const getSubBrandDetails = (subBrandProducts, sub_brand_product_id) => {
+            const subBrand = subBrandProducts.find(product => product.name === sub_brand_product_id);
+          
+            return subBrand ? { id: subBrand.id, name: subBrand.name } : null; // Return null if not found
+        };
+        const result = getSubBrandDetails(subBrandProducts, model.sub_brand_product_id); 
         let modelFormat: any = {
-            compliance: model.compliance === true ? 1 : 1,
-            use_up: model.use_up === true ? 1 : 0,  
+            compliance: model.compliance === "1" ? 1 : 0,
+            use_up: model.use_up === "1" ? 1 : 0,  
             is_organic: model.is_organic ? 1 : 0, 
             abv: model.abv || "", 
             cola_ttb_id: model.cola_ttb_id || "",
@@ -352,8 +418,8 @@ export class ProductManagementService {
             scc_code: model.scc_code || "",
             upc_code: model.upc_code || "",
             client_id: model.client_id || "",             
-            sub_brand_product_name: subBrandProducts[0]?.name || "",   
-            sub_brand_product_id: subBrandProducts[0]?.id|| null,         
+            sub_brand_product_name: result ? result.name : subBrandProducts[0]?.name || "",
+            sub_brand_product_id: result ? result.id : subBrandProducts[0]?.id || null,                   
             name: model.name || "",
             group: Array.isArray(model.group) && model.group.length > 0  ? (model.group[0]?.id || null) 
             : model.group  || null,       
@@ -426,7 +492,14 @@ export class ProductManagementService {
         return modelFormat;
     }
     
-    
+    /**
+     * Formats an array of objects into a dropdown-compatible format.
+     * 
+     * @param values
+     * @param name
+     * @returns An array of objects suitable for use in a dropdown
+     * @author psi-enhancement
+     */
     formatDropdownValue(values, name = '') {
         let dropdown = [];
         if (name) {
@@ -439,16 +512,38 @@ export class ProductManagementService {
 
     }
    
+    /**
+     * Fetches the summary data from the server based on the given summary data object.
+     * 
+     * @param summaryData
+     * @param token
+     * @returns A Promise containing the summary data.
+     * @author psi-enhancement
+     */
     getSummary(summaryData: any, token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.post(environment.apiUrl + "product-tool/summary", summaryData, { headers }).toPromise();
+        return this.http.post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.SUMMARY, summaryData, { headers }).toPromise();
     }
 
+    /**
+     * Retrieves the list of dropdown items associated with the given client ID.
+     * 
+     * @param token
+     * @returns An Observable containing the data of dropdown items.
+     * @author psi-enhancement
+     */
     getDropdown(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get(environment.apiUrl + "product-tool/dropdown", { headers }).toPromise();
+        return this.http.get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DROPDOWN, { headers }).toPromise();
     }
  
+    /**
+     * Retrieves the list of brands associated with the given client ID.
+     * 
+     * @param clientId The client ID for which to retrieve the associated brands.
+     * @returns An Observable containing the data of brands.
+     * @author psi-enhancement
+     */
     getBrands(clientId: string) {
         const token = localStorage.getItem('authToken');
     
@@ -457,13 +552,19 @@ export class ProductManagementService {
             'Content-Type': 'application/json'
         }); 
         return this.http
-            .get(environment.apiUrl + "product-tool/get-brands-client" + `?client_id=${clientId}` , { headers })
+            .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PRODUCT_TOOL_GET_BRANDS + `?client_id=${clientId}` , { headers })
             .pipe(map((response: any) => {return  response.data;
             })
         );
-}
-    
-    
+    }
+ 
+    /**
+     * Fetches the sub-brand products associated with the given client ID.
+     * 
+     * @param clientId
+     * @returns An Observable containing the data of sub-brand products.
+     * @author psi-enhancement
+     */
     getSubBrandProducts(clientId: string) {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -473,60 +574,37 @@ export class ProductManagementService {
             .pipe(map((response :any) => response.data));
     }
 
+    /**
+     * Retrieves the product details for a given product ID.
+     *
+     * @param id The ID of the product.
+     * @returns An Observable containing the product details from the server.
+     * @author psi-enhancement
+     */
     getDetails(id) {
         return this.http
-        .get(environment.apiUrl + "product-tool?product_id=" + id)
+        .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DETAILS + id)
         .pipe(map((response :any) => response.data));
     }
 
+    /**
+     * Retrieves the permission settings for the product tool.
+     *
+     * @returns A promise that resolves to the permission data from the server.
+     * @author psi-enhancement
+     */
     getPermission() {
         return this.http
-        .get(environment.apiUrl + "product-tool/permissions").toPromise();
+        .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PERMISSION).toPromise();
     }
 
-    syncOrder(productId) {
-        let params = {
-            'productId' : productId
-        };
-        return this.http
-            .post(environment.apiUrl +"product-tool/ns-sync", params)
-            .pipe(map((response :any) => response.data));
-    }
-
-    getApproveAPI(productId) {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-          });
-      
-          const params = { product_id: productId };
-      
-          return this.http
-          .get(environment.apiUrl + "product-tool/approve/product", { headers, params,})
-          .pipe(map((response :any) => response));
-    }
-
-    getPreApproveAPI(productId) {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-        });
-      
-        const params = { product_id: productId };
-      
-        return this.http.get(environment.apiUrl + "product-tool/pre-approve/product", { headers, params,})
-        .pipe(map((response :any) => response));
-    }
-
-    getNeedActionAPI(productId) {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-        });
-    
-        const params = { product_id: productId };
-    
-        return this.http.get(environment.apiUrl + "product-tool/need-action-waiting-on-client/product", { headers, params,})
-        .pipe(map((response :any) => response));
-    }
-
+    /**
+     * Function to activate or deactivate a product.
+     * @param productId
+     * @param isActive
+     * @returns Observable containing the response from the server.
+     * @author psi-enhancement
+     */
     getActivateAPI(productId: string[], isActive) {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
@@ -538,24 +616,19 @@ export class ProductManagementService {
         };
 
         return this.http
-        .post(environment.apiUrl + "product-tool/active-deactivate/product", body, { headers })
+        .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PRODUCT_ACTIVE_DEACTIVATE, body, { headers })
         .pipe(map((response :any) => response));
     }
 
-    getProductManagementSystemSave(obj) {
-        return this.http
-            .post(environment.apiUrl + "product-tool/save", obj)
-            .pipe(map((response :any) => response));
-    }
+    /**
+     * Makes an API call to export the given products to Excel.
+     * @param obj
+     * @returns An observable containing the HTTP response from the server.
+     * @author psi-enhancement
+     */
     excelExport(obj) {
         return this.http
-            .post(environment.apiUrl + "product-tool/excel-export", obj,{responseType: 'text',observe: 'response'})
-            .pipe(map((response :any) => response));
-    }
-
-    getSyncStatusDetails(id) {
-        return this.http
-            .get(environment.apiUrl +`product-tool/ns-sync-status?id=${id}`)
+            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT, obj,{responseType: 'text',observe: 'response'})
             .pipe(map((response :any) => response));
     }
 }

@@ -1,0 +1,127 @@
+<div class="row psi-crud-form">
+    <!-- header section -->
+    <div class=" col-sm-12 p-0">
+        <div class=" col-sm-6 lt-c">
+            <app-psi-page-column-header
+                [headerTitle]="leftHeaderTitle">
+            </app-psi-page-column-header>
+        </div>
+        <div class=" col-sm-6 rt-c">
+            <app-psi-page-column-header
+                [headerTitle]="rightHeaderTitle">
+            </app-psi-page-column-header>
+        </div>
+    </div>
+
+    <div class="p-0 container-body">
+        <!-- left section -->
+        <div class="left-section">  
+            <div *ngFor="let field of crudFieldConfig.leftSection">
+                <div class="typography-body-dark-regular col-sm-12" [ngClass]="field.colClass" *ngIf="field.isHeader">
+                    {{field.label}}
+                </div>
+                <div  *ngIf="field.isSectionHeader ">
+                    <div class="col-sm-12 section-header u-pg-mt-1">
+                        <app-psi-page-column-header
+                            [headerTitle]="field.label">
+                        </app-psi-page-column-header>
+                    </div>
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'multiselect-dropdown'">
+                    <app-cmp-input-dropdown
+                        [label]="field.label"
+                        [showSelectAll]="false"
+                        [showCheckboxes]="false"
+                        [allowSingleSelect]="true"
+                        [selectedItems]="sellectedData[field.key] || []"
+                        [settings]="field.inputSetting"
+                        [filteredItems]="field.options"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
+                        [disabled]="field.isDisabled"
+                        [required]="field.isRequired"
+                        (onDropDownChange)="onDropdownStateChange(field.key, $event)">
+                    </app-cmp-input-dropdown>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
+                    <app-psi-input-text-field
+                        [field]="field"
+                        [form]="form"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                        (valueChanged)="onInputChange(field.name, $event)">
+                    </app-psi-input-text-field>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass"  *ngIf="field?.type == 'checkbox'">
+                    <app-psi-checkbox
+                    [field]="field"
+                    [form]="form"
+                    [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                    (valueChanged)="onCheckedInput(field.name, $event)">
+                    </app-psi-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right section -->
+        <div class="right-section">
+            <div *ngFor="let field of crudFieldConfig.rightSection">
+                <div class="typography-body-dark-regular col-sm-12" [ngClass]="field.colClass" *ngIf="field.isHeader">
+                    {{field.label}}
+                </div>
+                <div *ngIf="field.isSectionHeader ">
+                    <div class="col-sm-12 section-header u-pg-mt-1">
+                        <app-psi-page-column-header
+                            [headerTitle]="field.label">
+                        </app-psi-page-column-header>
+                    </div>
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'multiselect-dropdown'">
+                    <app-cmp-input-dropdown
+                        [label]="field.label"
+                        [showSelectAll]="false"
+                        [showCheckboxes]="false"
+                        [allowSingleSelect]="true"
+                        [selectedItems]="sellectedData[field.key] || []"
+                        [settings]="field.inputSetting"
+                        [filteredItems]="field.options"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                        [disabled]="field.isDisabled"
+                        [required]="field.isRequired"
+                        (onDropDownChange)="onDropdownStateChange(field.key, $event)">
+                    </app-cmp-input-dropdown>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
+                    <app-psi-input-text-field
+                        [field]="field"
+                        [form]="form"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
+                        (valueChanged)="onInputChange(field.name, $event)">
+                    </app-psi-input-text-field>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer section -->
+    <div class="col-sm-6 u-flex justify-content-end">
+        <div class="u-pg-g-2 form-submit-button" *ngFor="let field of crudFieldConfig.btnLabel">
+            <app-cmp-button
+              [buttonText]="field.label"
+              [buttonClass]="field.class"
+              (onClick)="formSubmit.emit(event)">
+            </app-cmp-button>
+        </div>
+    </div>
+</div>
