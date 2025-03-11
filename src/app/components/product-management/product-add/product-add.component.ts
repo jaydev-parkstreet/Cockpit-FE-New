@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, Injector} from '@angular/core';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
 import { ProductManagementService } from '../product-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ProductAddService } from './product-add.service';
+import { SimpleModalService } from 'ngx-simple-modal';
+import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-product-add',
@@ -19,6 +21,7 @@ export class ProductAddComponent implements OnInit {
     rightHeaderBottomTitle: string;
     crudFieldConfig: any;
     crudFiltersList: any;
+    modalData: any;
     permissions: any;
     sellectedData: any = {};
     duplicate: boolean = false;
@@ -34,6 +37,7 @@ export class ProductAddComponent implements OnInit {
     productId: any;
     edit: boolean = false;
     productForm = this.formBuilder.group({});
+    formSubmitted: boolean = false;
 
     constructor(
         private ProductAddService: ProductAddService,
@@ -43,8 +47,12 @@ export class ProductAddComponent implements OnInit {
         private formBuilder: FormBuilder,
         private productmanagementService: ProductManagementService,
         private spinner : NgxSpinnerService,
-        private commonService: CommonService
-    ) { }
+        private commonService: CommonService,
+        private simpleModalService: SimpleModalService,
+        private injector: Injector
+    ) {
+        this.simpleModalService = injector.get<SimpleModalService>(SimpleModalService);
+     }
 
     ngOnInit(): void {
         this.permissions = this.route.snapshot.data['permissions'];
@@ -52,6 +60,7 @@ export class ProductAddComponent implements OnInit {
         this.leftTitle = 'PRODUCT DETAILS';
         this.productTitle = 'Dimensions';
         this.crudFieldConfig = this.ProductAddService.getCrudFieldConfig(this.crudFiltersList);
+        this.modalData = this.ProductAddService.getModalData()
         if (!this.permissions.permissions.Create) {
             this.router.navigate(['product-management']);
         }
@@ -79,7 +88,6 @@ export class ProductAddComponent implements OnInit {
     async getProductData (productId) {
         this.productmanagementService.getDetails(productId).subscribe((productData) => {
             this.renderConditionalFields(productData.prod_type, this.crudFiltersList, this.productForm);
-            this.getFormControl();
             this.productId = productData.product_id;
             setTimeout(() => {
                 if (this.duplicate) {
@@ -173,43 +181,61 @@ export class ProductAddComponent implements OnInit {
     }
 
     /**
-     * Called when the form is submitted.
+     * Function to submit Form.
      * @param form The form object.
      * @author psi-enhancement
      */
-    onSubmit(form: FormGroup) {
-        if (form.valid) {
-            const formattedModel = this.productmanagementService.formatModelProductTool(
-                form.value,
-                this.crudFiltersList,
-                this.subBrandProducts,
-                this.edit,
-                this.duplicate,
-                this.uniqueId,
-                this.productId
-            );
-            this.spinner.show()
-            this.ProductAddService.getProductManagementSystemSave(formattedModel).subscribe(response => {
-                if (!response.hasError) {
-                    this.spinner.hide();
-                    let productId = response.product_id;
-                    if (this.edit) {
-                        this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-exclamation-circle');
-                        this.router.navigateByUrl(`/product-management/${productId}`);
+    onSubmit(event) {
+        if (event  === "Submit") {
+            this.formSubmitted = true;
+            if (this.productForm.valid) {
+                const formattedModel = this.productmanagementService.formatModelProductTool(
+                    this.productForm.value,
+                    this.crudFiltersList,
+                    this.subBrandProducts,
+                    this.edit,
+                    this.duplicate,
+                    this.uniqueId,
+                    this.productId
+                );
+                this.spinner.show()
+                this.ProductAddService.getProductManagementSystemSave(formattedModel).subscribe(response => {
+                    if (!response.hasError) {
+                        this.spinner.hide();
+                        let productId = response.product_id;
+                        if (this.edit) {
+                            this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-exclamation-circle');
+                            this.router.navigateByUrl(`/product-management/${productId}`);
+                        } else {
+                            this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle');
+                            this.router.navigateByUrl(`/product-management/${productId}`);
+                        }
                     } else {
-                        this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle');
-                        this.router.navigateByUrl(`/product-management/${productId}`);
+                        this.spinner.hide();
+                        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                     }
-                } else {
-                    this.spinner.hide();
-                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                });
+            } else {
+                this.commonService.showToastV2Message(true, "Please provide The required Fields", 'fas fa-exclamation-circle');
+            }
+        } else {
+            this.openConfirmationPopup();
+        } 
+    }
+    
+    /**
+     * Opens a confirmation popup modal asking the user if they wish to exit.
+     * @author PSI-Enhancements
+     */
+    openConfirmationPopup() {
+        const modalData = this.ProductAddService.getModalData();
+        this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+            .subscribe((result) => {
+                if (result.btn.label === 'Yes') {
+                    this.router.navigate(["/product-management"]);
                 }
             });
-        } else {
-            this.commonService.showToastV2Message(true, "Please provide The required Fields", 'fas fa-exclamation-circle');
-        }
     }
-
     /**
      * This function is called when the dropdown selection changes.
      * @param fieldName
@@ -279,7 +305,6 @@ export class ProductAddComponent implements OnInit {
         }
         if (fieldName === 'prod_type') {
             this.renderConditionalFields(selectedValue[0].name, this.crudFiltersList, this.productForm);
-            this.getFormControl();
             this.crudFieldConfig = { ...this.crudFieldConfig };
             this.productForm = new FormGroup(this.productForm.controls);
             this.changeDetector.detectChanges();

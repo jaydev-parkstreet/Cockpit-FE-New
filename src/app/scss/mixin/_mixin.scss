@@ -227,7 +227,7 @@
 @mixin multiselect-dropdown-v2 {
     .psi-select {
         span {
-            font-family: "HelveticaNeue" !important;
+            font-family: $montserrat-regular !important;
             font-size: 12px;
         }
     }
@@ -278,7 +278,7 @@
         padding: 8px 0 0 0;
         border: 1px solid rgb(208, 212, 217);
         box-shadow: none !important;
-        font-family: "HelveticaNeue";
+        font-family: $montserrat-regular;
 
         .options-overflow {
             height: auto !important;

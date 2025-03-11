@@ -376,6 +376,24 @@ export class ProductAddService {
             colClass: 'col-sm-12' 
         }
     }
+
+    /**
+     * function to get modal data
+     * @author psi-enhancement
+     */
+    getModalData() {
+        return {
+            title: 'All data will be lost.',
+            body: 'Are you sure you wish to exit?',
+            iconClass: 'fas fa-exclamation-circle error',
+            showLine: true,
+            btnLabel: [
+                { type: 'Btn', label: 'No', class: 'secondary' },
+                { type: 'Btn', label: 'Yes', class: 'primary' }
+            ]
+        };
+    }
+ 
     /**
      * Calls the API to save the product details.
      * 
