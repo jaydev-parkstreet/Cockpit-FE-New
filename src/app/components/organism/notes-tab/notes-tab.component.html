@@ -16,7 +16,7 @@
             class="fas fa-pen" 
             (click)="addNote(note)">
             </i>
-            <div *ngIf="allowChangePrivacy" class="u-icon-tooltip">
+            <div *ngIf="allowChangePrivacy" class="u-icon-tooltip u-flex-center">
               <i
                 [ngClass]="{
                   'fas fa-user-lock user-lock-icon': note.permission_id === 2 || note.permission_id === 3,

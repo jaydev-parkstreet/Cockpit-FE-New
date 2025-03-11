@@ -113,8 +113,8 @@ export class NotesTabComponent implements OnInit {
         title: 'Are you sure you want to delete the note?',
         showLine: true,
         btnLabel: [
-          { type: 'Btn', label: 'No', class: 'secondary w-lg' },
-          { type: 'Btn', label: 'Yes', class: 'primary w-lg' }
+          { type: 'Btn', label: 'No', class: 'secondary' },
+          { type: 'Btn', label: 'Yes', class: 'primary' }
       ]
       };
 
