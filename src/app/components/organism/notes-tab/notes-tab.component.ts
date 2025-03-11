@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { SimpleModalService } from 'ngx-simple-modal';
+import { CommonService } from 'src/app/core/services/common.service';
+import { environment } from 'src/environments/environment';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 export interface Note {
   id: number;
   first_name: string;
@@ -14,46 +18,119 @@ export interface Note {
 @Component({
   selector: 'app-notes-tab',
   templateUrl: './notes-tab.component.html',
-  styleUrls: ['./notes-tab.component.scss']
+  styleUrls: ['./notes-tab.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class NotesTabComponent implements OnInit {
+    @Input() entity:any;
+    @Input() permissions:any;
+    @Input() allowChangePrivacy:boolean;
+
     notes: [];
-    isLoadingNotes: boolean = true;
-    permissions = { Update: true };
-  
-    constructor() {}
+    isLoadingNotes: boolean;
+    fileServer: string;
+    updateNotePermissionLoading: boolean = false;
+
+    constructor(
+      private commonService: CommonService,
+      private simpleModalService: SimpleModalService,
+    ) {}
   
     ngOnInit(): void {
+      this.fileServer = environment.fileServer;
       this.loadNotes();
     }
-  
+
+  /**
+   * Loads notes from the server based on user permissions and entity.
+   *
+   * @returns void
+   * @author PSI-Enhancement
+   */
     loadNotes() {
-      // this.noteService.getNotes().subscribe(
-      //   (notes) => {
-      //     this.notes = notes;
-      //     this.isLoadingNotes = false;
-      //   },
-      //   () => {
-      //     this.isLoadingNotes = false;
-      //   }
-     // );
+      this.isLoadingNotes = true;
+      this.commonService.getNotes(
+        this.permissions.kind_id, 
+        this.permissions.tool_id, 
+        this.entity, 
+        this.permissions.menu_item_id
+      ).subscribe(
+        (response: any) => {
+          this.notes = response.notes;
+        },
+        (error) => {
+          this.commonService.showToastV2Message(false, error.message || 'Failed to load notes');
+        },
+        () => {
+          this.isLoadingNotes = false;
+        }
+      );
     }
   
     addNote() {
-      // Implement your logic to add a note
       console.log('Add Note clicked');
-      // You might want to open a modal or navigate to a new component
     }
-  
-  
-    // deleteNote(noteId: number) {
-    //   this.noteService.deleteNote(noteId).subscribe(() => {
-    //     this.loadNotes(); // Reload notes after deletion
-    //   });
-    // }
-  
-    // updateNotePermission(note: Note) {
-    //   // Logic to update note permissions
-    // }
+
+    /**
+     * Updates the privacy permission of a note.
+     * 
+     * @param {Object} note - The note object containing `id` and `permission_id`.
+     * @author PSI-Enhancement
+     */
+    updateNotePermission(note) {
+      if (this.updateNotePermissionLoading) return;
+      
+      const newPermission = note.permission_id === 1 ? 2 : 1;
+      const reqObj = {
+        note_id: note.id,
+        permission_id: newPermission
+      };
+    
+      this.updateNotePermissionLoading = true;
+      
+      this.commonService.changeNotePrivacy(reqObj).subscribe(
+        (response) => {
+          note.permission_id = newPermission;
+          this.commonService.showToastV2Message(true, 'Privacy Updated', 'fas fa-exclamation-circle');
+        },
+        (error) => {
+          this.commonService.showToastV2Message(false, 'Failed to update privacy', 'fas fa-exclamation-triangle');
+        },
+        () => {
+          this.updateNotePermissionLoading = false;
+        }
+      );
+    }
+
+    /**
+     * Delete the Note.
+     * 
+     * @param {Number} id.
+     * @author PSI-Enhancement
+     */
+    deleteNote(id) {
+      let modalData = {
+        title: 'Are you sure you want to delete the note?',
+        closeBtnName: 'No',
+        confirmBtnName: 'Yes',
+        showLine: true,
+      };
+
+      this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+        .subscribe((result) => {
+          if(result.confirm) {
+            this.commonService.deleteNote(id, this.permissions.menu_item_id).subscribe((response: any) => {
+              if(!response.hasError) {
+                this.notes =this.commonService.deleteObjectFromArray(this.notes, 'id', id);
+              } else {
+                this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+              }
+            }, 
+            (error) => {
+              this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+            });
+          }
+        })
+    }
   }
   

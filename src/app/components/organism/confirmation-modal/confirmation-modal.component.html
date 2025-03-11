@@ -1,7 +1,7 @@
 <div class="modal-content content">
     <div class="modal-body">
         <div class="popup-header">
-            <i [ngClass]="modalData.iconClass || 'fas fa-exclamation-circle'"></i>
+            <i *ngIf="modalData.iconClass" [ngClass]="modalData.iconClass || 'fas fa-exclamation-circle'"></i>
             <span *ngIf="modalData.title" [innerText]="modalData.title"></span>
         </div>
         <div class="popup-body">
