@@ -6,9 +6,9 @@
     <div class="sidebar__content">
         <div class="sidebar-menu open-current-submenu show-scrollbar">
             <ul id="mainMenu" class="sidebar-menu-list u-pg-px-1">
-                <li class="sidebar-menu-item" *ngFor="let menu of menuData" (click)="toggleIcon(menu)">
+                <li class="sidebar-menu-item" [ngClass]="menu.isExpanded ? 'sidebar-menu-active' : ''" *ngFor="let menu of menuData" (click)="toggleIcon(menu)">
                     <a [routerLink]="'/product-management'">
-                        <i [class]="menu.icon"></i>
+                        <i [class]="menu.icon" class="u-pg-mr-1 sidebar-icon"></i>
                         <span *ngIf="isSidebarExpanded">{{menu.label}}</span>
                         <em class="toggle-icon"
                             [ngClass]= "menu.isExpanded ? 'fas fa-chevron-down' : 'fas fa-chevron-up'"
@@ -16,13 +16,13 @@
                         </em>
                     </a>
 
-                    <ul id="mainMenu-items" [ngStyle]="{'display': menu.isExpanded && isSidebarExpanded ? 'block':'none'}">
+                    <ul id="mainMenu-items" *ngIf="menu.submenuItems" [ngStyle]="{'display': menu.isExpanded && isSidebarExpanded ? 'block':'none'}">
                         <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenuItems">
                             <a [routerLink]="submenu.url" *ngIf="submenu.label">
                                 <span>{{submenu.label}}</span>
-                                <em class="fas fa-chevron-right" *ngIf="submenu.submenuItems"></em>
+                                <em class="fas fa-chevron-right toggle-icon" *ngIf="submenu.submenuItems"></em>
                             </a>
-                            <ul>
+                            <ul  *ngIf="submenu.submenuItems">
                                 <li class="sidebar-submenu-sub-item" *ngFor="let submenu of submenu.submenuItems">
                                     <a [routerLink]="submenu.url" *ngIf="submenu.label">
                                         <span>{{submenu.label}}</span>
