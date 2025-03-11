@@ -1,33 +1,47 @@
-  <div class="notes-tab">
-    <div *ngFor="let note of notes" >
-      <div class="note-owner-image">
-        <img class="profile-picture" [src]="note.person_image" />
-        <img class="ps-logo" [src]="'/assets/images/ps_icon.png'" />
+  <div class="notes-tab u-mt1 u-pg-px-2 u-bg-neutral-white u-neutral-black">
+    <div [ngHide]="isLoadingNotes" *ngFor="let note of notes" class="note-row-tab u-flex u-pg-py-2">
+      <div class="note-owner-image u-pg-mr-1 position-relative">
+        <img class="profile-picture" [src]="fileServer + note.person_image" />
+        <img class="ps-logo" [src]="fileServer +'/images/ps_icon.png'" />
       </div>
-      <div class="note-container" [ngClass]="{'u-primary-v-low-t-10': note.show_new}">
-        <div class="note-detail">
-          <span>
+      <div class="note-container w-100" [ngClass]="{'u-primary-v-low-t-10': note.show_new}">
+        <div class="note-detail u-flex u-align-center u-justify-between">
+          <div class="u-flex u-pg-g-1 u-mb1">
             <span class="typography-paragraph-primary-medium">{{ note.first_name }} {{ note.last_name }}</span>
-            <span  class="typography-paragraph-dark-regular">(Private)</span>
-          </span>
-          <span class="right-section">
-            <ng-container >
-              <i class="fas fa-user-lock user-lock-icon" (click)="updateNotePermission(note)" title="Switch to 'Public (Everyone)'"></i>
-              <i  class="fas fa-user-unlock user-unlock-icon" (click)="updateNotePermission(note)" title="Switch to 'Private (Only PS Users)'"></i>
-              <i  class="fas fa-user-unlock user-unlock-icon" (click)="updateNotePermission(note)" title="Switch to 'Private (Only Me)'"></i>
-              <i class="fas fa-pen" (click)="addNote(note)"></i>
-              <i class="fas fa-trash" (click)="deleteNote(note.id)"></i>
-            </ng-container>
+            <span *ngIf="note.permission_id === 2 || note.permission_id === 3" class="typography-paragraph-dark-regular">(Private)</span>
+          </div>
+          <span class="right-section u-flex u-align-center u-justify-end u-pg-g-1">
+            <i 
+            *ngIf="note.has_edit_permission"
+            class="fas fa-pen" 
+            (click)="addNote(note)">
+            </i>
+            <div *ngIf="allowChangePrivacy" class="u-icon-tooltip">
+              <i
+                [ngClass]="{
+                  'fas fa-user-lock user-lock-icon': note.permission_id === 2 || note.permission_id === 3,
+                  'fas fa-unlock user-lock-icon': note.permission_id === 1
+                }"
+                class="on-hover"
+                (click)="updateNotePermission(note)">
+              </i>
+              <div class="tooltiptext t-center">{{note.permission_id === 1 ? 'Switch to “Private (Only PS Users)“' : 'Switch to “Public (Everyone)“' }}</div>
+            </div>
+            <i 
+              *ngIf="note.has_edit_permission"
+              class="fas fa-trash" 
+              (click)="deleteNote(note.id)">
+            </i>
             <span class="typography-paragraph-dark-regular">{{ note.en_created_at | date: 'MM/dd/yy' }}</span>
           </span>
         </div>
-        <div class="typography-paragraph-black-regular m-break-word" [innerHTML]="note.content"></div>
+        <div class="typography-paragraph-black-regular m-break-word note-content text-justify" [innerHTML]="note.content"></div>
       </div>
     </div>
-    <div class="notes-loader">
+    <div *ngIf='isLoadingNotes' class="notes-loader u-pg-py-2 text-center">
       <i class="fas fa-spinner fa-spin fa-2x fa-fw"></i>
     </div>
-    <div  class="add-note">
+    <div  class="add-note u-flex-center u-flex-column">
       <i class="fas fa-plus-circle" (click)="addNote()"></i>
       <span class="typography-body-dark-regular" (click)="addNote()">Add Note</span>
     </div>

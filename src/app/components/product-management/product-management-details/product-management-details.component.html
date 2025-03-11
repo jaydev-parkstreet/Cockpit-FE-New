@@ -39,6 +39,12 @@
                         [activeTab]="activeTab"
                         (tabClick)="clickTabGroup($event)">
                     </app-cmp-tab-group>
+                    <app-notes-tab
+                        *ngIf = "activeTab === 'notes'"
+                        [entity] = "productDetails.product_id"
+                        [permissions] = "permissions"
+                        [allowChangePrivacy] = true >
+                    </app-notes-tab>
                 </div>
                 <div class="col-sm-6 u-pl2 right-side u-pg-pl-2">
                     <div>
