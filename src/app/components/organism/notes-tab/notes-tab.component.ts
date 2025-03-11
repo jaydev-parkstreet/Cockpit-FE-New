@@ -111,14 +111,16 @@ export class NotesTabComponent implements OnInit {
     deleteNote(id) {
       let modalData = {
         title: 'Are you sure you want to delete the note?',
-        closeBtnName: 'No',
-        confirmBtnName: 'Yes',
         showLine: true,
+        btnLabel: [
+          { type: 'Btn', label: 'No', class: 'secondary w-lg' },
+          { type: 'Btn', label: 'Yes', class: 'primary w-lg' }
+      ]
       };
 
       this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
         .subscribe((result) => {
-          if(result.confirm) {
+          if(result.btn.label === 'Yes') {
             this.commonService.deleteNote(id, this.permissions.menu_item_id).subscribe((response: any) => {
               if(!response.hasError) {
                 this.notes =this.commonService.deleteObjectFromArray(this.notes, 'id', id);
