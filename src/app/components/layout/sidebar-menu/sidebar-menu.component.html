@@ -1,10 +1,11 @@
-<div class="sidebar-layout" [ngClass]="isSidebarExpanded ? 'expanded' : 'collapsed'">
-    <div class="sidebar-header" *ngIf="isSidebarExpanded">
-        <img src="https://stgcockpit.parkstreet.com/images/cockpit/logo.png" width="200px">
+<div class="sidebar" [ngClass]="isSidebarExpanded ? 'expanded' : 'collapsed'">
+    <div class="sidebar__header">
+        <img [src]="isSidebarExpanded ? '../../../../assets/images/header-expanded-logo.svg' : '../../../../assets/images/header-collapsed-logo.svg'">
+    
     </div>
-    <div class="sidebar-content">
+    <div class="sidebar__content">
         <div class="sidebar-menu open-current-submenu show-scrollbar">
-            <ul id="mainMenu">
+            <ul id="mainMenu" class="sidebar-menu-list u-pg-px-1">
                 <li class="sidebar-menu-item" *ngFor="let menu of menuData">
                     <a [routerLink]="'/product-management'" (click)="toggleIcon(menu)">
                         <i [class]="menu.iconClass"></i>
@@ -33,5 +34,5 @@
             </ul>
         </div>
     </div>
-    <div class="sidebar-footer"></div>
+    <div class="sidebar__footer"></div>
 </div>
