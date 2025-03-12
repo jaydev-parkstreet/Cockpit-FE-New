@@ -70,7 +70,7 @@ export class ProductManagementService {
         { headerName: 'Brand', headerTooltip: 'Brand', minWidth: 75, width: 115, field: 'brand_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Product Status', headerTooltip: 'Product Status', minWidth: 100, width: 175, field: 'status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
         { headerName: 'TTB ID', headerTooltip: 'TTB ID', minWidth: 60, width: 108, field: 'ttb_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Date Created', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormat'},
+        { headerName: 'Date Created', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
         { headerName: 'Product Type', headerTooltip: 'Product Type', minWidth: 75, width: 134, field: 'product_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Product Sub-Type ', headerTooltip: 'Product Sub-Type', minWidth: 75, width: 171, field: 'sub_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Source', headerTooltip: 'Source', field: 'source', minWidth: 75, width: 125, cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
@@ -99,6 +99,7 @@ export class ProductManagementService {
             dashRenderer: (params) => this.renderDash(params),
             idRender: (params) => this.renderId(params),
             statusRenderer: (params) => this.renderStatus(params),
+            dateFormatRenderer: (params) => this.dateFormatRenderer(params)
             },   
             enableColResize: true,
             allowContextMenuWithControlKey: true,
@@ -203,11 +204,11 @@ export class ProductManagementService {
      */
     renderStatus(params) {
       const statusLabels = {
-        Approved: 'u-bg-v2-base-success',
-        Pending: 'u-bg-v2-base-warinig',
-        'Pre-Approved': 'u-bg-v2-base-primary',
-        'Needs Action-Waiting on Supplier': 'u-bg-v2-base-warinig-v-low',
-        'Request Received': 'u-bg-v2-neutral-light',
+        Approved: 'u-bg-success',
+        Pending: 'u-bg-warning',
+        'Pre-Approved': 'u-bg-primary',
+        'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium',
+        'Request Received': 'u-bg-neutral-light',
       };
       
       let inActiveIcon = params.data && params.data.is_active === 0 
@@ -220,6 +221,17 @@ export class ProductManagementService {
       return '--';
     }
 
+    /**
+     * Cell Renderer for the formatting the Date
+     * 
+     * @param params 
+     * @returns string - Formated Date
+     * @author PSI-Enhancement
+     */
+    dateFormatRenderer(params) {
+        return this.commonService.dateFormat(params.value);
+    }
+    
     /**
      * This function returns the config for top panel which includes search bar, filter dropdowns and action buttons.
      * @param permission
