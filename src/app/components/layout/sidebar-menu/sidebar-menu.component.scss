@@ -179,7 +179,7 @@
                         width: 100%;
                         padding: 2px 4px 2px 32px;
                         border-radius: 8px;
-                        height: 24px;
+                        min-height: 24px;
                         em {
                             margin-top: 2px;
                         }
@@ -275,9 +275,14 @@
                     width: 40px;
                     height: 40px;
                 }
-                .footer-profile-main span {
-                    flex-grow: 1;
-                    font-size: 16px;
+                .user-name {
+                    font-family: $montserrat-regular;
+                    color: $colors-neutral-white;
+                    font-size: 14px;
+        
+                    span {
+                        margin-right: 6px;
+                    }
                 }
             }
             .footer-profile-list {

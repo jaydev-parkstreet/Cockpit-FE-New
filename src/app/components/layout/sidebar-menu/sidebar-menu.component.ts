@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 // import { log } from 'console';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../../authentication/auth.service';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -12,10 +13,16 @@ export class SidebarMenuComponent implements OnInit {
   menuData :any;
   isSidebarExpanded: boolean = true;
   isDropdownVisible : boolean = false;
+  currentUserData: any;
+  oldCockpit: string = environment.oldCockpit;
 
-  constructor(private http:HttpClient) { }
+  constructor(
+    private http:HttpClient,
+    private authService: AuthService
+  ) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
+    this.currentUserData = this.authService.getUserData()
     this.sidebarItems();
   }
 
@@ -40,5 +47,9 @@ export class SidebarMenuComponent implements OnInit {
 
   toggleDropdown() {
     this.isDropdownVisible = !this.isDropdownVisible;
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }

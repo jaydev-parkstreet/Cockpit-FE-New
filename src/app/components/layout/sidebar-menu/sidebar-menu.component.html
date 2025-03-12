@@ -13,7 +13,7 @@
                         <i [class]="menu.icon" class="u-pg-mr-1 sidebar-icon"></i>
                         <span *ngIf="isSidebarExpanded">{{menu.label}}</span>
                         <em class="toggle-icon"
-                            [ngClass]= "menu.isExpanded ? 'fas fa-chevron-down' : 'fas fa-chevron-up'"
+                            [ngClass]= "menu.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
                             *ngIf="menu.submenuItems && isSidebarExpanded">
                         </em>
                     </a>
@@ -41,15 +41,18 @@
         <div class="footer-profile">
             <div class="footer-profile-main"          
             (click)="toggleDropdown()">
-            <img src="https://stgcockpit.parkstreet.com//uploads//crm/2907f1671f8bceaae2540c0693ae1cba." alt=""/>
-              <span>ADSc eda S</span>
+                <img [src]="oldCockpit + currentUserData.PictureUrl" alt=""/>
+                <span *ngIf="currentUserData" class="user-name">
+                    <span [innerText]="currentUserData.first_name"></span>
+                    <span [innerText]="currentUserData.last_name"></span>
+                </span>
               <i class="fas fa-chevron-right"></i>
             </div>
             <div class="footer-profile-list" *ngIf="isDropdownVisible">
               <span><a href=""> My Profile</a></span>
               <span><a href="#"> Account Settings</a></span>
               <span><a href="#"> Help</a></span>
-              <span><a href=""> Log Out</a></span>
+              <span><a (click)="logout()"> Log Out</a></span>
             </div>
           </div>
     </div>
