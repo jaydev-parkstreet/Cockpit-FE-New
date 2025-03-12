@@ -13,6 +13,8 @@ import { StatelessModule } from './stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LayoutModule } from './components/layout/layout.module';
+import { DatePipe } from '@angular/common';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -36,7 +38,10 @@ import { LayoutModule } from './components/layout/layout.module';
     exports: [
 
     ],
-    providers: [HttpClientModule, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+    providers: [
+        HttpClientModule, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        DatePipe
+    ],
 
     bootstrap: [AppComponent]
 })

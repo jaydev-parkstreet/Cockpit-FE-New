@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import AppRoutes from 'src/app/app.routes';
@@ -11,7 +12,10 @@ export class CommonService {
   toastV2 : any = {}
   toastV2Watcher : any = {}
   
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private datePipe: DatePipe
+  ) { }
 
   getDropdownConfig(
     placeholder,
@@ -197,6 +201,23 @@ export class CommonService {
      */
     deleteObjectFromArray(objectsArray, elemKey, value) {
       return objectsArray?.filter(element => element[elemKey] !== value) || [];
+    }
+
+    /**
+     * Formats a given date into the specified format.
+     *
+     * @param value - The date input (string, number, or Date).
+     * @param format - The desired output format (default: 'MM/dd/yyyy').
+     * @returns The formatted date string or '--' if the input is invalid.
+     * @author PSI-Enhancement
+     */
+    dateFormat(value, format = 'MM/dd/yyyy') {
+      if(!value || value === '0000-00-00 00:00:00') return '--';
+
+      const date = new Date(value);
+      if(isNaN(date.getTime())) return '--';
+
+      return this.datePipe.transform(date, format) || '--';
     }
 
 }
