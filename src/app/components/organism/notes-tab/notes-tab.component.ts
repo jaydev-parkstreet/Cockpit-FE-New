@@ -59,7 +59,7 @@ export class NotesTabComponent implements OnInit {
           this.notes = response.notes;
         },
         (error) => {
-          this.commonService.showToastV2Message(false, error.message || 'Failed to load notes');
+          this.commonService.showToastV2Message(false, error.message || 'Failed to load notes', 'fas fa-exclamation-circle');
         },
         () => {
           this.isLoadingNotes = false;
@@ -91,10 +91,10 @@ export class NotesTabComponent implements OnInit {
       this.commonService.changeNotePrivacy(reqObj).subscribe(
         (response) => {
           note.permission_id = newPermission;
-          this.commonService.showToastV2Message(true, 'Privacy Updated', 'fas fa-exclamation-circle');
+          this.commonService.showToastV2Message(true, 'Privacy Updated', 'fas fa-exclamation-circle', 'success');
         },
         (error) => {
-          this.commonService.showToastV2Message(false, 'Failed to update privacy', 'fas fa-exclamation-triangle');
+          this.commonService.showToastV2Message(false, 'Failed to update privacy', 'fas fa-exclamation-circle');
         },
         () => {
           this.updateNotePermissionLoading = false;
