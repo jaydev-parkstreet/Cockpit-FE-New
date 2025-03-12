@@ -37,5 +37,20 @@
             </ul>
         </div>
     </div>
-    <div class="sidebar__footer"></div>
+    <div class="sidebar__footer">
+        <div class="footer-profile">
+            <div class="footer-profile-main"          
+            (click)="toggleDropdown()">
+            <img src="https://stgcockpit.parkstreet.com//uploads//crm/2907f1671f8bceaae2540c0693ae1cba." alt=""/>
+              <span>ADSc eda S</span>
+              <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="footer-profile-list" *ngIf="isDropdownVisible">
+              <span><a href=""> My Profile</a></span>
+              <span><a href="#"> Account Settings</a></span>
+              <span><a href="#"> Help</a></span>
+              <span><a href=""> Log Out</a></span>
+            </div>
+          </div>
+    </div>
 </div>
