@@ -10,14 +10,13 @@ import { environment } from 'src/environments/environment';
 })
 export class SidebarMenuComponent implements OnInit {
   menuData :any;
-  isSidebarExpanded: boolean;
+  isSidebarExpanded: boolean = true;
+  isDropdownVisible : boolean = false;
 
   constructor(private http:HttpClient) { }
 
   ngOnInit(): void { 
-    this.isSidebarExpanded = true;
     this.sidebarItems();
-
   }
 
   toggleIcon (menu:any) {
@@ -37,5 +36,9 @@ export class SidebarMenuComponent implements OnInit {
 
   toggleMenu() { 
     this.isSidebarExpanded = !this.isSidebarExpanded;
+  }
+
+  toggleDropdown() {
+    this.isDropdownVisible = !this.isDropdownVisible;
   }
 }
