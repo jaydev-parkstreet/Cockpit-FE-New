@@ -18,7 +18,7 @@
                         </em>
                     </a>
 
-                    <ul id="mainMenu-items" *ngIf="menu.submenuItems" [ngStyle]="{'display': menu.isExpanded && isSidebarExpanded ? 'block':'none'}">
+                    <ul id="mainMenu-items" *ngIf="menu.submenuItems" [ngStyle]="!isSidebarExpanded ? {} : {'display': menu.isExpanded ? 'block' : 'none'}">
                         <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenuItems">
                             <a [routerLink]="submenu.url" *ngIf="submenu.label">
                                 <span>{{submenu.label}}</span>
@@ -46,7 +46,7 @@
                     <span [innerText]="currentUserData.first_name"></span>
                     <span [innerText]="currentUserData.last_name"></span>
                 </span>
-              <i class="fas fa-chevron-right"></i>
+                <i class="fas fa-chevron-right"></i>
             </div>
             <div class="footer-profile-list" *ngIf="isDropdownVisible">
               <span><a href=""> My Profile</a></span>
