@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SidebarMenuComponent implements OnInit {
   menuData :any;
-  @Input() isSidebarExpanded:any;
+  isSidebarExpanded: boolean;
 
   constructor(private http:HttpClient) { }
 
@@ -35,4 +35,7 @@ export class SidebarMenuComponent implements OnInit {
     })
   }
 
+  toggleMenu() { 
+    this.isSidebarExpanded = !this.isSidebarExpanded;
+  }
 }

@@ -1,6 +1,9 @@
 <div class="sidebar" [ngClass]="isSidebarExpanded ? 'expanded' : 'collapsed'">
     <div class="sidebar__header">
         <img [src]="isSidebarExpanded ? '../../../../assets/images/header-expanded-logo.svg' : '../../../../assets/images/header-collapsed-logo.svg'">
+        <div class="menutoggle" (click)="toggleMenu()">
+            <i [class]="isSidebarExpanded ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"></i>
+        </div>
     </div>
     <div class="sidebar__content">
         <div class="sidebar-menu open-current-submenu show-scrollbar">
