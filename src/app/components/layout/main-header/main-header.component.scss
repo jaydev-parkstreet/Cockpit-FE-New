@@ -2,6 +2,7 @@
 @import '../../../scss/variables/colors';
 
 .headerbar {
+    background-color: $colors-neutral-black;
     .search-container {
         border-radius: 8px;
         outline: 2px solid $colors-neutral-black-v-medium;
