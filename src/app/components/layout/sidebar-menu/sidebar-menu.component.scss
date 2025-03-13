@@ -241,6 +241,15 @@
                         padding: 8px;
                         left: 100%;
                     }
+                    .sidebar-submenu-sub-item {
+                        padding-bottom: 8px;
+                        a {
+                            padding: 2px 4px;
+                        }
+                        &:last-child {
+                            padding-bottom: 0;
+                        }
+                    }
                     // &:hover ul {
                     //     display: block;
                     //     position: absolute;
@@ -377,6 +386,14 @@
     }
     .sidebar__content {
         .sidebar-menu-item {
+            .sidebar-submenu-item {
+                a {
+                    padding: 2px 4px;
+                }
+                &:first-child {
+                    padding-top: 0;
+                }
+            }
             // position: relative;
             ul {
                 display: none;

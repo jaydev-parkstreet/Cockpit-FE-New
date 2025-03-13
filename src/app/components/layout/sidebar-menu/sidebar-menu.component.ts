@@ -43,7 +43,13 @@ export class SidebarMenuComponent implements OnInit {
     this.renderer.setStyle(submenuElement, 'top', `${parentRect.top - 16}px`);
     this.renderer.setStyle(submenuElement, 'left', `calc(100% - 16px)`);
     this.renderer.setStyle(submenuElement, 'display', 'block');
-  }
+    submenuElement.addEventListener('mouseenter', () => {
+        this.renderer.setStyle(submenuElement, 'display', 'block');
+    });
+    submenuElement.addEventListener('mouseleave', () => {
+        this.renderer.setStyle(submenuElement, 'display', 'none');
+    });
+}
 
   hideSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
 
@@ -52,18 +58,30 @@ export class SidebarMenuComponent implements OnInit {
 
     const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
     if (!submenuElement) return;
-    this.renderer.setStyle(submenuElement, 'display', 'none');
+    setTimeout(() => {
+        if (!submenuElement.matches(':hover')) {
+            this.renderer.setStyle(submenuElement, 'display', 'none');
+        }
+    }, 200);
   }
 
   showMenu(event: MouseEvent, anchorElement: HTMLElement) {
     if (!this.isSidebarExpanded) {
-      const Ell = anchorElement.parentElement as HTMLElement;
-      const parentRect = Ell.getBoundingClientRect();
+      const menuItem = anchorElement.parentElement as HTMLElement;
+      if (!menuItem) return;
+
       const submenuItem = anchorElement.nextElementSibling as HTMLElement;
       if (submenuItem && submenuItem.tagName === 'UL') {
+        const parentRect = menuItem.getBoundingClientRect();
         this.renderer.setStyle(submenuItem, 'top', `${parentRect.top}px`);
         this.renderer.setStyle(submenuItem, 'left', `calc(100% - 8px)`);
         this.renderer.setStyle(submenuItem, 'display', 'block');
+        submenuItem.addEventListener('mouseenter', () => {
+          this.renderer.setStyle(submenuItem, 'display', 'block');
+        });
+        submenuItem.addEventListener('mouseleave', () => {
+          this.renderer.setStyle(submenuItem, 'display', 'none');
+        });
       }
     } else {
       return;
@@ -74,7 +92,11 @@ export class SidebarMenuComponent implements OnInit {
     if (!this.isSidebarExpanded) {
       const submenuItem = anchorElement.nextElementSibling as HTMLElement;
       if (submenuItem && submenuItem.tagName === 'UL') {
-        this.renderer.setStyle(submenuItem, 'display', 'none');
+        setTimeout(() => {
+          if (!submenuItem.matches(':hover')) {
+            this.renderer.setStyle(submenuItem, 'display', 'none');
+          }
+        }, 200);
       }
     } else {
       return;
