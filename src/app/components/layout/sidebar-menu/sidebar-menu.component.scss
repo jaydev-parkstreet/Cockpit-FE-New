@@ -165,6 +165,8 @@
             i {
                 padding: 0px 4px;
             }
+
+
             .sidebar-menu-item {
                 color: #FFFFFF;
                 font-size: 16px;
@@ -173,7 +175,26 @@
                 border-radius: 8px;
                 &:hover {
                     background-color: #CBCBCB40;
-                }         
+                }
+                &.sidebar-menu-active,
+                &:has(.sidebar-menu-active) {  
+                    background-color: $colors-neutral-light-v-low !important;
+            
+                    a {
+                        color: $colors-v2-base-primary;
+                    }
+                    .sidebar-submenu-item a {
+                        color: $colors-neutral-black;
+                    }
+                    .sidebar-menu-active a {
+                        background-color: $colors-neutral-white;
+                        color: $colors-v2-base-primary;
+                    }
+                    ul {
+                        background-color: $colors-neutral-light-v-low !important;
+                    }
+                }
+      
                 .sidebar-submenu-item {
                     font-family: $montserrat-regular;
                     color: #FFFFFF;
@@ -193,6 +214,10 @@
                         padding: 2px 4px 2px 32px;
                         border-radius: 8px;
                         min-height: 24px;
+                        .custom-width {
+                            display: inline-block;
+                            max-width: 200px;
+                        }
                         em {
                             margin-top: 2px;
                         }
@@ -258,7 +283,7 @@
                     color: $colors-neutral-white;
                 }
             }
-            .sidebar-menu-active {
+            .sidebar-menu-open {
                 background-color: #CBCBCB40;
             }
         }
@@ -362,7 +387,7 @@
                 // top: 0;
                 box-shadow: 0px 4px 8px 0px #4A4A4A26;
                 z-index: 1;
-                width: 240px;
+                width: 272px;
                 border-radius: 8px;
                 padding: 8px;
             }

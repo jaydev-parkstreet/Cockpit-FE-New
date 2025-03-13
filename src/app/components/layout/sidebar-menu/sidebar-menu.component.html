@@ -8,12 +8,16 @@
     <div class="sidebar__content">
         <div class="sidebar-menu open-current-submenu show-scrollbar">
                 <ul id="mainMenu" class="sidebar-menu-list u-pg-px-1">
-                    <li class="sidebar-menu-item" [ngClass]="menu.isExpanded ? 'sidebar-menu-active' : ''" *ngFor="let menu of menuData" (click)="toggleIcon(menu)">
+                    <li class="sidebar-menu-item" 
+                    [ngClass]="{
+                        'sidebar-menu-open': menu.isExpanded, 
+                        'sidebar-menu-active': isActiveRoute(menu.url)
+                    }"
+                    *ngFor="let menu of menuData" (click)="toggleIcon(menu)">
                         <a [routerLink]="'/product-management'" (mouseover)="showMenu($event, $event.currentTarget)" 
                         (mouseleave)="hideMenu($event, $event.currentTarget)">
-                            <i [class]="menu.icon" class="u-pg-mr-1 sidebar-icon" 
-                             ></i>
-                            <span *ngIf="isSidebarExpanded">{{menu.label}}</span>
+                            <i [class]="menu.icon" class="u-pg-mr-1 sidebar-icon"></i>
+                            <span class="custom-width" *ngIf="isSidebarExpanded">{{menu.label}}</span>
                             <em class="toggle-icon"
                                 [ngClass]= "menu.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
                                 *ngIf="menu.submenuItems && isSidebarExpanded">
@@ -21,16 +25,16 @@
                         </a>
     
                         <ul id="mainMenu-items" *ngIf="menu.submenuItems" [ngStyle]="!isSidebarExpanded ? {} : {'display': menu.isExpanded ? 'block' : 'none'}">
-                            <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenuItems" >
+                            <li class="sidebar-submenu-item" [ngClass]="{'sidebar-menu-active': isActiveRoute(submenu.frontend_app_route ? submenu.frontend_app_route : submenu.url)}" *ngFor="let submenu of menu.submenuItems" >
                                 <a [routerLink]="submenu.url" *ngIf="submenu.label" (mouseover)="showSubmenu($event, $event.currentTarget)"
                                 (mouseleave)="hideSubmenu($event, $event.currentTarget)">
-                                    <span>{{submenu.label}}</span>
+                                    <span class="custom-width">{{submenu.label}}</span>
                                     <em class="fas fa-chevron-right toggle-icon" *ngIf="submenu.submenuItems"></em>
                                 </a>
                                 <ul class="submenu-item"  #submenuItem *ngIf="submenu.submenuItems" >
                                     <li class="sidebar-submenu-sub-item" *ngFor="let submenu of submenu.submenuItems">
                                         <a [routerLink]="submenu.url" *ngIf="submenu.label">
-                                            <span>{{submenu.label}}</span>
+                                            <span class="custom-width">{{submenu.label}}</span>
                                         </a>
                                     </li>
                                 </ul>

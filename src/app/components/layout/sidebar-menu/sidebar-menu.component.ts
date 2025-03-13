@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, Renderer2 } from '@angular/core';
 // import { log } from 'console';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../authentication/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -15,16 +16,20 @@ export class SidebarMenuComponent implements OnInit {
   isDropdownVisible : boolean = false;
   currentUserData: any;
   oldCockpit: string = environment.oldCockpit;
+  currentRoute: any ;
   // @ViewChild('submenuItem') submenuItem: any;
 
   constructor(
     private http:HttpClient,
     private authService: AuthService,
     private renderer: Renderer2,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.currentUserData = this.authService.getUserData()
+    this.currentUserData = this.authService.getUserData();
+    this.currentRoute = this.router.url;
+    console.log('Current Route:', this.currentRoute);
     this.sidebarItems();
   }
 
@@ -101,5 +106,13 @@ export class SidebarMenuComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  isActiveRoute(route: string): boolean {
+    if (!route) return false;
+    const currentPath = this.currentRoute.split('/').pop();
+    const menuPath = route.split('/').pop();
+    // console.log(currentPath , menuPath);
+    return currentPath === menuPath;
   }
 }
