@@ -7,34 +7,35 @@
     </div>
     <div class="sidebar__content">
         <div class="sidebar-menu open-current-submenu show-scrollbar">
-            <ul id="mainMenu" class="sidebar-menu-list u-pg-px-1">
-                <li class="sidebar-menu-item" [ngClass]="menu.isExpanded ? 'sidebar-menu-active' : ''" *ngFor="let menu of menuData" (click)="toggleIcon(menu)">
-                    <a [routerLink]="'/product-management'">
-                        <i [class]="menu.icon" class="u-pg-mr-1 sidebar-icon"></i>
-                        <span *ngIf="isSidebarExpanded">{{menu.label}}</span>
-                        <em class="toggle-icon"
-                            [ngClass]= "menu.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
-                            *ngIf="menu.submenuItems && isSidebarExpanded">
-                        </em>
-                    </a>
-
-                    <ul id="mainMenu-items" *ngIf="menu.submenuItems" [ngStyle]="!isSidebarExpanded ? {} : {'display': menu.isExpanded ? 'block' : 'none'}">
-                        <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenuItems">
-                            <a [routerLink]="submenu.url" *ngIf="submenu.label">
-                                <span>{{submenu.label}}</span>
-                                <em class="fas fa-chevron-right toggle-icon" *ngIf="submenu.submenuItems"></em>
-                            </a>
-                            <ul  *ngIf="submenu.submenuItems">
-                                <li class="sidebar-submenu-sub-item" *ngFor="let submenu of submenu.submenuItems">
-                                    <a [routerLink]="submenu.url" *ngIf="submenu.label">
-                                        <span>{{submenu.label}}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                <ul id="mainMenu" class="sidebar-menu-list u-pg-px-1">
+                    <li class="sidebar-menu-item" [ngClass]="menu.isExpanded ? 'sidebar-menu-active' : ''" *ngFor="let menu of menuData" (click)="toggleIcon(menu)">
+                        <a [routerLink]="'/product-management'">
+                            <i [class]="menu.icon" class="u-pg-mr-1 sidebar-icon"></i>
+                            <span *ngIf="isSidebarExpanded">{{menu.label}}</span>
+                            <em class="toggle-icon"
+                                [ngClass]= "menu.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
+                                *ngIf="menu.submenuItems && isSidebarExpanded">
+                            </em>
+                        </a>
+    
+                        <ul id="mainMenu-items" *ngIf="menu.submenuItems" [ngStyle]="!isSidebarExpanded ? {} : {'display': menu.isExpanded ? 'block' : 'none'}">
+                            <li class="sidebar-submenu-item" *ngFor="let submenu of menu.submenuItems" >
+                                <a [routerLink]="submenu.url" *ngIf="submenu.label" (mouseover)="showSubmenu($event, $event.currentTarget)"
+                                (mouseleave)="hideSubmenu($event, $event.currentTarget)">
+                                    <span>{{submenu.label}}</span>
+                                    <em class="fas fa-chevron-right toggle-icon" *ngIf="submenu.submenuItems"></em>
+                                </a>
+                                <ul class="submenu-item"  #submenuItem *ngIf="submenu.submenuItems" (mouseover)="adjustSubmenuPosition($event, submenu)">
+                                    <li class="sidebar-submenu-sub-item" *ngFor="let submenu of submenu.submenuItems">
+                                        <a [routerLink]="submenu.url" *ngIf="submenu.label">
+                                            <span>{{submenu.label}}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul> 
         </div>
     </div>
     <div class="sidebar__footer">
