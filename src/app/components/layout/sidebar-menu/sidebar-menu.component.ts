@@ -34,39 +34,51 @@ export class SidebarMenuComponent implements OnInit {
   showSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
     const submenuItem = anchorElement.parentElement as HTMLElement;
     if (!submenuItem) return;
-
     const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
     if (!submenuElement) return;
     const parentRect = submenuItem.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    this.renderer.setStyle(submenuElement, 'visibility', 'hidden');
+    this.renderer.setStyle(submenuElement, 'display', 'block');
+    const submenuHeight = submenuElement.offsetHeight;
+    this.renderer.setStyle(submenuElement, 'display', 'none');
+    this.renderer.setStyle(submenuElement, 'visibility', 'visible');
+    let topPosition = parentRect.top;
     if (this.isSidebarExpanded) {
-      this.renderer.setStyle(submenuElement, 'top', `${parentRect.top - 16}px`);
+      if (topPosition + submenuHeight > viewportHeight) {
+        this.renderer.setStyle(submenuElement, 'bottom', `16px`);
+      } else {
+        this.renderer.setStyle(submenuElement, 'top', `${topPosition - 16}px`);
+
+      }
       this.renderer.setStyle(submenuElement, 'left', `calc(100% - 16px)`);
     } else {
-      this.renderer.setStyle(submenuElement, 'top', `-16px`);
       this.renderer.setStyle(submenuItem, 'position', `relative`);
+      if (topPosition + submenuHeight > viewportHeight) {
+        this.renderer.setStyle(submenuElement, 'bottom', `16px`);
+      } else {
+        this.renderer.setStyle(submenuElement, 'top', `-16px`);
+      }
       this.renderer.setStyle(submenuElement, 'left', `calc(100% + 8px)`);
     }
-    
     this.renderer.setStyle(submenuElement, 'display', 'block');
     submenuElement.addEventListener('mouseenter', () => {
-        this.renderer.setStyle(submenuElement, 'display', 'block');
+      this.renderer.setStyle(submenuElement, 'display', 'block');
     });
     submenuElement.addEventListener('mouseleave', () => {
-        this.renderer.setStyle(submenuElement, 'display', 'none');
+      this.renderer.setStyle(submenuElement, 'display', 'none');
     });
-}
+  }
 
   hideSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
-
     const submenuItem = anchorElement.parentElement as HTMLElement;
     if (!submenuItem) return;
-
     const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
     if (!submenuElement) return;
     setTimeout(() => {
-        if (!submenuElement.matches(':hover')) {
-            this.renderer.setStyle(submenuElement, 'display', 'none');
-        }
+      if (!submenuElement.matches(':hover')) {
+        this.renderer.setStyle(submenuElement, 'display', 'none');
+      }
     }, 100);
   }
 
@@ -74,11 +86,21 @@ export class SidebarMenuComponent implements OnInit {
     if (!this.isSidebarExpanded) {
       const menuItem = anchorElement.parentElement as HTMLElement;
       if (!menuItem) return;
-
       const submenuItem = anchorElement.nextElementSibling as HTMLElement;
       if (submenuItem && submenuItem.tagName === 'UL') {
         const parentRect = menuItem.getBoundingClientRect();
-        this.renderer.setStyle(submenuItem, 'top', `${parentRect.top}px`);
+        const viewportHeight = window.innerHeight;
+        this.renderer.setStyle(submenuItem, 'visibility', 'hidden');
+        this.renderer.setStyle(submenuItem, 'display', 'block');
+        const submenuHeight = submenuItem.offsetHeight;
+        this.renderer.setStyle(submenuItem, 'display', 'none');
+        this.renderer.setStyle(submenuItem, 'visibility', 'visible');
+        let topPosition = parentRect.top;
+        if (topPosition + submenuHeight > viewportHeight) {
+          this.renderer.setStyle(submenuItem, 'bottom', `16px`);
+        } else {
+          this.renderer.setStyle(submenuItem, 'top', `${topPosition}px`);
+        }
         this.renderer.setStyle(submenuItem, 'left', `calc(100% - 8px)`);
         this.renderer.setStyle(submenuItem, 'display', 'block');
         submenuItem.addEventListener('mouseenter', () => {
