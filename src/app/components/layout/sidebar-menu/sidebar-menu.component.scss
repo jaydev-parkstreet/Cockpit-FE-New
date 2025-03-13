@@ -202,9 +202,9 @@
                     padding-bottom: 8px;
                     border-radius: 8px;
                     // position: relative;
-                    // &:first-child {
-                    //     padding-top: 8px;
-                    // }
+                    &:first-child {
+                        padding-top: 8px;
+                    }
                     &:last-child {
                         padding-bottom: 0;
                     }
