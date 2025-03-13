@@ -9,8 +9,10 @@
         <div class="sidebar-menu open-current-submenu show-scrollbar">
                 <ul id="mainMenu" class="sidebar-menu-list u-pg-px-1">
                     <li class="sidebar-menu-item" [ngClass]="menu.isExpanded ? 'sidebar-menu-active' : ''" *ngFor="let menu of menuData" (click)="toggleIcon(menu)">
-                        <a [routerLink]="'/product-management'">
-                            <i [class]="menu.icon" class="u-pg-mr-1 sidebar-icon"></i>
+                        <a [routerLink]="'/product-management'" (mouseover)="showMenu($event, $event.currentTarget)" 
+                        (mouseleave)="hideMenu($event, $event.currentTarget)">
+                            <i [class]="menu.icon" class="u-pg-mr-1 sidebar-icon" 
+                             ></i>
                             <span *ngIf="isSidebarExpanded">{{menu.label}}</span>
                             <em class="toggle-icon"
                                 [ngClass]= "menu.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
@@ -25,7 +27,7 @@
                                     <span>{{submenu.label}}</span>
                                     <em class="fas fa-chevron-right toggle-icon" *ngIf="submenu.submenuItems"></em>
                                 </a>
-                                <ul class="submenu-item"  #submenuItem *ngIf="submenu.submenuItems" (mouseover)="adjustSubmenuPosition($event, submenu)">
+                                <ul class="submenu-item"  #submenuItem *ngIf="submenu.submenuItems" >
                                     <li class="sidebar-submenu-sub-item" *ngFor="let submenu of submenu.submenuItems">
                                         <a [routerLink]="submenu.url" *ngIf="submenu.label">
                                             <span>{{submenu.label}}</span>

@@ -35,7 +35,8 @@ export class SidebarMenuComponent implements OnInit {
     const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
     if (!submenuElement) return;
     const parentRect = submenuItem.getBoundingClientRect();
-    this.renderer.setStyle(submenuElement, 'top', `${parentRect.top}px`);
+    this.renderer.setStyle(submenuElement, 'top', `${parentRect.top - 16}px`);
+    this.renderer.setStyle(submenuElement, 'left', `calc(100% - 16px)`);
     this.renderer.setStyle(submenuElement, 'display', 'block');
   }
 
@@ -47,6 +48,32 @@ export class SidebarMenuComponent implements OnInit {
     const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
     if (!submenuElement) return;
     this.renderer.setStyle(submenuElement, 'display', 'none');
+  }
+
+  showMenu(event: MouseEvent, anchorElement: HTMLElement) {
+    if (!this.isSidebarExpanded) {
+      const Ell = anchorElement.parentElement as HTMLElement;
+      const parentRect = Ell.getBoundingClientRect();
+      const submenuItem = anchorElement.nextElementSibling as HTMLElement;
+      if (submenuItem && submenuItem.tagName === 'UL') {
+        this.renderer.setStyle(submenuItem, 'top', `${parentRect.top}px`);
+        this.renderer.setStyle(submenuItem, 'left', `calc(100% - 8px)`);
+        this.renderer.setStyle(submenuItem, 'display', 'block');
+      }
+    } else {
+      return;
+    }
+  }
+  
+  hideMenu(event: MouseEvent, anchorElement: HTMLElement) {
+    if (!this.isSidebarExpanded) {
+      const submenuItem = anchorElement.nextElementSibling as HTMLElement;
+      if (submenuItem && submenuItem.tagName === 'UL') {
+        this.renderer.setStyle(submenuItem, 'display', 'none');
+      }
+    } else {
+      return;
+    }
   }
 
   toggleIcon (menu:any) {
