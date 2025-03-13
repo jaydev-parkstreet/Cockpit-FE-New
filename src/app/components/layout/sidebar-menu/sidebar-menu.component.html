@@ -32,7 +32,7 @@
                                     <span class="custom-width">{{submenu.label}}</span>
                                     <em class="fas fa-chevron-right toggle-icon" *ngIf="submenu.submenuItems"></em>
                                 </a>
-                                <ul class="submenu-item"  #submenuItem *ngIf="submenu.submenuItems" >
+                                <ul class="submenu-item" [ngStyle]="{'position': 'absolute'}"  #submenuItem *ngIf="submenu.submenuItems" >
                                     <li class="sidebar-submenu-sub-item" *ngFor="let submenu of submenu.submenuItems">
                                         <a [routerLink]="submenu.url" *ngIf="submenu.label">
                                             <span class="custom-width">{{submenu.label}}</span>

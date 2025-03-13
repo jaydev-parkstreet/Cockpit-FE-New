@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit, Renderer2 } from '@angular/core';
-// import { log } from 'console';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../authentication/auth.service';
 import { Router } from '@angular/router';
@@ -17,7 +16,6 @@ export class SidebarMenuComponent implements OnInit {
   currentUserData: any;
   oldCockpit: string = environment.oldCockpit;
   currentRoute: any ;
-  // @ViewChild('submenuItem') submenuItem: any;
 
   constructor(
     private http:HttpClient,
@@ -40,8 +38,15 @@ export class SidebarMenuComponent implements OnInit {
     const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
     if (!submenuElement) return;
     const parentRect = submenuItem.getBoundingClientRect();
-    this.renderer.setStyle(submenuElement, 'top', `${parentRect.top - 16}px`);
-    this.renderer.setStyle(submenuElement, 'left', `calc(100% - 16px)`);
+    if (this.isSidebarExpanded) {
+      this.renderer.setStyle(submenuElement, 'top', `${parentRect.top - 16}px`);
+      this.renderer.setStyle(submenuElement, 'left', `calc(100% - 16px)`);
+    } else {
+      this.renderer.setStyle(submenuElement, 'top', `-16px`);
+      this.renderer.setStyle(submenuItem, 'position', `relative`);
+      this.renderer.setStyle(submenuElement, 'left', `calc(100% + 8px)`);
+    }
+    
     this.renderer.setStyle(submenuElement, 'display', 'block');
     submenuElement.addEventListener('mouseenter', () => {
         this.renderer.setStyle(submenuElement, 'display', 'block');
@@ -62,7 +67,7 @@ export class SidebarMenuComponent implements OnInit {
         if (!submenuElement.matches(':hover')) {
             this.renderer.setStyle(submenuElement, 'display', 'none');
         }
-    }, 200);
+    }, 100);
   }
 
   showMenu(event: MouseEvent, anchorElement: HTMLElement) {
@@ -96,7 +101,7 @@ export class SidebarMenuComponent implements OnInit {
           if (!submenuItem.matches(':hover')) {
             this.renderer.setStyle(submenuItem, 'display', 'none');
           }
-        }, 200);
+        }, 100);
       }
     } else {
       return;
@@ -134,7 +139,6 @@ export class SidebarMenuComponent implements OnInit {
     if (!route) return false;
     const currentPath = this.currentRoute.split('/').pop();
     const menuPath = route.split('/').pop();
-    // console.log(currentPath , menuPath);
     return currentPath === menuPath;
   }
 }
