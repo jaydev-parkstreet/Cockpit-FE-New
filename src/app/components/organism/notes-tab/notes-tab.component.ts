@@ -3,6 +3,7 @@ import { SimpleModalService } from 'ngx-simple-modal';
 import { CommonService } from 'src/app/core/services/common.service';
 import { environment } from 'src/environments/environment';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
 export interface Note {
   id: number;
   first_name: string;
@@ -33,6 +34,7 @@ export class NotesTabComponent implements OnInit {
 
     constructor(
       private commonService: CommonService,
+      private commonBackendService: CommonBackendService,
       private simpleModalService: SimpleModalService,
     ) {}
   
@@ -49,7 +51,7 @@ export class NotesTabComponent implements OnInit {
    */
     loadNotes() {
       this.isLoadingNotes = true;
-      this.commonService.getNotes(
+      this.commonBackendService.getNotes(
         this.permissions.kind_id, 
         this.permissions.tool_id, 
         this.entity, 
@@ -88,10 +90,14 @@ export class NotesTabComponent implements OnInit {
     
       this.updateNotePermissionLoading = true;
       
-      this.commonService.changeNotePrivacy(reqObj).subscribe(
-        (response) => {
-          note.permission_id = newPermission;
-          this.commonService.showToastV2Message(true, 'Privacy Updated', 'fas fa-exclamation-circle', 'success');
+      this.commonBackendService.changeNotePrivacy(reqObj).subscribe(
+        (response: any) => {
+          if(response.hasError) {
+            this.commonService.showToastV2Message(false, 'Failed to update privacy', 'fas fa-exclamation-circle');
+          } else {
+            this.commonService.showToastV2Message(true, 'Privacy Updated', 'fas fa-exclamation-circle', 'success');
+            note.permission_id = newPermission;
+          }
         },
         (error) => {
           this.commonService.showToastV2Message(false, 'Failed to update privacy', 'fas fa-exclamation-circle');
@@ -115,15 +121,16 @@ export class NotesTabComponent implements OnInit {
         btnLabel: [
           { type: 'Btn', label: 'No', class: 'secondary' },
           { type: 'Btn', label: 'Yes', class: 'primary' }
-      ]
+        ]
       };
 
       this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
         .subscribe((result) => {
           if(result.btn.label === 'Yes') {
-            this.commonService.deleteNote(id, this.permissions.menu_item_id).subscribe((response: any) => {
+            this.commonBackendService.deleteNote(id, this.permissions.menu_item_id).subscribe((response: any) => {
               if(!response.hasError) {
                 this.notes =this.commonService.deleteObjectFromArray(this.notes, 'id', id);
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
               } else {
                 this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
               }

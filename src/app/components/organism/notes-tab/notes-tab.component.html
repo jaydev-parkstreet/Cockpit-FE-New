@@ -1,5 +1,5 @@
-  <div class="notes-tab u-mt1 u-pg-px-2 u-bg-neutral-white u-neutral-black">
-    <div [ngHide]="isLoadingNotes" *ngFor="let note of notes" class="note-row-tab u-flex u-pg-py-2">
+  <div class="notes-tab u-mt1 u-bg-neutral-white u-neutral-black">
+    <div [ngHide]="isLoadingNotes" *ngFor="let note of notes; let last = last" class="note-row-tab u-flex" [ngClass]="{'u-pg-p-2': last, 'custom-padding': !last}">
       <div class="note-owner-image u-pg-mr-1 position-relative">
         <img class="profile-picture" [src]="fileServer + note.person_image" />
         <img class="ps-logo" [src]="fileServer +'/images/ps_icon.png'" />
@@ -19,10 +19,10 @@
             <div *ngIf="allowChangePrivacy" class="u-icon-tooltip u-flex-center">
               <i
                 [ngClass]="{
-                  'fas fa-user-lock user-lock-icon': note.permission_id === 2 || note.permission_id === 3,
-                  'fas fa-unlock user-lock-icon': note.permission_id === 1
+                  'fa-lock': note.permission_id === 2 || note.permission_id === 3,
+                  'fa-unlock': note.permission_id === 1
                 }"
-                class="on-hover"
+                class="on-hover fas"
                 (click)="updateNotePermission(note)">
               </i>
               <div class="tooltiptext t-center">{{note.permission_id === 1 ? 'Switch to “Private (Only PS Users)“' : 'Switch to “Public (Everyone)“' }}</div>
