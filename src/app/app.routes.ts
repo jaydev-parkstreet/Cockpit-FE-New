@@ -22,7 +22,9 @@ const AppRoutes = {
     },
     COMMON: {
         NOTES: 'notes',
-        NOTES_CHANGE_PERMISSION: 'notes/change-permission'
+        NOTES_CHANGE_PERMISSION: 'notes/change-permission',
+        ATTACHMENTS: 'files',
+        ATTACHMENTS_PERMISSION: 'files/change-permission'
     }
 };
 

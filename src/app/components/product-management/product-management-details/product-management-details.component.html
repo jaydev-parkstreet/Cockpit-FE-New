@@ -44,6 +44,13 @@
                         [entity] = "productDetails.product_id"
                         [permissions] = "permissions">
                     </app-notes-tab>
+                    <app-attachment-tab
+                        *ngIf = "activeTab === 'attachments'"
+                        [entity] = "productDetails.product_id"
+                        [permissions] = "permissions"
+                        [showFileType] = true
+                        [showPrivacyIcon] = true>
+                    </app-attachment-tab>
                 </div>
                 <div class="col-sm-6 u-pl2 right-side u-pg-pl-2">
                     <div>
