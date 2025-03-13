@@ -6,8 +6,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
-  @Input() divId!: any;
-  @Input() gridHeight!: any;
   @Input() gridOptions!: any;
   @Output() setDataSource : EventEmitter<any> = new EventEmitter();
   @Output() selectAllCheckbox!: EventEmitter<void>;
