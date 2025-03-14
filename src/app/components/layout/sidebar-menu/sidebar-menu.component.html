@@ -16,14 +16,14 @@
                     *ngFor="let menu of menuData" (click)="toggleIcon(menu)">
                         <a [routerLink]="'/product-management'" (mouseover)="showMenu($event, $event.currentTarget)" 
                         (mouseleave)="hideMenu($event, $event.currentTarget)">
-                            <i [class]="menu.icon" class="u-pg-mr-1 sidebar-icon"></i>
+                            <i [class]="menu.icon" class="sidebar-icon" [ngClass]="isSidebarExpanded ? 'u-pg--1' : ''"></i>
                             <span class="custom-width" *ngIf="isSidebarExpanded">{{menu.label}}</span>
                             <em class="toggle-icon"
                                 [ngClass]= "menu.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
                                 *ngIf="menu.submenuItems && isSidebarExpanded">
                             </em>
                         </a>
-    
+                        <span class="sidebar-tooltip" [ngClass]="menu.label == 'Dashboard' ? 'das' : 'get'" *ngIf="!isSidebarExpanded && (menu.label == 'Dashboard' || menu.label == 'Gateway')">{{menu.label}}</span>
                         <ul id="mainMenu-items" *ngIf="menu.submenuItems" [ngStyle]="!isSidebarExpanded ? {} : {'display': menu.isExpanded ? 'block' : 'none'}">
                             <span class="sidebar-tooltip">{{menu.label}}</span>
                             <li class="sidebar-submenu-item" [ngClass]="{'sidebar-menu-active': isActiveRoute(submenu.frontend_app_route ? submenu.frontend_app_route : submenu.url)}" *ngFor="let submenu of menu.submenuItems" >

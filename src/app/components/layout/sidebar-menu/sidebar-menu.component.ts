@@ -27,7 +27,6 @@ export class SidebarMenuComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserData = this.authService.getUserData();
     this.currentRoute = this.router.url;
-    console.log('Current Route:', this.currentRoute);
     this.sidebarItems();
   }
 
@@ -107,7 +106,9 @@ export class SidebarMenuComponent implements OnInit {
           this.renderer.setStyle(submenuItem, 'display', 'block');
         });
         submenuItem.addEventListener('mouseleave', () => {
-          this.renderer.setStyle(submenuItem, 'display', 'none');
+          if (!this.isSidebarExpanded) {
+            this.renderer.setStyle(submenuItem, 'display', 'none');
+          }
         });
       }
     } else {
