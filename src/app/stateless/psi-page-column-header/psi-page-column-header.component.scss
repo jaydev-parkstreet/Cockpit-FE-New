@@ -1,0 +1,15 @@
+@import '../../scss/variables/typography';
+@import '../../scss/variables/colors';
+
+.psi-page-column-header {
+    padding: 10px 16px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    box-shadow: $colors-shadows-black-25;
+    text-transform: uppercase;
+    line-height: 20px;
+    background-color: $colors-neutral-white;
+    margin: 8px 0px 8px;
+}

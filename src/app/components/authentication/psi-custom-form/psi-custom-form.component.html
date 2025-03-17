@@ -1,6 +1,7 @@
 <div class="form-wrapper mx-auto">
-    <div class="form-validation row" *ngIf="isShowLoginErrorMsg">
-        <div class="col-md-8 mx-auto validation-msg text-center" *ngIf="isShowLoginErrorMsg">
+    <div class="form-validation row u-pg-mt-3" *ngIf="isShowLoginErrorMsg">
+        <div class="typography-paragraph-white-regular col-md-8 mx-auto text-center u-pg-mb-3 validation-msg"
+            *ngIf="isShowLoginErrorMsg">
             {{ showErrorMsg }}
         </div>
     </div>
@@ -10,50 +11,42 @@
         </div>
         <div class="col-md-5 custom-form d-flex flex-column">
             <div class="form-title">
-                <h1 [textContent]="formTitle.firstline" class="m-0"></h1>
-                <p [textContent]="formTitle.secondline" class="mb-0"></p>
+                <h1 class="typography-v2-cr-h3-white-bold m-0" [textContent]="formTitle.firstline"></h1>
+                <p class="mb-0" [textContent]="formTitle.secondline"></p>
             </div>
             <div class="sign-in-form-group">
-                <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)" autocomplete="false">
-                    <div class="form-field d-flex flex-column" *ngFor="let field of formConfig.schema; index as i ; trackBy: trackByField">
-                        <label
-                            [for]="field.name"
-                            [ngClass]="{'ps-required-asterisk': field.required}"
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin(loginForm)" autocomplete="false">
+                    <div class="typograpghy-paragraph-white-regular u-pg-mt-3 d-flex flex-column form-field"
+                        *ngFor="let field of formConfig.schema; index as i ; trackBy: trackByField">
+                        <label [for]="field.name" [ngClass]="{'ps-required-asterisk': field.required}"
                             [textContent]="field.label">
                         </label>
                         <div class="input-wrapper position-relative d-flex align-items-center">
-                            <input
-                                #inputElement
-                                [type]="field.type"
-                                [id]="field.name"
-                                [formControlName]="field.name"
-                                [placeholder]="field.placeholder"
-                                [required]="field.required"
-                                [autocomplete]="false"
-                                class="w-100"
-                                [name]="field.name"
-                            >
+                            <input #inputElement [type]="field.type" [id]="field.name" [formControlName]="field.name"
+                                [placeholder]="field.placeholder" [required]="field.required" [autocomplete]="false"
+                                class="w-100" [name]="field.name">
                             <div #iconContainer class="input-action-buttons position-absolute end-0 d-flex">
-                                <div class="password-container position-relative"  *ngIf="field.passwordField">
-                                    <i
-                                        class="fa password-icon" 
+                                <div class="password-container position-relative" *ngIf="field.passwordField">
+                                    <i class="fa password-icon"
                                         [ngClass]="{'fa-eye-slash': !field.isPasswordVisible,'fa-eye': field.isPasswordVisible}"
                                         (click)="togglePassword(i)">
                                     </i>
-                                    <span class="password-tooltip position-absolute" >{{ !field.isPasswordVisible ? field.showtooltip : field.hidetooltip }}</span>
+                                    <span class="password-tooltip position-absolute">
+                                        {{ !field.isPasswordVisible ? field.showtooltip : field.hidetooltip }}
+                                    </span>
                                 </div>
-                                <i 
-                                    class="fa fa-times-circle clear-icon"
-                                    [hidden] = "!loginForm.get(field.name)?.value"
+                                <i class="fa fa-times-circle clear-icon" [hidden]="!loginForm.get(field.name)?.value"
                                     (click)="clearInput(field.name)">
                                 </i>
                             </div>
                         </div>
                     </div>
                     <div class="form-submit-button">
-                        <button type="submit" class="btn btn-primary w-100">{{ formConfig.submitBtnLabel }}</button>
+                        <button type="submit" class="btn btn-primary w-100">
+                            {{ formConfig.submitBtnLabel }}
+                        </button>
                     </div>
-               </form>
+                </form>
             </div>
         </div>
     </div>

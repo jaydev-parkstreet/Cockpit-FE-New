@@ -1,6 +1,5 @@
-@import "../../../../styles/variables";
-@import "../../../../styles/colors";
-@import "../../../../styles/typography";
+@import "../../../scss/variables/typography";
+@import "../../../scss/variables/colors";
 @import "../../../scss/mixin/respond_to";
 
 .form-wrapper {
@@ -16,21 +15,16 @@
     }
 
     .form-validation {
-        margin-bottom: 24px;
         .validation-msg {
-            background-color: $colors-base-error;
+            background-color: $colors-v2-base-error;
             padding: 16px;
-            font-family: $montserrat-regular;
-            color: $colors-neutral-white;
             line-height: 21px;
-            font-size: 12px;
-            font-weight: 600;
             border-radius: 3px;
-            margin-bottom: 24px;
         }
     }
 
     .form-container {
+        height: 368px;
 
         .cockpit-logo {
             .logo {
@@ -55,7 +49,7 @@
             background-color: $colors-neutral-dark;
             border-radius: 8px;
             color: $colors-neutral-white;
-            padding: 32px 40px 32px 40px;
+            padding: 32px 40px;
             width: 400px;
 
             @include respond-to(tablet) {
@@ -69,12 +63,6 @@
             }
 
             .form-title {
-                font-family: $crimson-pro-bold;
-                h1 {
-                    font-family: $crimson-pro-bold;
-                    font-size: 32px;
-                    line-height: 44px;
-                }
                 p {
                     font-family: $montserrat-medium;
                     font-size: 12px;
@@ -85,11 +73,6 @@
 
             .sign-in-form-group {
                 .form-field {
-                    margin-top: 24px;
-                    font-family: $montserrat-regular;
-                    font-size: 12px;
-                    font-weight: 400 !important;
-
                     label {
                         display: inline-block;
                         max-width: 100%;
@@ -102,7 +85,7 @@
 
                         &.ps-required-asterisk::before {
                             content: "*";
-                            color: $colors-base-error;
+                            color: $colors-v2-base-error;
                             font-size: 15px;
                             padding-right: 3px;
                             vertical-align: middle;
@@ -132,8 +115,6 @@
                             &:focus {
                                 border: 2px solid $colors-v2-base-secondary-v-medium;
                             }
-
-
                         }
 
                         .input-action-buttons {

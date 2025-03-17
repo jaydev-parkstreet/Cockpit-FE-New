@@ -12,8 +12,9 @@ export class CmpTabGroupComponent implements OnInit {
   constructor() { }
 
   clickOnTab(tab: any) {
-    this.tabClick.emit({ tab });
+    this.tabClick.emit(tab);
   }
+  
   ngOnInit(): void {
   }
 

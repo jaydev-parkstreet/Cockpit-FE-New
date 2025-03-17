@@ -1,11 +1,13 @@
-@import "../../../styles/colors";
+
+@import "../../scss/variables/typography";
+@import "../../scss/variables/colors";
 
 .ag-grid-custom {
   height: 500px;
 
   .ag-header {
-    background-color: $ps-washed-gray;
-    color: $ps-black;
+    background-color: $colors-neutral-light;
+    color: $colors-neutral-dark;
     text-transform: uppercase;
 
     .ag-header-viewport {

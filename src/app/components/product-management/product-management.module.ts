@@ -12,10 +12,17 @@ import { ProductManagementDetailsComponent } from './product-management-details/
 import { NotesTabComponent } from '../organism/notes-tab/notes-tab.component';
 import { RouterModule } from '@angular/router';
 import { ProductManagementRoutingModule } from './product-management-routing.module';
+import { AttachmentTabComponent } from '../organism/attachment-tab/attachment-tab.component';
 
 
 @NgModule({
-  declarations: [ProductManagementComponent, ProductAddComponent,ProductManagementDetailsComponent,  NotesTabComponent ],
+  declarations: [
+    ProductManagementComponent, 
+    ProductAddComponent,
+    ProductManagementDetailsComponent, 
+    NotesTabComponent,
+    AttachmentTabComponent
+  ],
   providers: [{
     provide: ErrorHandler,
     useClass: ErrorHandler

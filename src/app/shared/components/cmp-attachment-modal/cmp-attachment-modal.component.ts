@@ -196,5 +196,8 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
       });
   }
 
+  get isButtonDisabled(): boolean {
+    return !this.selectedFileCount || this.selectedFileCount <= 0 || (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0);
+  }
 
 }

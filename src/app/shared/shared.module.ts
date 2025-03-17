@@ -19,6 +19,7 @@ import { CmpTabGroupComponent } from './components/cmp-tab-group/cmp-tab-group.c
 import { SummaryGridComponent } from './components/summary-grid/summary-grid.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { CmpAttachmentModalComponent } from './components/cmp-attachment-modal/cmp-attachment-modal.component'
+import { PsiCrudFormComponent } from './psi-crud-form/psi-crud-form.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { CmpAttachmentModalComponent } from './components/cmp-attachment-modal/c
     ProductSummaryDimensionsCardComponent,
     CmpTabGroupComponent,
     SummaryGridComponent,
-    CmpAttachmentModalComponent
+    CmpAttachmentModalComponent,
+    PsiCrudFormComponent
   ],
   imports: [
     CommonModule,
@@ -63,7 +65,8 @@ import { CmpAttachmentModalComponent } from './components/cmp-attachment-modal/c
     ProductSummaryDimensionsCardComponent,
     CmpTabGroupComponent,
     SummaryGridComponent,
-    CmpButtonComponent
+    CmpButtonComponent,
+    PsiCrudFormComponent
   ]
 })
 export class SharedModule { }

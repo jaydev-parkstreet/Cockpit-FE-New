@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MiddleComponent } from './middle.component';
+import { PsiCrudFormComponent } from './psi-crud-form.component';
 
-describe('MiddleComponent', () => {
-  let component: MiddleComponent;
-  let fixture: ComponentFixture<MiddleComponent>;
+describe('PsiCrudFormComponent', () => {
+  let component: PsiCrudFormComponent;
+  let fixture: ComponentFixture<PsiCrudFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MiddleComponent ]
+      declarations: [ PsiCrudFormComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MiddleComponent);
+    fixture = TestBed.createComponent(PsiCrudFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

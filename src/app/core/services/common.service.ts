@@ -1,13 +1,22 @@
+import { DatePipe } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import AppRoutes from 'src/app/app.routes';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
+  
+  toastV2 : any = {}
+  toastV2Watcher : any = {}
+  
+  constructor(
+    private http: HttpClient,
+    private datePipe: DatePipe
+  ) { }
 
-  constructor() { }
-    toastV2 : any = {}
-    toastV2Watcher : any = {}
   getDropdownConfig(
     placeholder,
     serverSearch = false,
@@ -155,4 +164,46 @@ export class CommonService {
             class: ''
         };
     }
+
+    /**
+     * Removes an object from an array based on a specified key-value match.
+     *
+     * @param {Array<Object>} objectsArray - The array of objects to filter.
+     * @param {string} elemKey - The key to check in each object.
+     * @param {*} value - The value to compare against.
+     * @returns {Array<Object>} A new array with the matching object(s) removed.
+     */
+    deleteObjectFromArray(objectsArray, elemKey, value) {
+      return objectsArray?.filter(element => element[elemKey] !== value) || [];
+    }
+
+    /**
+     * Formats a given date into the specified format.
+     *
+     * @param value - The date input (string, number, or Date).
+     * @param format - The desired output format (default: 'MM/dd/yyyy').
+     * @returns The formatted date string or '--' if the input is invalid.
+     * @author PSI-Enhancement
+     */
+    dateFormat(value, format = 'MM/dd/yyyy') {
+      if(!value || value === '0000-00-00 00:00:00') return '--';
+
+      const date = new Date(value);
+      if(isNaN(date.getTime())) return '--';
+
+      return this.datePipe.transform(date, format) || '--';
+    }
+
+    /**
+     * Function to replace file name.
+     * 
+     * @author PSI-Enhancement
+     * @param string fileUrl
+     * @returns string Url
+     */
+    urlEncode(fileUrl): any {
+      let url = environment.apiUrl + decodeURIComponent(fileUrl);
+      url = url.replace(new RegExp('#', 'g'), '%23');
+      return url;
+  }
 }

@@ -1,24 +1,19 @@
 @import '../../../scss/variables/colors';
-@import '../../../scss/variables/typography';
 
 .notes-tab {
-    padding: 0 16px;
-    background: $colors-neutral-white;
     box-shadow: $colors-shadows-black-25;
-    color: $colors-neutral-black;
 
     .note-row-tab {
-        display: flex;
-        padding-top: 16px;
+
+        &.custom-padding {
+            padding: 16px 16px 0;
+        }
 
         .note-owner-image {
             flex: none;
             height: 40px;
             width: 40px;
             border-radius: 25px;
-            background: $colors-neutral-light;
-            margin-right: 8px;
-            position: relative;
 
             .profile-picture {
                 height: 40px;
@@ -37,27 +32,16 @@
         }
 
         .note-container {
-            width: 100%;
-
             .note-detail {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
                 i {
                     font-size: 12px;
-                    margin-right: 8px;
-                }
-
-                .right-section {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
                 }
             }
 
-            p {
-                margin: 0;
+            .note-content {
+                * {
+                    margin: 0;
+                }
             }
         }
     }
@@ -73,16 +57,11 @@
         }
     }
 
-    .notes-loader {
-        padding: 16px 0;
-        text-align: center;
-    }
-
     .add-note {
         height: 64px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
+
+        &:hover {
+            background-color: $colors-v2-base-primary-v-low-t-05;
+        }
     }
 }

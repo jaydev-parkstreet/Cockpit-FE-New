@@ -1,0 +1,54 @@
+@import '../../scss/variables/typography';
+@import '../../scss/variables/colors';
+
+.dropdown-label {
+    display: flex;
+    color: $colors-neutral-black;
+    font-family: $montserrat-regular !important;
+    font-size: 12px;
+    border: none !important;
+    margin: 0 0 6px 16px;
+    line-height: 16px;
+}
+input {
+    display: block;
+    background: $colors-neutral-white;
+    color: $colors-neutral-black;
+    border-bottom: 2px solid $colors-neutral-white;
+    box-shadow: none;
+    border-radius: 8px;
+    padding: 0px 16px;
+    height: 40px;
+    border: 1px solid $colors-neutral-light;
+    font-size: 12px;
+    font-family: $montserrat-regular;
+    caret-color: $colors-v2-base-secondary-v-medium;
+
+    &:hover {
+        outline: 2px solid $colors-neutral-black;
+        border: none;
+    }
+    &:focus {
+        outline: 2px solid $colors-v2-base-secondary-v-medium;
+        border: none;
+    }
+    &::placeholder {
+        color: $colors-neutral-light;
+        font-family: $montserrat-regular;
+        font-size: 12px;
+    }
+}
+.ps-required-error {
+    background: $colors-v2-base-error-t-10;
+    outline: 2px solid $colors-v2-base-error;
+    border: 0;
+}
+.disabled {
+    cursor: not-allowed;
+    input {
+        border-radius: 8px;
+        background-color: $colors-neutral-light-v-low;
+        color: $colors-neutral-dark-v-medium;
+        pointer-events: none;
+    }
+}

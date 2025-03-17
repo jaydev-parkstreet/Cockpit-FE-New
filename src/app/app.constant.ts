@@ -16,8 +16,15 @@ const AppConstant = {
         PAGE_TITLE: 'PRODUCT DETAILS' ,
         SUBMIT_BUTTON: 'Save',
         CANCEL_BUTTON: 'Cancel',
+        SYNC_STATUS: {
+            1: 'Synced',
+            2: 'Syncing',
+            3: 'Sync',
+            4: 'Sync'
+        }
     },
-    ENTITY_PERMISSIONS: {
+
+    ENTITY_PERMISSIONS : {
         PUBLIC_EVERYONE_ID: 1,
         PRIVATE_ONLY_PS_USER_ID: 2,
         PRIVATE_ONLY_ME: 3

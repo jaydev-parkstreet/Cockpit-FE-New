@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ProductManagementService } from './product-management.service';
 import { AuthService } from '../authentication/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ColDef } from 'ag-grid-community';
-import { RouterModule } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { saveAs } from 'file-saver';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -475,7 +473,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       this.spinner.hide();
       if (!response.hasError) {
         this.setDataSourceAgGrid();
-          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
       } else {
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
       }

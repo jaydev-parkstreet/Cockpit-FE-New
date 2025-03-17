@@ -15,7 +15,7 @@
     white-space: nowrap;
     height: 16px;
     color: $colors-neutral-black;
-    font-family: $helvetica-neue;
+    font-family: $montserrat-regular;
 }
 
 @mixin checkbox-container {
@@ -44,13 +44,13 @@
     left: 0;
     height: 16px;
     width: 16px;
-    border-radius: 3px;
-    border: 1px solid $colors-base-primary;
+    border-radius: 4px;
+    border: 1px solid $colors-neutral-dark;
 }
 
 @mixin checkmark-checked {
-    background-color: $colors-base-primary;
-    border: 1px solid $colors-base-primary;
+    background-color: $colors-v2-base-primary;
+    border: 1px solid $colors-v2-base-primary;
 }
 
 @mixin checkmark-after {

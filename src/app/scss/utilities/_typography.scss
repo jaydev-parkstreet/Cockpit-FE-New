@@ -29,50 +29,65 @@
 // As per zero height
 
 @mixin font-bold {
-  font-family: $helvetica-bold;
-  font-weight: bold;
+  font-family: $montserrat-bold;
+  font-weight: 700;
 }
 
 @mixin font-medium {
-  font-family: $helvetica-medium;
+  font-family: $montserrat-medium;
   font-weight: 500;
 }
 
 @mixin font-regular {
-  font-family: $helvetica-neue;
+  font-family: $montserrat-regular;
   font-weight: 400;
 }
 
-[class^='typography-super-'] {
+@mixin font-v2-cr-regular {
+  font-family: $crimson-pro-regular;
+  font-weight: 400;
+}
+
+@mixin font-v2-cr-medium {
+  font-family: $crimson-pro-medium;
+  font-weight: 500;
+}
+
+@mixin font-v2-cr-bold{
+  font-family: $crimson-pro-bold;
+  font-weight: 700;
+}
+
+[class^='typography-super-'],[class*='-super'] {
   font-size: 64px;
 }
 
-[class^='typography-h1-'] {
+[class^='typography-h1-'],[class*='-h1'] {
   font-size: 56px;
 }
 
-[class^='typography-h2-'] {
+[class^='typography-h2-'],[class*='-h2'] {
   font-size: 40px;
 }
 
-[class^='typography-h3-'] {
+[class^='typography-h3-'],[class*='-h3'] {
   font-size: 32px;
 }
 
-[class^='typography-h4-'] {
+[class^='typography-h4-'],[class*='-h4'] {
   font-size: 24px;
 }
 
-[class^='typography-h5-'] {
+[class^='typography-h5-'],[class*='-h5']{
   font-size: 20px;
 }
 
-[class^='typography-h6-'] {
+[class^='typography-h6-'],[class*='-h6'] {
   font-size: 16px;
 }
 
 [class^='typography-body-'],
-[class^='typography-link-'] {
+[class^='typography-link-'],[class*='-body'],[class*='-link']{
   font-size: 14px;
 }
 
@@ -81,15 +96,15 @@
 }
 
 [class^='typography-paragraph-'],
-[class^='typography-footnote-'] {
+[class^='typography-footnote-'],[class*='-paragraph'],[class*='-footnote'] {
   font-size: 12px;
 }
 
-[class^='typography-caption-'] {
+[class^='typography-caption-'],[class*='-caption'] {
   font-size: 10px;
 }
 
-[class^='typography-small-'] {
+[class^='typography-small-'],[class*='-small'] {
   font-size: 8px;
 }
 
@@ -101,12 +116,8 @@
   color: $colors-neutral-dark;
 }
 
-[class^='typography-'][class*='-darkvm-'] {
-  color: $colors-neutral-dark-v-medium;
-}
-
 [class^='typography-'][class*='-error-'] {
-  color: $colors-base-error;
+  color: $colors-v2-base-error;
 }
 
 [class^='typography-'][class*='-light-'] {
@@ -114,21 +125,20 @@
 }
 
 [class^='typography-'][class*='-primary-'] {
-  color: $colors-base-primary;
+  color: $colors-v2-base-primary;
 }
 
 [class^='typography-'][class*='-success-'] {
-  color: $colors-base-success;
+  color: $colors-v2-base-success;
 }
 
 [class^='typography-'][class*='-warning-'] {
-  color: $colors-base-warning;
+  color: $colors-v2-base-warning;
 }
 
-[class^='typography-'],[class*='-white-'] {
+[class^='typography-'][class*='-white-'] {
   color: $colors-neutral-white;
-} 
-
+}
 
 [class^='typography-'][class*='-bold'] {
   @include font-bold;
@@ -142,12 +152,24 @@
   @include font-regular;
 }
 
+[class^='typography-v2-cr-'][class*='-bold'] {
+  @include font-v2-cr-bold;
+}
+
+[class^='typography-v2-cr-'][class*='-medium'] {
+  @include font-v2-cr-medium;
+}
+
+[class^='typography-v2-cr-'][class*='-regular'] {
+  @include font-v2-cr-regular;
+}
+
 .href-link {
   color: $colors-neutral-black;
   cursor: pointer;
 
   &:hover {
-    color: $colors-base-primary;
+    color: $colors-v2-base-primary;
     text-decoration: underline;
   }
 }

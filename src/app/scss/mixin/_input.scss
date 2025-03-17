@@ -12,31 +12,104 @@
   outline: 0;
   color: $colors-neutral-black;
 
-  &::placeholder {
-      color: $colors-neutral-light;
-  }
+    &::placeholder {
+        color: $colors-neutral-light;
+    }
 
-  &:not([readonly]):hover {
-      border: 1px solid $colors-neutral-dark;
-      box-shadow: 0 0 0 1px $colors-neutral-dark;
-  }
+    &:not([readonly]):hover {
+        border: 2px solid $colors-neutral-dark;
+    }
 
-  &:not([readonly]):focus {
-      border: 1px solid #66afe9;
-      box-shadow: 0 0 0 1px #66afe9;
-  }
+    &:not([readonly]):focus {
+        border: 2px solid $colors-v2-base-secondary-v-medium;
+        caret-color: $colors-v2-base-secondary-v-medium;
+    }
 
-  &[disabled] {
-      color: $colors-neutral-light;
-      background-color: $colors-neutral-light-v-low;
-  }
+    &[disabled] {
+        color: $colors-neutral-light;
+        background-color: $colors-neutral-light-v-low;
+    }
 
-  &[readonly] {
-      background-color: $colors-base-primary-v-low-t-05;
-  }
+    &[readonly] {
+        background-color: $colors-v2-base-primary-v-low-t-05;
+    }
 
-  &.invalid {
-      background: $colors-base-primary-v-low-t-10;
-      border: 1px solid $colors-base-error;
-  }
+    &.invalid {
+        background: $ps-washed-red;
+        border: 1px solid $colors-v2-base-error;
+       
+        &::placeholder {
+            color: $colors-v2-base-error;
+        }
+    }
+}
+
+@mixin psi-input-label {
+    margin-left: 16px;
+    font-size: 12px;
+    margin-bottom: 6px !important;
+    line-height: 12px;
+    color: $colors-neutral-black;
+    position: relative;
+
+    &.required::before {
+        content: "*";
+        color: $colors-v2-base-error;
+        font-size: 16px;
+        left: -8px;
+        position: absolute;
+        font-family: $montserrat-medium;
+    }
+}
+
+@mixin percentage-input {
+    position: relative;
+
+    input {
+        padding-right: 24px;
+    }
+
+    &::after {
+        content: "%";
+        position: absolute;
+        top: 0;
+        transform: translateY(50%);
+        font-size: 12px;
+        font-family: $montserrat-regular;
+        right: 8px;
+        color: $colors-neutral-black;
+    }
+}
+
+@mixin radio-btn {
+    margin: 0 4px 0 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+
+    &:after {
+        width: 16px;
+        height: 16px;
+        border-radius: 16px;
+        background-color: $colors-neutral-white;
+        content: '';
+        display: inline-block;
+        border: 1px solid $colors-v2-base-primary;
+    }
+
+    &:checked:after {
+        width: 14px;
+        height: 14px;
+        top: 1px;
+        left: 1px;
+        position: relative;
+        background-color: $colors-v2-base-primary;
+        content: '';
+        border: 2px solid $colors-neutral-white;
+        outline: 1px solid $colors-v2-base-primary;
+    }
+
+    &[disabled] {
+        opacity: 0.5;
+    }
 }

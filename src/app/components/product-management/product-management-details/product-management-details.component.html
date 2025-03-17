@@ -1,75 +1,73 @@
-<div ui-view class="product-tool-details">
-    <app-header-tool titleText="Product Management System" titleIcon="fas fa-wine-bottle">
+<div ui-view class="product-tool-details u-pg-pt-1 u-pg-mb-2">
+    <app-header-tool
+        titleText="Product Management System"
+        titleIcon="fas fa-wine-bottle">
     </app-header-tool>
 
-    <div class="product-tool-details-container">
-        <div class="action-bar">
+    <div class="product-tool-details-container u-pg-pb-2">
+        <div class="action-bar u-flex u-flex u-justify-between u-align-center u-pg-mt-1">
             <div class="back-link">
                 <i class="fas fa-chevron-left"></i>
-                <span class="link-text typography-body-black-regular" (click)="onClickback()">
-                    Back to Products
-                </span>
+                <span class="typography-body-dark-regular link-text" (click)="onClickback()">{{backToProductsTitle}}</span>
             </div>
             <div>
-                <app-psi-action-buttons [actionButtons]="actionButtons" (actionClicked)="onClickAction($event)"></app-psi-action-buttons>
+                <app-psi-action-buttons 
+                    [actionButtons]="actionButtons"
+                    (actionClicked)="onClickAction($event)">
+                </app-psi-action-buttons>
             </div>
         </div>
-        <div class="product-tool-details-wrapper">
+        <div class="product-tool-details-wrapper u-pg-mt-1">
             <div class="row">
                 <div class="col-sm-6 u-pr2 left-side">
                     <app-cmp-header-widget 
-                    [headerTitle]="headerTitle" 
-                    [showTooltip]="true" 
-                    [badgeText]="status"
-                    [badgeClass]="statusClass"
-                    [iconHeaderStatus]="IconHeaderStatus">
+                        [headerTitle]="headerTitle" 
+                        [hasTooltip]="true" 
+                        [badgeText]="status"
+                        [badgeClass]="statusClass"
+                        [iconHeaderStatus]="IconHeaderStatus"
+                        [hasRightErrorIcon]="productDetails.sync_status === 3"
+                        [rightErrorIconClass]="'fa-solid fa-circle-exclamation u-base-error'"
+                        [rightErrorIconDescription]="productDetails.sync_error"
+                        [rightErrorIconDescriptionClass]="'u-bg-error'">
                     </app-cmp-header-widget>
-                    <app-card-layout-details [rows]="detailProduct"></app-card-layout-details>
-                    <app-cmp-tab-group [tabGroupConfig]="tabGroupConfig" [activeTab]="activeTab"
+                    <app-card-layout-details 
+                        [rows]="detailProduct">
+                    </app-card-layout-details>
+                    <app-cmp-tab-group 
+                        [tabGroupConfig]="tabGroupConfig" 
+                        [activeTab]="activeTab"
                         (tabClick)="clickTabGroup($event)">
                     </app-cmp-tab-group>
-                    <!-- <notes-tab data-ng-show="$ctrl.activeTabGroup == $ctrl.tabGroupConfig[0].key"
-                        entity="$ctrl.productData.product_id" permissions="$ctrl.permissions" show-new-notes="true"
-                        show-privacy-icon="true" filters-list="$ctrl.filtersList">
-                    </notes-tab> -->
-                    <!-- <app-notes-tab >
-                    </app-notes-tab>  -->
-                    <!-- <attachments-tab data-ng-show="$ctrl.activeTabGroup == $ctrl.tabGroupConfig[1].key"
-                        entity="$ctrl.productData.product_id" permissions="$ctrl.permissions"
-                        show-file-type="true" file-types="$ctrl.permissions.entity_kinds" show-privacy-icon="true" filters-list="$ctrl.filtersList">
-                    </attachments-tab> -->
-                    <!-- <audit-tab data-ng-show="$ctrl.activeTabGroup == $ctrl.tabGroupConfig[2].key"
-                        row-object-keys-detail="$ctrl.rowAuditTrailConfigApiRequest" audit-list="$ctrl.auditList"
-                        loader-enabled="$ctrl.loaderEnabledAuditTrail">
-                    </audit-tab> -->
-
-                    <!-- <app-notes-tab 
-                   
-               
-                 
-              >
-                  </app-notes-tab> -->
+                    <app-notes-tab
+                        *ngIf = "activeTab === 'notes'"
+                        [entity] = "productDetails.product_id"
+                        [permissions] = "permissions">
+                    </app-notes-tab>
+                    <app-attachment-tab
+                        *ngIf = "activeTab === 'attachments'"
+                        [entity] = "productDetails.product_id"
+                        [permissions] = "permissions"
+                        [showFileType] = true
+                        [showPrivacyIcon] = true>
+                    </app-attachment-tab>
                 </div>
-                
-                <div class="col-sm-6 u-pl2 right-side">
+                <div class="col-sm-6 u-pl2 right-side u-pg-pl-2">
                     <div>
-                        <app-cmp-header-widget [headerTitle]="dimensionTitle"></app-cmp-header-widget>
-                        <app-product-summary-dimensions-card [rows]="productList"></app-product-summary-dimensions-card>
+                        <app-cmp-header-widget 
+                            [headerTitle]="dimensionTitle">
+                        </app-cmp-header-widget>
+                        <app-product-summary-dimensions-card 
+                            [rows]="productList">
+                        </app-product-summary-dimensions-card>
                     </div>
-                    <div class="code-section">
-                        <app-cmp-header-widget [headerTitle]="codesTitle"></app-cmp-header-widget>
-                        <div class="code-table">
-                            <table id="customers">
-                                <tr>
-                                    <th class="typography-paragraph-black-regular col-type">Type</th>
-                                    <th class="typography-paragraph-black-regular col-code"><span class="ftleft"></span>Code</th>
-                                </tr>
-                                <tr class="odd-event-row" *ngFor="let code of productCodeDetail">
-                                    <td class="typography-paragraph-dark-regular type-val">{{code.label}}</td>
-                                    <td class="typography-paragraph-dark-regula code-val">{{code.val}}</td>
-                                </tr>
-                            </table>
-                        </div>
+                    <div class="u-pg-mt-1">
+                        <app-cmp-header-widget
+                            [headerTitle]="codesTitle">
+                        </app-cmp-header-widget>
+                        <app-product-summary-dimensions-card 
+                            [rows]="productCodeDetail">
+                        </app-product-summary-dimensions-card>
                     </div>
                 </div>
             </div>

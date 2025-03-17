@@ -1,6 +1,7 @@
-@import '../../../../../src/styles/colors';
+
 @import '../../../../app/scss/utilities/tooltip';
-@import '../../../../app/scss/variables/typography';
+@import '../../../scss/variables/typography';
+@import '../../../scss/variables/colors';
 
 .content {
     width: 480px;

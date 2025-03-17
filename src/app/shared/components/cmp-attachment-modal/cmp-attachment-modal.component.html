@@ -82,7 +82,7 @@
               </div>
             </div>
           </div>
-          <i class="fa-solid fa-trash-can" (click)="deleteFile(i)"></i>
+          <i class="fas fa-trash" (click)="deleteFile(i)"></i>
         </div>
       </div>
     </div>
@@ -115,8 +115,8 @@
       <app-cmp-button 
         [buttonText]="modalData.saveAction.label" 
         [buttonClass]="'primary w-lg'" 
-        [isDisable]="!selectedFileCount || selectedFileCount <= 0 || (modalData.fileTypeDropdown && modalData.fileTypeDropdown.length <= 0)"
-        (click)="!selectedFileCount ? $event.stopPropagation() : uploadAttachments()">
+        [isDisable]="isButtonDisabled"
+        (click)="isButtonDisabled ? $event.stopPropagation() : uploadAttachments()">
       </app-cmp-button>
     </div>
   </div>

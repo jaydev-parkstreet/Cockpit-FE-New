@@ -1,6 +1,5 @@
-@import "../../../../styles/colors";
-@import '../../../../styles/typography';
-// @import '../../../../scss/mixin/checkbox';
+@import '../../../scss/variables/typography';
+@import '../../../scss/variables/colors';
 
 .table-grid {
     psi-ag-grid {
@@ -11,7 +10,7 @@
         .ag-header {
             color: $colors-neutral-black;
             font-size: 16px;
-            font-family: $helvetica-medium;
+            font-family: $montserrat-medium;
             font-weight: 500;
             background-color: $colors-neutral-white;
             text-transform: none;
@@ -75,27 +74,27 @@
                         white-space: nowrap !important;
                         padding-left: 12px;
                         padding-right: 12px;
-                        font-family: $helvetica-neue;
+                        font-family: $montserrat-regular;
                         font-size: 14px;
                     }
 
                     .attachments-notes .fas.fa-file, .fas.fa-comment {
-                        color: $colors-base-primary;
+                        color: $colors-v2-base-primary;
                         &:hover {
-                            color: $colors-base-primary-v-high;
+                            color: $colors-v2-base-primary-v-high;
                         }
                     }
 
                     .attachments-notes {
                         .note-count  {
-                            background: $colors-base-error;
+                            background: $colors-v2-base-error;
                             height: 12px;
                             width: 13%;
                             border-radius: 50px;
                             position: absolute;                           
                             p {
                                 color: $colors-neutral-white;
-                                font-family:  $helvetica-medium;
+                                font-family:  $montserrat-medium;
                                 font-weight: 500;
                                 font-size: 10px;
                                 position: absolute;
@@ -114,14 +113,14 @@
 
                     .attachments-notes {
                         .note-count  {
-                            background: $colors-base-error;
+                            background: $colors-v2-base-error;
                             height: 12px;
                             width: 13%;
                             border-radius: 50px;
                             position: absolute;                           
                             p {
                                 color: $colors-neutral-white;
-                                font-family:  $helvetica-medium;
+                                font-family:  $montserrat-medium;
                                 font-weight: 500;
                                 font-size: 10px;
                                 position: absolute;
@@ -166,7 +165,7 @@
                             border-radius: 0px;
                             background-color: $colors-neutral-black;
                             color: $colors-neutral-white !important;
-                            font-family: $helvetica-neue;
+                            font-family: $montserrat-regular;
                             font-size: 14px;
                             text-align: center;
                             margin-top: -6px;
@@ -182,7 +181,7 @@
 
                     &:not(.gird-selected-row):hover {
                         z-index: 5;
-                        background: $colors-base-primary-v-low-t-05;
+                        background: $colors-v2-base-primary-v-low-t-05;
                     }
 
                     .ag-cell-focus {
@@ -193,7 +192,7 @@
             }
 
             .gird-selected-row {
-                background: $colors-base-primary-v-low-t-10;
+                background: $colors-v2-base-primary-v-low-t-10;
             }
         }
 
@@ -205,7 +204,7 @@
                     color: #a5a5a5;
                     font-size: 14px;
                     margin-top: 100px;
-                    font-family: $helvetica-medium;
+                    font-family: $montserrat-medium;
                     display: flex;
                     flex-direction: column;
 
@@ -240,7 +239,7 @@
         ::-webkit-scrollbar-thumb {
             -webkit-border-radius: 4px;
             border-radius: 4px;
-            background: $colors-base-primary-t-10;
+            background: $colors-v2-base-primary-t-10;
         }
 
         span.ag-header-icon.ag-sort-order {
