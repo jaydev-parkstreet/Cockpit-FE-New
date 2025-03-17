@@ -1,0 +1,107 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import AppRoutes from 'src/app/app.routes';
+import { environment } from 'src/environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CommonBackendService {
+
+    constructor(
+      private http: HttpClient
+    ) { }
+
+    /**
+     * Fetches notes based on the provided parameters.
+     *
+     * @param {string} kind - The type/category of the notes.
+     * @param {string} tool - The tool identifier related to the notes.
+     * @param {string} entity - The entity associated with the notes.
+     * @param {string} menuItemId - The menu item identifier for filtering notes.
+     * @returns {Observable<any>} An observable containing the API response with notes.
+     * @author PSI-Enhancement
+     */
+    getNotes(kind: string, tool: string, entity:string, menuItemId: string) {
+      let params = new HttpParams()
+        .set('kind', kind)
+        .set('entity', entity)
+        .set('tool', tool)
+        .set('menu_item_id', menuItemId);
+
+      return this.http.get(`${environment.apiUrl}${AppRoutes.COMMON.NOTES}`, { params });
+    }
+
+    /**
+     * Updates the privacy permission of a note.
+     *
+     * @param {Object} reqObj - The request object containing `note_id` and `permission_id`.
+     * @returns {Observable<any>} An observable containing the API response.
+     * @author PSI-Enhancement
+     */
+    changeNotePrivacy(reqObj) {
+      return this.http
+          .put(`${environment.apiUrl}${AppRoutes.COMMON.NOTES_CHANGE_PERMISSION}`, reqObj);
+    }
+
+    /**
+     * Function to delete a note.
+     * 
+     * @param number id
+     * @param number menuItemId
+     * @author PSI-Enhancement  
+     */
+    deleteNote(id, menuItemId) {
+      return this.http.
+          delete(environment.apiUrl + AppRoutes.COMMON.NOTES, { params: { id, menu_item_id: menuItemId } });
+    }
+
+    /**
+     * Function to get Attachments
+     * 
+     * @param entity 
+     * @param tool_id 
+     * @returns {Observable} - An API response
+     * @author PSI-Enhancement
+     */
+    getAttachments(entity: string, tool_id: string) {
+      let params = new HttpParams()
+        .set('entity', entity)
+        .set('tool', tool_id);
+      
+      return this.http.
+          get(`${environment.apiUrl}${AppRoutes.COMMON.ATTACHMENTS}`, { params });
+    }
+
+    /**
+     * Function to delete Attachment
+     * 
+     * @param entity 
+     * @returns {Observable} - An API response
+     * @author PSI-Enhancement
+     */
+    deleteAttachment(entity) {
+      let params = new HttpParams()
+        .set('id', entity);
+
+      return this.http
+        .delete(`${environment.apiUrl}${AppRoutes.COMMON.ATTACHMENTS}`, { params });
+    }
+
+    /**
+     * Function to update file permissions.
+     * 
+     * @author PSI-IV
+     * @param number id
+     * @param number permission_id
+     */
+    changeFilePermission (entity_upload_id, permission_id) { 
+      const reqObj = {
+        entity_upload_id,
+        permission_id
+      };
+
+      return this.http
+        .put(`${environment.apiUrl}${AppRoutes.COMMON.ATTACHMENTS_PERMISSION}`, reqObj);
+    }
+}
