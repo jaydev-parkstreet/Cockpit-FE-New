@@ -13,7 +13,7 @@ import { StatelessModule } from './stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LayoutModule } from './components/layout/layout.module';
-import { PsiBrandModalComponent } from './components/organism/psi-brand-modal/psi-brand-modal.component';
+import { PsiBrandModalComponent } from './components/product-management/psi-brand-modal/psi-brand-modal.component';
 @NgModule({
   declarations: [
     AppComponent,

@@ -442,7 +442,7 @@ export class ProductAddService {
                 isDisabled: true,
                 display: true,
                 filters: { entity: [] },
-                options: crudFiltersList.sub_brand_product_id || []
+                options: crudFiltersList.sub_brand || []
             },
             new_sub_brand: {
                 type: 'text',
@@ -480,11 +480,12 @@ export class ProductAddService {
         };
     }
 
-    getBrandModalData(config, istitle, isCreateButtonDisabled = true) {
+    getBrandModalData(config, istitle, isCreateButtonDisabled = true, clientID = null) {
         return {
             titleIcon: 'fas fa-info-circle',
             title: istitle ? 'Create New Brand' : 'Create New Sub Brand',
             config: config,
+            client_id: clientID,
             buttons : [
                 {
                     action: 'Cancel',
@@ -636,7 +637,7 @@ export class ProductAddService {
      * @returns An Observable containing the data of brands.
      * @author PSI-Enhancement
      */
-     getBrands(clientId: string) {
+    getBrands(clientId: string) {
         const token = localStorage.getItem('authToken');
     
         const headers = new HttpHeaders({
@@ -685,4 +686,34 @@ export class ProductAddService {
             .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.SAVE_NEW_BRAND, data)
             .pipe(map((response: any) => response));
     }
+
+    /**
+     * Function to save New Brand
+     * @author PSI-Enhancements
+     * @param data
+     */
+    saveNewSubBrands(data) {
+        return this.http
+            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.SAVE_NEW_SUB_BRAND, data)
+            .pipe(map((response: any) => response));
+    }
+
+    /**
+     * Fetches the sub-brand products associated with the given client ID.
+     * 
+     * @param clientId
+     * @returns An Observable containing the data of sub-brand products.
+     * @author psi-enhancement
+     */
+    getSubBrandClients(clientId: string , brandID: string) {
+        const token = localStorage.getItem('authToken');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        const params = new HttpParams()
+            .set('client_id', clientId)
+            .set('brand_id', brandID);
+        return this.http
+            .get( environment.apiUrl + AppRoutes.PRODUCT_TOOL.GET_SUB_BRAND_WITH_CLIENT_ID , { headers, params })
+            .pipe(map((response :any) => response.data));
+    }
+
 }

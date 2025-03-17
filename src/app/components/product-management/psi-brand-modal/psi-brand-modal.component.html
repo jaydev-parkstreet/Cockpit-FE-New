@@ -32,10 +32,9 @@
                     (valueChanged)="onInputChange(field.name, $event)">
                 </app-psi-input-text-field>
                 <div *ngIf="isFieldInvalid(field.name)" class="error-message">
-                    <!-- <span *ngIf="!field.validationMessage">
+                    <span *ngIf="!field.validationMessage">
                         <span *ngIf="brandForm.get(field.name)?.errors?.required">Required</span>
-                    </span> -->
-                   
+                    </span>
                     <span *ngIf="field.validationMessage && field.hasError">{{ field.validationMessage }}</span>
                 </div>
             </div>
