@@ -16,7 +16,7 @@
                     *ngFor="let menu of menuData" (click)="toggleIcon(menu)">
                         <a [routerLink]="'/product-management'" (mouseover)="showMenu($event, $event.currentTarget)" 
                         (mouseleave)="hideMenu($event, $event.currentTarget)">
-                            <i [class]="menu.icon" class="sidebar-icon" [ngClass]="isSidebarExpanded ? 'u-pg--1' : ''"></i>
+                            <i [class]="menu.icon" class="sidebar-icon" [ngClass]="isSidebarExpanded ? 'u-pg-mr-1' : ''"></i>
                             <span class="custom-width" *ngIf="isSidebarExpanded">{{menu.label}}</span>
                             <em class="toggle-icon"
                                 [ngClass]= "menu.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
