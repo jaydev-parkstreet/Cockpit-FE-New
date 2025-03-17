@@ -9,14 +9,16 @@
         background-color: $colors-neutral-black;
     }
 
-    .mainPanelExpand {
-        margin-left: 240px;
-
-    }
-
-    .mainPanelCollapse {
-        margin-left: 65px;
-
+    .mainPanel {
+        flex: 1;
     }
 
 }
+
+app-main-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+

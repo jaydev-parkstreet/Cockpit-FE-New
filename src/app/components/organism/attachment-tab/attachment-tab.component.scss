@@ -1,0 +1,38 @@
+@import '../../../scss/variables/colors';
+
+.attachment-tab {
+    box-shadow: $colors-shadows-black-25;
+
+    .attachments-container {
+        .seperator {
+            margin: 0 0 4px 0;
+            border-top: 1px solid $colors-neutral-light;
+        }
+
+        &.custom-padding {
+            padding: 16px 16px 0;
+        }
+        
+        .left-section,
+        .middle-section,
+        .right-section { 
+            flex: 1; 
+            overflow: hidden;
+        }
+    }
+    .add-attachment {
+        height: 64px;
+        i , span {
+            color: $colors-neutral-dark-t-75;
+            cursor: pointer;
+
+            &:hover {
+                color: $colors-neutral-dark;
+            }
+        }
+
+        &:hover {
+            background-color: $colors-v2-base-primary-v-low-t-05;
+        }
+    }
+}
