@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/core/services/common.service';
 import AppRoutes from 'src/app/app.routes';
+import AppConstant from 'src/app/app.constant';
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +16,7 @@ export class ProductManagementService {
         private http: HttpClient,private commonService:CommonService,
         private dropdownService: InputDropdownService,
     ) { }
+    CONSTANTS: any = AppConstant;
     
     /**
       * Function to get top bar config.
@@ -185,6 +187,10 @@ export class ProductManagementService {
         return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>` + inActiveIcon;
       }
       return '--';
+    }
+
+    getAttachmentList (param:any) {        
+        return this.http.get(environment.apiRouteUrl+environment.version.v1+ this.CONSTANTS.COMMON.FILES_API+'?', { params: param });
     }
 
     getTopPanelConfig(permission , isActive = false) {
@@ -558,4 +564,25 @@ export class ProductManagementService {
             .get(environment.apiUrl +`product-tool/ns-sync-status?id=${id}`)
             .pipe(map((response :any) => response));
     }
+
+    uploadMultipleAttachments(reqObj: FormData) {
+        return this.http.post(environment.apiRouteUrl + environment.version.v1 + this.CONSTANTS.COMMON.MULTIPLE_FILES_API, 
+            reqObj, 
+            { headers: { 'enctype': 'multipart/form-data' } }
+        );
+    }
+
+    changeFilePermission (data:any) {       
+        return this.http.put(environment.apiRouteUrl + environment.version.v1  + this.CONSTANTS.COMMON.FILES_API+'/'+this.CONSTANTS.COMMON.CHANGE_FILE_PERMISSION, data);
+    }
+
+    deleteUploadFile(param: any) {      
+        return this.http.delete(environment.apiRouteUrl + environment.version.v1  + this.CONSTANTS.COMMON.FILES_API, {
+          params: new HttpParams().set('id', param),
+          headers: new HttpHeaders({
+            'Content-Type': ''
+          })
+        });
+      }
+      
 }

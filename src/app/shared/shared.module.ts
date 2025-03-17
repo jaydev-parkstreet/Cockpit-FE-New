@@ -17,7 +17,8 @@ import { CardLayoutDetailsComponent } from './components/card-layout-details/car
 import { ProductSummaryDimensionsCardComponent } from './components/product-summary-dimensions-card/product-summary-dimensions-card.component';
 import { CmpTabGroupComponent } from './components/cmp-tab-group/cmp-tab-group.component';
 import { SummaryGridComponent } from './components/summary-grid/summary-grid.component';
-import { AgGridModule } from 'ag-grid-angular'
+import { AgGridModule } from 'ag-grid-angular';
+import { CmpAttachmentModalComponent } from './components/cmp-attachment-modal/cmp-attachment-modal.component'
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { AgGridModule } from 'ag-grid-angular'
     CardLayoutDetailsComponent,
     ProductSummaryDimensionsCardComponent,
     CmpTabGroupComponent,
-    SummaryGridComponent
+    SummaryGridComponent,
+    CmpAttachmentModalComponent
   ],
   imports: [
     CommonModule,
