@@ -24,15 +24,15 @@
   }
 
   .ag-theme-material {
-    font: 500 14px "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font: 500 14px $montserrat-regular, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 
     .ag-header {
-      font: 700 14px "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+      font: 700 14px $montserrat-regular, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
     }
   }
 
   .ag-body-container a {
-    color: #337ab7 !important;
+    color: $colors-v2-base-secondary !important;
   }
 
   .ag-cell {
