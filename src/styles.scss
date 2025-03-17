@@ -245,3 +245,47 @@ input:-webkit-autofill:active {
     background-position: left center;
     display: block;
 }
+
+// Global class for modal popup
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    margin: 20px auto;
+    box-shadow: 0px 4px 8px 0px $colors-neutral-light-t-15;
+    border-radius: 0px;
+    border: 0;
+    .modal-header {
+        padding: 16px;
+        color: $colors-neutral-black;
+        font-size: 14px;
+        text-transform: uppercase;
+        box-shadow: 0px 2px 8px 0px $colors-neutral-dark-t-15;
+        display: flex;
+        align-items: center;
+        
+        .title-icon{
+            margin-top: 0px;
+            &:before {
+                font-size: 13px;
+            }
+        }
+
+        .header-title {
+            color: $colors-neutral-black;
+            font-size: 14px;
+            line-height: 14px;
+            font-family: $montserrat-regular;
+            text-transform: uppercase;
+            margin-left:10px;
+            margin-right: 5px;
+            width: 100% !important;
+        }
+
+        .fa-times{
+            float:right;
+            cursor: pointer;
+            font-size: 16px;
+            color: $colors-neutral-black;
+        }
+    }
+}

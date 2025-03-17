@@ -16,6 +16,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
     @Input() modalData: any;
     formSubmitted: boolean;
     sellectedData: any = {};
+    isCreateButtonDisabled: boolean = false;
 
     constructor(
         private simpleModalService: SimpleModalService,
@@ -36,7 +37,6 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         Object.keys(this.modalData.config).forEach(key => {
             const field = this.modalData.config[key];
             const isFieldRequired = field.required || field.isRequired;
-            console.log(field , field.isRequired);
             const formControl = new FormControl(
                 '',
                 isFieldRequired ? Validators.required : []
@@ -45,9 +45,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
             controls[field.name] = formControl;
         });
         this.brandForm = new FormGroup(controls);
-        console.log(this.brandForm);
     }
-    
     
     
     
@@ -56,7 +54,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         this.close();
     }
     onButtonClicked(event) {
-        console.log(event);
+       
         if (event === "Cancel") {
             this.result = { confirm: false };
             this.close();
@@ -96,9 +94,11 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         this.brandForm.get(field).setValue(value);
         let form = this.brandForm.value;
         let clientId = this.modalData.client_id;
-        this.CheckValueExist({ field, value , form }, clientId);
+        this.CheckBrandValueExist({ field, value , form }, clientId);
         this.changeDetector.detectChanges();
     }
+
+  
 
     /**
       * Returns true if the field is invalid and the form has been submitted.
@@ -107,9 +107,10 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
       * @author psi-enhancement
       */
     isFieldInvalid(controlName: string): boolean {
+      
         const control = this.brandForm.get(controlName);
-        const field = this.modalData.config[controlName];
-        return (control?.invalid || field?.hasError) && this.formSubmitted;
+        const field = this.modalData.config[controlName];    
+        return (control?.invalid || field?.hasError) && this.isCreateButtonDisabled;
     }
 
     updateConfig = (config, isDisplayed) => {
@@ -117,46 +118,69 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         config.isRequired = isDisplayed;
     };
 
-    CheckValueExist(data, clientId) {
-        console.log(data, clientId);
+    CheckBrandValueExist(data, clientId) {
         if (data.field === 'new_brands') {
-            const brandExistsObj = {
+            const param = {
                 client_id: clientId,
                 name: data.value
             };
-            this.ProductAddService.getBrandExist(brandExistsObj).subscribe(response => {
-                if (response.hasError) {
-                    this.modalData.config.new_brands.hasError = true;
-                    this.modalData.config.new_brands.validationMessage = response.msg;
-                } else {
-                    this.modalData.config.new_brands.hasError = false;
-                    this.modalData.config.new_brands.validationMessage = "";
-                }
-                this.changeDetector.detectChanges(); // Ensure UI reflects changes
-            });
+            this.checkBrandExist(data,param);
         }
     
         if (data.field === 'new_sub_brand') {
-            const brandExistsObj = {
+            const param = {
                 brand_id: data.form.brand.id,
                 client_id: clientId,
                 name: data.value
             };
-            this.ProductAddService.getSubBrandExist(brandExistsObj).subscribe(response => {
-                if (response.hasError) {
-                    this.modalData.config.new_sub_brand.hasError = true;
-                    this.modalData.config.new_sub_brand.validationMessage = response.msg;
-                } else {
-                    this.modalData.config.new_sub_brand.hasError = false;
-                    this.modalData.config.new_sub_brand.validationMessage = "";
-                }
-                this.changeDetector.detectChanges(); // Ensure UI reflects changes
-            });
+            this.checkSubBrandExits(data,param);
+         
         }
     }
     
+    checkBrandExist(data, param) {
+        this.ProductAddService.getBrandExist(param).subscribe(response => {
+            
+            this.modalData.config.new_brands.hasError = response.hasError;
+            this.modalData.config.new_brands.validationMessage = response.msg;
+            if (response.msg === 'Brand name already exists' || data.value === '') {
+                this.isDisableCheckCreateBrand(this.isCreateButtonDisabled = true);
+            } else {
+                this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', false);
+
+            }
+
+            this.changeDetector.detectChanges(); // Ensure UI reflects changes
+        });
+    }
+
+    checkSubBrandExits(data, param) {
+      
+        this.ProductAddService.getSubBrandExist(param).subscribe(response => {
+           
+            this.modalData.config.new_brands.hasError = response.hasError;
+            this.modalData.config.new_brands.validationMessage = response.msg;
+            if (response.msg === 'Brand name already exists' || data.value === '') {
+                this.isDisableCheckCreateBrand(this.isCreateButtonDisabled = true);
+            } else {
+                this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', false);
+
+            }
+        });
+    }
+
+
+    isDisableCheckCreateBrand(isCreateButtonDisabled) {
+        this.brandForm.valueChanges.subscribe(() => {
+            const isFormValid = this.brandForm.valid;
+            const isButtonDisable = !(isFormValid && isCreateButtonDisabled);
+            this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '',isButtonDisable);
+        });
+            
+    }
 
     updateFilter(data) {
+       
         if (data.field === 'brand') {
             if (data.event[0].isNew) {
                 this.updateConfig(this.modalData.config.brand, false);
@@ -175,6 +199,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         }
     
         if (data.field === 'sub_brand_product_id') {
+            
             if (data.event[0].isNew) {
                 this.updateConfig(this.modalData.config.sub_brand_product_id, false);
                 this.updateConfig(this.modalData.config.new_sub_brand, true);
@@ -189,12 +214,16 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
                 this.modalData.config.units_cases.isDisabled = false;
             }
         }
-    
+        
+        if (!this.brandForm.invalid) {
+            this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', false);
+        }
         this.changeDetector.detectChanges();
     }
     
 
     addFieldControl(fieldName: string) {
+       
         const fieldConfig = this.modalData.config[fieldName];
     
         if (!fieldConfig) {
