@@ -3,8 +3,8 @@
 
 .tab-group {
     height: 48px;
-    box-shadow: $colors-shadows-black-25;
-
+    box-shadow: 0px 4px 8px 0px $colors-neutral-dark-t-15;
+    
     ul {
         li {
             &.active {
