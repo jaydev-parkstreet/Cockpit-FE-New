@@ -1,5 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Renderer2 } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../../authentication/auth.service';
+import { Router } from '@angular/router';
+import { SidebarMenuService } from './sidebar-menu.service';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -7,167 +10,193 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./sidebar-menu.component.scss']
 })
 export class SidebarMenuComponent implements OnInit {
-  menuData = [];
-  @Input() isSidebarExpanded:any;
+  menuData: any;
+  isSidebarExpanded: boolean = false;
+  isDropdownVisible: boolean = false;
+  currentUserData: any;
+  oldCockpit: string = environment.oldCockpit;
+  currentRoute: any;
+  allowedRoutes = ['product_management_system'];
 
-  constructor() { }
+  constructor(
+    private authService: AuthService,
+    private renderer: Renderer2,
+    private router: Router,
+    private sidebarMenuService: SidebarMenuService
+  ) { }
 
-  ngOnInit(): void { 
-    this.isSidebarExpanded =true;
-    this.menuData = [
-      {
-        id: 1,
-        iconClass: 'fas fa-tachometer-alt',
-        menuContent: 'Dashboard',
-        isExpanded: false,
-        iconPlus: false
-      },
-      {
-        id: 2,
-        iconClass: 'fas fa fa-home',
-        menuContent: 'Gateway',
-        isExpanded: false,
-        iconPlus: false
-      },
-      {
-        id: 3,
-        iconClass: 'fas fa-sitemap',
-        menuContent: 'Companies & Contacts',
-        isExpanded: false,
-        iconPlus: true,
-        submenuItems: [{
-          submenuContent: 'Companies & Contacts',
-          href: environment.oldCockpit + '/router.php/crm#/dashboard'
-        },
-        {
-          submenuContent: 'National Accounts',
-          href: environment.oldCockpit + "/router.php/nationalaccounts#/"
-        }]
-      },
-      {
-        id: 4,
-        iconClass: 'fas fa-glass-martini',
-        menuContent: 'Suppliers',
-        isExpanded: false,
-        iconPlus: true,
-        submenuItems: [{
-          submenuContent: 'Supplier Management',
-          href: environment.oldCockpit + '/router.php/app#!/cockpit/client-supplier-management'
-        },
-        {
-          submenuContent: 'Profile Updates',
-          href: environment.oldCockpit + '/router.php/client-profile-updates/view'
-        },
-        {
-          submenuContent: 'Profile Overview',
-          href: environment.oldCockpit + '/router.php/profiles-overview'
-        },
-        {
-          submenuContent: 'Supplier Status',
-          href: environment.oldCockpit + '/router.php/client/status#/'
-        }]
-      },
-      {
-        id: 5,
-        iconClass: 'fas fa-dollar-sign',
-        menuContent: 'Accounting',
-        isExpanded: false,
-        iconPlus: true,
-        submenuItems: [{
-          submenuContent: 'Bill Management',
-          href: environment.oldCockpit +'/router.php/app#!/cockpit/bill-management'
-        },
-        {
-          submenuContent: 'Invoice Management',
-          href: environment.oldCockpit + '/router.php/app#!/cockpit/invoice-management-summary'
-        },
-        {
-          submenuContent: 'National Wholesale Scorecard',
-          href: environment.oldCockpit + '/router.php/accounting/national-scorecard'
-        },
-        {
-          submenuContent: 'Distribution Request',
-          href: environment.oldCockpit + '/router.php/app/#!/cockpit/distribution-request'
-        }]
-      },
-      {
-        id: 6,
-        iconClass: 'fas fa-cogs',
-        menuContent: 'Operations',
-        isExpanded: false,
-        iconPlus: true,
-        submenuItems: [{
-          submenuContent: 'Product Management System',
-          submenuLink: '/product-management'
-        },
-        {
-          submenuContent: 'International Shipments',
-          href: environment.oldCockpit + '/router.php/app/#!/cockpit/international-shipment'
-        },
-        {
-          submenuContent: 'Order Management System',
-          href: environment.oldCockpit + '/router.php/app/#!/order-management-system-v2'
-        }]
-      },
-      {
-        id: 7,
-        iconClass: 'fas fa-stamp',
-        menuContent: 'Compliance',
-        isExpanded: false,
-        iconPlus: true,
-        submenuItems: [{
-          submenuContent: 'State Registrations',
-          href: environment.oldCockpit +'/router.php/app/#!/cockpit/state-registrations'
-        },
-        {
-          submenuContent: 'Monthly Reports',
-          href: environment.oldCockpit + '/router.php/app/#!/cockpit/monthly-reports'
-        }]
-      },
-      {
-        id: 8,
-        iconClass: 'fas fa-certificate',
-        menuContent: 'Shared Services',
-        isExpanded: false,
-        iconPlus: true
-      },
-      {
-        id: 9,
-        iconClass: 'fas fa-poll',
-        menuContent: 'Supplier Development',
-        isExpanded: false,
-        iconPlus: true
-      },
-      {
-        id: 10,
-        iconClass: 'fas fa-trophy',
-        menuContent: 'Service Standards',
-        isExpanded: false,
-        iconPlus: true
-      },
-      {
-        id: 11,
-        iconClass: 'fas fa-bullhorn',
-        menuContent: 'Announcements',
-        isExpanded: false,
-        iconPlus: true
-      },
-      {
-        id: 12,
-        iconClass: 'fas fa-code',
-        menuContent: 'Product Development',
-        isExpanded: false,
-        iconPlus: true
-      }];
+  ngOnInit(): void {
+    this.currentUserData = this.authService.getUserData();
+    this.currentRoute = this.router.url;
+    this.getSidebarMenu();
   }
 
-  toggleIcon (menu:any) {
-    this.menuData.forEach((el)=> {
-      if (el.id !== menu.id) {
-        el.isExpanded = false;
+  showSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
+    const submenuItem = anchorElement.parentElement as HTMLElement;
+    if (!submenuItem) return;
+    const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
+    if (!submenuElement) return;
+    const parentRect = submenuItem.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    this.renderer.setStyle(submenuElement, 'visibility', 'hidden');
+    this.renderer.setStyle(submenuElement, 'display', 'block');
+    const submenuHeight = submenuElement.offsetHeight;
+    this.renderer.setStyle(submenuElement, 'display', 'none');
+    this.renderer.setStyle(submenuElement, 'visibility', 'visible');
+    let topPosition = parentRect.top;
+    if (this.isSidebarExpanded) {
+      this.renderer.removeStyle(submenuItem, 'position');
+      if (topPosition + submenuHeight > viewportHeight) {
+        this.renderer.setStyle(submenuElement, 'bottom', `16px`);
+      } else {
+        this.renderer.setStyle(submenuElement, 'top', `${topPosition - 16}px`);
+
+      }
+      this.renderer.setStyle(submenuElement, 'left', `calc(100% - 16px)`);
+    } else {
+      this.renderer.setStyle(submenuItem, 'position', `relative`);
+      if (topPosition + submenuHeight > viewportHeight) {
+        this.renderer.setStyle(submenuElement, 'bottom', `16px`);
+      } else {
+        this.renderer.setStyle(submenuElement, 'top', `-16px`);
+      }
+      this.renderer.setStyle(submenuElement, 'left', `calc(100% + 8px)`);
+    }
+    this.renderer.setStyle(submenuElement, 'display', 'block');
+    submenuElement.addEventListener('mouseenter', () => {
+      this.renderer.setStyle(submenuElement, 'display', 'block');
+    });
+    submenuElement.addEventListener('mouseleave', () => {
+      this.renderer.setStyle(submenuElement, 'display', 'none');
+    });
+  }
+
+  hideSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
+    const submenuItem = anchorElement.parentElement as HTMLElement;
+    if (!submenuItem) return;
+    const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
+    if (!submenuElement) return;
+    setTimeout(() => {
+      if (!submenuElement.matches(':hover')) {
+        this.renderer.setStyle(submenuElement, 'display', 'none');
+      }
+    }, 150);
+  }
+
+  showMenu(event: MouseEvent, anchorElement: HTMLElement) {
+    if (!this.isSidebarExpanded) {
+      const menuItem = anchorElement.parentElement as HTMLElement;
+      if (!menuItem) return;
+      const submenuItem = anchorElement.nextElementSibling as HTMLElement;
+      if (submenuItem && submenuItem.tagName === 'UL') {
+        const parentRect = menuItem.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        this.renderer.setStyle(submenuItem, 'visibility', 'hidden');
+        this.renderer.setStyle(submenuItem, 'display', 'block');
+        const submenuHeight = submenuItem.offsetHeight;
+        this.renderer.setStyle(submenuItem, 'display', 'none');
+        this.renderer.setStyle(submenuItem, 'visibility', 'visible');
+        let topPosition = parentRect.top;
+        if (topPosition + submenuHeight > viewportHeight) {
+          this.renderer.setStyle(submenuItem, 'bottom', `16px`);
+        } else {
+          this.renderer.setStyle(submenuItem, 'top', `${topPosition}px`);
+        }
+        this.renderer.setStyle(submenuItem, 'left', `calc(100% - 8px)`);
+        this.renderer.setStyle(submenuItem, 'display', 'block');
+        submenuItem.addEventListener('mouseenter', () => {
+          this.renderer.setStyle(submenuItem, 'display', 'block');
+        });
+        submenuItem.addEventListener('mouseleave', () => {
+          if (!this.isSidebarExpanded) {
+            this.renderer.setStyle(submenuItem, 'display', 'none');
+          }
+        });
+      }
+    } else {
+      return;
+    }
+  }
+  
+  hideMenu(event: MouseEvent, anchorElement: HTMLElement) {
+    if (!this.isSidebarExpanded) {
+      const submenuItem = anchorElement.nextElementSibling as HTMLElement;
+      if (submenuItem && submenuItem.tagName === 'UL') {
+        setTimeout(() => {
+          if (!submenuItem.matches(':hover')) {
+            this.renderer.setStyle(submenuItem, 'display', 'none');
+          }
+        }, 150);
+      }
+    } else {
+      return;
+    }
+  }
+
+  /**
+   * Function to open and close submenus in expanded mode menu
+   * @author PSI-Enhancements
+   */
+  toggleMenuItems(menu: any) {
+    this.menuData.forEach((menuItems) => {
+      if (menuItems.id !== menu.id) {
+        menuItems.isExpanded = false;
       }
     });
     menu.isExpanded = !menu.isExpanded;
   }
 
+
+  /**
+   * Function to get menu data & sidebar api
+   * @author PSI-Enhancements
+   */
+  getSidebarMenu() {
+    this.sidebarMenuService.getMenu().subscribe({
+      next: (response) => {
+        this.menuData = response.data.map((menu: any) => {
+          //this below line needs to be removed as the icon is coming null for beta in api
+          return menu.id === 495 ? { ...menu, icon: 'fas fa-hammer' } : menu;
+        });
+      },
+      error: (error) => {
+        this.menuData = [];
+      }
+    });
+  }
+
+  /**
+   * Function to toggle sidebar mode between expanded and collapsed mode
+   * @author PSI-Enhancements
+   */
+  toggleSidebar() {
+    this.isSidebarExpanded = !this.isSidebarExpanded;
+  }
+
+  /**
+   * Function to toggle footer dropdown in sidebar
+   * @author PSI-Enhancements
+   */
+  toggleFooterDropdown() {
+    this.isDropdownVisible = !this.isDropdownVisible;
+  }
+
+  /**
+   * Function to logout user from the application
+   * @author PSI-Enhancements
+   */
+  logout(): void {
+    this.authService.logout();
+  }
+
+  /**
+   * Function to set active route
+   * @author PSI-Enhancements
+   */
+  isActiveRoute(route: string): boolean {
+    if (!route) return false;
+    const currentPath = this.currentRoute.split('/').pop();
+    const menuPath = route.split('/').pop();
+    return currentPath === menuPath;
+  }
 }

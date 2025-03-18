@@ -1,0 +1,24 @@
+@import "../../scss/variables/typography";
+@import "../../scss/variables/colors";
+
+.msg-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    color: $colors-neutral-light;
+    margin: 24px 0;
+
+    span{
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        font-family: $montserrat-medium;
+    }
+
+    i{
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+}

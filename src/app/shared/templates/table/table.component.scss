@@ -154,7 +154,7 @@
                             overflow: visible;
 
                             .tooltip-text {
-                                color: #232323;
+                                color: $colors-neutral-black;
                                 display: flex;
                             }
                         }
@@ -201,7 +201,7 @@
 
             .ag-overlay-wrapper {
                 .no-data-message {
-                    color: #a5a5a5;
+                    color: $colors-neutral-light;
                     font-size: 14px;
                     margin-top: 100px;
                     font-family: $montserrat-medium;

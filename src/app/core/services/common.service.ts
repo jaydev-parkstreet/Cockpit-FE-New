@@ -65,6 +65,24 @@ export class CommonService {
     };
   }
 
+  getSingleSelectDropdownConfig (placeholder, selectionRequired = false, enableSearch = false, bootstrap = false) {
+    return this.getDropdownConfig(
+        placeholder,
+        false,
+        null,
+        null,
+        bootstrap,
+        300,
+        false,
+        false,
+        '',
+        enableSearch,
+        false,
+        1,
+        selectionRequired
+    );
+}
+
   createFilterObj(
     key,
     label,
