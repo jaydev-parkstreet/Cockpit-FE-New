@@ -1,7 +1,7 @@
 <div class="sidebar" [ngClass]="isSidebarExpanded ? 'expanded' : 'collapsed'">
     <div class="sidebar__header">
         <img [src]="isSidebarExpanded ? '../../../../assets/images/header-expanded-logo.svg' : '../../../../assets/images/header-collapsed-logo.svg'">
-        <div class="menutoggle" (click)="toggleMenu()">
+        <div class="menutoggle" (click)="toggleSidebar()">
             <i [class]="isSidebarExpanded ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"></i>
         </div>
     </div>
@@ -13,10 +13,10 @@
                         'sidebar-menu-open': menu.isExpanded, 
                         'sidebar-menu-active': isActiveRoute(menu.url)
                     }"
-                    *ngFor="let menu of menuData" (click)="toggleIcon(menu)">
+                    *ngFor="let menu of menuData" (click)="toggleMenuItems(menu)">
                         <a [routerLink]="'/product-management'" (mouseover)="showMenu($event, $event.currentTarget)" 
-                        (mouseleave)="hideMenu($event, $event.currentTarget)">
-                            <i [class]="menu.icon" class="sidebar-icon" [ngClass]="isSidebarExpanded ? 'u-pg--1' : ''"></i>
+                            (mouseleave)="hideMenu($event, $event.currentTarget)">
+                            <i [class]="menu.icon" class="sidebar-icon" [ngClass]="isSidebarExpanded ? 'u-pg-mr-1' : ''"></i>
                             <span class="custom-width" *ngIf="isSidebarExpanded">{{menu.label}}</span>
                             <em class="toggle-icon"
                                 [ngClass]= "menu.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
@@ -28,7 +28,7 @@
                             <span class="sidebar-tooltip">{{menu.label}}</span>
                             <li class="sidebar-submenu-item" [ngClass]="{'sidebar-menu-active': isActiveRoute(submenu.frontend_app_route ? submenu.frontend_app_route : submenu.url)}" *ngFor="let submenu of menu.submenuItems" >
                                 <a [routerLink]="submenu.url" *ngIf="submenu.label" (mouseover)="showSubmenu($event, $event.currentTarget)"
-                                (mouseleave)="hideSubmenu($event, $event.currentTarget)">
+                                    (mouseleave)="hideSubmenu($event, $event.currentTarget)">
                                     <span class="custom-width">{{submenu.label}}</span>
                                     <em class="fas fa-chevron-right toggle-icon" *ngIf="submenu.submenuItems"></em>
                                 </a>
@@ -48,7 +48,7 @@
     <div class="sidebar__footer">
         <div class="footer-profile">
             <div class="footer-profile-main"          
-            (click)="toggleDropdown()">
+            (click)="toggleFooterDropdown()">
                 <img [src]="oldCockpit + currentUserData.PictureUrl" alt=""/>
                 <span *ngIf="currentUserData" class="user-name">
                     <span [innerText]="currentUserData.first_name"></span>

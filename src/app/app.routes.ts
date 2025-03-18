@@ -4,6 +4,9 @@ const AppRoutes = {
         LOGOUT: 'logout',
         GET_PROFILE_INFO: 'get-profile',
     },
+    COMMON: {
+        SIDEBAR_MENU: 'cockpit-sidebar-menu'
+    },
     PRODUCT_TOOL: {
         GET_SUB_BRAND_PRODUCT_WITH_CLIENT_ID: 'product-tool/get-sub-brand-products-client',
         SAVE_API: 'product-tool/save',
