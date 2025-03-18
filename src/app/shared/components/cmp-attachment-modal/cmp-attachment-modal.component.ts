@@ -76,7 +76,10 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     const allowedExtensions = ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'];
     const maxSize = 10 * 1024 * 1024;
     const validFiles: File[] = [];
-
+    if (files.length > 5) {
+      alert('Only 5 files are allowed to be uploaded.');
+      return;
+    }
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const fileName = file.name;

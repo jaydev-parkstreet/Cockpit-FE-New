@@ -4,6 +4,8 @@ import { CommonBackendService } from 'src/app/core/services/common-backend-servi
 import { CommonService } from 'src/app/core/services/common.service';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import AppConstant from 'src/app/app.constant';
+import { ProductManagementService } from '../../product-management/product-management.service';
+import { CmpAttachmentModalComponent } from 'src/app/shared/components/cmp-attachment-modal/cmp-attachment-modal.component';
 
 @Component({
   selector: 'app-attachment-tab',
@@ -19,16 +21,19 @@ export class AttachmentTabComponent implements OnInit {
     
     isLoadingAttachments: boolean = false;
     updateFilePermissionLoading: boolean = false;
-    attachments: [] = [];
+    attachments:any;
+    filterList: any = {};
 
     constructor(
       private commonBackendService: CommonBackendService,
       private commonService: CommonService,
       private simpleModalService: SimpleModalService,
+      private productManagementService: ProductManagementService,
     ) { }
 
     ngOnInit(): void {
       this.getAttachments();
+      this.getDropdown(); 
     }
 
     /**
@@ -46,7 +51,8 @@ export class AttachmentTabComponent implements OnInit {
       ).subscribe( 
         (response: any) => {
           if(!response.hasErrors) {
-            this.attachments = response.data;
+            this.attachments = response;
+            console.log(this.attachments);
           } else {
             this.commonService.showToastV2Message(true, 'Failed to load Attachments', 'fas fa-exclamation-circle');
           }
@@ -57,6 +63,62 @@ export class AttachmentTabComponent implements OnInit {
         }
       );
     }
+
+    async getDropdown(){
+      const token = localStorage.getItem('authToken');
+      console.log(token);
+      try {
+        const response:any = await this.productManagementService.getDropdown(token);
+        this.filterList = response.data;
+      }
+      catch (error) {
+        console.error("Error fetching summary:", error);
+      }
+    }
+
+  showAttachment(multiple:any, entityIds:any, attachments:any) {
+    console.log(this.filterList)
+    let modalData:any;
+
+    modalData = {
+      modalTitle: 'Attachment',
+      showDismissIcon: true,
+      noDataMessage: 'No Attachments Found',
+      emptyDataIcon: 'far fa-surprise',
+      entityIds: entityIds,
+      attachmentPermission: this.filterList.entity_permissions,
+      cancelAction: { label: 'Cancel' }, saveAction: { label: 'Save' },filtersList: this.filterList,
+      multiple: multiple, uploadButtonName: 'Choose File',
+      customClass: true, showHorizontalLine: true,
+      newDeletePopup:true,
+      showErrorInNewToast: true,
+      hideAttachmentLockIcon: true,
+      showFileType: true,
+      fileTypeDropdown: this.permissions.entity_kinds,
+      showChangePrivacyIcon: true,
+      newToastMsg: 'Failed',
+      msg: 'Are you sure you want to delete the attachment?',
+      newToast: true, showBlurEffect: true, deleteModalWindowClass: 'custom-attachment-delete',
+      deleteModalFirstAction: {
+        label: 'No',
+        style: 'custom-attachment-delete-fa'
+      },
+      deleteModalSecondAction: {
+        label: 'Yes',
+        style: 'custom-attachment-delete-sa'
+      },
+      attachmentDetails: JSON.parse(JSON.stringify(attachments)),
+      showLine: true, showScroll: true
+    };
+    this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
+    .subscribe((result) => {
+        if (result !== undefined) {
+          if (!attachments.data || attachments.data.length !== result) {
+            // this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
+          }
+        }
+    });
+  }
 
     /**
      * Function to delete attachment
@@ -128,5 +190,10 @@ export class AttachmentTabComponent implements OnInit {
           this.isLoadingAttachments = false;
         }
       )
+    }
+
+    addAttachments(){
+      console.log('Add Attachments');
+      this.showAttachment(false, [this.entity], this.attachments);
     }
 }
