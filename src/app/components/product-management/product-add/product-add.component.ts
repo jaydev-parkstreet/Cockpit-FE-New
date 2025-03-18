@@ -204,20 +204,19 @@ export class ProductAddComponent implements OnInit {
                     if (!response.hasError) {
                         this.spinner.hide();
                         let productId = response.product_id;
-                        if (this.edit) {
-                            this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-exclamation-circle');
-                            this.router.navigateByUrl(`/product-management/${productId}`);
+                        if (this.edit && !this.duplicate) {
+                            this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-exclamation-circle', 'success');
                         } else {
-                            this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle');
-                            this.router.navigateByUrl(`/product-management/${productId}`);
+                            this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                         }
+                        this.router.navigateByUrl(`/product-management/${productId}`);
                     } else {
                         this.spinner.hide();
                         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                     }
                 });
             } else {
-                this.commonService.showToastV2Message(true, "Please provide The required Fields", 'fas fa-exclamation-circle');
+                this.commonService.showToastV2Message(true, "Please provide the required fields", 'fas fa-exclamation-circle');
             }
         } else {
             this.openConfirmationPopup();

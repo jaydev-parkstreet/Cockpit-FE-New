@@ -1,7 +1,7 @@
-<div class="app-layout has-sidebar layout fixed-sidebar fixed-header main-sidebar-section">
-    <app-main-header (menuState)="menuToggle($event)"></app-main-header>
-    <app-sidebar-menu [isSidebarExpanded]="isSidebarExpanded"></app-sidebar-menu>
-    <div [ngClass]="isSidebarExpanded? 'mainPanelExpand':'mainPanelCollapse'">
+<div class="app-layout has-sidebar layout fixed-sidebar fixed-header main-sidebar-section d-flex">
+    <app-sidebar-menu></app-sidebar-menu>
+    <div class="mainPanel">
+        <app-main-header></app-main-header>
         <router-outlet></router-outlet>
     </div>
 </div>

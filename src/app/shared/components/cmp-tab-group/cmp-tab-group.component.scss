@@ -9,10 +9,11 @@
         li {
             &.active {
                 color: $colors-neutral-black;
-                font-family: $montserrat-medium;
-                font-weight: 500;
-                border-bottom: 2px solid $colors-v2-base-primary;
-                background-color: $colors-neutral-white;
+                border-bottom: 1px solid $colors-v2-base-primary;
+            }
+            &:not(.active):hover {
+                color: $colors-neutral-black;
+                border-bottom: 1px solid $colors-neutral-black;
             }
         }
     }

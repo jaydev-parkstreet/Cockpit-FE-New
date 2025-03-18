@@ -23,9 +23,9 @@
             <app-summary-grid
                 [gridOptions] = "gridOptions"
                 [selectAllOption] = "true"
-                [checkAll] = "selectedAllRows"
-                (selectAllChanged) = "onSelectAllChanged($event)"
-                >
+                (selectAllCheckbox) = "onSelectAllChanged($event)"
+                (setDataSource)="setDataSourceAgGrid()"
+                [selectedRowCount]="selectedRowCount">
             </app-summary-grid>
         </div>
         <div class="no-record-message" *ngIf="!isLoadingSummaryData && productToolSummary.length <= 0">

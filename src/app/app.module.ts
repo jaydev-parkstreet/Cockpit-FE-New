@@ -13,6 +13,8 @@ import { StatelessModule } from './stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LayoutModule } from './components/layout/layout.module';
+import { DatePipe } from '@angular/common';
+
 import { PsiBrandModalComponent } from './components/product-management/psi-brand-modal/psi-brand-modal.component';
 @NgModule({
   declarations: [
@@ -38,7 +40,10 @@ import { PsiBrandModalComponent } from './components/product-management/psi-bran
     exports: [
 
     ],
-    providers: [HttpClientModule, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+    providers: [
+        HttpClientModule, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        DatePipe
+    ],
 
     bootstrap: [AppComponent]
 })

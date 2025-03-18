@@ -153,7 +153,7 @@ export class ProductManagementDetailsComponent implements OnInit {
                 if (response.data) {
                     this.productDetails.sync_status = response.data.status
                     if (response.data.status === 1) {
-                        this.commonService.showToastV2Message(true, 'Sync Successful', 'fas fa-exclamation-circle');
+                        this.commonService.showToastV2Message(true, 'Sync Successful', 'fas fa-exclamation-circle', 'success');
                         clearInterval(this.timerObj);
                         this.timerObj = null;
                         this.syncStatusFail = false;
@@ -192,7 +192,7 @@ export class ProductManagementDetailsComponent implements OnInit {
             this.spinner.hide();
             if (!response.hasError) {
                 this.getProductData(this.productDetails.product_id);
-                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
             } else {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }
@@ -211,7 +211,7 @@ export class ProductManagementDetailsComponent implements OnInit {
             this.spinner.hide();
             if (!response.hasError) {
                 this.getProductData(this.productDetails.product_id);
-                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
             } else {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }
@@ -230,7 +230,7 @@ export class ProductManagementDetailsComponent implements OnInit {
             this.spinner.hide();
             if (!response.hasError) {
                 this.getProductData(this.productDetails.product_id);
-                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
             } else {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }
@@ -249,7 +249,7 @@ export class ProductManagementDetailsComponent implements OnInit {
             this.spinner.hide();
             if (!response.hasError) {
                 this.getProductData(this.productDetails.product_id);
-                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
             } else {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }

@@ -23,7 +23,14 @@ const AppRoutes = {
         CHECK_BRAND_EXISTS: 'product-tool/brand-exists',
         CHECK_SUB_BRAND_EXISTS: 'product-tool/sub-brand-exists',
         SAVE_NEW_BRAND: 'product-tool/create-brand-products',
-        SAVE_NEW_SUB_BRAND: 'product-tool/create-sub-brand-products'
+        SAVE_NEW_SUB_BRAND: 'product-tool/create-sub-brand-products',
+    },
+    COMMON: {
+        NOTES: 'notes',
+        NOTES_CHANGE_PERMISSION: 'notes/change-permission',
+        ATTACHMENTS: 'files',
+        ATTACHMENTS_PERMISSION: 'files/change-permission',
+        SIDEBAR_MENU: 'cockpit-sidebar-menu'
     }
 };
 
