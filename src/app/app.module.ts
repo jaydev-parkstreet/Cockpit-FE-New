@@ -18,7 +18,7 @@ import { DatePipe } from '@angular/common';
 @NgModule({
     declarations: [
         AppComponent,
-        ConfirmationModalComponent,
+        ConfirmationModalComponent
     ],
     imports: [
         BrowserModule,
@@ -33,7 +33,6 @@ import { DatePipe } from '@angular/common';
         AgGridModule,
         NgxSpinnerModule,
         LayoutModule
-
     ],
     exports: [
 
