@@ -1,5 +1,5 @@
 <div class="attachment-tab u-mt1 u-bg-neutral-white u-neutral-black">
-    <div [ngHide]="!isLoadingAttachments && attachments.length > 0" *ngFor="let attachment of attachments; let last = last;" class="attachments-container" [ngClass]="{'u-pg-p-2': last, 'custom-padding': !last}">
+    <div [ngHide]="!isLoadingAttachments && attachments?.data.length > 0" *ngFor="let attachment of attachments?.data; let last = last;" class="attachments-container" [ngClass]="{'u-pg-p-2': last, 'custom-padding': !last}">
         <div class="u-flex u-justify-between u-align-center">
             <div class="left-section u-flex u-align-center u-pg-g-1">
                 <i class="fas fa-file"></i>
@@ -34,7 +34,7 @@
         <i class="fas fa-spinner fa-spin fa-2x fa-fw"></i>
     </div>
     <div class="add-attachment u-flex-center u-flex-column">
-        <i class="fas fa-plus-circle"></i>
-        <span class="typography-body-dark-regular">Add Attachment</span>
+        <i class="fas fa-plus-circle" (click)="addAttachments()"></i>
+        <span class="typography-body-dark-regular" (click)="addAttachments()">Add Attachmentssss</span>
     </div>
 </div>
