@@ -164,16 +164,6 @@ export class ProductManagementComponent implements OnInit {
     this.filterList = this.dropdownData;
   }
 
-
-
-  // getDropdown(){
-  //   const token = localStorage.getItem('authToken');
-  //   this.productManagementService.getDropdown(token).toPromise().then(response => {
-  //     console.log(response);
-  //   })
-  // }
-
-
   /**
      * Function to call api and set ag-grid dataSource object
      *

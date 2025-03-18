@@ -75,7 +75,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
      * Updates the value of a dropdown form control.
      * @param field
      * @param event
-     * @author psi-enhancement
+     * @author PSI-Enhancements
      */
 
     onDropdownStateChange(field, event) {
@@ -91,7 +91,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
      * Updates the form control value based on the input change.
      * @param field
      * @param value
-     * @author psi-enhancement
+     * @author PSI-Enhancements
      */
     onInputChange(field, value) {
         this.brandForm.get(field).setValue(value);
@@ -105,7 +105,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
       * Returns true if the field is invalid and the form has been submitted.
       * @param controlName
       * @returns boolean
-      * @author psi-enhancement
+      * @author PSI-Enhancements
       */
     isFieldInvalid(controlName: string): boolean {
         const control = this.brandForm.get(controlName);
