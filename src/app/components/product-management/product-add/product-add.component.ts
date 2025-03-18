@@ -313,8 +313,8 @@ export class ProductAddComponent implements OnInit {
                 this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
                 this.updateConfig(this.brandModalConfig.brand, true);
                 this.updateConfig(this.brandModalConfig.new_brands, false);
-                this.updateConfig(this.brandModalConfig.sub_brand_product_id, false);
-                this.updateConfig(this.brandModalConfig.new_sub_brand,  true);
+                this.updateConfig(this.brandModalConfig.sub_brand_product_id, true);
+                this.updateConfig(this.brandModalConfig.new_sub_brand,  false);
                 this.updateConfig(this.brandModalConfig.net_contents, true);
                 this.updateConfig(this.brandModalConfig.units_cases, true);
                 this.brandModalData = this.ProductAddService.getBrandModalData(this.brandModalConfig, false, this.clientId)
