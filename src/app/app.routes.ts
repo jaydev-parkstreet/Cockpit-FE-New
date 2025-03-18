@@ -22,6 +22,12 @@ const AppRoutes = {
         PRODUCT_ACTIVE_DEACTIVATE: 'product-tool/active-deactivate/product',
         EXCEL_EXPORT: 'product-tool/excel-export',
         PRODUCT_TOOL_GET_BRANDS: 'product-tool/get-brands-client',
+    },
+    COMMON: {
+        NOTES: 'notes',
+        NOTES_CHANGE_PERMISSION: 'notes/change-permission',
+        ATTACHMENTS: 'files',
+        ATTACHMENTS_PERMISSION: 'files/change-permission'
     }
 };
 

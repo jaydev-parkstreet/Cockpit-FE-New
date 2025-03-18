@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ProductManagementService } from './product-management.service';
 import { AuthService } from '../authentication/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ColDef } from 'ag-grid-community';
-import { RouterModule } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { saveAs } from 'file-saver';
 import { CommonService } from 'src/app/core/services/common.service';
 import { environment } from 'src/environments/environment';
+import { SimpleModalService } from 'ngx-simple-modal';
+import { CmpAttachmentModalComponent } from 'src/app/shared/components/cmp-attachment-modal/cmp-attachment-modal.component';
 
 @Component({
   selector: 'app-product-management',
@@ -54,6 +54,7 @@ export class ProductManagementComponent implements OnInit {
     private spinner : NgxSpinnerService,
     private commonService : CommonService,
     private route: ActivatedRoute,
+    private simpleModalService: SimpleModalService,
   ) { }
 
   ngOnInit(): void {  
@@ -125,8 +126,67 @@ export class ProductManagementComponent implements OnInit {
     this.gridOptions.onCellClicked = (params) => {
       if (params.colDef.cellRenderer === 'checkbox' && (params.event.srcElement.className === 'checkbox_gir_row')) {
           this.selectCheckBox(params);
+      }else if (params.event.target.className === 'far fa-file show-attachment-modal' || params.event.target.className === 'fas fa-file show-attachment-modal') {
+        this.openAttachmentListPopup(params.data.product_id);
       }
     };
+  }
+
+  openAttachmentListPopup (entity:any) {
+    if (this.permissions.permissions.Update) {
+        this.isLoadingSummaryData = true;
+        this.productManagementService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response:any) => {
+          this.isLoading = false;
+          this.showAttachment(false, [entity], response);
+        },
+        (error: any) => {
+          this.isLoading = false;
+          console.log(error);          
+        });
+    }
+}
+
+showAttachment(multiple:any, entityIds:any, attachments:any) {
+    let modalData:any;
+
+    modalData = {
+      modalTitle: 'Attachment',
+      showDismissIcon: true,
+      noDataMessage: 'No Attachments Found',
+      emptyDataIcon: 'far fa-surprise',
+      entityIds: entityIds,
+      attachmentPermission: this.filterList.entity_permissions,
+      cancelAction: { label: 'Cancel' }, saveAction: { label: 'Save' },filtersList: this.filterList,
+      multiple: multiple, uploadButtonName: 'Choose File',
+      customClass: true, showHorizontalLine: true,
+      newDeletePopup:true,
+      showErrorInNewToast: true,
+      hideAttachmentLockIcon: true,
+      showFileType: true,
+      fileTypeDropdown: this.permissions.entity_kinds,
+      showChangePrivacyIcon: true,
+      newToastMsg: 'Failed',
+      msg: 'Are you sure you want to delete the attachment?',
+      newToast: true, showBlurEffect: true, deleteModalWindowClass: 'custom-attachment-delete',
+      deleteModalFirstAction: {
+        label: 'No',
+        style: 'custom-attachment-delete-fa'
+      },
+      deleteModalSecondAction: {
+        label: 'Yes',
+        style: 'custom-attachment-delete-sa'
+      },
+      attachmentDetails: JSON.parse(JSON.stringify(attachments)),
+      showLine: true, showScroll: true
+    };
+    this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
+    .subscribe((result) => {
+        if (result !== undefined) {
+          if (!attachments.data || attachments.data.length !== result) {
+            // this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
+          }
+        }
+    });
   }
 
   /**
@@ -413,7 +473,7 @@ export class ProductManagementComponent implements OnInit {
       this.spinner.hide();
       if (!response.hasError) {
         this.setDataSourceAgGrid();
-          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
       } else {
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
       }

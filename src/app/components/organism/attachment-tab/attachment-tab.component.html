@@ -1,0 +1,40 @@
+<div class="attachment-tab u-mt1 u-bg-neutral-white u-neutral-black">
+    <div [ngHide]="!isLoadingAttachments && attachments.length > 0" *ngFor="let attachment of attachments; let last = last;" class="attachments-container" [ngClass]="{'u-pg-p-2': last, 'custom-padding': !last}">
+        <div class="u-flex u-justify-between u-align-center">
+            <div class="left-section u-flex u-align-center u-pg-g-1">
+                <i class="fas fa-file"></i>
+                <a class="typography-body-black-regular u-truncate" [href]="commonService.urlEncode(attachment.url)">{{ attachment.display_name }}</a>
+                <span *ngIf="attachment.permission_id === 2 || attachment.permission_id === 3" class="typography-paragraph-dark-regular">(Private)</span>
+            </div>
+            <div *ngIf="showFileType && attachment.entity_kind_name" class="middle-section u-flex u-align-center">
+                <span class="typography-body-black-medium">File Type:</span>&nbsp;
+                <span class="typography-body-dark-regular u-truncate">{{attachment.entity_kind_name}}</span>
+            </div>
+            <div class="right-section u-flex u-align-center u-justify-flex-end u-pg-g-1">
+                <ng-container *ngIf="attachment.has_delete_permission">
+                    <div *ngIf="showPrivacyIcon" class="u-icon-tooltip u-flex-center">
+                        <i
+                            [ngClass]="{
+                            'fa-lock': attachment.permission_id === 2 || attachment.permission_id === 3,
+                            'fa-unlock': attachment.permission_id === 1
+                            }"
+                            class="on-hover u-csr-ptr fas"
+                            (click)="updateFilePermission(attachment)">
+                        </i>
+                        <div class="tooltiptext t-center">{{attachment.permission_id === 1 ? 'Switch to “Private (Only PS Users)“' : 'Switch to “Public (Everyone)“' }}</div>
+                    </div>
+                    <i class="fas fa-trash u-csr-ptr" (click)="deleteAttachment(attachment.upload_id)"></i>
+                </ng-container>
+                <span class="typography-body-black-regular">{{ attachment.created_at | date: 'MM/dd/yy' }}</span>
+            </div>
+        </div>
+        <hr class="seperator position-relative">
+    </div>
+    <div *ngIf="isLoadingAttachments" class="u-pg-py-2 text-center">
+        <i class="fas fa-spinner fa-spin fa-2x fa-fw"></i>
+    </div>
+    <div class="add-attachment u-flex-center u-flex-column">
+        <i class="fas fa-plus-circle"></i>
+        <span class="typography-body-dark-regular">Add Attachment</span>
+    </div>
+</div>

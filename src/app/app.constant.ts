@@ -22,7 +22,18 @@ const AppConstant = {
             3: 'Sync',
             4: 'Sync'
         }
-    }
+    },
+
+    ENTITY_PERMISSIONS : {
+        PUBLIC_EVERYONE_ID: 1,
+        PRIVATE_ONLY_PS_USER_ID: 2,
+        PRIVATE_ONLY_ME: 3
+    },
+    COMMON: {
+        FILES_API: 'files',
+        MULTIPLE_FILES_API: 'store-multiple-files',
+        CHANGE_FILE_PERMISSION: 'change-permission'
+    },
 };
 
 export default AppConstant;

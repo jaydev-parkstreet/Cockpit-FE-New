@@ -2,10 +2,13 @@
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner>
 
-<div class="psi-toast" [ngClass]="commonService.toastV2.class" *ngIf="commonService.toastV2.show">
-  <i *ngIf="commonService.toastV2.icon" [class]="commonService.toastV2.icon" class="pr-16" aria-hidden="true"></i>
-  <span class="message"> {{commonService.toastV2.message}}</span>
-  <i class="fas fa-times" aria-hidden="true" (click)="commonService.hideToastV2Message()"></i>
+<div 
+  *ngIf="commonService.toastV2.show"
+  [ngClass]="commonService.toastV2.class || 'error'"
+  class="typography-v2-cr-h6-white-regular psi-toast position-fixed u-flex u-align-center u-justify-between u-pg-px-2 u-pg-g-1">
+    <i *ngIf="commonService.toastV2.icon" [class]="commonService.toastV2.icon" aria-hidden="true"></i>
+    <span class="message u-flex u-justify-center"> {{commonService.toastV2.message}}</span>
+    <i class="fas fa-times u-csr-ptr close-icon" aria-hidden="true" (click)="commonService.hideToastV2Message()"></i>
 </div>
 
 <router-outlet></router-outlet>

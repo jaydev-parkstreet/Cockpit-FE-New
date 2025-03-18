@@ -120,7 +120,7 @@
             <app-cmp-button
               [buttonText]="field.label"
               [buttonClass]="field.class"
-              (onClick)="formSubmit.emit(event)">
+              (onClick)="formSubmit.emit($event)">
             </app-cmp-button>
         </div>
     </div>

@@ -68,7 +68,7 @@
             height: 16px;
             width: 16px;
             border-radius: 3px;
-            border: 1px solid $colors-v2-base-primary;
+            border: 1px solid $colors-neutral-dark;
             display: inline-block;
         }
     }
@@ -160,7 +160,6 @@
                 line-height: 14px;
                 padding: 5px 0px;
                 text-align: center;
-                font-family: $montserrat-regular;
             }
             .checkbox-container {
                 display: inline-block;
@@ -185,7 +184,7 @@
                 height: 16px;
                 width: 16px;
                 background-color: $colors-neutral-white;
-                border: 1px solid $colors-v2-base-primary;
+                border: 1px solid $colors-neutral-dark;
                 top: 10px;
                 z-index: 9999;
                 border-radius: 4px;

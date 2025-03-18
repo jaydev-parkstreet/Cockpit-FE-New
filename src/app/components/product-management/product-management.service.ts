@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/core/services/common.service';
 import AppRoutes from 'src/app/app.routes';
+import AppConstant from 'src/app/app.constant';
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +16,7 @@ export class ProductManagementService {
         private http: HttpClient,private commonService:CommonService,
         private dropdownService: InputDropdownService,
     ) { }
+    CONSTANTS: any = AppConstant;
     
     /**
       * Function to get top bar config.
@@ -70,7 +72,7 @@ export class ProductManagementService {
         { headerName: 'Brand', headerTooltip: 'Brand', minWidth: 75, width: 115, field: 'brand_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Product Status', headerTooltip: 'Product Status', minWidth: 100, width: 175, field: 'status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
         { headerName: 'TTB ID', headerTooltip: 'TTB ID', minWidth: 60, width: 108, field: 'ttb_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Date Created', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormat'},
+        { headerName: 'Date Created', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
         { headerName: 'Product Type', headerTooltip: 'Product Type', minWidth: 75, width: 134, field: 'product_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Product Sub-Type ', headerTooltip: 'Product Sub-Type', minWidth: 75, width: 171, field: 'sub_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Source', headerTooltip: 'Source', field: 'source', minWidth: 75, width: 125, cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
@@ -99,6 +101,7 @@ export class ProductManagementService {
             dashRenderer: (params) => this.renderDash(params),
             idRender: (params) => this.renderId(params),
             statusRenderer: (params) => this.renderStatus(params),
+            dateFormatRenderer: (params) => this.dateFormatRenderer(params)
             },   
             enableColResize: true,
             allowContextMenuWithControlKey: true,
@@ -203,11 +206,11 @@ export class ProductManagementService {
      */
     renderStatus(params) {
       const statusLabels = {
-        Approved: 'u-bg-v2-base-success',
-        Pending: 'u-bg-v2-base-warinig',
-        'Pre-Approved': 'u-bg-v2-base-primary',
-        'Needs Action-Waiting on Supplier': 'u-bg-v2-base-warinig-v-low',
-        'Request Received': 'u-bg-v2-neutral-light',
+        Approved: 'u-bg-success',
+        Pending: 'u-bg-warning',
+        'Pre-Approved': 'u-bg-primary',
+        'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium',
+        'Request Received': 'u-bg-neutral-light',
       };
       
       let inActiveIcon = params.data && params.data.is_active === 0 
@@ -220,6 +223,21 @@ export class ProductManagementService {
       return '--';
     }
 
+    getAttachmentList (param:any) {        
+        return this.http.get(environment.apiRouteUrl+environment.version.v1+ this.CONSTANTS.COMMON.FILES_API+'?', { params: param });
+    }
+
+    /**
+     * Cell Renderer for the formatting the Date
+     * 
+     * @param params 
+     * @returns string - Formated Date
+     * @author PSI-Enhancement
+     */
+    dateFormatRenderer(params) {
+        return this.commonService.dateFormat(params.value);
+    }
+    
     /**
      * This function returns the config for top panel which includes search bar, filter dropdowns and action buttons.
      * @param permission
@@ -631,4 +649,25 @@ export class ProductManagementService {
             .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT, obj,{responseType: 'text',observe: 'response'})
             .pipe(map((response :any) => response));
     }
+
+    uploadMultipleAttachments(reqObj: FormData) {
+        return this.http.post(environment.apiRouteUrl + environment.version.v1 + this.CONSTANTS.COMMON.MULTIPLE_FILES_API, 
+            reqObj, 
+            { headers: { 'enctype': 'multipart/form-data' } }
+        );
+    }
+
+    changeFilePermission (data:any) {       
+        return this.http.put(environment.apiRouteUrl + environment.version.v1  + this.CONSTANTS.COMMON.FILES_API+'/'+this.CONSTANTS.COMMON.CHANGE_FILE_PERMISSION, data);
+    }
+
+    deleteUploadFile(param: any) {      
+        return this.http.delete(environment.apiRouteUrl + environment.version.v1  + this.CONSTANTS.COMMON.FILES_API, {
+          params: new HttpParams().set('id', param),
+          headers: new HttpHeaders({
+            'Content-Type': ''
+          })
+        });
+      }
+      
 }
