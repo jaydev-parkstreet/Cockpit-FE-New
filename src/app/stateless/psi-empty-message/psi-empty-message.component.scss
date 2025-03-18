@@ -1,5 +1,5 @@
 @import "../../scss/variables/typography";
-@import "../../../../src/styles/colors";
+@import "../../scss/variables/colors";
 
 .msg-wrapper{
     display: flex;
@@ -7,7 +7,7 @@
     align-items: center;
     width: 100%;
     flex-direction: column;
-    color: $light-gray;
+    color: $colors-neutral-light;
     margin: 24px 0;
 
     span{
