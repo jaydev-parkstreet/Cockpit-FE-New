@@ -526,10 +526,7 @@ export class ProductManagementService {
     }
 
     uploadMultipleAttachments(reqObj: FormData) {
-        return this.http.post(environment.apiRouteUrl + environment.version.v1 + this.CONSTANTS.COMMON.MULTIPLE_FILES_API, 
-            reqObj, 
-            { headers: { 'enctype': 'multipart/form-data' } }
-        );
+        return this.http.post(environment.apiRouteUrl + environment.version.v1 + this.CONSTANTS.COMMON.MULTIPLE_FILES_API, reqObj);
     }
 
     changeFilePermission (data:any) {       
