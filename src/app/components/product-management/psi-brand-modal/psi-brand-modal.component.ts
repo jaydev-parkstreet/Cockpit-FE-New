@@ -184,8 +184,10 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
                 this.modalData.config.net_contents.isDisabled = false;
                 this.modalData.config.units_cases.isDisabled = false;
     
+                this.addFieldControl('brand');
                 this.addFieldControl('new_brands');
                 this.addFieldControl('new_sub_brand');
+                this.addFieldControl('sub_brand_product_id');
             } else {
                 this.modalData.config.sub_brand_product_id.isDisabled = false;
             }

@@ -349,7 +349,7 @@ export class ProductAddComponent implements OnInit {
             this.crudFiltersList['sub_brand_product_id'] = this.sub_brand_product_id;
             this.subBrandProducts = this.sub_brand_product_id;
             this.crudFieldConfig.leftSection[2].options = this.sub_brand_product_id;
-            this.crudFieldConfig.leftSection[2].isDisabled = false
+            this.crudFieldConfig.leftSection[2].isDisabled = false;
             this.crudFieldConfig = { ...this.crudFieldConfig };
             this.changeDetector.detectChanges();
         }
@@ -639,7 +639,10 @@ export class ProductAddComponent implements OnInit {
                             }
                         });
                     }
-                } 
+                } else {
+                    this.updatesellectedData('brand', 'Select Brand');
+                    this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
+                }
             });
     }
 
