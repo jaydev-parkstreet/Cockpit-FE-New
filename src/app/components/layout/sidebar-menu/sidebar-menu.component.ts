@@ -16,6 +16,7 @@ export class SidebarMenuComponent implements OnInit {
   currentUserData: any;
   oldCockpit: string = environment.oldCockpit;
   currentRoute: any;
+  allowedRoutes = ['product_management_system'];
 
   constructor(
     private authService: AuthService,
@@ -27,7 +28,7 @@ export class SidebarMenuComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserData = this.authService.getUserData();
     this.currentRoute = this.router.url;
-    this.getSidebarMenu();  
+    this.getSidebarMenu();
   }
 
   showSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
