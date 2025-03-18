@@ -155,15 +155,16 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
 
     modalData = {
       title: 'Are you sure you want to delete the attachment?',
-      closeBtnName: 'No',
-      confirmBtnName: 'Yes',
       iconClass: 'fas fa-exclamation-circle error',
-      showLine: true,
+      btnLabel: [
+          { type: 'Btn', label: 'No', class: 'secondary' },
+          { type: 'Btn', label: 'Yes', class: 'primary' }
+        ]
     };
 
     this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
       .subscribe((result) => {
-        if (result.confirm) {
+        if (result.btn.label === 'Yes') {
           this.productmanagementService.deleteUploadFile(file.upload_id)
             .subscribe((response: any) => {
               if (response.hasError) {
