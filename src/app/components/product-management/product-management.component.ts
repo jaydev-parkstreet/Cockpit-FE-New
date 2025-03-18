@@ -112,10 +112,6 @@ export class ProductManagementComponent implements OnInit {
         this.reportRequestObj.order = 'asc';
       }
       this.productToolSummary = [];
-      this.setDataSourceAgGrid();
-	};
-    this.gridOptions.onGridReady = () => {
-      this.setDataSourceAgGrid();
     };
     this.gridOptions.getRowClass = function (params) {
       if (params.data && params.data.checked && params.data.checked === true) {

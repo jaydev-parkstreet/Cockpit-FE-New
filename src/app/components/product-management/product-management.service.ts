@@ -209,7 +209,7 @@ export class ProductManagementService {
         Approved: 'u-bg-success',
         Pending: 'u-bg-warning',
         'Pre-Approved': 'u-bg-primary',
-        'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium',
+        'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium widthAction',
         'Request Received': 'u-bg-neutral-light',
       };
       
