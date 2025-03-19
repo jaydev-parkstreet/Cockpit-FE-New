@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class NoRecordComponent implements OnInit {
 
-  @Input() faIconMark:string;
+  @Input() iconClass:string;
   @Input() placeHolderText:string;
 
   constructor() { }

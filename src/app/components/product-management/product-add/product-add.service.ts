@@ -521,7 +521,8 @@ export class ProductAddService {
           
             return subBrand ? { id: subBrand.id, name: subBrand.name } : null; // Return null if not found
         };
-        const result = getSubBrandDetails(subBrandProducts, model.sub_brand_product_id); 
+        const subBrandId = Array.isArray(model.sub_brand_product_id) ? model.sub_brand_product_id[0].name : model.sub_brand_product_id;
+        const result = getSubBrandDetails(subBrandProducts, subBrandId);
         let modelFormat: any = {
             compliance: model.compliance === "1" ? 1 : 0,
             use_up: model.use_up === "1" ? 1 : 0,  
