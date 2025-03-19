@@ -224,7 +224,7 @@ export class ProductManagementService {
     }
 
     getAttachmentList (param:any) {        
-        return this.http.get(environment.apiRouteUrl+environment.version.v1+ this.CONSTANTS.COMMON.FILES_API+'?', { params: param });
+        return this.http.get(environment.apiRouteUrl+environment.version.v1+ AppRoutes.COMMON.ATTACHMENTS+'?', { params: param });
     }
 
     /**
@@ -650,16 +650,16 @@ export class ProductManagementService {
             .pipe(map((response :any) => response));
     }
 
-    uploadMultipleAttachments(reqObj: FormData) {
-        return this.http.post(environment.apiRouteUrl + environment.version.v1 + this.CONSTANTS.COMMON.MULTIPLE_FILES_API, reqObj);
+        uploadMultipleAttachments(reqObj: FormData) {
+        return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
     }
 
     changeFilePermission (data:any) {       
-        return this.http.put(environment.apiRouteUrl + environment.version.v1  + this.CONSTANTS.COMMON.FILES_API+'/'+this.CONSTANTS.COMMON.CHANGE_FILE_PERMISSION, data);
+        return this.http.put(environment.apiRouteUrl + environment.version.v1  + AppRoutes.COMMON.ATTACHMENTS_PERMISSION, data);
     }
 
     deleteUploadFile(param: any) {      
-        return this.http.delete(environment.apiRouteUrl + environment.version.v1  + this.CONSTANTS.COMMON.FILES_API, {
+        return this.http.delete(environment.apiRouteUrl + environment.version.v1  + AppRoutes.COMMON.ATTACHMENTS, {
           params: new HttpParams().set('id', param),
           headers: new HttpHeaders({
             'Content-Type': ''

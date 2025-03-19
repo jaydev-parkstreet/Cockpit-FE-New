@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ProductManagementService } from 'src/app/components/product-management/product-management.service';
 import AppConstant from 'src/app/app.constant';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
+import { ClassGetter } from '@angular/compiler/src/output/output_ast';
 
 export interface ConfirmModel {
   modalData: any;
@@ -49,26 +50,6 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   ngOnInit(): void {
     this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);
     this.filetype_dropdown = this.commonService.getSingleSelectDropdownConfig('Select file type', true);
-  }
-
-  getDynamicHeight() {
-    if (!this.modalData.latestDesign) {
-      let height = 0;
-      if (this.modalData.multiple && this.selectedFileCount === 0) {
-        height = 235;
-      } else if (this.modalData.multiple && this.selectedFileCount === 1) {
-        height = 301;
-      } else if (this.modalData.multiple) {
-        height = 360;
-      } else if (this.selectedFileCount === 0) {
-        height = 316;
-      } else if (this.selectedFileCount === 1) {
-        height = 385;
-      } else {
-        height = 442;
-      }
-      return (this.modalData.attachmentDetails.data && this.modalData.attachmentDetails.data.length > 0 && this.modalData.showLine ? (height + 33) : height) + 'px';
-    }
   }
 
   onFileChange(event: any) {
@@ -144,12 +125,24 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     uploadParams.append('kind', this.kindid ? this.kindid : this.modalData.filtersList['kindId']);
     uploadParams.append('tool', this.modalData.filtersList.tool_id);
     uploadParams.append('menu_item_id', this.modalData.filtersList.menu_item_id);
-    uploadParams.append('permission_id', this.permission_id);
+    uploadParams.append('permission_id', this.permission_id || this.modalData.attachmentPermission[0].id);
     this.productmanagementService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
-      this.close();
-    });
+      if (!response.hasError) {
+        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+        this.closeModal(1);
+      }
+    }, (error) => {
+      this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+    }
+    );
   }
 
+  closeModal(mode: number) {
+    this.result = mode === 1
+      ? (this.modalData?.attachmentDetails?.data?.length || 1)
+      : this.modalData?.attachmentDetails?.data?.length;
+    this.close();
+  }
   onDeleteClick(file: any) {
     let modalData;
 
@@ -157,9 +150,9 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
       title: 'Are you sure you want to delete the attachment?',
       iconClass: 'fas fa-exclamation-circle error',
       btnLabel: [
-          { type: 'Btn', label: 'No', class: 'secondary' },
-          { type: 'Btn', label: 'Yes', class: 'primary' }
-        ]
+        { type: 'Btn', label: 'No', class: 'secondary' },
+        { type: 'Btn', label: 'Yes', class: 'primary' }
+      ]
     };
 
     this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
@@ -170,9 +163,11 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
               if (response.hasError) {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
               } else {
-                this.commonService.showToastV2Message(true, response.msg);
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
                 this.modalData.attachmentDetails.data = this.modalData.attachmentDetails.data.filter((item: any) => item.upload_id !== file.upload_id);
               }
+            }, (error) => {
+              this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
             }
             );
         }
@@ -195,9 +190,12 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
         } else {
           file.permission_id = permission_id;
-          this.commonService.showToastV2Message(true, response.msg);
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
         }
-      });
+      }, (error) => {
+        this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+      }
+      );
   }
 
   get isButtonDisabled(): boolean {

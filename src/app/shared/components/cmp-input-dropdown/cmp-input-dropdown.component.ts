@@ -52,10 +52,12 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit(): void {
     this.isOpen = false;
-    this.selectedItems = this.formControl?.value || [];
+    console.log(this.selectedItems);
+    this.selectedItems = this.formControl?.value || this.selectedItems;
     if (!Array.isArray(this.filteredItems)) {
       this.filteredItems = [];
     }
+    
     this.filteredItems = this.filteredItems || []
     this.updateFilteredItems(this.filteredItems);
     this.updateSelectAllState(this.filteredItems);
@@ -202,6 +204,8 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
       return this.settings?.translationTexts?.buttonDefaultText;
     }
     if (this.allowSingleSelect) {
+      console.log(this.selectedItems);
+      
       return this.selectedItems[0].name
     }
     const firstItemName = this.selectedItems[0].name;

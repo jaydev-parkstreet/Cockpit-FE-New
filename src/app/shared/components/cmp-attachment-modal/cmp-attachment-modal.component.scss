@@ -190,7 +190,7 @@
               margin-left: 8px;
               line-height: 20px;
               text-decoration: none;
-              width: 205px;
+              max-width: 205px;
               overflow: hidden;
               display: block;
               text-overflow: ellipsis;
@@ -206,7 +206,7 @@
               font-size: 12px;
               margin-left: 5px;
               font-family: $montserrat-regular;
-              color: $colors-neutral-black;
+              color: $colors-neutral-dark;
             }
           }
 
@@ -225,6 +225,12 @@
               &:hover {
                 color: $colors-neutral-black;
               }
+            }
+          }
+          .middle-section {
+            margin-left: 5px;
+            .typography-v2-mon-medium{
+              color: $colors-neutral-black;
             }
           }
         }

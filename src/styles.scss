@@ -239,23 +239,30 @@ input:-webkit-autofill:active {
 
 .u-icon-tooltip {
     position: relative;
+  
     .tooltiptext {
       @include basic-tooltip;
-      top: calc(100% + 4px);
+      top: 20px;
+  
       &:not(.t-multiline) {
         padding: 0 8px;
         height: 32px;
       }
+  
       &.t-left {
         right: 0;
       }
+  
       &.t-center {
         left: 50%;
         transform: translateX(-50%);
       }
     }
-    .on-hover:hover +.tooltiptext,
-    &.on-hover:hover .tooltiptext{
+  
+    // Fix: Show tooltip on hover
+    .on-hover:hover ~ .tooltiptext,
+    .on-hover:hover + .tooltiptext {
       display: flex;
     }
   }
+  
