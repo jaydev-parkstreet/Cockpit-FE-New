@@ -8,7 +8,6 @@ import { CmpButtonComponent } from './components/cmp-button/cmp-button.component
 import { CmpInputDropdownComponent } from './components/cmp-input-dropdown/cmp-input-dropdown.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CmpCheckboxComponent } from './components/cmp-checkbox/cmp-checkbox.component';
-import { TableComponent } from './templates/table/table.component';
 import { StatelessModule } from '../stateless/stateless.module';
 import { PsDefaultLinkComponent } from './components/ps-default-link/ps-default-link.component';
 import { PsiActionButtonsComponent } from './components/psi-action-buttons/psi-action-buttons.component';
@@ -32,7 +31,6 @@ import { NoRecordComponent } from './components/no-record/no-record.component';
     CmpButtonComponent,
     CmpInputDropdownComponent,
     CmpCheckboxComponent,  
-    TableComponent,
     PsDefaultLinkComponent,
     PsiActionButtonsComponent,
     CmpHeaderWidgetComponent,
@@ -59,7 +57,6 @@ import { NoRecordComponent } from './components/no-record/no-record.component';
     CmpInputDropdownComponent, 
     CmpCheckboxComponent,  
     SummaryTopBarComponent,
-    TableComponent,
     PsDefaultLinkComponent,
     PsiActionButtonsComponent,
     CmpHeaderWidgetComponent,

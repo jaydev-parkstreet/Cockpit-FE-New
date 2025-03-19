@@ -1,4 +1,4 @@
-<div class="product-management">
+<div class="product-management u-pg-pt-1">
     <app-header-tool
         titleText="Product Management"
         titleIcon="fas fa-wine-bottle">
@@ -19,7 +19,7 @@
                 </app-summary-top-bar>
             </div>
         </div>
-        <div [hidden]="productToolSummary.length == 0 && !isLoadingSummaryData" class="product-tool-grid">
+        <div class="product-tool-grid u-pg-mb-1" [hidden]="productToolSummary.length == 0 && !isLoadingSummaryData">
             <app-summary-grid
                 [gridOptions] = "gridOptions"
                 [selectAllOption] = "true"
@@ -28,9 +28,10 @@
                 [selectedRowCount]="selectedRowCount">
             </app-summary-grid>
         </div>
-        <div class="no-record-message" *ngIf="!isLoadingSummaryData && productToolSummary.length <= 0">
-            <i class="fas fa-surprise"></i>
-            <span>No Data Found</span>
-        </div>        
+        <app-no-record
+            *ngIf="!isLoadingSummaryData && productToolSummary.length <= 0"
+            [iconClass] = "'far fa-surprise'"
+            [placeHolderText] = "'No Data Found'">
+        </app-no-record>
     </div>
 </div>
