@@ -254,9 +254,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
     
     
     updateSubBrandClient(selectedValue) {
-        console.log(selectedValue[0]);
         this.ProductAddService.getSubBrandClients(selectedValue[0]?.client_id, selectedValue[0]?.id).subscribe(subBrands => {
-            console.log(subBrands);
             let sub_brand = [...subBrands, { id: '', name: 'Create New', isNew: true }];
             if (sub_brand && sub_brand.length > 0) {
                 this.modalData.config.sub_brand_product_id.options = sub_brand;
