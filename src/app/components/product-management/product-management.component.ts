@@ -64,7 +64,7 @@ export class ProductManagementComponent implements OnInit {
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
       "pageSize": 25,
-      "sort": "status",
+      "sort": "",
       "order": "asc",
       "universal_search": ""
     };

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../authentication/auth.service';
 import { Router } from '@angular/router';
@@ -17,6 +17,7 @@ export class SidebarMenuComponent implements OnInit {
   oldCockpit: string = environment.oldCockpit;
   currentRoute: any;
   allowedRoutes = ['product_management_system'];
+  private hideTimeout: any;
 
   constructor(
     private authService: AuthService,
@@ -177,8 +178,25 @@ export class SidebarMenuComponent implements OnInit {
    * Function to toggle footer dropdown in sidebar
    * @author PSI-Enhancements
    */
-  toggleFooterDropdown() {
-    this.isDropdownVisible = !this.isDropdownVisible;
+  toggleDropdown(state: boolean) {
+    clearTimeout(this.hideTimeout);
+    if (state) {
+      this.isDropdownVisible = true;
+    } else {
+      this.hideTimeout = setTimeout(() => {
+        this.isDropdownVisible = false;
+      }, 100);
+    }
+  }
+  /**
+   * Function to close the dropdown when clicking outside
+   * @author PSI-Enhancements
+   */
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (!(event.target as HTMLElement).closest('.footer-profile')) {
+      this.isDropdownVisible = false;
+    }
   }
 
   /**
