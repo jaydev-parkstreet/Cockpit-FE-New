@@ -1,16 +1,16 @@
 <div class="modal-content content">
   <div class="modal-header">
     <div class="title-container">
-      <i class="fas fa-paperclip attach-icon"></i>
+      <i class="far fa-paperclip attach-icon"></i>
       <span class="header-title" [innerText]="modalData.modalTitle"></span>
     </div>
-    <i class="fas fa-times close-popup" *ngIf="modalData.showDismissIcon" (click)="closeModal(0)"></i>
+    <i class="fal fa-times close-popup" *ngIf="modalData.showDismissIcon" (click)="closeModal(0)"></i>
   </div>
   <div class="modal-body w-100">
 
-    <app-psi-empty-message *ngIf="modalData?.attachmentDetails?.data?.length === 0" [message]="modalData.noDataMessage"
-      [icon]="modalData.emptyDataIcon || 'far fa-surprise'">
-    </app-psi-empty-message>
+    <app-no-record *ngIf="modalData?.attachmentDetails?.data?.length === 0" [placeHolderText]="modalData.noDataMessage"
+      [iconClass]="modalData.emptyDataIcon || 'far fa-surprise'">
+    </app-no-record>
 
     <div *ngIf="modalData?.attachmentDetails?.data?.length > 0">
       <div class="attachment-scroll">

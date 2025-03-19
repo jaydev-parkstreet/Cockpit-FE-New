@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PsiEmptyMessageComponent } from './psi-empty-message.component';
+import { NoRecordComponent } from './no-record.component';
 
-describe('PsiEmptyMessageComponent', () => {
-  let component: PsiEmptyMessageComponent;
-  let fixture: ComponentFixture<PsiEmptyMessageComponent>;
+describe('NoRecordComponent', () => {
+  let component: NoRecordComponent;
+  let fixture: ComponentFixture<NoRecordComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PsiEmptyMessageComponent ]
+      declarations: [ NoRecordComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PsiEmptyMessageComponent);
+    fixture = TestBed.createComponent(NoRecordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

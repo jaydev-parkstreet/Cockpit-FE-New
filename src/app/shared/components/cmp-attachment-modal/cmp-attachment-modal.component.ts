@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment';
 import { ProductManagementService } from 'src/app/components/product-management/product-management.service';
 import AppConstant from 'src/app/app.constant';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
-import { ClassGetter } from '@angular/compiler/src/output/output_ast';
 
 export interface ConfirmModel {
   modalData: any;
@@ -122,7 +121,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
       uploadParams.append('file[' + idx + ']', this.selectedFiles[idx]);
     }
     uploadParams.append('entities', JSON.stringify(this.modalData.entityIds));
-    uploadParams.append('kind', this.kindid ? this.kindid : this.modalData.filtersList['kindId']);
+    uploadParams.append('kind', this.kindid);
     uploadParams.append('tool', this.modalData.filtersList.tool_id);
     uploadParams.append('menu_item_id', this.modalData.filtersList.menu_item_id);
     uploadParams.append('permission_id', this.permission_id || this.modalData.attachmentPermission[0].id);
@@ -199,7 +198,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   }
 
   get isButtonDisabled(): boolean {
-    return !this.selectedFileCount || this.selectedFileCount <= 0 || (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0);
+    return !this.selectedFileCount || this.selectedFileCount <= 0 || (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0) || !this.kindid;
   }
 
 }

@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../authentication/auth.service';
 import { Router } from '@angular/router';
+import { SidebarMenuService } from './sidebar-menu.service';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -10,24 +10,26 @@ import { Router } from '@angular/router';
   styleUrls: ['./sidebar-menu.component.scss']
 })
 export class SidebarMenuComponent implements OnInit {
-  menuData :any;
-  isSidebarExpanded: boolean = true;
-  isDropdownVisible : boolean = false;
+  menuData: any;
+  isSidebarExpanded: boolean = false;
+  isDropdownVisible: boolean = false;
   currentUserData: any;
   oldCockpit: string = environment.oldCockpit;
-  currentRoute: any ;
+  currentRoute: any;
+  allowedRoutes = ['product_management_system'];
+  private hideTimeout: any;
 
   constructor(
-    private http:HttpClient,
     private authService: AuthService,
     private renderer: Renderer2,
-    private router: Router
+    private router: Router,
+    private sidebarMenuService: SidebarMenuService
   ) { }
 
   ngOnInit(): void {
     this.currentUserData = this.authService.getUserData();
     this.currentRoute = this.router.url;
-    this.sidebarItems();
+    this.getSidebarMenu();
   }
 
   showSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
@@ -44,6 +46,7 @@ export class SidebarMenuComponent implements OnInit {
     this.renderer.setStyle(submenuElement, 'visibility', 'visible');
     let topPosition = parentRect.top;
     if (this.isSidebarExpanded) {
+      this.renderer.removeStyle(submenuItem, 'position');
       if (topPosition + submenuHeight > viewportHeight) {
         this.renderer.setStyle(submenuElement, 'bottom', `16px`);
       } else {
@@ -78,7 +81,7 @@ export class SidebarMenuComponent implements OnInit {
       if (!submenuElement.matches(':hover')) {
         this.renderer.setStyle(submenuElement, 'display', 'none');
       }
-    }, 100);
+    }, 150);
   }
 
   showMenu(event: MouseEvent, anchorElement: HTMLElement) {
@@ -124,40 +127,90 @@ export class SidebarMenuComponent implements OnInit {
           if (!submenuItem.matches(':hover')) {
             this.renderer.setStyle(submenuItem, 'display', 'none');
           }
-        }, 100);
+        }, 150);
       }
     } else {
       return;
     }
   }
 
-  toggleIcon (menu:any) {
-    this.menuData.forEach((el)=> {
-      if (el.id !== menu.id) {
-        el.isExpanded = false;
+  /**
+   * Function to open and close submenus in expanded mode menu
+   * @author PSI-Enhancements
+   */
+  toggleMenuItems(menu: any) {
+    this.menuData.forEach((menuItems) => {
+      if (menuItems.id !== menu.id) {
+        menuItems.isExpanded = false;
       }
     });
     menu.isExpanded = !menu.isExpanded;
   }
 
-  sidebarItems () {
-    this.http.get('assets/site_2.json').subscribe((response) => {
-      this.menuData = response;
-    })
+
+  /**
+   * Function to get menu data & sidebar api
+   * @author PSI-Enhancements
+   */
+  getSidebarMenu() {
+    this.sidebarMenuService.getMenu().subscribe({
+      next: (response) => {
+        this.menuData = response.data.map((menu: any) => {
+          //this below line needs to be removed as the icon is coming null for beta in api
+          return menu.id === 495 ? { ...menu, icon: 'fas fa-hammer' } : menu;
+        });
+      },
+      error: (error) => {
+        this.menuData = [];
+      }
+    });
   }
 
-  toggleMenu() { 
+  /**
+   * Function to toggle sidebar mode between expanded and collapsed mode
+   * @author PSI-Enhancements
+   */
+  toggleSidebar() {
     this.isSidebarExpanded = !this.isSidebarExpanded;
   }
 
-  toggleDropdown() {
-    this.isDropdownVisible = !this.isDropdownVisible;
+  /**
+   * Function to toggle footer dropdown in sidebar
+   * @author PSI-Enhancements
+   */
+  toggleDropdown(state: boolean) {
+    clearTimeout(this.hideTimeout);
+    if (state) {
+      this.isDropdownVisible = true;
+    } else {
+      this.hideTimeout = setTimeout(() => {
+        this.isDropdownVisible = false;
+      }, 100);
+    }
+  }
+  /**
+   * Function to close the dropdown when clicking outside
+   * @author PSI-Enhancements
+   */
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (!(event.target as HTMLElement).closest('.footer-profile')) {
+      this.isDropdownVisible = false;
+    }
   }
 
+  /**
+   * Function to logout user from the application
+   * @author PSI-Enhancements
+   */
   logout(): void {
     this.authService.logout();
   }
 
+  /**
+   * Function to set active route
+   * @author PSI-Enhancements
+   */
   isActiveRoute(route: string): boolean {
     if (!route) return false;
     const currentPath = this.currentRoute.split('/').pop();

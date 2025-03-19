@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, Injector} from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
@@ -6,6 +6,7 @@ import { ProductManagementService } from '../product-management.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ProductAddService } from './product-add.service';
 import { SimpleModalService } from 'ngx-simple-modal';
+import { PsiBrandModalComponent } from '../psi-brand-modal/psi-brand-modal.component';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
 
 @Component({
@@ -29,6 +30,7 @@ export class ProductAddComponent implements OnInit {
     activeDropdownId: string | null = null;
     brand: any[] = [];
     sub_brand_product_id: any[] = [];
+    sub_brand: any[] = [];
     isBrandDisabled: boolean = true;
     isSubBrandDisabled: boolean = true;
     modelFormat: any = {}; 
@@ -37,6 +39,8 @@ export class ProductAddComponent implements OnInit {
     productId: any;
     edit: boolean = false;
     productForm = this.formBuilder.group({});
+    brandModalData: any;
+    brandModalConfig: any;
     formSubmitted: boolean = false;
 
     constructor(
@@ -45,14 +49,11 @@ export class ProductAddComponent implements OnInit {
         public router: Router,
         private route: ActivatedRoute,
         private formBuilder: FormBuilder,
-        private productmanagementService: ProductManagementService,
+        private productManagementService: ProductManagementService,
         private spinner : NgxSpinnerService,
         private commonService: CommonService,
-        private simpleModalService: SimpleModalService,
-        private injector: Injector
-    ) {
-        this.simpleModalService = injector.get<SimpleModalService>(SimpleModalService);
-     }
+        private simpleModalService: SimpleModalService
+    ) { }
 
     ngOnInit(): void {
         this.permissions = this.route.snapshot.data['permissions'];
@@ -77,16 +78,16 @@ export class ProductAddComponent implements OnInit {
         }
 
         this.getFormControl();
-        this.modelFormat = this.productmanagementService.formatModelProductTool(this.productForm.value, this.crudFiltersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
+        this.modelFormat = this.ProductAddService.formatModelProductTool(this.productForm.value, this.crudFiltersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
     }
 
     /**
      * This function fetches product data based on the product id.
      * @param productId
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     async getProductData (productId) {
-        this.productmanagementService.getDetails(productId).subscribe((productData) => {
+        this.productManagementService.getDetails(productId).subscribe((productData) => {
             this.renderConditionalFields(productData.prod_type, this.crudFiltersList, this.productForm);
             this.productId = productData.product_id;
             setTimeout(() => {
@@ -96,7 +97,7 @@ export class ProductAddComponent implements OnInit {
                 if (!this.duplicate) {
                     this.uniqueId = productData.id;
                 }
-                this.modelFormat = this.productmanagementService.formatModelProductTool(productData, this.crudFiltersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId, this.productId);
+                this.modelFormat = this.ProductAddService.formatModelProductTool(productData, this.crudFiltersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId, this.productId);
                 this.prefillForm(productData);
             }, 100);
         });
@@ -105,7 +106,7 @@ export class ProductAddComponent implements OnInit {
     /**
      * Pre-fills the form with the product data
      * @param productData
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     prefillForm(productData: any): void {
         this.productForm.patchValue({
@@ -156,6 +157,7 @@ export class ProductAddComponent implements OnInit {
         let clientId = this.productForm.value.client_id[0];
         this.updateBrandAndSubBrandControls(clientId.class_id, productData.brand_id, productData.sub_brand_product_id);
         this.productForm.get("client_id").setValue(clientId.id);
+        this.clientId = clientId.class_id;
         this.productForm.updateValueAndValidity();
     }
 
@@ -165,7 +167,7 @@ export class ProductAddComponent implements OnInit {
      * @param value
      * @param name
      * @returns array
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     getDropDownArrayByIds(list, value, name) {
         let result = [];
@@ -183,13 +185,13 @@ export class ProductAddComponent implements OnInit {
     /**
      * Function to submit Form.
      * @param form The form object.
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     onSubmit(event) {
         if (event  === "Submit") {
             this.formSubmitted = true;
             if (this.productForm.valid) {
-                const formattedModel = this.productmanagementService.formatModelProductTool(
+                const formattedModel = this.ProductAddService.formatModelProductTool(
                     this.productForm.value,
                     this.crudFiltersList,
                     this.subBrandProducts,
@@ -239,7 +241,7 @@ export class ProductAddComponent implements OnInit {
      * This function is called when the dropdown selection changes.
      * @param fieldName
      * @param selectedValue
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     onDropdownStateChange(fieldName: any, selectedValue: any) {
         this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
@@ -255,8 +257,11 @@ export class ProductAddComponent implements OnInit {
 
         const brandControl = this.productForm.get('brand');
         const subBrandControl = this.productForm.get('sub_brand_product_id');
-        this.clientId = selectedValue[0]?.class_id;
-
+        if (selectedValue[0]?.class_id) {
+            this.clientId = selectedValue[0]?.class_id;
+        } else if (selectedValue[0]?.client_id) {
+            this.clientId = selectedValue[0]?.client_id;
+        }
         if (fieldName === 'client_id' && selectedValue.length > 0) {
             this.isBrandDisabled = !selectedValue;
             brandControl.setValue('');
@@ -267,15 +272,7 @@ export class ProductAddComponent implements OnInit {
             this.isSubBrandDisabled = true;
             if (selectedValue && brandControl) {
                 brandControl.enable();
-                this.productmanagementService.getBrands(this.clientId).subscribe(brands => {
-                    if (Array.isArray(brands) && brands.length > 0) {
-                        this.brand = brands;
-                        this.updateBrandFilter();
-                    } else {
-                        this.brand = [];
-                        this.updateBrandFilter();
-                    }
-                });
+                this.getBrand(this.clientId);
             }
             this.changeDetector.detectChanges();
         }
@@ -284,15 +281,27 @@ export class ProductAddComponent implements OnInit {
             this.isSubBrandDisabled = !selectedValue;
             this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
             subBrandControl.setValue('');
+            if (selectedValue[0]?.isNew) {
+                this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
+                this.updateConfig(this.brandModalConfig.brand, false);
+                this.updateConfig(this.brandModalConfig.new_brands, true);
+                this.updateConfig(this.brandModalConfig.sub_brand_product_id, false);
+                this.updateConfig(this.brandModalConfig.new_sub_brand, false);
+                this.updateConfig(this.brandModalConfig.net_contents, false);
+                this.updateConfig(this.brandModalConfig.units_cases, false);
+                this.brandModalData = this.ProductAddService.getBrandModalData(this.brandModalConfig, true, this.clientId)
+                this.openCreateBrandPopup(this.clientId);
+            }
             if (!this.isSubBrandDisabled && subBrandControl) {
                 subBrandControl.enable();
-                this.productmanagementService.getSubBrandProducts(selectedValue[0]?.client_id).subscribe(subBrands => {
-                    this.sub_brand_product_id = subBrands;
+                this.productManagementService.getSubBrandProducts(selectedValue[0]?.client_id, selectedValue[0]?.id).subscribe(subBrands => {
+                    this.sub_brand_product_id = [...subBrands, { id: '', name: 'Create New', isNew: true }];
                     this.updateSubBrandFilter();
                     this.isSubBrandDisabled = false;
                 });
+                this.updateSubBrandClient(selectedValue);
             } else {
-                this.sub_brand_product_id = [];
+                this.sub_brand_product_id = [{id: '', name: 'Create New', isNew: true }];
                 this.updateSubBrandFilter();
                 subBrandControl.setValue('');
             }
@@ -300,6 +309,17 @@ export class ProductAddComponent implements OnInit {
         }
 
         if (fieldName == 'sub_brand_product_id') {
+            if (selectedValue[0]?.isNew) {
+                this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
+                this.updateConfig(this.brandModalConfig.brand, true);
+                this.updateConfig(this.brandModalConfig.new_brands, false);
+                this.updateConfig(this.brandModalConfig.sub_brand_product_id, true);
+                this.updateConfig(this.brandModalConfig.new_sub_brand,  false);
+                this.updateConfig(this.brandModalConfig.net_contents, true);
+                this.updateConfig(this.brandModalConfig.units_cases, true);
+                this.brandModalData = this.ProductAddService.getBrandModalData(this.brandModalConfig, false, this.clientId)
+                this.openCreateBrandPopup(this.clientId);
+            }
             this.productForm.get('sub_brand_product_name')?.setValue(selectedValue[0].name);
         }
         if (fieldName === 'prod_type') {
@@ -309,16 +329,27 @@ export class ProductAddComponent implements OnInit {
             this.changeDetector.detectChanges();
         }
     }
+
+    getBrand(clientId) {
+        this.ProductAddService.getBrands(clientId).subscribe(brands => {
+            if (Array.isArray(brands) && brands.length > 0) {
+                this.brand = [...brands, { id: '', name: 'Create New', isNew: true }];
+            } else {
+                this.brand = [{ id: '', name: 'Create New', isNew: true }];
+            }
+            this.updateBrandFilter();
+        });
+    }
     /**
      * Updates the sub-brand product filter for the form.
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     updateSubBrandFilter() {
         if (this.sub_brand_product_id && this.sub_brand_product_id.length > 0) {
             this.crudFiltersList['sub_brand_product_id'] = this.sub_brand_product_id;
             this.subBrandProducts = this.sub_brand_product_id;
             this.crudFieldConfig.leftSection[2].options = this.sub_brand_product_id;
-            this.crudFieldConfig.leftSection[2].isDisabled = false
+            this.crudFieldConfig.leftSection[2].isDisabled = false;
             this.crudFieldConfig = { ...this.crudFieldConfig };
             this.changeDetector.detectChanges();
         }
@@ -326,7 +357,7 @@ export class ProductAddComponent implements OnInit {
 
     /**
      * Updates the brand filter for the form.
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     updateBrandFilter() {
         if (this.brand && this.brand.length > 0) {
@@ -342,7 +373,7 @@ export class ProductAddComponent implements OnInit {
      * Returns a unique identifier for each field
      * @param index
      * @param field
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      * @returns A unique string identifier
      */
     trackByField(index: number, field: any): string {
@@ -354,7 +385,7 @@ export class ProductAddComponent implements OnInit {
      * @param controlName
      * @param filterKey
      * @param id
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     updateFormControl(controlName: string, filterKey: string, id: string) {
         const control = this.productForm.get(controlName);
@@ -362,11 +393,13 @@ export class ProductAddComponent implements OnInit {
         this.productForm.patchValue({
             [controlName]: this.getDropDownArrayByIds(this.crudFiltersList?.[filterKey], id, controlName),
         });
+        
+        this.changeDetector.detectChanges();
     }
 
     /**
      * Generates a form control group based on the given crud field configuration.
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     getFormControl() {
         const controls = {};
@@ -392,16 +425,16 @@ export class ProductAddComponent implements OnInit {
      * @param clientId
      * @param brandId
      * @param subBrandId
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     updateBrandAndSubBrandControls(clientId: string, brandId: string, subBrandId: string) {
-        this.productmanagementService.getBrands(clientId).subscribe(brands => {
-            this.brand = Array.isArray(brands) && brands.length > 0 ? brands : [];
+        this.ProductAddService.getBrands(clientId).subscribe(brands => {
+            this.brand = Array.isArray(brands) && brands.length > 0 ?  [...brands, { id: '', name: 'Create New', isNew: true }] : [{ id: '', name: 'Create New', isNew: true }];
             this.updateBrandFilter();
             this.updateFormControl('brand', 'brand', brandId);
 
-            this.productmanagementService.getSubBrandProducts(clientId).subscribe(subBrands => {
-                this.sub_brand_product_id = subBrands;
+            this.productManagementService.getSubBrandProducts(clientId, brandId).subscribe(subBrands => {
+                this.sub_brand_product_id = [...subBrands, { id: '', name: 'Create New', isNew: true }];
                 this.updateSubBrandFilter();
                 this.updateFormControl('sub_brand_product_id', 'sub_brand_product_id', subBrandId);
             });
@@ -412,7 +445,7 @@ export class ProductAddComponent implements OnInit {
      * Updates the sellectedData object to include a default value for the given key.
      * @param key
      * @param defaultText
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     updatesellectedData(key: string, defaultText: string) {
         this.sellectedData[key] = [{ name: defaultText }];
@@ -424,7 +457,7 @@ export class ProductAddComponent implements OnInit {
      * @param selectedValue
      * @param crudFiltersList
      * @param productForm
-     * @author psi-enhancement
+     * @author PSI-Enhancement
      */
     renderConditionalFields(selectedValue: any, crudFiltersList, productForm) {
         const baseFields = this.ProductAddService.getCrudBaseFields(crudFiltersList);
@@ -561,5 +594,71 @@ export class ProductAddComponent implements OnInit {
                 addFieldControl(manufacturedLocationField);
                 break;
         }
+    }
+
+    /**
+     * Function to open Brand and SubBrand Popup.
+     * @param clientId
+     * @author PSI-Enhancement
+     */
+    openCreateBrandPopup(clientId) {
+        this.brandModalData.client_id = clientId;
+        const modalData = this.brandModalData;
+        this.simpleModalService.addModal(PsiBrandModalComponent, { modalData })
+            .subscribe((result) => {
+                if (result?.confirm) {
+                    if (result.formData.new_brands && !result.formData.net_contents) {                     
+                        const param = {
+                            client_id: clientId,
+                            brand_id: '',
+                            brand_name: result.formData.new_brands
+                        };
+                        this.spinner.show();
+                        this.ProductAddService.saveNewBrands(param).subscribe(response => {
+                            this.spinner.hide();
+                            if (!response.hasError) {
+                                this.getBrand(clientId);
+                                this.updateBrandAndSubBrandControls(clientId, response.data.brand[0].id, null);
+                            }
+                        });
+                    } else {
+                        const param = {
+                            client_id: clientId ? clientId : result.formData.brand.client_id,
+                            brand_id: result.formData.brand.id,
+                            brand_name: result.formData.new_brands,
+                            sub_brand_id: result.formData.sub_brand_product_id.id || '',
+                            sub_brand_name: result.formData.new_sub_brand,
+                            net_content_id: result.formData.net_contents.id,
+                            bpc_id: result.formData.units_cases.id
+                        };
+                        this.spinner.show();
+                        this.ProductAddService.saveNewSubBrands(param).subscribe(response => {
+                            this.spinner.hide();
+                            if (!response.hasError) {
+                                this.updateBrandAndSubBrandControls(clientId ? clientId : result.formData.brand.client_id, response.data.brand.id, response.data.sub_brand_product.id);
+                            }
+                        });
+                    }
+                } else {
+                    this.updatesellectedData('brand', 'Select Brand');
+                    this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
+                }
+            });
+    }
+
+    updateConfig = (config, isDisplayed) => {
+        config.display = isDisplayed;
+        config.isRequired = isDisplayed;
+    };
+
+    updateSubBrandClient(selectedValue) {
+        this.ProductAddService.getSubBrandClients(selectedValue[0]?.client_id, selectedValue[0]?.id).subscribe(subBrands => {
+            this.sub_brand = [...subBrands, { id: '', name: 'Create New', isNew: true }];
+            if (this.sub_brand && this.sub_brand.length > 0) {
+                this.crudFiltersList['sub_brand'] = this.sub_brand;
+                this.changeDetector.detectChanges();
+            }
+            this.isSubBrandDisabled = false;
+        });
     }
 }

@@ -64,7 +64,7 @@ export class ProductManagementComponent implements OnInit {
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
       "pageSize": 25,
-      "sort": "status",
+      "sort": "",
       "order": "asc",
       "universal_search": ""
     };
@@ -112,10 +112,6 @@ export class ProductManagementComponent implements OnInit {
         this.reportRequestObj.order = 'asc';
       }
       this.productToolSummary = [];
-      this.setDataSourceAgGrid();
-	};
-    this.gridOptions.onGridReady = () => {
-      this.setDataSourceAgGrid();
     };
     this.gridOptions.getRowClass = function (params) {
       if (params.data && params.data.checked && params.data.checked === true) {
@@ -217,16 +213,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     }
     this.filterList = this.dropdownData;
   }
-
-
-
-  // getDropdown(){
-  //   const token = localStorage.getItem('authToken');
-  //   this.productManagementService.getDropdown(token).toPromise().then(response => {
-  //     console.log(response);
-  //   })
-  // }
-
 
   /**
      * Function to call api and set ag-grid dataSource object

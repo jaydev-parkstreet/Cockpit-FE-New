@@ -14,26 +14,27 @@ import { AgGridModule } from 'ag-grid-angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LayoutModule } from './components/layout/layout.module';
 import { DatePipe } from '@angular/common';
+import { PsiBrandModalComponent } from './components/product-management/psi-brand-modal/psi-brand-modal.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        ConfirmationModalComponent,
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        AuthenticationModule,
-        HttpClientModule,
-        ProductManagementModule,
-        SharedModule,
-        FormsModule,
-        ReactiveFormsModule,
-        StatelessModule,
-        AgGridModule,
-        NgxSpinnerModule,
-        LayoutModule
-
+  declarations: [
+    AppComponent,
+    ConfirmationModalComponent,
+    PsiBrandModalComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AuthenticationModule,
+    HttpClientModule,
+    ProductManagementModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    StatelessModule,
+    AgGridModule,
+    NgxSpinnerModule,
+    LayoutModule
     ],
     exports: [
 

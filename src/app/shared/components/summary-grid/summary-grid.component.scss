@@ -67,7 +67,7 @@
             left: 0;
             height: 16px;
             width: 16px;
-            border-radius: 3px;
+            border-radius: 4px;
             border: 1px solid $colors-neutral-dark;
             display: inline-block;
         }
@@ -76,9 +76,9 @@
 
 ::ng-deep .ag-theme-material {
     .ag-header-cell {
-        color: #232323;
+        color: $colors-neutral-black;
         font-size: 16px;
-        background-color: white;
+        background-color: $colors-neutral-white;
         text-transform: none;
         cursor: default;
         font-family: $crimson-pro-medium;
@@ -131,7 +131,7 @@
     }
 
     .ag-body-container a {
-        color: #337ab7 !important;
+        color: $colors-v2-base-secondary !important;
     }
 
     .ag-cell {
@@ -154,12 +154,16 @@
                 color: $colors-neutral-black;
                 font-weight: 500;
                 display: inline-block;
-                width: 123px;
+                width: 185px;
                 height: 23px;
                 font-size: 10px;
                 line-height: 14px;
                 padding: 5px 0px;
                 text-align: center;
+                font-family: $montserrat-medium;
+            }
+            .widthAction {
+                width: 182px !important;
             }
             .checkbox-container {
                 display: inline-block;
@@ -197,9 +201,9 @@
                 content: "";
                 position: absolute;
                 display: block;
-                left: 4px;
-                top: 1px;
-                width: 5px;
+                left: 5px;
+                top: 0px;
+                width: 4px;
                 height: 10px;
                 border: solid $colors-neutral-white;
                 border-width: 0 2px 2px 0;
@@ -319,6 +323,12 @@
             padding-left: 12px;
             padding-right: 12px;
             font-size: 14px;
+            span {
+                color: $colors-neutral-black;
+                a {
+                    color: $colors-neutral-black !important;
+                }
+            }
         }
     }
 
@@ -335,7 +345,7 @@
 
         .ag-overlay-wrapper {
             .no-data-message {
-                color: #a5a5a5;
+                color: $colors-neutral-light;
                 font-size: 14px;
                 margin-top: 100px;
                 font-family: $montserrat-medium;
@@ -420,7 +430,7 @@
             overflow: visible;
 
             .tooltip-text {
-                color: #232323;
+                color: $colors-neutral-black;
                 display: flex;
             }
         }
@@ -441,7 +451,8 @@
             line-height: 14px;
             align-items: center;
             justify-content: center;
-            white-space: pre-wrap;
+            white-space: nowrap;
+            width: max-content;
         }
     }
 
@@ -461,5 +472,5 @@
 }
 
 .ag-dnd-dragging {
-    background-color: black !important;
+    background-color: $colors-neutral-black !important;
 }

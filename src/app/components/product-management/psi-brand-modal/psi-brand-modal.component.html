@@ -1,0 +1,53 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <span class="title-icon {{modalData.titleIcon}}"></span>
+        <div class="header-title " [innerText]="modalData.title"></div>
+        <em class="fa fa-times modal-dismiss" (click)="close()"></em>
+    </div>
+    <div class="model-container-popup">
+        <div *ngFor="let field of getConfigArray(modalData.config)">
+            <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'multiselect-dropdown' && field.display">
+                <app-cmp-input-dropdown
+                    [label]="field.label"
+                    [showSelectAll]="false"
+                    [showCheckboxes]="false"
+                    [allowSingleSelect]="true"
+                    [settings]="field.inputSetting"
+                    [selectedItems]="sellectedData[field.key] || []"
+                    [filteredItems]="field.options"
+                    [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
+                    [disabled]="field.isDisabled"
+                    [required]="field.isRequired"
+                    (onDropDownChange)="onDropdownStateChange(field.key, $event)">
+                </app-cmp-input-dropdown>
+                <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                    <span *ngIf="brandForm.get(field.name)?.errors?.required">Required</span>
+                </div>
+            </div>
+            <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text' && field.display">
+                <app-psi-input-text-field
+                    [field]="field"
+                    [form]="brandForm"
+                    [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
+                    (valueChanged)="onInputChange(field.name, $event)">
+                </app-psi-input-text-field>
+                <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                    <span *ngIf="!field.validationMessage">
+                        <span *ngIf="brandForm.get(field.name)?.errors?.required">Required</span>
+                    </span>
+                    <span *ngIf="field.validationMessage && field.hasError">{{ field.validationMessage }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer footer w-100">
+        <div *ngFor="let btn of modalData.buttons">
+            <app-cmp-button
+                [isDisable]="btn.isDisable"
+                [buttonText]="btn.action"
+                [buttonClass]="btn.class"
+                (onClick)="onButtonClicked($event)">
+            </app-cmp-button>
+        </div>
+    </div>
+</div>
