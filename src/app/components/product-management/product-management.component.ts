@@ -153,36 +153,30 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       entityIds: entityIds,
       attachmentPermission: this.filterList.entity_permissions,
       cancelAction: { label: 'Cancel' }, saveAction: { label: 'Save' },filtersList: this.filterList,
-      multiple: multiple, uploadButtonName: 'Choose File',
-      customClass: true, showHorizontalLine: true,
-      newDeletePopup:true,
-      showErrorInNewToast: true,
-      hideAttachmentLockIcon: true,
+      multiple: multiple,
       showFileType: true,
       fileTypeDropdown: this.permissions.entity_kinds,
-      showChangePrivacyIcon: true,
-      newToastMsg: 'Failed',
-      msg: 'Are you sure you want to delete the attachment?',
-      newToast: true, showBlurEffect: true, deleteModalWindowClass: 'custom-attachment-delete',
-      deleteModalFirstAction: {
-        label: 'No',
-        style: 'custom-attachment-delete-fa'
-      },
-      deleteModalSecondAction: {
-        label: 'Yes',
-        style: 'custom-attachment-delete-sa'
-      },
+      showPrivacyIcon: true,
       attachmentDetails: JSON.parse(JSON.stringify(attachments)),
-      showLine: true, showScroll: true
     };
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
     .subscribe((result) => {
         if (result !== undefined) {
-          if (!attachments.data || attachments.data.length !== result) {
-            // this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
-          }
+          this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
         }
     });
+  }
+
+  unSelectAllCheckbox(entityIds:any, count:any, keyName:any) {
+    for (var a in this.productToolSummary) {
+        if (entityIds.indexOf(this.productToolSummary[a].product_id) !== -1) {
+            this.productToolSummary[a][keyName] = count;
+        }
+        this.productToolSummary[a].checkbox = false;
+    }
+    this.selectedRowCount = 0;
+    this.selectedRows = [];
+    this.gridOptions.api.redrawRows();
   }
 
   /**
