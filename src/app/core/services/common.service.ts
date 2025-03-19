@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
+import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -206,4 +207,36 @@ export class CommonService {
       url = url.replace(new RegExp('#', 'g'), '%23');
       return url;
   }
+
+    /**
+     * Function to export excel
+     * @author PSI-Enhancement
+     * @param string fileUrl
+     * @returns string Url
+     */
+    exportExcel(url, params, cb) {
+        const _params = params;
+        _params.export = true;
+        this.http.post(url, _params).subscribe((response: any) => {
+            const data = response.data;
+            if (data) {
+                const csv = new Blob([data], {
+                    type: 'application/force-download'
+                });
+                const fileName = String(this.getFileNameFromHeader(response.headers.get('content-disposition')));
+                saveAs(csv, fileName || 'report.csv');
+                cb();
+            }
+        });
+    }
+
+    /**
+     * Function to get the file name from header
+     * @author PSI-Enhancement
+     */
+    getFileNameFromHeader(header) {
+        if (!header) return null;
+        var result = header.split(';')[1].trim().split('=')[1];
+        return result.replace(/"/g, '');
+    }
 }

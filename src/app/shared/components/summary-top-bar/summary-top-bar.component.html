@@ -18,8 +18,8 @@
         </div>
     </div>
     <app-excel-export
-        [tooltipText]="tooltipText"
-        (onExcelSheet)="excelExport.emit()">
+        *ngIf="action.type == 'export'"
+        [config]="action">
     </app-excel-export>
     <div class="filter-results m-margin-top" *ngIf="config.actions['result'].type === 'result'">
         <b>{{ config.totalResult }}</b>

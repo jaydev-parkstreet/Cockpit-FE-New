@@ -1,7 +1,10 @@
-
-<div class="export-excel-btn position-relative">
-    <i class="fas fa-file-excel export-icon u-bg-colors-neutral-dark" (click)="this.onExcelSheet.emit()"></i>
-    <span *ngIf="tooltipText" class="icon-tooltiptext">
-        {{tooltipText}}
+<div class="u-icon-tooltip" *ngIf="!downloading; else spinner">
+    <i class="fas fa-file-excel u-fs20 export-icon u-bg-colors-neutral-dark on-hover action-icon"
+        (click)="onExport()">
+    </i>
+    <span class="tooltiptext t-center" *ngIf="config.tooltip" [textContent]="config.tooltip">
     </span>
 </div>
+<ng-template #spinner>
+    <i class="fas fa-spinner fa-spin u-fs20"></i>
+</ng-template>
