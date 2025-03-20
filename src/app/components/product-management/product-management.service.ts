@@ -264,7 +264,7 @@ export class ProductManagementService {
                     type: 'icon',
                     showTooltip: true,
                     tooltipText: 'Import bulk products',
-                    icon: 'fas fa-layer-group',
+                    icon: 'fas fa-layer-plus',
                     key: 'mass-upload',
                     permission: permission.permissions.Create,
                   }, {
