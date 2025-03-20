@@ -11,7 +11,7 @@ export class PsiUploadFilesComponent implements OnInit {
   @Input() isFromAttachment:boolean;
   @Input() iconClass:string;
   @Input() fileSizeMessage:any ;
-  @Output() change = new EventEmitter<any>();
+  @Output() changeFileUpload = new EventEmitter<any>();
   @Input() convertFileSizes: (size: number) => string;
   @Input() convertFileType: (type: string) => string;
 
@@ -23,7 +23,7 @@ export class PsiUploadFilesComponent implements OnInit {
   }
 
   onFileChange(event: any): void {
-    this.change.emit(event);
+    this.changeFileUpload.emit(event);
   }
 
   deleteFile(index: number): void {

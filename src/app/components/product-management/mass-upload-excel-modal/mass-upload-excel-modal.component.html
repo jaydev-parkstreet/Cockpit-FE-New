@@ -4,13 +4,13 @@
         <div class="header-title">{{ modalData.title }}</div>
         <i class="fa fa-times modal-dismiss" (click)="close()"></i>
     </div>
-    <div class="modal-body">
+    <div class="typography-body-black-regular modal-body-container u-pg-py-3 u-pg-px-2">
         <div class="upload-container">
-            <div class="upload-csv mt-16" [innerHTML]="modalData.modalBodyTitle"></div>
-            <div class="mt-16" [innerHTML]="modalData.modalBodyText"></div>
+            <div class="typography-body-black-regular" [innerHTML]="modalData.modalBodyTitle"></div>
+            <div class="typography-body-black-regular" [innerHTML]="modalData.modalBodyText"></div>
             <app-psi-upload-files
                 [selectedFiles] = "selectedFiles"
-                (change)="onFileChange($event)"
+                (changeFileUpload)="onFileChange($event)"
                 [fileSizeMessage]="massTemplate"
                 [isFromAttachment]="false"
             ></app-psi-upload-files>

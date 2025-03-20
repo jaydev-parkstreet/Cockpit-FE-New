@@ -55,7 +55,7 @@
         <hr *ngIf="modalData?.attachmentDetails?.data?.length > 4" />
         <app-psi-upload-files 
             [selectedFiles]="selectedFiles" 
-            (change)="onFileChange($event)"
+            (changeFileUpload)="onFileChange($event)"
             [convertFileSizes]="convertFileSizes.bind(this)" 
             [convertFileType]="convertFileType.bind(this)"
             [isFromAttachment]="true"
