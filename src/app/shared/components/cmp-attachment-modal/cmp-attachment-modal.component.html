@@ -45,7 +45,10 @@
       </div>
     </div>
     <hr *ngIf="modalData?.attachmentDetails?.data?.length > 4" />
-    <div class="u-mb2 u-mt3">
+    <app-psi-upload-files
+
+    ></app-psi-upload-files>
+    <!-- <div class="u-mb2 u-mt3">
       <div class="file-uploader">
         <label for="file_upload" class="file-upload-label" tabindex="0">
           <span [innerText]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"></span>
@@ -67,7 +70,7 @@
           <i class="fas fa-trash" (click)="deleteFile(i)"></i>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="attachment-permission">
       <div *ngIf="!modalData.latestDesign" class="custom-select-wrapper">

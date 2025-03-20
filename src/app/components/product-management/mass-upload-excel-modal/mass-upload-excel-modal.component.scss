@@ -1,0 +1,32 @@
+@import '../../../scss/variables/typography';
+@import '../../../scss/variables/colors';
+.modal-content {
+    width: 671px;
+    height:500px;
+
+    .modal-body {
+
+        .upload-container {
+           
+            .upload-section {
+                position: relative;
+
+
+                .upload-loader {
+                    position: absolute;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 320px;
+                    top: 0;
+                    width: 100%;
+                    z-index: 9999;
+                    background: #dfe3e8;
+                    font-family: $montserrat-bold;
+
+                }
+            }
+        }
+    }
+}

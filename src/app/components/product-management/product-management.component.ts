@@ -8,6 +8,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { environment } from 'src/environments/environment';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { CmpAttachmentModalComponent } from 'src/app/shared/components/cmp-attachment-modal/cmp-attachment-modal.component';
+import {MassUploadExcelModalComponent} from '../product-management/mass-upload-excel-modal/mass-upload-excel-modal.component'
 
 @Component({
   selector: 'app-product-management',
@@ -92,6 +93,7 @@ export class ProductManagementComponent implements OnInit {
     // this.statusObj = this.productToolService.getStatusObject();
     this.initGridOptions();
     this.productToolSummary = [];
+    this.openMassUploadExcelPopup();
   }
 
 
@@ -459,4 +461,15 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       }
     });
   }
+
+
+    openMassUploadExcelPopup() {
+        const modalData = this.productManagementService.getMassExcelModalData();
+        this.simpleModalService.addModal(MassUploadExcelModalComponent , { modalData })
+            .subscribe((result) => {
+                // if (result?.confirm) {
+                   
+                // } 
+            });
+    }
 }

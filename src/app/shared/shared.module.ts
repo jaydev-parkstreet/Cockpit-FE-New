@@ -40,7 +40,8 @@ import { NoRecordComponent } from './components/no-record/no-record.component';
     SummaryGridComponent,
     CmpAttachmentModalComponent,
     PsiCrudFormComponent,
-    NoRecordComponent
+    NoRecordComponent,
+  
   ],
   imports: [
     CommonModule,
