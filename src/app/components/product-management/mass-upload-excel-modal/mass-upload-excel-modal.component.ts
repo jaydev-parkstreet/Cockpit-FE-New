@@ -14,6 +14,7 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
 
     modalData: any;  // Add this property to the class
     selectedFiles: any = [];
+    errorMessage: string = '';
 
     massTemplate: string = `
   <div class="drag-drop-container">
@@ -67,10 +68,11 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
       const allowedExtensions = ['xlsx'];
       const maxSize = 10 * 1024 * 1024;
       const validFiles: File[] = [];
+      this.errorMessage = '';
       
       // If a file already exists in the selectedFiles array, prevent further upload
       if (this.selectedFiles.length >= 1) {
-          alert('You can upload only one file at a time.');
+        this.errorMessage = 'You can upload only one file at a time.';
           return;
       }
   
@@ -82,13 +84,13 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
   
           // Check file size
           if (fileSize > maxSize) {
-              alert(`${fileName} is too large! Please upload file up to 10 MB.`);
+            this.errorMessage = `${fileName} is too large! Please upload a file up to 10 MB.`;
               return;
           }
   
           // Check file extension
           if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-              alert(`Only ${allowedExtensions.join(', ')} are allowed to be uploaded.`);
+            this.errorMessage = `Only ${allowedExtensions.join(', ')} files are allowed to be uploaded.`;
               return;
           }
   

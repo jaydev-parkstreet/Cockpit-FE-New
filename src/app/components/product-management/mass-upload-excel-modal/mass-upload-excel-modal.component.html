@@ -8,12 +8,18 @@
         <div class="upload-container">
             <div class="typography-body-black-regular" [innerHTML]="modalData.modalBodyTitle"></div>
             <div class="typography-body-black-regular" [innerHTML]="modalData.modalBodyText"></div>
+            
             <app-psi-upload-files
-                [selectedFiles] = "selectedFiles"
+                [selectedFiles]="selectedFiles"
                 (changeFileUpload)="onFileChange($event)"
                 [fileSizeMessage]="massTemplate"
-                [isFromAttachment]="false"
-            ></app-psi-upload-files>
+                [isFromAttachment]="false">
+            </app-psi-upload-files>
+
+            <!-- Error message section moved outside of file list -->
+            <div class="error-msg" *ngIf="errorMessage">
+                {{ errorMessage }}
+            </div>
         </div>
     </div>
     <div class="modal-footer footer w-100">
