@@ -46,32 +46,13 @@
     </div>
     <hr *ngIf="modalData?.attachmentDetails?.data?.length > 4" />
     <app-psi-upload-files
-
+      [selectedFiles] = "selectedFiles"
+      (change)="onFileChange($event)"
+      [convertFileSizes]="convertFileSizes.bind(this)"
+      [convertFileType]="convertFileType.bind(this)"
+      [isFromAttachment]="true"
+      [fileSizeMessage] = "selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"
     ></app-psi-upload-files>
-    <!-- <div class="u-mb2 u-mt3">
-      <div class="file-uploader">
-        <label for="file_upload" class="file-upload-label" tabindex="0">
-          <span [innerText]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"></span>
-        </label>
-        <input type="file" name="files" id="file_upload" (change)="onFileChange($event)" #file_upload multiple hidden />
-      </div>
-      <div class="file-list-container">
-        <div class="file-item" *ngFor="let file of selectedFiles; let i = index">
-          <div class="file-item-info">
-            <i class="far fa-file file-icon"></i>
-            <div class="file-details">
-              <span class="file-name" [innerText]="file.name"></span>
-              <div class="file-meta">
-                <span>size: {{convertFileSizes(file.size)}}</span>
-                <span>type: {{convertFileType(file.type)}}</span>
-              </div>
-            </div>
-          </div>
-          <i class="fas fa-trash" (click)="deleteFile(i)"></i>
-        </div>
-      </div>
-    </div> -->
-
     <div class="attachment-permission">
       <div *ngIf="!modalData.latestDesign" class="custom-select-wrapper">
         <div class="u-mb3">

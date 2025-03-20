@@ -13,6 +13,7 @@ export interface massUploadExcelModal {
 export class MassUploadExcelModalComponent extends SimpleModalComponent<massUploadExcelModal, any> implements massUploadExcelModal, OnInit {
 
   modalData: any;  // Add this property to the class
+  massTemplate:any;
 
   constructor() { 
     super();
@@ -20,7 +21,16 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
 
   ngOnInit(): void {
     console.log(this);
+  
     
+  }
+  createTemplate(){
+    this.massTemplate = `
+    <div>
+    <span>Drag & drop files here or <em>browse</em> </span>
+    <span>.xlsx only, 10 MB per file</span>
+    </div>
+    `
   }
 }
 

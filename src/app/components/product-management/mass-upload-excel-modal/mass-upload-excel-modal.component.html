@@ -8,12 +8,10 @@
         <div class="upload-container">
             <div class="upload-csv mt-16" [innerHTML]="modalData.modalBodyTitle"></div>
             <div class="mt-16" [innerHTML]="modalData.modalBodyText"></div>
-            <div class="upload-section">
-                <div class="upload-loader">
-                    <!-- <i class="fas fa-spinner fa-spin"></i>
-                    <div class="upload-text">File is uploading, may take a few minutes.</div> -->
-                </div>
-            </div>
+            <app-psi-upload-files
+            [fileSizeMessage]="massTemplate()"
+            [isFromAttachment]="false"
+            ></app-psi-upload-files>
         </div>
     </div>
     <div class="modal-footer footer w-100">
