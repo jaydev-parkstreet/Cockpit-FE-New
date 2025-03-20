@@ -113,7 +113,7 @@
     }
 }
 
-.mass-uploader {
+::ng-deep .mass-uploader {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -124,4 +124,26 @@
     z-index: 9999;
     background: #dfe3e8;
     font-family: $montserrat-bold;
+    .file-upload-label{
+        .drag-drop-container{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            font-size: 14px;
+            color: $colors-neutral-dark;
+            font-weight: 400;
+            font-family: $montserrat-regular;
+
+            i{
+                font-size: 48px;
+                margin-bottom: 15px;
+            }
+
+            em{
+                font-style: normal;
+                color: $colors-v2-base-primary;
+                cursor: pointer;
+            }
+        }
+    }
 }

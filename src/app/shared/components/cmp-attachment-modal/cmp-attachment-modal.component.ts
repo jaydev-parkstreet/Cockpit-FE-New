@@ -50,7 +50,6 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   ngOnInit(): void {
     this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);
     this.filetype_dropdown = this.commonService.getSingleSelectDropdownConfig('Select file type', true);
-    // this.fileSizeMessage ="Maximum File Size: 10MB";
   }
 
   onFileChange(event: any) {

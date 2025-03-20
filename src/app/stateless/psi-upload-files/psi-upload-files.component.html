@@ -1,10 +1,6 @@
 <div class="u-mb2 u-mt3">
     <div [ngClass]="isFromAttachment ? 'file-uploader' : 'mass-uploader'">
         <label for="file_upload" class="file-upload-label" tabindex="0">
-            <!-- <div *ngIf="!isFromAttachment">
-                <i class="fa fa-fle"></i>
-                <span>browse</span>
-            </div> -->
             <span [innerHTML]="fileSizeMessage"></span>
         </label>
         <input type="file" name="files" id="file_upload" (change)="onFileChange($event)" #file_upload multiple hidden />
