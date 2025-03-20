@@ -1,100 +1,116 @@
 <div class="modal-content content">
-  <div class="modal-header">
-    <div class="title-container">
-      <i class="far fa-paperclip attach-icon"></i>
-      <span class="header-title" [innerText]="modalData.modalTitle"></span>
+    <div class="modal-header">
+        <div class="title-container">
+            <i class="far fa-paperclip attach-icon"></i>
+            <span class="header-title" [innerText]="modalData.modalTitle"></span>
+        </div>
+        <i class="fal fa-times close-popup" *ngIf="modalData.showDismissIcon" (click)="closeModal(0)"></i>
     </div>
-    <i class="fal fa-times close-popup" *ngIf="modalData.showDismissIcon" (click)="closeModal(0)"></i>
-  </div>
-  <div class="modal-body w-100">
+    <div class="modal-body w-100">
 
-    <app-no-record *ngIf="modalData?.attachmentDetails?.data?.length === 0" [placeHolderText]="modalData.noDataMessage"
-      [iconClass]="modalData.emptyDataIcon || 'far fa-surprise'">
-    </app-no-record>
+        <app-no-record 
+            *ngIf="modalData?.attachmentDetails?.data?.length === 0"
+            [placeHolderText]="modalData.noDataMessage" 
+            [iconClass]="modalData.emptyDataIcon || 'far fa-surprise'">
+        </app-no-record>
 
-    <div *ngIf="modalData?.attachmentDetails?.data?.length > 0">
-      <div class="attachment-scroll">
-        <div class="attachment-padding">
-          <div *ngFor="let attachment of modalData?.attachmentDetails?.data; let i = index" class="attachment-row">
-            <div class="attachment-list">
-              <div class="left-section">
-                <i class="fas fa-file u-default-black attachment-icon"></i>
-                <a class="attachment-name" [href]="commonService.urlEncode(attachment.url)">
-                  <span [innerText]="removeExtensionFromFilename(attachment.display_name)"></span>
-                </a>
-                <span class="private-file"
-                  *ngIf="attachment.permission_id == 2 || attachment.permission_id == 3">(Private)</span>
-                <span *ngIf="attachment.entity_kind_name && modalData.showFileType" class="middle-section">
-                  <span class="typography-v2-mon-medium">File Type:</span>&nbsp;
-                  <span class="typography-v2-mon-regular" [innerText]="attachment.entity_kind_name"></span>
-                </span>
-              </div>
+        <div *ngIf="modalData?.attachmentDetails?.data?.length > 0">
+            <div class="attachment-scroll">
+                <div class="attachment-padding">
+                    <div *ngFor="let attachment of modalData?.attachmentDetails?.data; let i = index"
+                        class="attachment-row">
+                        <div class="attachment-list">
+                            <div class="left-section">
+                                <i class="fas fa-file u-default-black attachment-icon"></i>
+                                <a class="attachment-name" [href]="commonService.urlEncode(attachment.url)">
+                                    <span [innerText]="removeExtensionFromFilename(attachment.display_name)"></span>
+                                </a>
+                                <span class="private-file"
+                                    *ngIf="attachment.permission_id == 2 || attachment.permission_id == 3">(Private)</span>
+                                <span *ngIf="attachment.entity_kind_name && modalData.showFileType"
+                                    class="middle-section">
+                                    <span class="typography-v2-mon-medium">File Type:</span>&nbsp;
+                                    <span class="typography-v2-mon-regular"
+                                        [innerText]="attachment.entity_kind_name"></span>
+                                </span>
+                            </div>
 
-              <div class="right-section">
-                <ng-container *ngIf="attachment.has_delete_permission">
-                  <div *ngIf="modalData?.showPrivacyIcon">
-                    <i [ngClass]="{ 'fa-user-lock': attachment.permission_id === 2 || attachment.permission_id === 3, 'fa-user-unlock': attachment.permission_id === 1}" class="on-hover u-csr-ptr fas" (click)="updateFilePermission(attachment)" [title]="attachment.permission_id === 1 ? 'Switch to “Private (Only PS Users)“' : 'Switch to “Public (Everyone)“' "></i>
-                  </div>
-                  <i *ngIf="attachment.has_delete_permission" class="fas fa-trash" (click)="onDeleteClick(attachment)"></i>
-                </ng-container>
-                <span class="created-date" [innerText]="attachment.created_at | date:'MM/dd/yy'"></span>
-              </div>
+                            <div class="right-section">
+                                <ng-container *ngIf="attachment.has_delete_permission">
+                                    <div *ngIf="modalData?.showPrivacyIcon">
+                                        <i [ngClass]="{ 'fa-user-lock': attachment.permission_id === 2 || attachment.permission_id === 3, 'fa-user-unlock': attachment.permission_id === 1}"
+                                            class="on-hover u-csr-ptr fas" (click)="updateFilePermission(attachment)"
+                                            [title]="attachment.permission_id === 1 ? 'Switch to “Private (Only PS Users)“' : 'Switch to “Public (Everyone)“' "></i>
+                                    </div>
+                                    <i *ngIf="attachment.has_delete_permission" class="fas fa-trash"
+                                        (click)="onDeleteClick(attachment)"></i>
+                                </ng-container>
+                                <span class="created-date" [innerText]="attachment.created_at | date:'MM/dd/yy'"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-    <hr *ngIf="modalData?.attachmentDetails?.data?.length > 4" />
-    <app-psi-upload-files
-      [selectedFiles] = "selectedFiles"
-      (change)="onFileChange($event)"
-      [convertFileSizes]="convertFileSizes.bind(this)"
-      [convertFileType]="convertFileType.bind(this)"
-      [isFromAttachment]="true"
-      [fileSizeMessage] = "selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"
-    ></app-psi-upload-files>
-    <div class="attachment-permission">
-      <div *ngIf="!modalData.latestDesign" class="custom-select-wrapper">
-        <div class="u-mb3">
-          <app-cmp-input-dropdown 
-            [label]="'Who else can see this attachment?'" 
-            [showSelectAll]="false"
-            [showCheckboxes]="false" 
-            [allowSingleSelect]="true" 
-            [showSearch]="false"
-            [selectedItems]="[modalData.attachmentPermission[0]]" 
-            [filteredItems]="modalData.attachmentPermission"
-            [isAllItemsSelected]="false" 
-            [isIndeterminate]="false" 
-            [settings]="dropdownConfig"
-            (onDropDownChange)="getVisibilityDropdownValue($event)">
-          </app-cmp-input-dropdown>
+        <hr *ngIf="modalData?.attachmentDetails?.data?.length > 4" />
+        <app-psi-upload-files 
+            [selectedFiles]="selectedFiles" 
+            (change)="onFileChange($event)"
+            [convertFileSizes]="convertFileSizes.bind(this)" 
+            [convertFileType]="convertFileType.bind(this)"
+            [isFromAttachment]="true"
+            [fileSizeMessage]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"
+            >
+        </app-psi-upload-files>
+        <div class="attachment-permission">
+            <div *ngIf="!modalData.latestDesign" class="custom-select-wrapper">
+                <div class="u-mb3">
+                    <app-cmp-input-dropdown [
+                        label]="'Who else can see this attachment?'" 
+                        [showSelectAll]="false"
+                        [showCheckboxes]="false" 
+                        [allowSingleSelect]="true" 
+                        [showSearch]="false"
+                        [selectedItems]="[modalData.attachmentPermission[0]]"
+                        [filteredItems]="modalData.attachmentPermission" 
+                        [isAllItemsSelected]="false"
+                        [isIndeterminate]="false" 
+                        [settings]="dropdownConfig"
+                        (onDropDownChange)="getVisibilityDropdownValue($event)"
+                        >
+                    </app-cmp-input-dropdown>
+                </div>
+                <div class="u-mb3" *ngIf="modalData.fileTypeDropdown">
+                    <app-cmp-input-dropdown 
+                        [required]="true" 
+                        [label]="'File type'" 
+                        [showSelectAll]="false"
+                        [showCheckboxes]="false" 
+                        [allowSingleSelect]="true" 
+                        [showSearch]="false" 
+                        [selectedItems]="[]"
+                        [filteredItems]="modalData.fileTypeDropdown" 
+                        [isAllItemsSelected]="false"
+                        [isIndeterminate]="false" 
+                        [settings]="filetype_dropdown"
+                        (onDropDownChange)="getFileTypeDropdownValue($event)"
+                        >
+                    </app-cmp-input-dropdown>
+                </div>
+            </div>
         </div>
-        <div class="u-mb3" *ngIf="modalData.fileTypeDropdown">
-          <app-cmp-input-dropdown 
-            [required]="true" 
-            [label]="'File type'" 
-            [showSelectAll]="false" 
-            [showCheckboxes]="false"
-            [allowSingleSelect]="true" 
-            [showSearch]="false" 
-            [selectedItems]="[]"
-            [filteredItems]="modalData.fileTypeDropdown" 
-            [isAllItemsSelected]="false" 
-            [isIndeterminate]="false"
-            [settings]="filetype_dropdown" 
-            (onDropDownChange)="getFileTypeDropdownValue($event)">
-          </app-cmp-input-dropdown>
+        <div class="modal-footer footer w-100">
+            <app-cmp-button 
+                [buttonText]="modalData.cancelAction.label" 
+                [buttonClass]="'secondary u-mr4 w-lg'"
+                (click)="closeModal(0)">
+            </app-cmp-button>
+            <app-cmp-button 
+                [buttonText]="modalData.saveAction.label" 
+                [buttonClass]="'primary w-lg'"
+                [isDisable]="isButtonDisabled"
+                (click)="isButtonDisabled ? $event.stopPropagation() : uploadAttachments()">
+            </app-cmp-button>
         </div>
-      </div>
     </div>
-    <div class="modal-footer footer w-100">
-      <app-cmp-button [buttonText]="modalData.cancelAction.label" [buttonClass]="'secondary u-mr4 w-lg'"
-        (click)="closeModal(0)">
-      </app-cmp-button>
-      <app-cmp-button [buttonText]="modalData.saveAction.label" [buttonClass]="'primary w-lg'"
-        [isDisable]="isButtonDisabled" (click)="isButtonDisabled ? $event.stopPropagation() : uploadAttachments()">
-      </app-cmp-button>
-    </div>
-  </div>
 </div>
