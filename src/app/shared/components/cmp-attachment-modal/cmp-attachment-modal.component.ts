@@ -51,26 +51,6 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     this.filetype_dropdown = this.commonService.getSingleSelectDropdownConfig('Select file type', true);
   }
 
-  getDynamicHeight() {
-    if (!this.modalData.latestDesign) {
-      let height = 0;
-      if (this.modalData.multiple && this.selectedFileCount === 0) {
-        height = 235;
-      } else if (this.modalData.multiple && this.selectedFileCount === 1) {
-        height = 301;
-      } else if (this.modalData.multiple) {
-        height = 360;
-      } else if (this.selectedFileCount === 0) {
-        height = 316;
-      } else if (this.selectedFileCount === 1) {
-        height = 385;
-      } else {
-        height = 442;
-      }
-      return (this.modalData.attachmentDetails.data && this.modalData.attachmentDetails.data.length > 0 && this.modalData.showLine ? (height + 33) : height) + 'px';
-    }
-  }
-
   onFileChange(event: any) {
     const files: FileList = event.target.files;
     const allowedExtensions = ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'];
@@ -141,37 +121,52 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
       uploadParams.append('file[' + idx + ']', this.selectedFiles[idx]);
     }
     uploadParams.append('entities', JSON.stringify(this.modalData.entityIds));
-    uploadParams.append('kind', this.kindid ? this.kindid : this.modalData.filtersList['kindId']);
+    uploadParams.append('kind', this.kindid);
     uploadParams.append('tool', this.modalData.filtersList.tool_id);
     uploadParams.append('menu_item_id', this.modalData.filtersList.menu_item_id);
-    uploadParams.append('permission_id', this.permission_id);
+    uploadParams.append('permission_id', this.permission_id || this.modalData.attachmentPermission[0].id);
     this.productmanagementService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
-      this.close();
-    });
+      if (!response.hasError) {
+        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+        this.closeModal(1);
+      }
+    }, (error) => {
+      this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+    }
+    );
   }
 
+  closeModal(mode: number) {
+    this.result = mode === 1
+      ? (this.modalData?.attachmentDetails?.data?.length || 1)
+      : this.modalData?.attachmentDetails?.data?.length;
+    this.close();
+  }
   onDeleteClick(file: any) {
     let modalData;
 
     modalData = {
       title: 'Are you sure you want to delete the attachment?',
-      closeBtnName: 'No',
-      confirmBtnName: 'Yes',
       iconClass: 'fas fa-exclamation-circle error',
-      showLine: true,
+      btnLabel: [
+        { type: 'Btn', label: 'No', class: 'secondary' },
+        { type: 'Btn', label: 'Yes', class: 'primary' }
+      ]
     };
 
     this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
       .subscribe((result) => {
-        if (result.confirm) {
+        if (result.btn.label === 'Yes') {
           this.productmanagementService.deleteUploadFile(file.upload_id)
             .subscribe((response: any) => {
               if (response.hasError) {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
               } else {
-                this.commonService.showToastV2Message(true, response.msg);
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
                 this.modalData.attachmentDetails.data = this.modalData.attachmentDetails.data.filter((item: any) => item.upload_id !== file.upload_id);
               }
+            }, (error) => {
+              this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
             }
             );
         }
@@ -194,13 +189,16 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
         } else {
           file.permission_id = permission_id;
-          this.commonService.showToastV2Message(true, response.msg);
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
         }
-      });
+      }, (error) => {
+        this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+      }
+      );
   }
 
   get isButtonDisabled(): boolean {
-    return !this.selectedFileCount || this.selectedFileCount <= 0 || (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0);
+    return !this.selectedFileCount || this.selectedFileCount <= 0 || (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0) || !this.kindid;
   }
 
 }

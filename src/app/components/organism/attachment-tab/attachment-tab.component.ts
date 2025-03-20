@@ -113,9 +113,7 @@ export class AttachmentTabComponent implements OnInit {
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
     .subscribe((result) => {
         if (result !== undefined) {
-          if (!attachments.data || attachments.data.length !== result) {
-            // this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
-          }
+          this.getAttachments();
         }
     });
   }
@@ -130,7 +128,7 @@ export class AttachmentTabComponent implements OnInit {
     deleteAttachment(upload_id: number){
       let modalData = {
         iconClass: 'fas fa-exclamation-circle',
-        title: 'Are you sure you want to delete the note?',
+        title: 'Are you sure you want to delete the attachment?',
         showLine: true,
         btnLabel: [
           { type: 'Btn', label: 'No', class: 'secondary' },
@@ -139,24 +137,23 @@ export class AttachmentTabComponent implements OnInit {
       };
 
       this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
-        .subscribe( (result: any) => {
-          if(result.btn.label === 'Yes') {
-            this.commonBackendService.deleteAttachment(
-              upload_id
-            ).subscribe (
-              (response: any) => {
-                if(!response.hasError) {
-                  this.attachments = this.commonService.deleteObjectFromArray(this.attachments, 'upload_id', upload_id);
-                  this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
-                } else {
-                  this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
-                }
-              }, (error) => {
-                this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+      .subscribe((result) => {
+        if (result.btn.label === 'Yes') {
+          this.productManagementService.deleteUploadFile(upload_id)
+            .subscribe((response: any) => {
+              if (response.hasError) {
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+              } else {
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                this.attachments.data = this.attachments.data.filter((item: any) => item.upload_id !== upload_id);
               }
-            )
-          }
-      });
+            }, (error) => {
+              this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+            }
+            );
+        }
+      }
+    );
     }
 
     /**

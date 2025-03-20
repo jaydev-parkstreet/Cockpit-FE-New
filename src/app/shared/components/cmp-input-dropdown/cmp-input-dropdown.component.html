@@ -6,7 +6,7 @@
   <div class="dropdown-header" [ngClass]="validationClasses" (click)="!disabled && !formControl?.disabled && toggleDropdown()" tabindex="0">
     {{ getSelectedDisplayText() }}
     <button class="dropdown-button" *ngIf="settings.versionStyle !== 'smart-search'" (click)="onChevronClick($event)">
-      <i [ngClass]="isDropdownOpen() ? 'fa fa-chevron-up' : 'fa fa-chevron-down'" aria-hidden="true"></i>
+      <i [ngClass]="isDropdownOpen() ? 'fal fa-chevron-up' : 'fal fa-chevron-down'" aria-hidden="true"></i>
     </button>
   </div>
 
