@@ -23,7 +23,6 @@ export class ProductManagementDetailsComponent implements OnInit {
     productList: any[];
     tabGroupConfig: { key: string; label: string; }[];
     activeTab: string;
-    sync_status = 1;
     productDetails: any;
     detailProduct: any;
     actionButtons: any = [];

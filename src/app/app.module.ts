@@ -14,8 +14,8 @@ import { AgGridModule } from 'ag-grid-angular';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LayoutModule } from './components/layout/layout.module';
 import { DatePipe } from '@angular/common';
-
 import { PsiBrandModalComponent } from './components/product-management/psi-brand-modal/psi-brand-modal.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +35,6 @@ import { PsiBrandModalComponent } from './components/product-management/psi-bran
     AgGridModule,
     NgxSpinnerModule,
     LayoutModule
-
     ],
     exports: [
 

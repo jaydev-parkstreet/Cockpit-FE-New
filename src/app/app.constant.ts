@@ -28,12 +28,7 @@ const AppConstant = {
         PUBLIC_EVERYONE_ID: 1,
         PRIVATE_ONLY_PS_USER_ID: 2,
         PRIVATE_ONLY_ME: 3
-    },
-    COMMON: {
-        FILES_API: 'files',
-        MULTIPLE_FILES_API: 'store-multiple-files',
-        CHANGE_FILE_PERMISSION: 'change-permission'
-    },
+    }
 };
 
 export default AppConstant;
