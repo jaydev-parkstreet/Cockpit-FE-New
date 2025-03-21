@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import AppConstant from 'src/app/app.constant';
 import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
 
@@ -205,5 +206,76 @@ export class CommonService {
       let url = environment.apiUrl + decodeURIComponent(fileUrl);
       url = url.replace(new RegExp('#', 'g'), '%23');
       return url;
-  }
+    }
+
+    /**
+     * Function to Formate Boolean Fields
+     * 
+     * @param value 
+     * @returns string
+     * @author PSI-Enhancement
+     */
+    formateBooleanField(value) {
+      if(value == null) return value;
+      return value === 1 ? 'Yes' : 'No';
+    }
+
+    /**
+     * Funtion get address key from the address key
+     * @param addressKey 
+     * @returns array of address keys
+     * @author PSI-Enhancement
+     */
+    getAddressKeys(addressKey) {
+      return AppConstant.ADDRESS_KEYS[addressKey] || [];
+    }
+
+    /**
+     * Formats the address in the given object for each specified address key.
+     * 
+     * @param addressKeys - An array of keys representing the address fields to format.
+     * @param obj - The object containing the address fields to format.
+     * @returns The object with the formatted address fields.
+     * 
+     * @author PSI-Enhancement
+     */
+    renderFormatAddress(addressKeys, obj) {
+      addressKeys.forEach(key => {
+          obj[key] = this.renderFormatAddressByObj(key, obj);
+      });
+      return obj;
+    }
+
+    /**
+     * Formats the address for the specified address key in the given result object.
+     * 
+     * @param addressKey
+     * @param resultObj
+     * @param list
+     * @returns A string representing the formatted address.
+     * @author PSI-Enhancement
+     */
+    renderFormatAddressByObj(addressKey, resultObj, list = null) {
+      const keys = this.getAddressKeys(addressKey);
+      return keys.map((key) => {
+        if(resultObj[key] === null)  return '';
+        if (['billing_state', 'shipping_state'].includes(key)) {
+          const valueList = list ? this.getValuesByKey(list, resultObj[key]) : resultObj[key];
+          return `, ${valueList}`;
+        }
+        return resultObj[key];
+      }).join(' ').trim();
+    }
+
+    /**
+     * Checks if the given object is empty (has no own properties).
+     * 
+     * @param obj
+     * @returns
+     * @author PSI-Enhancement
+     */
+    isEmptyObj(obj) {
+      return Object.keys(obj).length === 0;
+    }
+
 }

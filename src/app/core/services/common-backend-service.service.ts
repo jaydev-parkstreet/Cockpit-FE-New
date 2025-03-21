@@ -104,4 +104,15 @@ export class CommonBackendService {
       return this.http
         .put(`${environment.apiUrl}${AppRoutes.COMMON.ATTACHMENTS_PERMISSION}`, reqObj);
     }
+
+    /**
+     * Function to get Audit Trail List
+     * 
+     * @param params 
+     * @returns {Observable} - An API response
+     */
+    getAuditTrailData(params) {
+      return this.http
+        .get(`${environment.apiUrl}${AppRoutes.COMMON.AUDIT_TRAIL}`, { params });
+    }
 }

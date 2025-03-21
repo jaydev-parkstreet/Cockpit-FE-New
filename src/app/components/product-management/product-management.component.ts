@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ProductManagementService } from './product-management.service';
 import { AuthService } from '../authentication/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -55,6 +55,7 @@ export class ProductManagementComponent implements OnInit {
     private commonService : CommonService,
     private route: ActivatedRoute,
     private simpleModalService: SimpleModalService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {  
@@ -124,6 +125,20 @@ export class ProductManagementComponent implements OnInit {
           this.selectCheckBox(params);
       }else if (params.event.target.className === 'far fa-file show-attachment-modal' || params.event.target.className === 'fas fa-file show-attachment-modal') {
         this.openAttachmentListPopup(params.data.product_id);
+      }
+    };
+    this.gridOptions.onCellMouseOver = (params) => {
+      if (params && params.event) {
+        const element = params.event.srcElement.querySelector('.add-tooltip');
+        if (element) {
+          const scrollWidth = params.event.srcElement.scrollWidth;
+          const offsetWidth = params.event.srcElement.offsetWidth;
+          if (offsetWidth < scrollWidth) {
+            this.renderer.addClass(element, 'tooltip-text');
+          } else {
+            this.renderer.removeClass(element, 'tooltip-text');
+          }
+        }
       }
     };
   }

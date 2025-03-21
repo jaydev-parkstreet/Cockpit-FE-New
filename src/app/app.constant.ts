@@ -28,6 +28,12 @@ const AppConstant = {
         PUBLIC_EVERYONE_ID: 1,
         PRIVATE_ONLY_PS_USER_ID: 2,
         PRIVATE_ONLY_ME: 3
+    },
+
+    ADDRESS_KEYS : {
+        billing_address: ['billing_address_one', 'billing_address_two', 'billing_city', 'billing_state', 'billing_zip_code'],
+        shipping_address: ['shipping_address_one', 'shipping_address_two', 'shipping_city', 'shipping_state', 'shipping_zip_code'],
+        license_address: ['license_address_1', 'license_address_2', 'city', 'state', 'zip_code']
     }
 };
 
