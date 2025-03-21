@@ -20,7 +20,7 @@ export class SummaryTopBarComponent implements OnInit {
   @Output() excelExport = new EventEmitter<any>();
   topBarConfig: any;
   tooltipText: any;
-  isExpandFilter = false;
+  // isExpandFilter = false;
   dropdown1Label = 'Product Status';
   selectedFilters: { [key: string]: any[] } = {}
   isAllItemsSelected: boolean = false;
@@ -33,9 +33,9 @@ export class SummaryTopBarComponent implements OnInit {
     this.tooltipText = 'Export To Excel';
   }
 
-  toggleFilter() {
-    this.isExpandFilter = !this.isExpandFilter;
-  }
+  // toggleFilter() {
+  //   this.isExpandFilter = !this.isExpandFilter;
+  // }
 
   onFilterChange(key: string, value: any) {
     this.selectedFilters[key] = value;

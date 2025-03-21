@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import AppConstant from 'src/app/app.constant';
 import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
+import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -206,6 +207,73 @@ export class CommonService {
       let url = environment.apiUrl + decodeURIComponent(fileUrl);
       url = url.replace(new RegExp('#', 'g'), '%23');
       return url;
+  }
+
+    /**
+     * Function to export excel
+     * 
+     * @author PSI-Enhancement
+     * @param string fileUrl
+     * @returns string Url
+     */
+    exportExcel(url, params, cb) {
+        const _params = params;
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Accept': 'application/json, text/plain, /'
+            }),
+            responseType: 'blob' as 'json',
+            observe: 'response' as 'body'
+        };
+        this.http.post(url, _params, httpOptions).subscribe({
+            next: (response: any) => {
+                const data: any = response.body;
+                if (data.size > 0) {
+                    const fileName = String(this.getFileNameFromHeader(
+                        response.headers.get('content-disposition')
+                    ));
+                    saveAs(data, fileName || 'report.csv');
+                } {
+                    this.showToastV2Message(true, 'No data found');
+                }
+                cb();
+            },
+            error: (error) => {
+                this.showToastV2Message(true, error);
+            }
+        });
+    }
+
+    /**
+     * Function to get the file name from header
+     * @author PSI-Enhancement
+     */
+    getFileNameFromHeader(header) {
+        if (!header) return null;
+        var result = header.split(';')[1].trim().split('=')[1];
+        return result.replace(/"/g, '');
+    }
+
+
+    /**
+     * Function to parse
+     * @author PSI-Enhancement
+     */
+    parseRequest (filters) {
+        Object.entries(filters).forEach((value, key) => {
+            if (value != undefined && value !== null) {
+                if (value.constructor === Array && value.length > 0) {
+                    value.map((obj: any, index) =>{
+                        if (obj !== null && obj.id) {
+                            value[index] = obj.id;
+                        }
+                    });
+                } else {
+                    filters[key] = value;
+                }
+            }
+        });
+        return filters;
     }
 
     /**

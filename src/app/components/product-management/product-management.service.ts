@@ -138,7 +138,7 @@ export class ProductManagementService {
      * Renders a checkbox in the grid column, checked or unchecked depending on the row data.
      * @param {object} params
      * @returns {string}
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     renderCheckbox(params) {
         let checkboxSelection = '';
@@ -172,7 +172,7 @@ export class ProductManagementService {
      *
      * @param {object} params
      * @returns {string}
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     renderDash(params) {
         if (params.value) {
@@ -187,7 +187,7 @@ export class ProductManagementService {
      *
      * @param params
      * @returns {string}
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     renderId(params) {
       if (params.value) {
@@ -201,7 +201,7 @@ export class ProductManagementService {
      * Returns the status of the product with an associated color.
      * @param {Object} params
      * @returns {String}
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     renderStatus(params) {
       const statusLabels = {
@@ -242,97 +242,59 @@ export class ProductManagementService {
      * @param permission
      * @param isActive
      * @returns {object} The config object for top panel.
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     getTopPanelConfig(permission , isActive = false) {
         return {
             placeholder: 'Search',
             searchText: '',
             searchOptions: {},
-            showFilter: false,
+            expandFilter: false,
             totalResult: 0,
             permission: permission,
-            actions: {
-                result: {
-                  key: 'result',
-                  divClass: 'result-container',
-                  type: 'result',
-                  isShowOutSideFilter: true
-                },
-                extraActions: [{
-                    type: 'icon',
-                    showTooltip: true,
-                    tooltipText: 'Import bulk products',
-                    icon: 'fas fa-layer-plus',
-                    key: 'mass-upload',
-                    permission: permission.permissions.Create,
-                  }, {
-                    type: 'icon',
-                    showTooltip: true,
-                    tooltipText: 'Attach',
-                    icon: 'fas fa-paperclip',
-                    key: 'attachment',
-                    permission: permission.permissions.Update
-                  }, {
-                    type: 'icon',
-                    showTooltip: true,
-                    tooltipText: 'Note',
-                    icon: 'fas fa-comment',
-                    key: 'notes',
-                    permission: permission.permissions.Update
-                  }, {
-                    type: 'icon',
-                    showTooltip: true,
-                    tooltipText: isActive ? 'Activate' : 'Deactivate',
-                    icon: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
-                    key: 'active',
-                    isActive,
-                    permission: permission.permissions.Update
-                  }
-                ]
-            },
+            actions: [],
             filtersConfig: [
                 {
                     key: 'clients',
                     label: 'Supplier',
                     type: 'multiselect-search',
-                    divClass: 'col-3 norightpadding',
+                    divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Supplier')
                 }, {
                     key: 'product_state',
                     label: 'Product Status',
                     type: 'multiselect-search',
-                    divClass: 'col-3 norightpadding',
+                    divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Status')
                 }, {
                     key: 'product_type',
                     label: 'Product Type', 
                     ype: 'multiselect-search',
-                    divClass: 'col-3 norightpadding',
+                    divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Type')
                 }, {
                     key: 'product_sub_type',
                     label: 'Product Sub-Type',
                     type: 'multiselect-search',
-                    divClass: 'col-3 norightpadding',
+                    divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Sub-Type')
                 }, { 
                     key: 'source',
                     label: 'Source',
                     type: 'multiselect-search',
-                    divClass: 'col-3 norightpadding',
+                    divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Source')
                 }, {
                     key: 'organic',
                     label: 'Organic',
                     type: 'multiselect-search',
-                    divClass: 'col-3 norightpadding', 
+                    divClass: 'col-4 norightpadding', 
                     setting: this.getMultiSelectConfig('Select Organic')
                 }, {
                     key: 'active_status',
                     label: 'Active State',
                     type: 'multiselect-search',
-                    divClass: 'col-3 norightpadding',
+                    divClass: 'col-4 norightpadding',
                     showSearch:false,
                     showSelectAll: false,
                     showCheckboxes: false,
@@ -342,17 +304,84 @@ export class ProductManagementService {
                     key: 'bottles_per_case',
                     label: 'Bottles Per Case',
                     type: 'multiselect-search',
-                    divClass: 'col-3 norightpadding',
+                    divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Bottles Per Case')
                 }, {
                     key: 'container_sizes_filter',
                     label: 'Container Size',
                     type: 'multiselect-search',
-                    divClass: 'col-3 norightpadding',
+                    divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Container Size')
                 }
             ],
         };
+    }
+
+    getActionsIconsConfig (groupActions, permission, reqObj = {}, isActive = false) {
+        const actionIconsConfig: any = [];
+        actionIconsConfig.push({
+            key: 'mass_upload',
+            type: 'icon',
+            iconClass: 'fas fa-layer-plus',
+            showTooltip: true,
+            tooltipText: 'Import bulk products',
+        });
+        if (groupActions) {
+            if (permission?.permissions?.Update) {
+                actionIconsConfig.push({
+                    key: 'attachment',
+                    type: 'icon',
+                    iconClass: 'far fa-paperclip',
+                    showTooltip: true,
+                    tooltipText: 'Attach',
+                }, {
+                    key: 'notes',
+                    type: 'icon',
+                    iconClass: 'fas fa-comment',
+                    showTooltip: true,
+                    tooltipText: 'Note',
+                }, {
+                    key: 'active',
+                    type: 'icon',
+                    iconClass: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
+                    showTooltip: true,
+                    tooltipText: isActive ? 'Activate' : 'Deactivate',
+                }, {
+                    key: 'edit',
+                    type: 'icon',
+                    iconClass: 'fas fa-pen',
+                    showTooltip: true,
+                    tooltipText: 'Edit',
+                })
+            }
+        }
+        actionIconsConfig.push({
+            type: 'export',
+            tooltipText: 'Export to Excel',
+            apiUrl: environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT,
+            params: this.commonService.parseRequest(reqObj)
+        });
+        actionIconsConfig.push({
+            key: 'result',
+            type: 'result',
+        });
+        actionIconsConfig.push({
+            key: 'filter_button',
+            type: 'filter_button',
+            buttonClass: 'secondary u-pg-w-16'
+        });
+        if (permission?.permissions?.Create) {
+            actionIconsConfig.push({
+                key: 'new_product',
+                type: 'button',
+                divClass: '',
+                buttonText: 'New Product',
+                buttonIconLeft: 'fas fa-plus-circle',
+                buttonClass: 'primary large'
+            });
+        }
+        actionIconsConfig.push();
+        return actionIconsConfig;
     }
 
     /**
@@ -361,7 +390,7 @@ export class ProductManagementService {
      * @param placeholdertext
      * @param name
      * @returns An object
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     getMultiSelectConfig(placeholdertext, name = 'name') {
         return {
@@ -388,7 +417,7 @@ export class ProductManagementService {
      * @param values
      * @param name
      * @returns An array of objects suitable for use in a dropdown
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     formatDropdownValue(values, name = '') {
         let dropdown = [];
@@ -408,7 +437,7 @@ export class ProductManagementService {
      * @param summaryData
      * @param token
      * @returns A Promise containing the summary data.
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     getSummary(summaryData: any, token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -420,40 +449,19 @@ export class ProductManagementService {
      * 
      * @param token
      * @returns An Observable containing the data of dropdown items.
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     getDropdown(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http.get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DROPDOWN, { headers }).toPromise();
     }
- 
-    // /**
-    //  * Retrieves the list of brands associated with the given client ID.
-    //  * 
-    //  * @param clientId The client ID for which to retrieve the associated brands.
-    //  * @returns An Observable containing the data of brands.
-    //  * @author psi-enhancement
-    //  */
-    // getBrands(clientId: string) {
-    //     const token = localStorage.getItem('authToken');
-    
-    //     const headers = new HttpHeaders({
-    //         'Authorization': `Bearer ${token}`,
-    //         'Content-Type': 'application/json'
-    //     }); 
-    //     return this.http
-    //         .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PRODUCT_TOOL_GET_BRANDS + `?client_id=${clientId}` , { headers })
-    //         .pipe(map((response: any) => {return  response.data;
-    //         })
-    //     );
-    // }
- 
+
     /**
      * Fetches the sub-brand products associated with the given client ID.
      * 
      * @param clientId
      * @returns An Observable containing the data of sub-brand products.
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     getSubBrandProducts(clientId: string , brandID: string) {
         const token = localStorage.getItem('authToken');
@@ -471,7 +479,7 @@ export class ProductManagementService {
      *
      * @param id The ID of the product.
      * @returns An Observable containing the product details from the server.
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     getDetails(id) {
         return this.http
@@ -483,7 +491,7 @@ export class ProductManagementService {
      * Retrieves the permission settings for the product tool.
      *
      * @returns A promise that resolves to the permission data from the server.
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     getPermission() {
         return this.http
@@ -495,7 +503,7 @@ export class ProductManagementService {
      * @param productId
      * @param isActive
      * @returns Observable containing the response from the server.
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     getActivateAPI(productId: string[], isActive) {
         const headers = new HttpHeaders({
@@ -516,7 +524,7 @@ export class ProductManagementService {
      * Makes an API call to export the given products to Excel.
      * @param obj
      * @returns An observable containing the HTTP response from the server.
-     * @author psi-enhancement
+     * @author psi-enhancements
      */
     excelExport(obj) {
         return this.http
