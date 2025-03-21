@@ -13,6 +13,7 @@ import { NotesTabComponent } from '../organism/notes-tab/notes-tab.component';
 import { RouterModule } from '@angular/router';
 import { ProductManagementRoutingModule } from './product-management-routing.module';
 import { AttachmentTabComponent } from '../organism/attachment-tab/attachment-tab.component';
+import { AuditTabComponent } from '../organism/audit-tab/audit-tab.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AttachmentTabComponent } from '../organism/attachment-tab/attachment-ta
     ProductAddComponent,
     ProductManagementDetailsComponent, 
     NotesTabComponent,
-    AttachmentTabComponent
+    AttachmentTabComponent,
+    AuditTabComponent
   ],
   providers: [{
     provide: ErrorHandler,

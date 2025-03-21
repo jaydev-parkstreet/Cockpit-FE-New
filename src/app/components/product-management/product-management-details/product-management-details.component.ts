@@ -5,6 +5,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ProductMangementDetailService } from './product-mangement-detail.service';
 import AppConstant from 'src/app/app.constant';
+import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-product-management-details',
@@ -31,6 +33,9 @@ export class ProductManagementDetailsComponent implements OnInit {
     timerObj: any;
     permissions: any;
     backToProductsTitle: string = 'Back to Products';
+    isAuditDataIsLoading: boolean = false;
+    auditList: any = [];
+    rowAuditTrailConfigApiRequest: any = [];
 
     constructor(
         private productManagementService: ProductManagementService,
@@ -38,7 +43,8 @@ export class ProductManagementDetailsComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private spinner :NgxSpinnerService,
-        private commonService : CommonService
+        private commonService : CommonService,
+        private commonBackendService: CommonBackendService
     ) { }
 
     ngOnInit(): void {
@@ -48,7 +54,7 @@ export class ProductManagementDetailsComponent implements OnInit {
         this.dimensionTitle = 'DIMENSIONS';
         const productId = this.route.snapshot.paramMap.get('id');
         this.tabGroupConfig = this.getTabGroupConfig();
-        this.activeTab = this.tabGroupConfig[0].key;
+        this.activeTab = this.tabGroupConfig[2].key;
         this.getProductData(productId);
     }
 
@@ -70,6 +76,8 @@ export class ProductManagementDetailsComponent implements OnInit {
                 this.getSyncStatusUpdate();
                 this.actionButtons = this.getactionButtons(this.permissions ,this.productDetails);
                 this.headerTitle = this.productDetails.description;
+                this.getAuditTrailData();
+                this.rowAuditTrailConfigApiRequest = this.productManagementDetailService.getDetailsAuditTrailConfigApiRequest();
             });
           }
           catch (error) {
@@ -413,4 +421,140 @@ export class ProductManagementDetailsComponent implements OnInit {
     getactionButtons(permissions, detail) {
         return this.productManagementDetailService.getActionButtons(permissions, detail);
     }
+
+
+    /**
+     * Fetches and processes the audit trail data from the backend, formatting the date and current data
+     * 
+     * @returns {void} 
+     * 
+     * @author PSI-Enhancement
+     */
+    getAuditTrailData() {
+        let req_obj = {
+            entity: this.productDetails.id,
+            menu_item_id: this.permissions.menu_item_id,
+            tool: this.permissions.tool_id
+        }
+        this.isAuditDataIsLoading = true;
+        this.commonBackendService.getAuditTrailData(req_obj).subscribe( (response: any) => {
+            if(!response.hasError) {
+                response.data.map(row => {
+                    row.date = moment(row.date).format('MM/DD/YY hh:mm');
+                    if(row.current_data) {
+                        row = this.getAuditTrailFormattedData(row);
+                    }
+                });
+                this.auditList = response.data;
+                if(this.auditList && this.auditList[0]) {
+                    this.filterAuditData();
+                }
+            } else {
+                this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+            }
+        }, (error) => {
+            this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+        }, () => {
+            this.isAuditDataIsLoading = false;
+        });
+    }
+
+    /**
+     * Formats the audit trail data for the given row, processing the `current_data` and `previous_data` 
+     * 
+     * @param row - The audit trail row to process, containing `current_data` and optionally `previous_data`.
+     * 
+     * @author PSI-Enhancement
+     */
+    getAuditTrailFormattedData(row) {
+        let addressKeys = ['license_address'];
+        row.current_data = this.processData(row.current_data, addressKeys);
+        if(row.previous_data) {
+            row.previous_data = this.processData(row.previous_data);
+        }
+    }
+
+    /**
+     * Processes the provided data by formatting boolean and date fields, and rendering the address 
+     * 
+     * @param data
+     * @param addressKeys
+     * @returns The processed data object with formatted boolean fields, date fields, and address (if applicable).
+     * 
+     * @author PSI-Enhancement
+     */
+    processData(data, addressKeys = null) {
+        if(!data) return;
+
+        const booleanFields = ['is_sample', 'shipment_crosses_border', 'invoice_with_shipment', 'wc_set'];
+        booleanFields.forEach( field => {
+            if(data[field] != null) {
+                data[field] = this.commonService.formateBooleanField(data[field])
+            }
+        });
+
+        const dateFields = ['estimated_delivery_date', 'delivery_date'];
+        dateFields.forEach( field => {
+            if (data[field] != null) {
+                data[field] = this.commonService.dateFormat(data[field], 'MM/DD/yy');
+            }
+        });
+
+        if (addressKeys && data.billing_state) {
+            this.commonService.renderFormatAddress(addressKeys, data);
+        }
+
+        return data;
+    }
+
+    /**
+     * Filters the audit list by removing invalid data from `current_data` and `previous_data`, 
+     * 
+     * @author PSI-Enhancement
+     */
+    filterAuditData() {
+        const objCurrent = this.auditList.filter(obj => {
+
+            if(obj.current_data) {
+                obj.current_data = this.removeInvalidData(obj.current_data);
+            }
+
+            if(obj.previous_data) {
+                obj.previous_data = this.removeInvalidData(obj.previous_data);
+            }
+
+            if(this.commonService.isEmptyObj(obj.current_data) && this.commonService.isEmptyObj(obj.previous_data)) {
+                return false;
+            }
+
+            return true;
+        });
+        this.auditList = objCurrent;
+    }
+
+    /**
+     * Removes specific invalid or temporary keys from the given data object.
+     * 
+     * @param data
+     * @returns 
+     * 
+     * @author PSI-Enhancement
+     */
+    removeInvalidData(data) {
+        const keysToRemove = [
+            'shipment_status', 
+            'customer_codes', 
+            'customer_prod_codes', 
+            'temp_unique_order_id', 
+            'temp_customer_code_id'
+        ];
+    
+        return Object.keys(data).reduce((cleanedData, key) => {
+            if (!keysToRemove.includes(key) && data[key] != null) {
+                cleanedData[key] = data[key];
+            }
+            return cleanedData;
+        }, {});
+    }
 }
+
