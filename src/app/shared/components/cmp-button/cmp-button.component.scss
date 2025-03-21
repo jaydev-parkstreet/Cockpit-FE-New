@@ -88,6 +88,7 @@
     &.active:active,
     &.active:focus {
         background: $colors-v2-base-primary-v-low-t-05;
+        box-shadow: none;
     }
 
     &:disabled:active {
