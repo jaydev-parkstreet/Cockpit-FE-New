@@ -207,9 +207,9 @@ export class ProductManagementService {
       const statusLabels = {
         Approved: 'u-bg-success',
         Pending: 'u-bg-warning',
-        'Pre-Approved': 'u-bg-primary',
-        'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium widthAction',
-        'Request Received': 'u-bg-neutral-light',
+        'Pre-Approved': 'u-bg-primary text-ellipsis',
+        'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium text-ellipsis',
+        'Request Received': 'u-bg-neutral-light text-ellipsis',
       };
       
       let inActiveIcon = params.data && params.data.is_active === 0 
