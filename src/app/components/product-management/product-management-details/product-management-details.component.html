@@ -51,6 +51,12 @@
                         [showFileType] = true
                         [showPrivacyIcon] = true>
                     </app-attachment-tab>
+                    <app-audit-tab
+                        *ngIf="activeTab === 'auditTrail'"
+                        [showLoader]="isAuditDataIsLoading"
+                        [auditList]="auditList"
+                        [rowObjectKeysDetail] = "rowAuditTrailConfigApiRequest">
+                    </app-audit-tab>
                 </div>
                 <div class="col-sm-6 u-pl2 right-side u-pg-pl-2">
                     <div>
