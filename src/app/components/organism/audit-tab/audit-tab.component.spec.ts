@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PsiEmptyMessageComponent } from './psi-empty-message.component';
+import { AuditTabComponent } from './audit-tab.component';
 
-describe('PsiEmptyMessageComponent', () => {
-  let component: PsiEmptyMessageComponent;
-  let fixture: ComponentFixture<PsiEmptyMessageComponent>;
+describe('AuditTabComponent', () => {
+  let component: AuditTabComponent;
+  let fixture: ComponentFixture<AuditTabComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PsiEmptyMessageComponent ]
+      declarations: [ AuditTabComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PsiEmptyMessageComponent);
+    fixture = TestBed.createComponent(AuditTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

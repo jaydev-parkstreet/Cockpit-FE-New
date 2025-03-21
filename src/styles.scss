@@ -238,23 +238,29 @@ input:-webkit-autofill:active {
 
 .u-icon-tooltip {
     position: relative;
+  
     .tooltiptext {
       @include basic-tooltip;
-      top: calc(100% + 4px);
+      top: 20px;
+  
       &:not(.t-multiline) {
         padding: 0 8px;
         height: 32px;
       }
+  
       &.t-left {
         right: 0;
       }
+  
       &.t-center {
         left: 50%;
         transform: translateX(-50%);
       }
     }
-    .on-hover:hover +.tooltiptext,
-    &.on-hover:hover .tooltiptext{
+  
+    // Fix: Show tooltip on hover
+    .on-hover:hover ~ .tooltiptext,
+    .on-hover:hover + .tooltiptext {
       display: flex;
     }
   }
@@ -299,8 +305,8 @@ input:-webkit-autofill:active {
     flex-direction: column;
     margin: 20px auto;
     box-shadow: 0px 4px 8px 0px $colors-neutral-light-t-15;
-    border-radius: 0px;
-    border: 0;
+    border-radius: 0px!important;
+    border: 0!important;
     .modal-header {
         padding: 16px;
         color: $colors-neutral-black;
@@ -323,7 +329,7 @@ input:-webkit-autofill:active {
             line-height: 14px;
             font-family: $montserrat-regular;
             text-transform: uppercase;
-            margin-left:10px;
+            margin-left:8px;
             margin-right: 5px;
             width: 100% !important;
         }
@@ -336,3 +342,5 @@ input:-webkit-autofill:active {
         }
     }
 }
+
+  

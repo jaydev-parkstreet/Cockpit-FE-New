@@ -17,7 +17,32 @@
         .middle-section,
         .right-section { 
             flex: 1; 
-            overflow: hidden;
+        }
+        .left-section{
+            .typography-body-black-regular{
+                text-decoration: none;
+                max-width: 205px;
+                overflow: hidden;
+                display: block;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                &:hover{
+                    text-decoration: underline;
+                    color: $colors-v2-base-primary;
+                }
+            }
+        }
+        .right-section{
+            .fas{
+                color: $colors-neutral-black-t-75;
+
+                &:hover {
+                    color: $colors-neutral-black;
+                }
+            }
+        }
+        .middle-section{
+            margin-left: 5px;
         }
     }
     .add-attachment {

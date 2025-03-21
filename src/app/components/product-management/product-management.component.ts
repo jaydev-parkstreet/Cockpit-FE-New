@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ProductManagementService } from './product-management.service';
 import { AuthService } from '../authentication/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -56,6 +56,7 @@ export class ProductManagementComponent implements OnInit {
     private commonService : CommonService,
     private route: ActivatedRoute,
     private simpleModalService: SimpleModalService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {  
@@ -129,6 +130,20 @@ export class ProductManagementComponent implements OnInit {
         this.openAttachmentListPopup(params.data.product_id);
       }
     };
+    this.gridOptions.onCellMouseOver = (params) => {
+      if (params && params.event) {
+        const element = params.event.srcElement.querySelector('.add-tooltip');
+        if (element) {
+          const scrollWidth = params.event.srcElement.scrollWidth;
+          const offsetWidth = params.event.srcElement.offsetWidth;
+          if (offsetWidth < scrollWidth) {
+            this.renderer.addClass(element, 'tooltip-text');
+          } else {
+            this.renderer.removeClass(element, 'tooltip-text');
+          }
+        }
+      }
+    };
   }
 
   openAttachmentListPopup (entity:any) {
@@ -156,36 +171,30 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       entityIds: entityIds,
       attachmentPermission: this.filterList.entity_permissions,
       cancelAction: { label: 'Cancel' }, saveAction: { label: 'Save' },filtersList: this.filterList,
-      multiple: multiple, uploadButtonName: 'Choose File',
-      customClass: true, showHorizontalLine: true,
-      newDeletePopup:true,
-      showErrorInNewToast: true,
-      hideAttachmentLockIcon: true,
+      multiple: multiple,
       showFileType: true,
       fileTypeDropdown: this.permissions.entity_kinds,
-      showChangePrivacyIcon: true,
-      newToastMsg: 'Failed',
-      msg: 'Are you sure you want to delete the attachment?',
-      newToast: true, showBlurEffect: true, deleteModalWindowClass: 'custom-attachment-delete',
-      deleteModalFirstAction: {
-        label: 'No',
-        style: 'custom-attachment-delete-fa'
-      },
-      deleteModalSecondAction: {
-        label: 'Yes',
-        style: 'custom-attachment-delete-sa'
-      },
+      showPrivacyIcon: true,
       attachmentDetails: JSON.parse(JSON.stringify(attachments)),
-      showLine: true, showScroll: true
     };
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
     .subscribe((result) => {
         if (result !== undefined) {
-          if (!attachments.data || attachments.data.length !== result) {
-            // this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
-          }
+          this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
         }
     });
+  }
+
+  unSelectAllCheckbox(entityIds:any, count:any, keyName:any) {
+    for (var a in this.productToolSummary) {
+        if (entityIds.indexOf(this.productToolSummary[a].product_id) !== -1) {
+            this.productToolSummary[a][keyName] = count;
+        }
+        this.productToolSummary[a].checkbox = false;
+    }
+    this.selectedRowCount = 0;
+    this.selectedRows = [];
+    this.gridOptions.api.redrawRows();
   }
 
   /**
