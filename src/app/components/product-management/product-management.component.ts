@@ -60,7 +60,7 @@ export class ProductManagementComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {  
-    this.getDropdown(); 
+    this.filterList = this.route.snapshot.data['filterList'];
     this.permissions = this.route.snapshot.data['permissions'];
     this.topPanelConfig = this.productManagementService.getTopPanelConfig(this.permissions);
     this.updateTopPanelConfig();
@@ -72,27 +72,12 @@ export class ProductManagementComponent implements OnInit {
       "universal_search": ""
     };
     this.selectedRowCount = 0;
-    // this.selectedCardRowCount = 0;
     this.productToolCardSummary = [];
-    // this.selectedAll = false;
     this.busy = true;
     this.filters = {};
     this.permissionObj = {};
     this.isSorting = false;
     this.scrollDisabled = false;
-    // this.queryParam = this.commonService.$location.search();
-    // this.openNotePopup = false;
-    // this.defaultState = this.productToolService.getDefaultState()[0].id;
-    // this.reportRequestObj = {
-    //     // page: 1,
-    //     pageSize: 25,
-    //     sort: 'status',
-    //     order: 'desc',
-    // };
-    // this.summaryTopBarConfig = this.productToolService.getSummaryTopBarConfig();
-    // this.summaryTopBarConfig.actions = this.productToolService.getDefaultActions(this.reportRequestObj,
-    //     this.permissions.permissions.Create);
-    // this.statusObj = this.productToolService.getStatusObject();
     this.initGridOptions();
     this.productToolSummary = [];
   }
@@ -220,18 +205,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     }
   }
 
-  async getDropdown(){
-    const token = localStorage.getItem('authToken');
-    try {
-      const response:any = await this.productManagementService.getDropdown(token);
-      this.dropdownData = response.data;
-    }
-    catch (error) {
-      console.error("Error fetching summary:", error);
-    }
-    this.filterList = this.dropdownData;
-  }
-
   /**
      * Function to call api and set ag-grid dataSource object
      *
@@ -245,7 +218,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       this.selectedRows = [];
       this.selectedCardRows = [];
       this.mixType = false;
-      // angular.element('.checkbox_select_all').prop('checked', false);
       this.isLoadingSummaryData = true;
       this.gridOptions.api.hideOverlay();
       this.reportRequestObj.page = 1;
@@ -254,10 +226,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       this.hasMoreRecords = true;
       this.isLoading = false;
       this.busy = true;
-      // if (this.isGridSortApplied !== true) {
-      //     this.summaryTopBarConfig.actions = this.productToolService.getDefaultActions(this.reportRequestObj,
-      //         this.permissions.permissions.Create);
-      // }
       this.isGridSortApplied = false;
       const dataSource = {
         rowCount: null,
@@ -271,9 +239,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
           else {
             this.successCallback(params);
           }
-          // if (!this.filtersList) {
-          // this.setFilterList();
-          // }
         }
       };
       this.updateTopPanelConfig();
