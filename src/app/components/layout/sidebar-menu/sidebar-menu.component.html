@@ -63,8 +63,9 @@
     </div>
     <div class="sidebar__footer">
         <div class="footer-profile">
-            <div class="footer-profile-main"          
-            (click)="toggleFooterDropdown()">
+            <div class="footer-profile-main"
+            (mouseenter)="toggleDropdown(true)"         
+            (mouseleave)="toggleDropdown(false)">
                 <img [src]="oldCockpit + currentUserData.PictureUrl" alt=""/>
                 <span *ngIf="currentUserData" class="user-name">
                     <span [innerText]="currentUserData.first_name"></span>
@@ -72,7 +73,8 @@
                 </span>
                 <i class="fas fa-chevron-right"></i>
             </div>
-            <div class="footer-profile-list" *ngIf="isDropdownVisible">
+            <div class="footer-profile-list" *ngIf="isDropdownVisible"
+            (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
               <span><a href=""> My Profile</a></span>
               <span><a href="#"> Account Settings</a></span>
               <span><a href="#"> Help</a></span>

@@ -53,6 +53,8 @@
         &:disabled {
             background: $colors-v2-base-primary;
             color: $colors-neutral-light;
+            cursor: not-allowed;
+            pointer-events: auto;
         }
     }
 

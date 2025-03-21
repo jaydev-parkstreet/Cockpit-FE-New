@@ -157,6 +157,7 @@ export class ProductAddComponent implements OnInit {
         let clientId = this.productForm.value.client_id[0];
         this.updateBrandAndSubBrandControls(clientId.class_id, productData.brand_id, productData.sub_brand_product_id);
         this.productForm.get("client_id").setValue(clientId.id);
+        this.clientId = clientId.class_id;
         this.productForm.updateValueAndValidity();
     }
 
@@ -622,7 +623,7 @@ export class ProductAddComponent implements OnInit {
                         });
                     } else {
                         const param = {
-                            client_id: clientId,
+                            client_id: clientId ? clientId : result.formData.brand.client_id,
                             brand_id: result.formData.brand.id,
                             brand_name: result.formData.new_brands,
                             sub_brand_id: result.formData.sub_brand_product_id.id || '',
@@ -634,7 +635,7 @@ export class ProductAddComponent implements OnInit {
                         this.ProductAddService.saveNewSubBrands(param).subscribe(response => {
                             this.spinner.hide();
                             if (!response.hasError) {
-                                this.updateBrandAndSubBrandControls(clientId, response.data.brand.id, response.data.sub_brand_product.id);
+                                this.updateBrandAndSubBrandControls(clientId ? clientId : result.formData.brand.client_id, response.data.brand.id, response.data.sub_brand_product.id);
                             }
                         });
                     }

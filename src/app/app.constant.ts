@@ -29,11 +29,6 @@ const AppConstant = {
         PRIVATE_ONLY_PS_USER_ID: 2,
         PRIVATE_ONLY_ME: 3
     },
-    COMMON: {
-        FILES_API: 'files',
-        MULTIPLE_FILES_API: 'store-multiple-files',
-        CHANGE_FILE_PERMISSION: 'change-permission'
-    },
 
     ADDRESS_KEYS : {
         billing_address: ['billing_address_one', 'billing_address_two', 'billing_city', 'billing_state', 'billing_zip_code'],

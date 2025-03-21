@@ -30,8 +30,13 @@ const AppRoutes = {
         NOTES_CHANGE_PERMISSION: 'notes/change-permission',
         ATTACHMENTS: 'files',
         ATTACHMENTS_PERMISSION: 'files/change-permission',
+<<<<<<< HEAD
         SIDEBAR_MENU: 'cockpit-sidebar-menu',
         AUDIT_TRAIL: 'audit-trail/list',
+=======
+        MULTIPLE_FILES_API: 'store-multiple-files',
+        SIDEBAR_MENU: 'cockpit-sidebar-menu'
+>>>>>>> 09118f9acdef5aa29c0e148e1695ca5329c1323f
     }
 };
 

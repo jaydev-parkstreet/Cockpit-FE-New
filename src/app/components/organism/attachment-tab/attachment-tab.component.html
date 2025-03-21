@@ -15,8 +15,8 @@
                     <div *ngIf="showPrivacyIcon" class="u-icon-tooltip u-flex-center">
                         <i
                             [ngClass]="{
-                            'fa-lock': attachment.permission_id === 2 || attachment.permission_id === 3,
-                            'fa-unlock': attachment.permission_id === 1
+                            'fa-user-lock': attachment.permission_id === 2 || attachment.permission_id === 3,
+                            'fa-user-unlock': attachment.permission_id === 1
                             }"
                             class="on-hover u-csr-ptr fas"
                             (click)="updateFilePermission(attachment)">
@@ -35,6 +35,6 @@
     </div>
     <div class="add-attachment u-flex-center u-flex-column">
         <i class="fas fa-plus-circle" (click)="addAttachments()"></i>
-        <span class="typography-body-dark-regular" (click)="addAttachments()">Add Attachmentssss</span>
+        <span class="typography-body-dark-regular" (click)="addAttachments()">Add Attachments</span>
     </div>
 </div>
