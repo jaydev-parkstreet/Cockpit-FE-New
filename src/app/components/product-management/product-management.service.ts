@@ -177,7 +177,7 @@ export class ProductManagementService {
     renderDash(params) {
         if (params.value) {
             return `<div class="text-ellipsis"><span>${params.value}</span>
-                    <span class="add-tooltip tooltip-text">${params.value}</span></div>`;
+                    <span class="add-tooltip">${params.value}</span></div>`;
         }
         return '--';
     }
