@@ -61,6 +61,7 @@ export class ProductManagementComponent implements OnInit {
     this.getDropdown(); 
     this.permissions = this.route.snapshot.data['permissions'];
     this.topPanelConfig = this.productManagementService.getTopPanelConfig(this.permissions);
+    this.updateTopPanelConfig();
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
       "pageSize": 25,
@@ -264,6 +265,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
           // }
         }
       };
+      this.updateTopPanelConfig();
       this.gridOptions.api.setDatasource(dataSource);
     }
   }
@@ -357,50 +359,56 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       this.topPanelConfig.actions.extraActions[3].icon = isStatusTrue ? 'fas fa-check-circle':'fas fa-times-circle';
       this.topPanelConfig.actions.extraActions[3].isActive = isStatusTrue ? true : false;
     }
+    this.updateTopPanelConfig();
     this.setDataSourceAgGrid();
   }
 
-  resetFilters() {
-	  this.filtermodal = {};
-    this.reportRequestObj = {
-      "page": 1,
-      "pageSize": 25,
-      "sort": "status",
-      "order": "asc",
-      "universal_search": ""
+  /**
+   * Function to reset summary grid filters.
+   */
+    resetFilters() {
+        this.filtermodal = {};
+        this.reportRequestObj = {
+            "page": 1,
+            "pageSize": 25,
+            "sort": "status",
+            "order": "asc",
+            "universal_search": ""
+        }
+        this.topPanelConfig.searchText = '';
+        this.productToolSummary = [];
+        this.selectedRowCount = 0;
+        this.updateTopPanelConfig();
+        this.setDataSourceAgGrid();
     }
-    this.topPanelConfig.searchText = '';
-    this.productToolSummary = [];
-    this.setDataSourceAgGrid();
-  }
 
-  universalSearch (text) {
-    this.reportRequestObj.universal_search = text;
-	this.productToolSummary = [];
-    this.setDataSourceAgGrid();
-  }
-	excelExport() {
-		const body = this.reportRequestObj;
-		this.downloading = true;
+    universalSearch(text) {
+        this.reportRequestObj.universal_search = text;
+        this.productToolSummary = [];
+        this.setDataSourceAgGrid();
+    }
+	// excelExport() {
+	// 	const body = this.reportRequestObj;
+	// 	this.downloading = true;
 
-		this.productManagementService.excelExport(body).subscribe((response) => {
-			const data = response.body;
-			if (data) {
-				const csvBlob = new Blob([data], { type: 'application/force-download' });
-				const fileName = this.getFileNameFromHeader(
-					response.headers.get('content-disposition')
-				);
-				saveAs(csvBlob, fileName || 'report.csv');
-			}
-			this.downloading = false;
-		});
-	}
+	// 	this.productManagementService.excelExport(body).subscribe((response) => {
+	// 		const data = response.body;
+	// 		if (data) {
+	// 			const csvBlob = new Blob([data], { type: 'application/force-download' });
+	// 			const fileName = this.getFileNameFromHeader(
+	// 				response.headers.get('content-disposition')
+	// 			);
+	// 			saveAs(csvBlob, fileName || 'report.csv');
+	// 		}
+	// 		this.downloading = false;
+	// 	});
+	// }
 
-	getFileNameFromHeader(header: string | null): string | null {
-		if (!header) return null;
-		const result = header.split(';')[1].trim().split('=')[1];
-		return result.replace(/"/g, '');
-	}
+	// getFileNameFromHeader(header: string | null): string | null {
+	// 	if (!header) return null;
+	// 	const result = header.split(';')[1].trim().split('=')[1];
+	// 	return result.replace(/"/g, '');
+	// }
 
   onSelectAllChanged(isChecked: boolean) {
     this.updateCheckboxState(isChecked);
@@ -418,6 +426,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     }
     this.selectedAllRows = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
+    this.updateTopPanelConfig();
     this.gridOptions.api.redrawRows();
   }
 
@@ -440,18 +449,43 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     } else {
         this.selectedAllRows = true;
     }
+    this.updateTopPanelConfig();
     this.gridOptions.api.redrawRows();
   }
-  onClickAction(event){
-    if (event.key === 'notes') {
-    } else if (event.key === 'attachment') {
-    } else if (event.key === 'active') {
-      if (this.selectedRows && this.selectedRows.length > 0) {
-        this.getActivateAPI(event.isActive);
-      }
-    } else if (event.key === 'mass-upload') {
+
+  /**
+   * Function to call on click of top bar action items
+   * @param object action
+   */
+    onClickAction(action): void {
+        switch (action.key) {
+            case 'notes':
+                break;
+
+            case 'attachment':
+                break;
+
+            case 'mass-upload':
+                break;
+
+            case 'active':
+                if (this.selectedRows && this.selectedRows.length > 0) {
+                    this.getActivateAPI(action.isActive);
+                }
+                break;
+
+            case 'filter_button':
+                this.topPanelConfig.expandFilter = !this.topPanelConfig.expandFilter;
+                break;
+
+            case 'new_product':
+                this.router.navigate(['/product-management/add']);
+                break;
+
+            default:
+                break;
+        }
     }
-  }
 
   getActivateAPI(isActive) {
     this.spinner.show();
@@ -465,4 +499,19 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       }
     });
   }
+
+  /**
+   * Function to Update top panel config
+   */
+  updateTopPanelConfig () {
+    debugger
+    this.topPanelConfig.actions = this.productManagementService.getActionsIconsConfig(
+        this.selectedRowCount,
+        this.permissions,
+        this.reportRequestObj,
+      // this.isActive
+    );
+    console.log(this.topPanelConfig.actions);
+    
+  };
 }

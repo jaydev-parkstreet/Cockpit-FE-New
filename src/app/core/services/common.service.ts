@@ -216,7 +216,7 @@ export class CommonService {
      */
     exportExcel(url, params, cb) {
         const _params = params;
-        _params.export = true;
+        // _params.export = true;
         this.http.post(url, _params).subscribe((response: any) => {
             const data = response.data;
             if (data) {
@@ -239,4 +239,29 @@ export class CommonService {
         var result = header.split(';')[1].trim().split('=')[1];
         return result.replace(/"/g, '');
     }
+
+
+    /**
+     * Function to parse
+     * @author PSI-Enhancement
+     */
+    // parseRequest(filters) {
+    //     Object.entries(filters).forEach(function (value, key) {
+    //       if (value) {
+    //         if (value.constructor === Array && value.length > 0) {
+    //           value.map(function (obj, index) {
+    //             if (obj.id === 0) {
+    //               value[index] = 0;
+    //             } else if (obj.id) {
+    //               value[index] = obj.id;
+    //             }
+    //           });
+    //         } else {
+    //           filters[key] = value;
+    //         }
+    //       }
+    //     });
+    //     return filters;
+    //   }
+    
 }

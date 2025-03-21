@@ -246,52 +246,54 @@ export class ProductManagementService {
      * @author psi-enhancement
      */
     getTopPanelConfig(permission , isActive = false) {
+        debugger
         return {
             placeholder: 'Search',
             searchText: '',
             searchOptions: {},
-            showFilter: false,
+            expandFilter: false,
             totalResult: 0,
             permission: permission,
-            actions: {
-                result: {
-                  key: 'result',
-                  divClass: 'result-container',
-                  type: 'result',
-                  isShowOutSideFilter: true
-                },
-                extraActions: [{
-                    type: 'icon',
-                    showTooltip: true,
-                    tooltipText: 'Import bulk products',
-                    icon: 'fas fa-layer-group',
-                    key: 'mass-upload',
-                    permission: permission.permissions.Create,
-                  }, {
-                    type: 'icon',
-                    showTooltip: true,
-                    tooltipText: 'Attach',
-                    icon: 'fas fa-paperclip',
-                    key: 'attachment',
-                    permission: permission.permissions.Update
-                  }, {
-                    type: 'icon',
-                    showTooltip: true,
-                    tooltipText: 'Note',
-                    icon: 'fas fa-comment',
-                    key: 'notes',
-                    permission: permission.permissions.Update
-                  }, {
-                    type: 'icon',
-                    showTooltip: true,
-                    tooltipText: isActive ? 'Activate' : 'Deactivate',
-                    icon: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
-                    key: 'active',
-                    isActive,
-                    permission: permission.permissions.Update
-                  }
-                ]
-            },
+            actions: [],
+            // actions: {
+            //     result: {
+            //       key: 'result',
+            //       divClass: 'result-container',
+            //       type: 'result',
+            //       isShowOutSideFilter: true
+            //     },
+            //     extraActions: [{
+            //         type: 'icon',
+            //         showTooltip: true,
+            //         tooltipText: 'Import bulk products',
+            //         icon: 'fas fa-layer-group',
+            //         key: 'mass-upload',
+            //         permission: permission.permissions.Create,
+            //       }, {
+            //         type: 'icon',
+            //         showTooltip: true,
+            //         tooltipText: 'Attach',
+            //         icon: 'fas fa-paperclip',
+            //         key: 'attachment',
+            //         permission: permission.permissions.Update
+            //       }, {
+            //         type: 'icon',
+            //         showTooltip: true,
+            //         tooltipText: 'Note',
+            //         icon: 'fas fa-comment',
+            //         key: 'notes',
+            //         permission: permission.permissions.Update
+            //       }, {
+            //         type: 'icon',
+            //         showTooltip: true,
+            //         tooltipText: isActive ? 'Activate' : 'Deactivate',
+            //         icon: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
+            //         key: 'active',
+            //         isActive,
+            //         permission: permission.permissions.Update
+            //       }
+            //     ]
+            // },
             filtersConfig: [
                 {
                     key: 'clients',
@@ -354,6 +356,67 @@ export class ProductManagementService {
                 }
             ],
         };
+    }
+
+    getActionsIconsConfig (groupActions,permission, reqObj, isActive = false) {
+        debugger
+        const actionIconsConfig: any = [{
+            type: 'export',
+            tooltipText: 'Export to Excel',
+            apiUrl: environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT,
+            // params: this.commonService.parseRequest(reqObj)
+        }];
+        if (groupActions) {
+            if (permission?.permissions?.Create) {
+                actionIconsConfig.push({
+                    key: 'mass-upload',
+                    type: 'icon',
+                    iconClass: 'fas fa-layer-group',
+                    showTooltip: true,
+                    tooltipText: 'Import bulk products',
+                })
+            }
+            if (permission?.permissions?.Update) {
+                actionIconsConfig.push({
+                    key: 'attachment',
+                    type: 'icon',
+                    iconClass: 'fas fa-paperclip',
+                    showTooltip: true,
+                    tooltipText: 'Attach',
+                }, {
+                    key: 'notes',
+                    type: 'icon',
+                    iconClass: 'fas fa-comment',
+                    showTooltip: true,
+                    tooltipText: 'Note',
+                }, {
+                    key: 'active',
+                    type: 'icon',
+                    iconClass: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
+                    showTooltip: true,
+                    tooltipText: isActive ? 'Activate' : 'Deactivate',
+                })
+            }
+
+        }
+        actionIconsConfig.push({
+            key: 'result',
+            type: 'result',
+        });
+        actionIconsConfig.push({
+            key: 'filter_button',
+            type: 'filter_button',
+            buttonClass: 'secondary u-pg-w-16'
+        });
+        actionIconsConfig.push({
+            key: 'new_product',
+            type: 'button',
+            divClass: '',
+            buttonText: 'New Product',
+            buttonIconLeft: 'fas fa-plus-circle',
+            buttonClass: 'primary large'
+        });
+        return actionIconsConfig;
     }
 
     /**
