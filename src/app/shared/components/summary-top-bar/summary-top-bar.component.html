@@ -9,7 +9,7 @@
         <div class="u-flex u-align-center u-pg-pl-2" [ngClass]="action.divClass" *ngFor="let action of config.actions">
             <div class="u-icon-tooltip" *ngIf="action.type == 'icon'">
                 <i class="u-fs20 on-hover action-icon" [ngClass]="action.iconClass" (click)="!action.disabled && onClickAction.emit(action)"></i>
-                <span class="tooltiptext t-center" *ngIf="action.tooltipText" [innerHtml]="action.tooltipText"></span>
+                <span class="tooltiptext t-center u-pg-mt-1" *ngIf="action.tooltipText" [innerHtml]="action.tooltipText"></span>
             </div>
             <app-excel-export
                 *ngIf="action.type == 'export'"
