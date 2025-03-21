@@ -1,0 +1,116 @@
+<div class="modal-content content">
+    <div class="modal-header">
+        <div class="title-container">
+            <i class="far fa-paperclip attach-icon"></i>
+            <span class="header-title" [innerText]="modalData.modalTitle"></span>
+        </div>
+        <i class="fal fa-times close-popup" *ngIf="modalData?.showDismissIcon" (click)="closeModal(0)"></i>
+    </div>
+    <div class="modal-body w-100">
+
+        <app-no-record *ngIf="modalData?.noteDetails?.notes.length == 0" [placeHolderText]="modalData.noDataMessage"
+            [iconClass]="modalData.emptyDataIcon || 'far fa-surprise'">
+        </app-no-record>
+
+        <div *ngIf="modalData?.noteDetails?.notes?.length > 0">
+            <div *ngFor="let note of modalData?.noteDetails?.notes; let i = index" class="notes-row">
+                <div class="note-container">
+                    <div class="note-owner-image">
+                        <img class="profile-picture" alt="" [src]="fileServer + note.person_image">
+                    </div>
+                    <div class="note-meta">
+                        <span class="note-meta-name">
+                            {{note.first_name}} {{note.last_name}}
+                            <span *ngIf="note.permission_id === 2 || note.permission_id === 3" class="typography-paragraph-dark-regular">(Private)</span>
+                        </span>
+                        <span [innerHTML]="note.content"></span>
+                    </div>
+                </div>
+                <div class="right-section">
+                    <i class="fas fa-pen"></i>
+                    <i class="fas fa-trash"></i>
+                    <span>{{note.en_created_at | date: 'MM/dd/yy'}}</span>
+                </div>
+            </div>
+        </div>
+        <hr *ngIf="modalData?.noteDetails?.notes.length > 0 && modalData.showLine" />
+        <!-- <div class="u-mb2 u-mt3">
+        <div class="file-uploader">
+          <label for="file_upload" class="file-upload-label" tabindex="0">
+            <span [innerText]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"></span>
+          </label>
+          <input type="file" name="files" id="file_upload" (change)="onFileChange($event)" #file_upload multiple hidden />
+        </div>
+        <div class="file-list-container">
+          <div class="file-item" *ngFor="let file of selectedFiles; let i = index">
+            <div class="file-item-info">
+              <i class="far fa-file file-icon"></i>
+              <div class="file-details">
+                <span class="file-name" [innerText]="file.name"></span>
+                <div class="file-meta">
+                  <span>size: {{convertFileSizes(file.size)}}</span>
+                  <span>type: {{convertFileType(file.type)}}</span>
+                </div>
+              </div>
+            </div>
+            <i class="fas fa-trash" (click)="deleteFile(i)"></i>
+          </div>
+        </div>
+      </div> -->
+
+        <div class="resizeEditor">
+            <quill-editor [(ngModel)]="editorContent" [style]="{ height: '200px' }" [modules]="editorConfig"></quill-editor>
+        </div>
+        <div class="attachment-permission">
+            <div class="custom-select-wrapper">
+                <div class="u-mb3">
+                    <app-cmp-input-dropdown [label]="'Who else can see this attachment?'" [showSelectAll]="false"
+                        [showCheckboxes]="false" [allowSingleSelect]="true" [showSearch]="false"
+                        [selectedItems]="[modalData.notesPermission[0]]" [filteredItems]="modalData.notesPermission"
+                        [isAllItemsSelected]="false" [isIndeterminate]="false" [settings]="dropdownConfig"
+                        (onDropDownChange)="getVisibilityDropdownValue($event)">
+                    </app-cmp-input-dropdown>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer footer w-100">
+            <app-cmp-button [buttonText]="modalData.cancelAction.label" [buttonClass]="'secondary u-mr4 w-lg'"
+                (click)="closeModal(0)">
+            </app-cmp-button>
+            <app-cmp-button [buttonText]="modalData.saveAction.label" [buttonClass]="'primary w-lg'"
+                [isDisable]="!editorContent" (click)="!editorContent ? $event.stopPropagation() : uploadNotes()">
+            </app-cmp-button>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <div class="attachment-list">
+    <div class="left-section"> -->
+
+
+
+        <!-- <img src="../../../../assets/images/ps_icon.png" *ngIf="note.allow_admin_clients === 1">
+    <img src="{{note.person_image}}"> -->
+        <!-- <a class="attachment-name">
+      <span [innerText]="note.first_name + ' ' + note.last_name"></span>
+    </a> -->
+        <!-- <span class="private-file"
+      *ngIf="attachment.permission_id == 2 || attachment.permission_id == 3">(Private)</span>
+    <span *ngIf="attachment.entity_kind_name && modalData.showFileType" class="middle-section">
+      <span class="typography-v2-mon-medium">File Type:</span>&nbsp;
+      <span class="typography-v2-mon-regular" [innerText]="attachment.entity_kind_name"></span>
+    </span> -->
+    <!-- </div> -->
+
+    <!-- <div class="right-section"> -->
+    <!-- <ng-container *ngIf="attachment.has_delete_permission">
+      <div *ngIf="modalData?.showPrivacyIcon">
+        <i [ngClass]="{ 'fa-user-lock': attachment.permission_id === 2 || attachment.permission_id === 3, 'fa-user-unlock': attachment.permission_id === 1}" class="on-hover u-csr-ptr fas" (click)="updateFilePermission(attachment)" [title]="attachment.permission_id === 1 ? 'Switch to “Private (Only PS Users)“' : 'Switch to “Public (Everyone)“' "></i>
+      </div>
+      <i *ngIf="attachment.has_delete_permission" class="fas fa-trash" (click)="onDeleteClick(attachment)"></i>
+    </ng-container> -->
+    <!-- <span class="created-date" [innerText]="note.en_created_at | date:'MM/dd/yy'"></span>
+  </div>
+</div> -->
