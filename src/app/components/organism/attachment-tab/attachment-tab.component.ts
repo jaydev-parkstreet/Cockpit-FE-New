@@ -52,7 +52,6 @@ export class AttachmentTabComponent implements OnInit {
         (response: any) => {
           if(!response.hasErrors) {
             this.attachments = response;
-            console.log(this.attachments);
           } else {
             this.commonService.showToastV2Message(true, 'Failed to load Attachments', 'fas fa-exclamation-circle');
           }
@@ -66,7 +65,6 @@ export class AttachmentTabComponent implements OnInit {
 
     async getDropdown(){
       const token = localStorage.getItem('authToken');
-      console.log(token);
       try {
         const response:any = await this.productManagementService.getDropdown(token);
         this.filterList = response.data;
@@ -77,7 +75,6 @@ export class AttachmentTabComponent implements OnInit {
     }
 
   showAttachment(multiple:any, entityIds:any, attachments:any) {
-    console.log(this.filterList)
     let modalData:any;
 
     modalData = {
@@ -193,7 +190,6 @@ export class AttachmentTabComponent implements OnInit {
     }
 
     addAttachments(){
-      console.log('Add Attachments');
       this.showAttachment(false, [this.entity], this.attachments);
     }
 }

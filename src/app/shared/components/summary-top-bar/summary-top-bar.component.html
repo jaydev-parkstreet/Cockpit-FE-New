@@ -15,7 +15,7 @@
                 *ngIf="action.type == 'export'"
                 [config]="action">
             </app-excel-export>
-            <div class="result-container u-pg-pl-2" *ngIf="action.type === 'result'">
+            <div class="result-container" *ngIf="action.type === 'result'">
                 <b class="typography-body-dark-medium u-pg-pr-1">{{ config.totalResult }}</b>
                 <span class="typography-body-dark-regular">{{ config.totalResult === 1 ? 'Result' : 'Results' }}</span>
             </div>

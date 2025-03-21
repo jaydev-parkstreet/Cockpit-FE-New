@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
@@ -210,22 +210,35 @@ export class CommonService {
 
     /**
      * Function to export excel
+     * 
      * @author PSI-Enhancement
      * @param string fileUrl
      * @returns string Url
      */
     exportExcel(url, params, cb) {
         const _params = params;
-        // _params.export = true;
-        this.http.post(url, _params).subscribe((response: any) => {
-            const data = response.data;
-            if (data) {
-                const csv = new Blob([data], {
-                    type: 'application/force-download'
-                });
-                const fileName = String(this.getFileNameFromHeader(response.headers.get('content-disposition')));
-                saveAs(csv, fileName || 'report.csv');
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Accept': 'application/json, text/plain, /'
+            }),
+            responseType: 'blob' as 'json',
+            observe: 'response' as 'body'
+        };
+        this.http.post(url, _params, httpOptions).subscribe({
+            next: (response: any) => {
+                const data: any = response.body;
+                if (data.size > 0) {
+                    const fileName = String(this.getFileNameFromHeader(
+                        response.headers.get('content-disposition')
+                    ));
+                    saveAs(data, fileName || 'report.csv');
+                } {
+                    this.showToastV2Message(true, 'No data found');
+                }
                 cb();
+            },
+            error: (error) => {
+                this.showToastV2Message(true, error);
             }
         });
     }
@@ -245,23 +258,20 @@ export class CommonService {
      * Function to parse
      * @author PSI-Enhancement
      */
-    // parseRequest(filters) {
-    //     Object.entries(filters).forEach(function (value, key) {
-    //       if (value) {
-    //         if (value.constructor === Array && value.length > 0) {
-    //           value.map(function (obj, index) {
-    //             if (obj.id === 0) {
-    //               value[index] = 0;
-    //             } else if (obj.id) {
-    //               value[index] = obj.id;
-    //             }
-    //           });
-    //         } else {
-    //           filters[key] = value;
-    //         }
-    //       }
-    //     });
-    //     return filters;
-    //   }
-    
+    parseRequest (filters) {
+        Object.entries(filters).forEach((value, key) => {
+            if (value != undefined && value !== null) {
+                if (value.constructor === Array && value.length > 0) {
+                    value.map((obj: any, index) =>{
+                        if (obj !== null && obj.id) {
+                            value[index] = obj.id;
+                        }
+                    });
+                } else {
+                    filters[key] = value;
+                }
+            }
+        });
+        return filters;
+    }
 }

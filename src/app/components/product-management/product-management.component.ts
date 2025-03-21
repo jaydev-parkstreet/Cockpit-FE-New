@@ -8,6 +8,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { environment } from 'src/environments/environment';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { CmpAttachmentModalComponent } from 'src/app/shared/components/cmp-attachment-modal/cmp-attachment-modal.component';
+import { ConfirmationModalComponent } from '../organism/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-product-management',
@@ -106,10 +107,11 @@ export class ProductManagementComponent implements OnInit {
                 sort: col.getSort()
             }));
       if (allSortModels && allSortModels.length > 0) {
+        this.reportRequestObj.page = 1;
         this.reportRequestObj.sort = allSortModels[0].colId;
         this.reportRequestObj.order = allSortModels[0].sort;
       } else {
-        this.reportRequestObj.sort = 'status';
+        this.reportRequestObj.sort = '';
         this.reportRequestObj.order = 'asc';
       }
       this.productToolSummary = [];
@@ -138,7 +140,7 @@ export class ProductManagementComponent implements OnInit {
         },
         (error: any) => {
           this.isLoading = false;
-          console.log(error);          
+          console.error(error);          
         });
     }
 }
@@ -353,12 +355,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     this.reportRequestObj.page = 1;
     this.reportRequestObj.universal_search = this.topPanelConfig.searchText.trim();
     this.productToolSummary = [];
-    if(selectedFilters.active_status){
-      const isStatusTrue = selectedFilters.active_status[0]?.name === 'Inactive';
-      this.topPanelConfig.actions.extraActions[3].tooltipText = isStatusTrue ? 'Activate' : 'Deactivate';
-      this.topPanelConfig.actions.extraActions[3].icon = isStatusTrue ? 'fas fa-check-circle':'fas fa-times-circle';
-      this.topPanelConfig.actions.extraActions[3].isActive = isStatusTrue ? true : false;
-    }
     this.updateTopPanelConfig();
     this.setDataSourceAgGrid();
   }
@@ -387,28 +383,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
         this.productToolSummary = [];
         this.setDataSourceAgGrid();
     }
-	// excelExport() {
-	// 	const body = this.reportRequestObj;
-	// 	this.downloading = true;
-
-	// 	this.productManagementService.excelExport(body).subscribe((response) => {
-	// 		const data = response.body;
-	// 		if (data) {
-	// 			const csvBlob = new Blob([data], { type: 'application/force-download' });
-	// 			const fileName = this.getFileNameFromHeader(
-	// 				response.headers.get('content-disposition')
-	// 			);
-	// 			saveAs(csvBlob, fileName || 'report.csv');
-	// 		}
-	// 		this.downloading = false;
-	// 	});
-	// }
-
-	// getFileNameFromHeader(header: string | null): string | null {
-	// 	if (!header) return null;
-	// 	const result = header.split(';')[1].trim().split('=')[1];
-	// 	return result.replace(/"/g, '');
-	// }
 
   onSelectAllChanged(isChecked: boolean) {
     this.updateCheckboxState(isChecked);
@@ -463,9 +437,16 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
                 break;
 
             case 'attachment':
+                if (this.selectedRows.length === 1) {
+                    this.openAttachmentListPopup(this.selectedRows[0]);
+                } else {
+                    this.showAttachment(true, this.selectedRows, {});
+                }
                 break;
-
-            case 'mass-upload':
+            case 'edit':
+                this.navigateToEdit();
+                break;
+            case 'mass_upload':
                 break;
 
             case 'active':
@@ -473,7 +454,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
                     this.getActivateAPI(action.isActive);
                 }
                 break;
-
             case 'filter_button':
                 this.topPanelConfig.expandFilter = !this.topPanelConfig.expandFilter;
                 break;
@@ -501,17 +481,36 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
   }
 
   /**
+   * Navigates to the product edit page based on the current route if a product ID is present.
+   *
+   * @returns {void}
+   * @author PSI-Enhancement
+   */
+  navigateToEdit() {
+    if (this.selectedRows[0]) {
+      if (this.selectedRows.length === 1) {
+        this.router.navigate([`product-management/${this.selectedRows[0]}/edit`]);
+      } else {
+        const modalData = {
+          title: 'You can only edit 1 product at a time.',
+          btnLabel: [
+            { type: 'Btn', label: 'Ok', class: 'primary' }
+          ]
+        }
+        this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+      }
+    }
+  }
+
+  /**
    * Function to Update top panel config
    */
   updateTopPanelConfig () {
-    debugger
     this.topPanelConfig.actions = this.productManagementService.getActionsIconsConfig(
         this.selectedRowCount,
         this.permissions,
-        this.reportRequestObj,
-      // this.isActive
+        this.reportRequestObj
     );
-    console.log(this.topPanelConfig.actions);
     
   };
 }
