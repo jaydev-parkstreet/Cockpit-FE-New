@@ -165,7 +165,9 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
     .subscribe((result) => {
         if (result !== undefined) {
-          this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
+          if(!attachments.data ||attachments.data.length !== result) {
+            this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
+          }
         }
     });
   }
@@ -175,10 +177,11 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
         if (entityIds.indexOf(this.productToolSummary[a].product_id) !== -1) {
             this.productToolSummary[a][keyName] = count;
         }
-        this.productToolSummary[a].checkbox = false;
+        this.productToolSummary[a].checked = false;
     }
     this.selectedRowCount = 0;
     this.selectedRows = [];
+    this.updateTopPanelConfig();
     this.gridOptions.api.redrawRows();
   }
 
@@ -363,15 +366,16 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
   }
 
   updateCheckboxState(checked: boolean) {
-    for (const order of this.productToolSummary) {
-      order.checked = checked;
-      if(checked){
-        this.selectedRows.push(order.product_id);
-      }
-    }
-    if(!checked){
+    if (checked) {
+      this.selectedRows = this.productToolSummary.map(order => order.product_id);
+    } else {
       this.selectedRows = [];
     }
+
+    this.productToolSummary.forEach(order => {
+      order.checked = checked;
+    });
+    
     this.selectedAllRows = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
     this.updateTopPanelConfig();
