@@ -81,7 +81,6 @@ export class ProductManagementComponent implements OnInit {
     this.scrollDisabled = false;
     this.initGridOptions();
     this.productToolSummary = [];
-    this.openMassUploadExcelPopup();
   }
 
 
@@ -423,6 +422,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
                 this.navigateToEdit();
                 break;
             case 'mass_upload':
+                this.openMassUploadExcelPopup();
                 break;
 
             case 'active':

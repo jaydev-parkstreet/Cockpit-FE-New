@@ -2,27 +2,32 @@
     <div class="modal-header">
         <span class="title-icon" [ngClass]="modalData.titleIcon"></span>
         <div class="header-title">{{ modalData.title }}</div>
-        <i class="fa fa-times modal-dismiss" (click)="close()"></i>
+        <i class="fal fa-times modal-dismiss" (click)="close()"></i>
     </div>
-    <div class="typography-body-black-regular modal-body-container u-pg-py-3 u-pg-px-2">
+    <div class="typography-body-black-regular modal-body-container u-pg-py-3 u-pg-px-2" *ngIf="!showCard">
         <div class="upload-container">
-            <div class="typography-h6-black-bold" [innerHTML]="modalData.modalBodyTitle"></div>
-            <div class="typography-body-black-regular" [innerHTML]="modalData.modalBodyText"></div>
+            <div class="typography-h6-black-bold u-pg-mt-2" [innerHTML]="modalData.modalBodyTitle"></div>
+            <div class="typography-body-black-regular u-pg-mt-2" [innerHTML]="modalData.modalBodyText"></div>
             
             <app-psi-upload-files
                 [selectedFiles]="selectedFiles"
                 (changeFileUpload)="onFileChange($event)"
                 [fileSizeMessage]="massTemplate"
-                [isFromAttachment]="false">
+                [convertFileSizes]="convertFileSizes.bind(this)" 
+                [convertFileType]="convertFileType.bind(this)"
+                [isFromAttachment]="false"
+                [errorMessage]="errorMessage">
             </app-psi-upload-files>
 
-            <!-- Error message section moved outside of file list -->
-            <div class="error-msg" *ngIf="errorMessage">
-                {{ errorMessage }}
-            </div>
+        </div>
+    </div>
+    <div class="typography-body-black-regular modal-body-container u-pg-py-3 u-pg-px-2" *ngIf="showCard">
+        <div class="upload-container">
+            <div class="typography-h6-black-bold" [innerHTML]="modalData.successLabelText"></div>
+            <div class="typography-body-black-regular" [innerHTML]="modalData.errorLabelText"></div>
         </div>
         <app-product-summary-dimensions-card 
-            *ngIf="showCard" [rows]="productDetail">
+            [rows]="productDetail">
         </app-product-summary-dimensions-card>
     </div>
     <div class="modal-footer footer w-100">

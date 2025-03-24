@@ -10,6 +10,7 @@ export class PsiUploadFilesComponent implements OnInit {
   @Input() selectedFiles: any;
   @Input() isFromAttachment:boolean;
   @Input() iconClass:string;
+  @Input() errorMessage:string = '';
   @Input() fileSizeMessage:any ;
   @Output() changeFileUpload = new EventEmitter<any>();
   @Input() convertFileSizes: (size: number) => string;
