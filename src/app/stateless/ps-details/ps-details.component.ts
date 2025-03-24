@@ -24,6 +24,11 @@ export class PsDetailsComponent implements OnInit {
      * @author PSI-Enhancement
      */
       hasData(key: string) {
-      return this.data?.current_data?.[key] != undefined || this.data?.previous_data?.[key] != undefined;
+      return (
+        (this.data?.current_data?.[key] != undefined &&
+          this.data?.current_data?.[key] !== '') ||
+        (this.data?.previous_data?.[key] != undefined &&
+          this.data?.previous_data?.[key] !== '')
+      );
     }
 }

@@ -1,17 +1,17 @@
 <div class="ps-details-container u-pg-my-2" (click)="$event.stopPropagation()">
     <ng-container *ngFor="let rowObjectKeys of rowObjectKeysDetail">
-      <div class="ps-detail-row u-pg-ml-3 u-flex" *ngIf="hasData(rowObjectKeys.data)">
+      <div class="ps-detail-row u-pg-ml-3 u-pg-mb-1 u-flex" *ngIf="hasData(rowObjectKeys.data)">
         <div class="typography-body-black-medium u-pr1">
           <span class="u-v-mid">
             {{ rowObjectKeys.label }}
           </span>
         </div>
         <div *ngIf="!rowObjectKeys.typeOfFilter || rowObjectKeys.typeOfFilter == 'null'">
-            <div *ngIf="data.previous_data" class="u-bg-error-t-10 u-measure-narrow">
-                <i class="fas fa-minus f-lg u-base-error" aria-hidden="true"></i>
+            <div *ngIf="data.previous_data" class="u-bg-error-t-10 u-measure-narrow u-mb1 u-pa1">
+                <i class="fas fa-minus f-lg u-base-error u-pr1" aria-hidden="true"></i>
                 <span class="typography-body-black-regular">{{ data.previous_data[rowObjectKeys.data] }}</span>
             </div>
-            <div class="u-measure-narrow" [ngClass]="{'u-bg-success-t-10': data.previous_data}">
+            <div class="u-measure-narrow" [ngClass]="{'u-bg-success-t-10 u-pa1': data.previous_data}">
                 <i *ngIf="data.previous_data" class="fas fa-plus f-lg u-pr1" [ngClass]="{'u-base-success': data.previous_data}" aria-hidden="true"></i>
                 <span class="typography-body-black-regular">{{ data.current_data[rowObjectKeys.data] }}</span>
             </div>
