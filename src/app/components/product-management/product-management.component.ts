@@ -127,7 +127,6 @@ export class ProductManagementComponent implements OnInit {
         this.openAttachmentListPopup(params.data.product_id);
       }else if (params.event.target.className === 'fal fa-comment note-modal' || params.event.target.className === 'fas fa-comment note-modal') {
         this.getNotes(params.data.product_id, params);
-        console.log('openNotes');
       }
     };
   }
@@ -152,7 +151,7 @@ export class ProductManagementComponent implements OnInit {
     /**
      * Function to open add notes popup.
      *
-     * @createdDate 05-02-2023
+     * @createdDate 21-03-2024
      * @author PSI-Enhancement
      * @param number id
      * @param array notes
@@ -162,8 +161,7 @@ export class ProductManagementComponent implements OnInit {
     showNotesModal(entityIds, notes, multiple, params) {
         var noteDetails = { notes: [] };
         noteDetails.notes = notes;
-        // this.openNotePopup = true;
-        let modalData= {
+        let modalData = {
             notesPermission: this.filterList.entity_permissions,
             cancelAction: { label: 'Cancel' },
             saveAction: { label: 'Save' },
@@ -184,46 +182,9 @@ export class ProductManagementComponent implements OnInit {
         this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
         .subscribe((result) => {
             if (result !== undefined) {
-                // this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
+                this.unSelectAllCheckbox(entityIds, result, 'total_notes');
             }
         });
-        // angular.element('body').css('overflow', 'hidden');
-        // this.uibModal.open({
-        //     component: 'widgetNotesV2',
-        //     backdrop: 'static',
-        //     windowClass: 'widget-notes',
-        //     keyboard: false,
-        //     resolve: {
-        //         modalData: {
-        //             notesPermission: this.filtersList.entity_permissions,
-        //             cancelAction: { label: 'Cancel' },
-        //             saveAction: { label: 'Save' },
-        //             filtersList: this.filtersList,
-        //             permissions: this.permissions,
-        //             entityIds: id,
-        //             modalTitle: 'NOTES',
-        //             multiple,
-        //             newToast: true,
-        //             showErrorInNewToast: true,
-        //             newToastMsg: 'Failed',
-        //             latestDesign: true,
-        //         },
-        //         noteDetails,
-        //         showLine: true
-        //     }
-        // }).result.then((count) => {
-        //     this.openNotePopup = false;
-        //     angular.element('body').css('overflow', 'visible');
-        //     this.updateNoteOrAttachmentIcon('total_notes', count.count, multiple, id, false);
-        //     this.unSelectAllCheckbox();
-        //     this.unSelectAllCardCheckbox();
-        // }, (count) => {
-        //     angular.element('body').css('overflow', 'visible');
-        //     this.openNotePopup = false;
-        //     if (!params || params.length === 0 || (params && params.data && params.data.total_notes !== count.count)) {
-        //         this.updateNoteOrAttachmentIcon('total_notes', count.count, multiple, id, true);
-        //     }
-        // });
     }
 
   openAttachmentListPopup (entity:any) {

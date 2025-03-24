@@ -249,4 +249,15 @@ export class CommonService {
       return this.http.post(environment.apiUrl + AppRoutes.COMMON.MULTIPLE_NOTES_API, req);
     }
   }
+
+  /**
+ * Function to delete a note.
+ * @createdDate 06-04-2018
+ * @author Innovify
+ * @param number id
+ * @param number menuItemId
+ */
+  deleteNote(id, menuItemId) {
+    return this.http.delete(environment.apiUrl + AppRoutes.COMMON.NOTES, { params: { id, menu_item_id: menuItemId } })
+  }
 }
