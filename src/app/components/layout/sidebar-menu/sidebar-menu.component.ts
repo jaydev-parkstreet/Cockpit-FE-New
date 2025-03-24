@@ -215,7 +215,6 @@ export class SidebarMenuComponent implements OnInit {
     if (!route) return false;
       const currentPath = this.currentRoute.split('/').filter(Boolean).slice(0, 1).join('');
       const menuPath = route.split('/').pop();
-      // console.log(currentPath , menuPath);
       return currentPath === menuPath;
   }
 }

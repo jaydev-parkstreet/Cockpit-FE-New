@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 import { ProductManagementRoutingModule } from './product-management-routing.module';
 import { AttachmentTabComponent } from '../organism/attachment-tab/attachment-tab.component';
 import { MassUploadExcelModalComponent } from './mass-upload-excel-modal/mass-upload-excel-modal.component';
+import { AuditTabComponent } from '../organism/audit-tab/audit-tab.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { MassUploadExcelModalComponent } from './mass-upload-excel-modal/mass-up
     ProductManagementDetailsComponent, 
     NotesTabComponent,
     AttachmentTabComponent,
-    MassUploadExcelModalComponent
+    MassUploadExcelModalComponent,
+    AuditTabComponent
   ],
   providers: [{
     provide: ErrorHandler,

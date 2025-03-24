@@ -5,6 +5,7 @@ import { PsiPageColumnHeaderComponent } from './psi-page-column-header/psi-page-
 import { PsiInputTextFieldComponent } from './psi-input-text-field/psi-input-text-field.component';
 import { PsiCheckboxComponent } from './psi-checkbox/psi-checkbox.component';
 import { PsiUploadFilesComponent } from './psi-upload-files/psi-upload-files.component';
+import { PsDetailsComponent } from './ps-details/ps-details.component';
 
 
 
@@ -15,6 +16,7 @@ import { PsiUploadFilesComponent } from './psi-upload-files/psi-upload-files.com
     PsiInputTextFieldComponent,
     PsiCheckboxComponent,
     PsiUploadFilesComponent,
+    PsDetailsComponent
   ],
   imports: [
     CommonModule
@@ -25,6 +27,7 @@ import { PsiUploadFilesComponent } from './psi-upload-files/psi-upload-files.com
     PsiInputTextFieldComponent,
     PsiCheckboxComponent,
     PsiUploadFilesComponent,
+    PsDetailsComponent
   ]
 })
 export class StatelessModule { }

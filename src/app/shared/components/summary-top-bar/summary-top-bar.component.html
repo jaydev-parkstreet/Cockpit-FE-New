@@ -1,47 +1,84 @@
-<div class="summary-top-bar m-flex-direction mr-width">
-    <div class="search-box-container m-margin" data-ng-hide="config.hideSearch">
-        <app-search-bar
-            [config]="config"
-            (onEnter)="onEnter.emit($event)">
-        </app-search-bar>
-    </div>
-    <div *ngFor="let action of config.actions.extraActions; let first = first; let last = last;" class="icon-container u-flex u-pg-g-2" [ngClass]="action.divClass">
-        <div *ngIf="productChecked">
-            <i [class]="action.icon + ' action-icon'"
-                [ngClass]="{'is-disabled': action.disabled, 'first': first, 'last': last}"
-                *ngIf="action.type === 'icon' && action.permission" 
-                (click)="onClickAction.emit(action)">
-            </i>
-            <span *ngIf="action.showTooltip" class="icon-tooltiptext" [ngClass]="action.className">
-                {{action.tooltipText}}
+<div class="summary-top-bar u-bg-neutral-white" [ngClass]="{ 'padding-top-bar': config.expandFilter, 'u-pg-p-2': !config.expandFilter}" [class]="config.mainClass">
+    <div class="u-flex u-justify-flex-end u-align-center u-h-100 u-w-100">
+        <div class="u-flex-grow search-box-container" *ngIf="!config.hideSearch">
+            <app-search-bar
+                [config]="config"
+                (onEnter)="onEnter.emit($event)">
+            </app-search-bar>
+        </div>
+        <div class="u-flex u-align-center u-pg-pl-2" [ngClass]="action.divClass" *ngFor="let action of config.actions">
+            <div class="u-icon-tooltip" *ngIf="action.type == 'icon'">
+                <i class="u-fs20 on-hover action-icon" [ngClass]="action.iconClass" (click)="!action.disabled && onClickAction.emit(action)"></i>
+                <span class="tooltiptext t-center u-pg-mt-1" *ngIf="action.tooltipText" [innerHtml]="action.tooltipText"></span>
+            </div>
+            <app-excel-export
+                *ngIf="action.type == 'export'"
+                [config]="action">
+            </app-excel-export>
+            <div class="result-container" *ngIf="action.type === 'result'">
+                <b class="typography-body-dark-medium u-pg-pr-1">{{ config.totalResult }}</b>
+                <span class="typography-body-dark-regular">{{ config.totalResult === 1 ? 'Result' : 'Results' }}</span>
+            </div>
+            <div class="u-flex" *ngIf="action.type === 'filter_button'">
+                <app-cmp-button
+                    [buttonClass]="config.expandFilter ? action.buttonClass + ' active' : action.buttonClass"
+                    [buttonIconLeft]="'fas fa-filter'"
+                    [buttonText]="'Filter'"
+                    (onClick)="onClickAction.emit(action)">
+                </app-cmp-button>
+            </div>
+            <div class="u-flex" *ngIf="action.type == 'button'">
+                <app-cmp-button
+                    [buttonClass]="action.buttonClass"
+                    [buttonIconLeft]="action.buttonIconLeft"
+                    [buttonIconRight]="action.buttonIconRight"
+                    [buttonText]="action.buttonText"
+                    (onClick)="onClickAction.emit(action)">
+                </app-cmp-button>
+            </div>
+
+        </div>
+
+        
+        <!-- <div *ngFor="let action of config.actions.extraActions; let first = first; let last = last;" class="icon-container u-flex u-pg-g-2" [ngClass]="action.divClass">
+            <div *ngIf="productChecked">
+                <i [class]="action.icon + ' action-icon'"
+                    [ngClass]="{'is-disabled': action.disabled, 'first': first, 'last': last}"
+                    *ngIf="action.type === 'icon' && action.permission" 
+                    (click)="onClickAction.emit(action)">
+                </i>
+                <span *ngIf="action.showTooltip" class="icon-tooltiptext" [ngClass]="action.className">
+                    {{action.tooltipText}}
+                </span>
+            </div>
+            <app-excel-export
+                *ngIf="action.type == 'export'"
+                [tooltipText]="tooltipText"
+                (onExcelSheet)="excelExport.emit()">
+            </app-excel-export>
+        </div>
+        <div class="filter-results m-margin-top" *ngIf="config.actions['result'].type === 'result'">
+            <b>{{ config.totalResult }}</b>
+            <span>&nbsp;&nbsp; 
+            <span>{{ config.totalResult === 1 ? 'Result' : 'Results' }}</span>
             </span>
         </div>
-    </div>
-    <app-excel-export
-        [tooltipText]="tooltipText"
-        (onExcelSheet)="excelExport.emit()">
-    </app-excel-export>
-    <div class="filter-results m-margin-top" *ngIf="config.actions['result'].type === 'result'">
-        <b>{{ config.totalResult }}</b>
-        <span>&nbsp;&nbsp; 
-        <span>{{ config.totalResult === 1 ? 'Result' : 'Results' }}</span>
-        </span>
-    </div>
-    <div class="action-buttons u-flex u-pg-g-2">
-        <app-cmp-button 
-            [buttonIconLeft]="'fas fa-filter'" 
-            [buttonText]="'Filter'" 
-            [buttonClass]="isExpandFilter ? 'secondary filter-active' : 'secondary'"
-            (click)="toggleFilter()">
-        </app-cmp-button>
+        <div class="action-buttons u-flex u-pg-g-2">
+            <app-cmp-button 
+                [buttonIconLeft]="'fas fa-filter'" 
+                [buttonText]="'Filter'" 
+                [buttonClass]="isExpandFilter ? 'secondary filter-active' : 'secondary'"
+                (click)="toggleFilter()">
+            </app-cmp-button>
 
-        <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" *ngIf="config.permission.permissions.Create" [buttonText]="'New Product'" [buttonClass]="'primary'"
-            (click)="addProduct.emit()">
-        </app-cmp-button>
+            <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" *ngIf="config.permission.permissions.Create" [buttonText]="'New Product'" [buttonClass]="'primary'"
+                (click)="addProduct.emit()">
+            </app-cmp-button>
+        </div> -->
     </div>
 </div>
 
-<div class="filter-container" *ngIf="isExpandFilter">
+<div class="filter-container" *ngIf="config.expandFilter">
     <div class="row">
         <div class="filter-item" [ngClass]="filter.divClass" *ngFor="let filter of config.filtersConfig">
             <app-cmp-input-dropdown
@@ -60,12 +97,12 @@
             </app-cmp-input-dropdown>
         </div>
     </div>
-    <div class="u-flex u-align-center u-pg-g-2">
+    <div class="u-flex u-align-center u-pg-g-3">
         <app-cmp-button
             [buttonClass]="'secondary sm'"
             [buttonText]=" 'Apply' "
             (click)="applyFilterChanges()">
         </app-cmp-button>
-        <div class="btn-link primary-link u-pg-ml-3" (click)="resetFilterChanges()">Clear</div>
+        <div class="btn-link primary-link" (click)="resetFilterChanges()">Clear</div>
     </div>
 </div>

@@ -1,8 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import AppConstant from 'src/app/app.constant';
 import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
+import { saveAs } from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -206,4 +208,142 @@ export class CommonService {
       url = url.replace(new RegExp('#', 'g'), '%23');
       return url;
   }
+
+    /**
+     * Function to export excel
+     * 
+     * @author PSI-Enhancement
+     * @param string fileUrl
+     * @returns string Url
+     */
+    exportExcel(url, params, cb) {
+        const _params = params;
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Accept': 'application/json, text/plain, /'
+            }),
+            responseType: 'blob' as 'json',
+            observe: 'response' as 'body'
+        };
+        this.http.post(url, _params, httpOptions).subscribe({
+            next: (response: any) => {
+                const data: any = response.body;
+                if (data.size > 0) {
+                    const fileName = String(this.getFileNameFromHeader(
+                        response.headers.get('content-disposition')
+                    ));
+                    saveAs(data, fileName || 'report.csv');
+                } {
+                    this.showToastV2Message(true, 'No data found');
+                }
+                cb();
+            },
+            error: (error) => {
+                this.showToastV2Message(true, error);
+            }
+        });
+    }
+
+    /**
+     * Function to get the file name from header
+     * @author PSI-Enhancement
+     */
+    getFileNameFromHeader(header) {
+        if (!header) return null;
+        var result = header.split(';')[1].trim().split('=')[1];
+        return result.replace(/"/g, '');
+    }
+
+
+    /**
+     * Function to parse
+     * @author PSI-Enhancement
+     */
+    parseRequest (filters) {
+        Object.entries(filters).forEach((value, key) => {
+            if (value != undefined && value !== null) {
+                if (value.constructor === Array && value.length > 0) {
+                    value.map((obj: any, index) =>{
+                        if (obj !== null && obj.id) {
+                            value[index] = obj.id;
+                        }
+                    });
+                } else {
+                    filters[key] = value;
+                }
+            }
+        });
+        return filters;
+    }
+
+    /**
+     * Function to Formate Boolean Fields
+     * 
+     * @param value 
+     * @returns string
+     * @author PSI-Enhancement
+     */
+    formateBooleanField(value) {
+      if(value == null) return value;
+      return value === 1 ? 'Yes' : 'No';
+    }
+
+    /**
+     * Funtion get address key from the address key
+     * @param addressKey 
+     * @returns array of address keys
+     * @author PSI-Enhancement
+     */
+    getAddressKeys(addressKey) {
+      return AppConstant.ADDRESS_KEYS[addressKey] || [];
+    }
+
+    /**
+     * Formats the address in the given object for each specified address key.
+     * 
+     * @param addressKeys - An array of keys representing the address fields to format.
+     * @param obj - The object containing the address fields to format.
+     * @returns The object with the formatted address fields.
+     * 
+     * @author PSI-Enhancement
+     */
+    renderFormatAddress(addressKeys, obj) {
+      addressKeys.forEach(key => {
+          obj[key] = this.renderFormatAddressByObj(key, obj);
+      });
+      return obj;
+    }
+
+    /**
+     * Formats the address for the specified address key in the given result object.
+     * 
+     * @param addressKey
+     * @param resultObj
+     * @param list
+     * @returns A string representing the formatted address.
+     * @author PSI-Enhancement
+     */
+    renderFormatAddressByObj(addressKey, resultObj, list = null) {
+      const keys = this.getAddressKeys(addressKey);
+      return keys.map((key) => {
+        if(resultObj[key] === null)  return '';
+        if (['billing_state', 'shipping_state'].includes(key)) {
+          const valueList = list ? this.getValuesByKey(list, resultObj[key]) : resultObj[key];
+          return `, ${valueList}`;
+        }
+        return resultObj[key];
+      }).join(' ').trim();
+    }
+
+    /**
+     * Checks if the given object is empty (has no own properties).
+     * 
+     * @param obj
+     * @returns
+     * @author PSI-Enhancement
+     */
+    isEmptyObj(obj) {
+      return Object.keys(obj).length === 0;
+    }
+
 }

@@ -27,7 +27,9 @@
         border: 1px solid $colors-neutral-light;
         border-radius: 8px;
         transition: none;
-
+        .placeholder-text {
+            color: $colors-neutral-light;
+        }
         &:hover {
             outline: 2px solid $colors-neutral-dark;
             border: 0;
