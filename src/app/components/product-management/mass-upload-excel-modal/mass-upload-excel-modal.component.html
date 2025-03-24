@@ -21,6 +21,9 @@
                 {{ errorMessage }}
             </div>
         </div>
+        <app-product-summary-dimensions-card 
+            *ngIf="showCard" [rows]="productDetail">
+        </app-product-summary-dimensions-card>
     </div>
     <div class="modal-footer footer w-100">
         <div *ngFor="let btn of modalData.btnLabel">

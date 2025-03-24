@@ -15,6 +15,14 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
     modalData: any;  // Add this property to the class
     selectedFiles: any = [];
     errorMessage: string = '';
+    showCard: boolean = false; 
+    productDetail: any[] = [];
+
+    productCodeDetail = [
+      { productCode: 'P12345', dimension: '10x10x10' },
+      { productCode: 'P67890', dimension: '20x20x20' },
+      { productCode: 'P54321', dimension: '15x15x15' }
+  ];
 
     massTemplate: string = `
   <div class="drag-drop-container">
@@ -30,6 +38,7 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
 
     ngOnInit(): void {
         console.log(this);
+        this.transformProductDetail();
     }
 
     // onFileChange(event: any) {
@@ -103,5 +112,22 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
           this.selectedFiles = validFiles;
       }
   }
+  onButtonClicked() {
+    this.showCard = !this.showCard;
+  }
+  transformProductDetail() {
+    this.productDetail = [
+        {
+            table_headings: [
+                { value: 'Type' },
+                { value: 'Code' }
+            ],
+            table_values: this.productCodeDetail.map(product => [
+                product.productCode, 
+                product.dimension
+            ])
+        }
+    ];
+}
 }
 
