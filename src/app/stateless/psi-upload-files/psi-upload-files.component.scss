@@ -116,7 +116,6 @@
 ::ng-deep .mass-uploader {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
     height: 320px;
     top: 0;
@@ -125,6 +124,10 @@
     background: #dfe3e8;
     font-family: $montserrat-bold;
     .file-upload-label{
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
         .drag-drop-container{
             display: flex;
             align-items: center;
@@ -145,5 +148,15 @@
                 cursor: pointer;
             }
         }
+    }
+    .error-msg {
+        background-color: $colors-v2-base-error;
+        color: $colors-neutral-white;
+        display: flex;
+        font-family: $montserrat-regular;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        line-height: 40px;
     }
 }

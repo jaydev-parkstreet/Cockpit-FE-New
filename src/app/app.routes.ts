@@ -24,6 +24,7 @@ const AppRoutes = {
         CHECK_SUB_BRAND_EXISTS: 'product-tool/sub-brand-exists',
         SAVE_NEW_BRAND: 'product-tool/create-brand-products',
         SAVE_NEW_SUB_BRAND: 'product-tool/create-sub-brand-products',
+        UPLOAD_BULK_PRODUCT: 'product-tool/upload-bulk/product',
     },
     COMMON: {
         NOTES: 'notes',

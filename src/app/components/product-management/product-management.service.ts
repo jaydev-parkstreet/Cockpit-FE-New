@@ -533,7 +533,7 @@ export class ProductManagementService {
      */
     excelExport(obj) {
         return this.http
-            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT, obj, { responseType: 'text', observe: 'response' })
+            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT, obj)
             .pipe(map((response: any) => response));
     }
 
@@ -573,6 +573,10 @@ export class ProductManagementService {
     }
 
 
-
+    uploadbulkProducts(obj) { 
+        return this.http
+        .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.UPLOAD_BULK_PRODUCT, obj)
+        .pipe(map((response: any) => response));
+    }
 
 }
