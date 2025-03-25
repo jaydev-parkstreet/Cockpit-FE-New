@@ -45,6 +45,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   kindid: any;
   selectedFiles: any = [];
   CONSTANTS: any = AppConstant;
+  fileSizeMessage:string;
 
   ngOnInit(): void {
     this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);

@@ -8,6 +8,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { environment } from 'src/environments/environment';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { CmpAttachmentModalComponent } from 'src/app/shared/components/cmp-attachment-modal/cmp-attachment-modal.component';
+import {MassUploadExcelModalComponent} from '../product-management/mass-upload-excel-modal/mass-upload-excel-modal.component';
 import { CmpNotesModalComponent } from 'src/app/shared/components/cmp-notes-modal/cmp-notes-modal.component';
 import { ConfirmationModalComponent } from '../organism/confirmation-modal/confirmation-modal.component';
 
@@ -485,6 +486,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
                 this.navigateToEdit();
                 break;
             case 'mass_upload':
+                this.openMassUploadExcelPopup();
                 break;
 
             case 'active':
@@ -518,6 +520,11 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     });
   }
 
+
+    openMassUploadExcelPopup() {
+        const modalData = this.productManagementService.getMassExcelModalData();
+        this.simpleModalService.addModal(MassUploadExcelModalComponent , { modalData })
+    }
   /**
    * Navigates to the product edit page based on the current route if a product ID is present.
    *

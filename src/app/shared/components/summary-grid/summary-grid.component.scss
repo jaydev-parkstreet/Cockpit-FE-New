@@ -2,6 +2,7 @@
 @import '../../../scss/variables/colors';
 @import '../../../scss/utilities/colors';
 @import '../../../scss/utilities/base';
+@import '../../../scss/mixin/checkbox';
 
 
 @mixin ag-icon-asc {
@@ -27,52 +28,29 @@
     z-index: 1;
 
     .checkbox-container {
+        @include checkbox-container;
         position: absolute;
-        cursor: pointer;
-        user-select: none;
-        margin: 0;
-        padding: 0;
-        width: 16px;
-        height: 16px;
         top: 8px;
         margin-left: 12px;
 
         input {
-            position: relative;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
+            @include checkbox-container-input;
         }
 
         input[type="checkbox"]:checked+.checkmark {
-            background-color: $colors-v2-base-primary;
-            border-color: $colors-v2-base-primary;
+            @include checkmark-checked;
         }
 
         input[type="checkbox"]:checked+.checkmark::after {
-            content: "";
-            position: absolute;
-            display: block;
-            top: 50%; 
-            left: 50%; 
-            width: 8px; 
-            height: 2px;
-            background-color:  $colors-neutral-white;
-            transform: translate(-50%, -50%);
+            @include check-all-checkmark-after ;
         }
+
         .checkmark {
-            position: relative;
-            top: 1px;
-            left: 0;
-            height: 16px;
-            width: 16px;
-            border-radius: 4px;
-            border: 1px solid $colors-neutral-dark;
-            display: inline-block;
+            @include checkmark;
         }
     }
 }
+
 
 ::ng-deep .ag-theme-material {
     .ag-header-cell {
@@ -163,51 +141,37 @@
                 font-family: $montserrat-medium;
             }
             .checkbox-container {
-                display: inline-block;
+                @include checkbox-container;
+    
                 position: relative;
                 cursor: pointer;
                 font-size: 16px;
                 line-height: 16px;
                 height: 16px;
-                top: -2px;
+                top: -7px;
                 width: 16px;
+    
+                input[type="checkbox"] {
+                    @include checkbox-container-input;
+                }
+    
+                .checkmark {
+                    @include checkmark;
+                    top: 10px;
+                    z-index: 9999;
+                }
+    
+                input[type="checkbox"]:checked + .checkmark {
+                    @include checkmark-checked;
+                }
+    
+                input[type="checkbox"]:checked + .checkmark::after {
+                    @include checkmark-after;
+                }
             }
-            .checkbox-container input[type="checkbox"] {
-                position: absolute;
-                opacity: 0;
-                cursor: pointer;
-                height: 0;
-                width: 0;
-            }
-            .checkmark {
-                position: absolute;
-                top: 0;
-                height: 16px;
-                width: 16px;
-                background-color: $colors-neutral-white;
-                border: 1px solid $colors-neutral-dark;
-                top: 10px;
-                z-index: 9999;
-                border-radius: 4px;
-            } 
-            .checkbox-container input[type="checkbox"]:checked+.checkmark {
-                background-color: $colors-v2-base-primary;
-                border-color: $colors-v2-base-primary;
-            } 
-            .checkbox-container input[type="checkbox"]:checked+.checkmark::after {
-                content: "";
-                position: absolute;
-                display: block;
-                left: 5px;
-                top: 0px;
-                width: 4px;
-                height: 10px;
-                border: solid $colors-neutral-white;
-                border-width: 0 2px 2px 0;
-                transform: rotate(45deg);
-            }     
         }
     }
+    
 
     .ag-row-hover {
         background: $colors-neutral-white;
