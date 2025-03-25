@@ -130,6 +130,8 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
       if (!response.hasError) {
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
         this.closeModal(1);
+      } else {
+        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
       }
     }, (error) => {
       this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');

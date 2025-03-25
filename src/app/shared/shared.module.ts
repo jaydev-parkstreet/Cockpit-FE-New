@@ -20,7 +20,8 @@ import { AgGridModule } from 'ag-grid-angular';
 import { CmpAttachmentModalComponent } from './components/cmp-attachment-modal/cmp-attachment-modal.component'
 import { PsiCrudFormComponent } from './psi-crud-form/psi-crud-form.component';
 import { NoRecordComponent } from './components/no-record/no-record.component';
-
+import { CmpNotesModalComponent } from './components/cmp-notes-modal/cmp-notes-modal.component';
+import { QuillModule } from 'ngx-quill'
 
 @NgModule({
   declarations: [
@@ -41,14 +42,15 @@ import { NoRecordComponent } from './components/no-record/no-record.component';
     CmpAttachmentModalComponent,
     PsiCrudFormComponent,
     NoRecordComponent,
-  
+    CmpNotesModalComponent
   ],
   imports: [
     CommonModule,
     FormsModule, 
     ReactiveFormsModule,
     StatelessModule,
-    AgGridModule
+    AgGridModule,
+    QuillModule.forRoot()
   ],
  
   exports: [
@@ -67,7 +69,8 @@ import { NoRecordComponent } from './components/no-record/no-record.component';
     SummaryGridComponent,
     CmpButtonComponent,
     PsiCrudFormComponent,
-    NoRecordComponent
+    NoRecordComponent,
+    CmpNotesModalComponent
   ]
 })
 export class SharedModule { }

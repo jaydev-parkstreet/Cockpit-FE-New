@@ -1,0 +1,195 @@
+@import '../../../scss/variables/colors';
+@import '../../../../app/scss/variables/typography';
+@import '../../../../app/scss/mixin/_mixin';
+
+.content {
+    width: 624px;
+
+    .modal-header {
+        width: 100%;
+
+        .title-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+    }
+
+    .modal-body {
+        padding: 16px;
+
+        .notes-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+
+            .note-container {
+                display: flex;
+                gap: 8px;
+
+                .note-owner-image {
+                    width: 40px;
+                    height: 40px;
+                    position: relative;
+
+                    .profile-picture {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+
+                    .ps-logo {
+                        height: 16px;
+                        width: 16px;
+                        border-radius: 25px;
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                    }
+                }
+
+                .note-meta {
+                    .note-meta-name {
+                        color: $colors-v2-base-primary;
+                        font-size: 12px;
+                        font-weight: 500;
+                        display: flex;
+                        gap: 8px;
+                        font-family: $montserrat-medium;
+                    }
+
+                    ::ng-deep span:nth-child(2) {
+                        font-size: 12px;
+                        font-family: $montserrat-regular;
+                        color: $colors-neutral-black;
+
+                        p {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+
+            .right-section {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                font-size: 12px;
+                align-items: center;
+                line-height: 20px;
+
+                i {
+                    cursor: pointer;
+                    color: $colors-neutral-black-t-75;
+
+                    &:hover {
+                        color: $colors-neutral-black;
+                    }
+                }
+            }
+        }
+
+        hr {
+            margin: 20px 0;
+        }
+
+        .resizeEditor {
+            resize: vertical;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba($colors-neutral-black-v-high, 0.2);
+            margin-bottom: 15px;
+
+            ::ng-deep quill-editor {
+                .ql-toolbar {
+                    background: $colors-neutral-light-v-background;
+                    border: none;
+                    border-bottom: 1px solid rgba($colors-neutral-black-v-high, 0.2);
+
+                    .ql-formats {
+                        button {
+                            background: $colors-neutral-white;
+                            border: 1px solid $colors-neutral-light;
+                            padding: 4px 7px;
+
+                            &:first-child {
+                                border-top-left-radius: 3px;
+                                border-bottom-left-radius: 3px;
+                            }
+
+                            &:last-child {
+                                border-top-right-radius: 3px;
+                                border-bottom-right-radius: 3px;
+                            }
+
+                            &:not(:first-child) {
+                                border-left: 0;
+                            }
+                        }
+
+                        &:nth-child(3) {
+                            display: inline-flex;
+                            align-items: center;
+                        }
+
+                        .ql-color-picker,
+                        .ql-picker.ql-header,
+                        .ql-icon-picker {
+                            background: white;
+                            border: 1px solid $colors-neutral-light;
+                            border-radius: 3px;
+                            height: 23px;
+
+                            .ql-picker-label {
+                                padding: 4px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+                        }
+                    }
+                }
+
+                .ql-container {
+                    border: none;
+                    border-top: 0;
+
+                    .ql-editor {
+                        min-height: 100px !important;
+                    }
+
+                    .ql-editor.ql-blank::before {
+                        content: 'Enter Note Text';
+                        color: $colors-neutral-dark-v-medium;
+                        font-style: normal;
+                        font-family: $montserrat-regular;
+                        font-size: 12px;
+                    }
+                }
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 15px;
+                background-color: $colors-neutral-light-v-background;
+                border-top: 1px solid $colors-neutral-light;
+            }
+        }
+    }
+
+    .modal-footer {
+        >* {
+            margin: 0;
+        }
+
+        display: flex;
+        justify-content: end;
+        border-top: 0 none;
+        padding: 0 16px 16px;
+    }
+}

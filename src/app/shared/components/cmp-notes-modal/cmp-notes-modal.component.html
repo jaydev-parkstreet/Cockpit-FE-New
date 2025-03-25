@@ -1,0 +1,77 @@
+<div class="modal-content content">
+    <div class="modal-header">
+        <div class="title-container">
+            <i class="far fa-paperclip attach-icon"></i>
+            <span class="header-title" [innerText]="modalData?.modalTitle ? modalData.modalTitle : (isNotesListVisible ? (modalData?.multiple ? 'Add Note' : 'Notes') : 'Edit Notes')" ></span>
+          
+        </div>
+        <i class="fal fa-times close-popup" *ngIf="modalData?.showDismissIcon" (click)="closeModal(0)"></i>
+    </div>
+    <div class="modal-body w-100">
+
+        <app-no-record 
+            *ngIf="modalData?.noteDetails?.notes.length == 0 && isNotesListVisible"
+            [placeHolderText]="modalData.noDataMessage"
+            [iconClass]="modalData.emptyDataIcon || 'far fa-surprise'">
+        </app-no-record>
+
+        <div *ngIf="modalData?.noteDetails?.notes?.length > 0 && isNotesListVisible">
+            <div *ngFor="let note of modalData?.noteDetails?.notes; let i = index" class="notes-row">
+                <div class="note-container">
+                    <div class="note-owner-image">
+                        <img class="profile-picture" [src]="fileServer + note.person_image">
+                        <img class="ps-logo" [src]="fileServer +'/images/ps_icon.png'" />
+                    </div>
+                    <div class="note-meta">
+                        <span class="note-meta-name">
+                            {{note.first_name}} {{note.last_name}}
+                            <span *ngIf="note.permission_id === 2 || note.permission_id === 3" class="typography-paragraph-dark-regular">(Private)</span>
+                        </span>
+                        <span [innerHTML]="note.content"></span>
+                    </div>
+                </div>
+                <div class="right-section">
+                    <i class="fas fa-pen" *ngIf="note.has_edit_permission" (click)="onEditClick(note)"></i>
+                    <i class="fas fa-trash" *ngIf="note.has_edit_permission" (click)="onDeleteClick(note.id)"></i>
+                    <span>{{note.en_created_at | date: 'MM/dd/yy'}}</span>
+                </div>
+            </div>
+        </div>
+        <hr *ngIf="modalData?.noteDetails?.notes.length > 0 && modalData.showLine && isNotesListVisible" />
+        <div class="resizeEditor">
+            <quill-editor 
+                [(ngModel)]="editorContent" 
+                [style]="{ height: '200px' }"
+                [modules]="editorConfig"
+                placeholder="Enter your text here...">
+            </quill-editor>
+        </div>
+        <div class="attachment-permission">
+            <div class="custom-select-wrapper">
+                <div class="u-mb3">
+                    <app-cmp-input-dropdown 
+                        [label]="'Who else can see this attachment?'" 
+                        [showSelectAll]="false"
+                        [showCheckboxes]="false" 
+                        [allowSingleSelect]="true" 
+                        [showSearch]="false"
+                        [selectedItems]="[filters]" 
+                        [filteredItems]="modalData.notesPermission"
+                        [isAllItemsSelected]="false" 
+                        [isIndeterminate]="false" 
+                        [settings]="dropdownConfig"
+                        (onDropDownChange)="getVisibilityDropdownValue($event)">
+                    </app-cmp-input-dropdown>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer footer w-100">
+        <app-cmp-button [buttonText]="modalData.cancelAction.label" [buttonClass]="'secondary u-mr4 w-lg'"
+            (click)="closeModal()">
+        </app-cmp-button>
+        <app-cmp-button [buttonText]="modalData.saveAction.label" [buttonClass]="'primary w-lg'"
+            [isDisable]="!editorContent" (click)="!editorContent ? $event.stopPropagation() : uploadNotes()">
+        </app-cmp-button>
+    </div>
+</div>

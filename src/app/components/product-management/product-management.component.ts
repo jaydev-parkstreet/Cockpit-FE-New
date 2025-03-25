@@ -9,7 +9,9 @@ import { environment } from 'src/environments/environment';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { CmpAttachmentModalComponent } from 'src/app/shared/components/cmp-attachment-modal/cmp-attachment-modal.component';
 import {MassUploadExcelModalComponent} from '../product-management/mass-upload-excel-modal/mass-upload-excel-modal.component';
+import { CmpNotesModalComponent } from 'src/app/shared/components/cmp-notes-modal/cmp-notes-modal.component';
 import { ConfirmationModalComponent } from '../organism/confirmation-modal/confirmation-modal.component';
+
 
 @Component({
   selector: 'app-product-management',
@@ -112,8 +114,10 @@ export class ProductManagementComponent implements OnInit {
     this.gridOptions.onCellClicked = (params) => {
       if (params.colDef.cellRenderer === 'checkbox' && (params.event.srcElement.className === 'checkbox_gir_row')) {
           this.selectCheckBox(params);
-      }else if (params.event.target.className === 'far fa-file show-attachment-modal' || params.event.target.className === 'fas fa-file show-attachment-modal') {
+      }else if (params.event.target.className === 'fal fa-file show-attachment-modal' || params.event.target.className === 'fas fa-file show-attachment-modal') {
         this.openAttachmentListPopup(params.data.product_id);
+      }else if (params.event.target.className === 'fal fa-comment note-modal' || params.event.target.className === 'fas fa-comment note-modal') {
+        this.getNotes(params.data.product_id, params);
       }
     };
     this.gridOptions.onCellMouseOver = (params) => {
@@ -131,6 +135,62 @@ export class ProductManagementComponent implements OnInit {
       }
     };
   }
+
+  /**
+   * Function to get notes.
+   *
+   * @createdDate 27-04-2022
+   * @author PSI-Enhancement
+   * @param number id
+   * @param object param
+   */
+    getNotes(Id, param) {
+        // this.usSpinnerService.spin('app-loader');
+        this.commonService.getNotes(this.permissions.kind_id,
+        this.permissions.tool_id, Id, this.permissions.menu_item_id).subscribe((result: any) => {
+            this.showNotesModal(param.length === 0 ? Id : [Id], result.notes, false, param);
+            // this.usSpinnerService.stop('app-loader');
+        })
+    }
+
+    /**
+     * Function to open add notes popup.
+     *
+     * @createdDate 21-03-2024
+     * @author PSI-Enhancement
+     * @param number id
+     * @param array notes
+     * @param boolean multiple
+     * @param object params
+     */
+    showNotesModal(entityIds, notes, multiple, params) {
+        var noteDetails = { notes: [] };
+        noteDetails.notes = notes;
+        let modalData = {
+            notesPermission: this.filterList.entity_permissions,
+            cancelAction: { label: 'Cancel' },
+            saveAction: { label: 'Save' },
+            filtersList: this.filterList,
+            permissions: this.permissions,
+            entityIds: entityIds,
+            modalTitle: 'NOTES',
+            multiple,
+            newToast: true,
+            showDismissIcon: true,
+            showErrorInNewToast: true,
+            newToastMsg: 'Failed',
+            latestDesign: true,
+            noteDetails,
+            showLine: true,
+            noDataMessage: 'No Notes Found',
+        }
+        this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
+        .subscribe((result) => {
+            if (result !== undefined) {
+                this.unSelectAllCheckbox(entityIds, result, 'total_notes');
+            }
+        });
+    }
 
   openAttachmentListPopup (entity:any) {
     if (this.permissions.permissions.Update) {
@@ -166,7 +226,9 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
     .subscribe((result) => {
         if (result !== undefined) {
-          this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
+          if(!attachments.data ||attachments.data.length !== result) {
+            this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
+          }
         }
     });
   }
@@ -176,10 +238,11 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
         if (entityIds.indexOf(this.productToolSummary[a].product_id) !== -1) {
             this.productToolSummary[a][keyName] = count;
         }
-        this.productToolSummary[a].checkbox = false;
+        this.productToolSummary[a].checked = false;
     }
     this.selectedRowCount = 0;
     this.selectedRows = [];
+    this.updateTopPanelConfig();
     this.gridOptions.api.redrawRows();
   }
 
@@ -364,15 +427,16 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
   }
 
   updateCheckboxState(checked: boolean) {
-    for (const order of this.productToolSummary) {
-      order.checked = checked;
-      if(checked){
-        this.selectedRows.push(order.product_id);
-      }
-    }
-    if(!checked){
+    if (checked) {
+      this.selectedRows = this.productToolSummary.map(order => order.product_id);
+    } else {
       this.selectedRows = [];
     }
+
+    this.productToolSummary.forEach(order => {
+      order.checked = checked;
+    });
+    
     this.selectedAllRows = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
     this.updateTopPanelConfig();
