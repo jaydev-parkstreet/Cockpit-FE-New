@@ -4,6 +4,7 @@ import { PsiAgGridComponent } from './psi-ag-grid/psi-ag-grid.component';
 import { PsiPageColumnHeaderComponent } from './psi-page-column-header/psi-page-column-header.component';
 import { PsiInputTextFieldComponent } from './psi-input-text-field/psi-input-text-field.component';
 import { PsiCheckboxComponent } from './psi-checkbox/psi-checkbox.component';
+import { PsiUploadFilesComponent } from './psi-upload-files/psi-upload-files.component';
 import { PsDetailsComponent } from './ps-details/ps-details.component';
 
 
@@ -14,6 +15,7 @@ import { PsDetailsComponent } from './ps-details/ps-details.component';
     PsiPageColumnHeaderComponent,
     PsiInputTextFieldComponent,
     PsiCheckboxComponent,
+    PsiUploadFilesComponent,
     PsDetailsComponent
   ],
   imports: [
@@ -24,6 +26,7 @@ import { PsDetailsComponent } from './ps-details/ps-details.component';
     PsiPageColumnHeaderComponent,
     PsiInputTextFieldComponent,
     PsiCheckboxComponent,
+    PsiUploadFilesComponent,
     PsDetailsComponent
   ]
 })

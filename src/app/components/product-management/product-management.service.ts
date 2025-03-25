@@ -13,11 +13,11 @@ import AppConstant from 'src/app/app.constant';
 export class ProductManagementService {
 
     constructor(
-        private http: HttpClient,private commonService:CommonService,
+        private http: HttpClient, private commonService: CommonService,
         private dropdownService: InputDropdownService,
     ) { }
     CONSTANTS: any = AppConstant;
-    
+
     /**
       * Function to get top bar config.
       * @createdDate 19-09-2024
@@ -58,7 +58,7 @@ export class ProductManagementService {
             sortable: false,
             lockPosition: true,
             resizable: false,
-            cellClass: 'select-all-header-cell pl0px header-check check' 
+            cellClass: 'select-all-header-cell pl0px header-check check'
         }, {
             headerName: 'Product Code',
             minWidth: 150,
@@ -86,7 +86,7 @@ export class ProductManagementService {
         }
         ];
     }
-  
+
     /**
      * Gets the grid options for the product summary table.
      * @returns {any}
@@ -95,12 +95,12 @@ export class ProductManagementService {
     getGridOption() {
         return {
             components: {
-            checkbox: (params) => this.renderCheckbox(params),
-            dashRenderer: (params) => this.renderDash(params),
-            idRender: (params) => this.renderId(params),
-            statusRenderer: (params) => this.renderStatus(params),
-            dateFormatRenderer: (params) => this.dateFormatRenderer(params)
-            },   
+                checkbox: (params) => this.renderCheckbox(params),
+                dashRenderer: (params) => this.renderDash(params),
+                idRender: (params) => this.renderId(params),
+                statusRenderer: (params) => this.renderStatus(params),
+                dateFormatRenderer: (params) => this.dateFormatRenderer(params)
+            },
             enableColResize: true,
             allowContextMenuWithControlKey: true,
             rowBuffer: 0,
@@ -109,10 +109,10 @@ export class ProductManagementService {
             enableServerSideSorting: true,
             suppressRowTransform: true,
             defaultColDef: {
-            width: 200,
-            sortable: true,
-            resizable: true,
-            filter: false,
+                width: 200,
+                sortable: true,
+                resizable: true,
+                filter: false,
             },
             rowHeight: 38,
             headerHeight: 38,
@@ -144,7 +144,7 @@ export class ProductManagementService {
         let checkboxSelection = '';
         if (params.data) {
             if (params.data.checked) {
-                     checkboxSelection = `<label class="checkbox-container">
+                checkboxSelection = `<label class="checkbox-container">
                                 <input type="checkbox" class="checkbox_gir_row" checked>
                                 <span class="checkmark"></span>
                             </label>`;
@@ -155,17 +155,17 @@ export class ProductManagementService {
                                 </label>`;
             }
             checkboxSelection += `<span class="attachments-notes">
-                                <i class="${params.data.total_attachments <= 0 ? 'far fa-file' : 'fas fa-file'} show-attachment-modal"></i>
-                                <span><i class="${params.data.total_notes <= 0 ? 'far fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
+                                <i class="${params.data.total_attachments <= 0 ? 'fal fa-file' : 'fas fa-file'} show-attachment-modal"></i>
+                                <span><i class="${params.data.total_notes <= 0 ? 'fal fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
             if (params.data.unread_notes_count) {
-            checkboxSelection += `<span class="note-count ${params.data.unread_notes_count > 9 ? 'u-w-20' : ''}">
+                checkboxSelection += `<span class="note-count ${params.data.unread_notes_count > 9 ? 'u-w-20' : ''}">
                                     <p>${params.data.unread_notes_count}</p></span>`;
             }
             checkboxSelection += '</span>';
         }
         return checkboxSelection;
     }
-  
+
     /**
      * Render a dash when there is no value, otherwise render the value inside
      * a text ellipsis container with a tooltip.
@@ -181,7 +181,7 @@ export class ProductManagementService {
         }
         return '--';
     }
-  
+
     /**
      * Creates an anchor link element for the product ID.
      *
@@ -190,13 +190,13 @@ export class ProductManagementService {
      * @author psi-enhancements
      */
     renderId(params) {
-      if (params.value) {
-        return `<a target="_blank" style="color: black;text-decoration: none;" onmouseover="this.style.textDecoration='underline'"
+        if (params.value) {
+            return `<a target="_blank" style="color: black;text-decoration: none;" onmouseover="this.style.textDecoration='underline'"
                 onmouseout="this.style.textDecoration='none'" href="product-management/${params.value}">${params.value}</a>`;
-      }
-      return '-';
+        }
+        return '-';
     }
-  
+
     /**
      * Returns the status of the product with an associated color.
      * @param {Object} params
@@ -222,6 +222,11 @@ export class ProductManagementService {
       return '--';
     }
 
+    /**
+     * Function to get attachment list
+     * @param params 
+     * @author PSI-Enhancement
+     */
     getAttachmentList (param:any) {        
         return this.http.get(environment.apiRouteUrl+environment.version.v1+ AppRoutes.COMMON.ATTACHMENTS+'?', { params: param });
     }
@@ -236,7 +241,7 @@ export class ProductManagementService {
     dateFormatRenderer(params) {
         return this.commonService.dateFormat(params.value);
     }
-    
+
     /**
      * This function returns the config for top panel which includes search bar, filter dropdowns and action buttons.
      * @param permission
@@ -244,7 +249,7 @@ export class ProductManagementService {
      * @returns {object} The config object for top panel.
      * @author psi-enhancements
      */
-    getTopPanelConfig(permission , isActive = false) {
+    getTopPanelConfig(permission, isActive = false) {
         return {
             placeholder: 'Search',
             searchText: '',
@@ -268,7 +273,7 @@ export class ProductManagementService {
                     setting: this.getMultiSelectConfig('Select Status')
                 }, {
                     key: 'product_type',
-                    label: 'Product Type', 
+                    label: 'Product Type',
                     ype: 'multiselect-search',
                     divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Type')
@@ -278,7 +283,7 @@ export class ProductManagementService {
                     type: 'multiselect-search',
                     divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Sub-Type')
-                }, { 
+                }, {
                     key: 'source',
                     label: 'Source',
                     type: 'multiselect-search',
@@ -409,8 +414,8 @@ export class ProductManagementService {
             translationTexts: { buttonDefaultText: placeholdertext, searchPlaceholder: 'Search', noResultText: 'No results found' },
         };
     }
-   
-    
+
+
     /**
      * Formats an array of objects into a dropdown-compatible format.
      * 
@@ -430,7 +435,7 @@ export class ProductManagementService {
         return dropdown;
 
     }
-   
+
     /**
      * Fetches the summary data from the server based on the given summary data object.
      * 
@@ -463,15 +468,15 @@ export class ProductManagementService {
      * @returns An Observable containing the data of sub-brand products.
      * @author psi-enhancements
      */
-    getSubBrandProducts(clientId: string , brandID: string) {
+    getSubBrandProducts(clientId: string, brandID: string) {
         const token = localStorage.getItem('authToken');
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         const params = new HttpParams()
             .set('client_id', clientId)
             .set('brand_id', brandID);
         return this.http
-            .get( environment.apiUrl + AppRoutes.PRODUCT_TOOL.GET_SUB_BRAND_PRODUCT_WITH_CLIENT_ID , { headers, params })
-            .pipe(map((response :any) => response.data));
+            .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.GET_SUB_BRAND_PRODUCT_WITH_CLIENT_ID, { headers, params })
+            .pipe(map((response: any) => response.data));
     }
 
     /**
@@ -483,8 +488,8 @@ export class ProductManagementService {
      */
     getDetails(id) {
         return this.http
-        .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DETAILS + id)
-        .pipe(map((response :any) => response.data));
+            .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DETAILS + id)
+            .pipe(map((response: any) => response.data));
     }
 
     /**
@@ -495,7 +500,7 @@ export class ProductManagementService {
      */
     getPermission() {
         return this.http
-        .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PERMISSION).toPromise();
+            .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PERMISSION).toPromise();
     }
 
     /**
@@ -508,16 +513,16 @@ export class ProductManagementService {
     getActivateAPI(productId: string[], isActive) {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
-          });
-      
+        });
+
         const body = {
-        product_id: productId,
-        is_active: isActive ? 0 : 1,
+            product_id: productId,
+            is_active: isActive ? 0 : 1,
         };
 
         return this.http
-        .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PRODUCT_ACTIVE_DEACTIVATE, body, { headers })
-        .pipe(map((response :any) => response));
+            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PRODUCT_ACTIVE_DEACTIVATE, body, { headers })
+            .pipe(map((response: any) => response));
     }
 
     /**
@@ -528,25 +533,50 @@ export class ProductManagementService {
      */
     excelExport(obj) {
         return this.http
-            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT, obj,{responseType: 'text',observe: 'response'})
-            .pipe(map((response :any) => response));
+            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT, obj)
+            .pipe(map((response: any) => response));
     }
 
         uploadMultipleAttachments(reqObj: FormData) {
         return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
     }
 
-    changeFilePermission (data:any) {       
-        return this.http.put(environment.apiRouteUrl + environment.version.v1  + AppRoutes.COMMON.ATTACHMENTS_PERMISSION, data);
+    changeFilePermission(data: any) {
+        return this.http.put(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS_PERMISSION, data);
     }
 
-    deleteUploadFile(param: any) {      
-        return this.http.delete(environment.apiRouteUrl + environment.version.v1  + AppRoutes.COMMON.ATTACHMENTS, {
-          params: new HttpParams().set('id', param),
-          headers: new HttpHeaders({
-            'Content-Type': ''
-          })
+    deleteUploadFile(param: any) {
+        return this.http.delete(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS, {
+            params: new HttpParams().set('id', param),
+            headers: new HttpHeaders({
+                'Content-Type': ''
+            })
         });
-      }
-      
+    }
+
+    getMassExcelModalData() {
+        return {
+            titleIcon: 'fas fa-layer-plus',
+            title: 'UPLOAD BULK PRODUCT',
+            modalBodyTitle: 'Upload Excel File',
+            requestObj: {},
+            uploadFileKey: 'file',
+            // apiRoute: Routes.available.mobile_product_management_system_upload_bulk_product,
+            modalBodyText: 'Upload bulk Products.',
+            successLabelText: 'Allocated SKUs:',
+            errorLabelText: 'Rows with Errors:',
+            btnLabel: [
+                { type: 'Btn', label: 'Cancel', class: 'secondary' },
+                { type: 'Btn', label: 'Upload', class: 'primary' }
+            ]
+        };
+    }
+
+
+    uploadbulkProducts(obj) { 
+        return this.http
+        .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.UPLOAD_BULK_PRODUCT, obj)
+        .pipe(map((response: any) => response));
+    }
+
 }

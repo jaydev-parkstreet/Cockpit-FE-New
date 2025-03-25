@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableComponent } from './table.component';
+import { PsiUploadFilesComponent } from './psi-upload-files.component';
 
-describe('TableComponent', () => {
-  let component: TableComponent;
-  let fixture: ComponentFixture<TableComponent>;
+describe('PsiUploadFilesComponent', () => {
+  let component: PsiUploadFilesComponent;
+  let fixture: ComponentFixture<PsiUploadFilesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TableComponent ]
+      declarations: [ PsiUploadFilesComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TableComponent);
+    fixture = TestBed.createComponent(PsiUploadFilesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
