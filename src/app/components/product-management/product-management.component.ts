@@ -473,8 +473,12 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     onClickAction(action): void {
         switch (action.key) {
             case 'notes':
+                if (this.selectedRowCount === 1) {
+                    this.getNotes(this.selectedRows[0], []);
+                } else {
+                    this.showNotesModal(this.selectedRows,[] ,true, null);
+                }
                 break;
-
             case 'attachment':
                 if (this.selectedRows.length === 1) {
                     this.openAttachmentListPopup(this.selectedRows[0]);
@@ -488,7 +492,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
             case 'mass_upload':
                 this.openMassUploadExcelPopup();
                 break;
-
             case 'active':
                 if (this.selectedRows && this.selectedRows.length > 0) {
                     this.getActivateAPI(action.isActive);
@@ -497,11 +500,9 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
             case 'filter_button':
                 this.topPanelConfig.expandFilter = !this.topPanelConfig.expandFilter;
                 break;
-
             case 'new_product':
                 this.router.navigate(['/product-management/add']);
                 break;
-
             default:
                 break;
         }
