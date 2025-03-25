@@ -6,7 +6,7 @@
                 (onEnter)="onEnter.emit($event)">
             </app-search-bar>
         </div>
-        <div class="u-flex u-align-center u-pg-pl-2" [ngClass]="action.divClass" *ngFor="let action of config.actions">
+        <div class="u-flex u-align-center u-pg-pl-2 icon-container" [ngClass]="action.divClass" *ngFor="let action of config.actions">
             <div class="u-icon-tooltip u-csr-ptr" *ngIf="action.type == 'icon'">
                 <i class="u-fs20 on-hover action-icon" [ngClass]="action.iconClass" (click)="!action.disabled && onClickAction.emit(action)"></i>
                 <span class="tooltiptext t-center u-pg-mt-1" *ngIf="action.tooltipText" [innerHtml]="action.tooltipText"></span>

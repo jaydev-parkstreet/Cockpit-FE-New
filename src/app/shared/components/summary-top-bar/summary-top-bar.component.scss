@@ -2,6 +2,7 @@
 @import '../../../scss/variables/colors';
 @import '../../../scss/utilities/base';
 @import '../../../scss/utilities/colors';
+@import '../../../scss/mixin/_mixin';
 
 .summary-top-bar {
     display: flex;
@@ -57,29 +58,12 @@
 }
 
 .icon-container {
-    position: relative;
     i.action-icon {
-        margin: 0 8px;
-        cursor: pointer;
-        position: relative;
-        color: $colors-neutral-dark;
-
+        @include action-icon;
         &.is-disabled,
         &.is-disabled:hover {
             cursor: auto;
             color: $colors-neutral-light;
-        }
-
-        &:hover {
-            color: $colors-neutral-black;
-        }
-
-        &.first {
-            margin: 0 8px 0 0;
-        }
-
-        &.last {
-            margin: 0 16px 0 8px;
         }
     }
 

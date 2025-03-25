@@ -405,7 +405,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
         this.reportRequestObj = {
             "page": 1,
             "pageSize": 25,
-            "sort": "status",
+            "sort": "",
             "order": "asc",
             "universal_search": ""
         }
