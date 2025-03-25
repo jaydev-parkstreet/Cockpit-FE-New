@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ProductManagementService } from './product-management.service';
 import { AuthService } from '../authentication/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { CmpAttachmentModalComponent } from 'src/app/shared/components/cmp-attachment-modal/cmp-attachment-modal.component';
 import { CmpNotesModalComponent } from 'src/app/shared/components/cmp-notes-modal/cmp-notes-modal.component';
+import { ConfirmationModalComponent } from '../organism/confirmation-modal/confirmation-modal.component';
+
 
 @Component({
   selector: 'app-product-management',
@@ -56,12 +58,14 @@ export class ProductManagementComponent implements OnInit {
     private commonService : CommonService,
     private route: ActivatedRoute,
     private simpleModalService: SimpleModalService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {  
-    this.getDropdown(); 
+    this.filterList = this.route.snapshot.data['filterList'];
     this.permissions = this.route.snapshot.data['permissions'];
     this.topPanelConfig = this.productManagementService.getTopPanelConfig(this.permissions);
+    this.updateTopPanelConfig();
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
       "pageSize": 25,
@@ -70,27 +74,12 @@ export class ProductManagementComponent implements OnInit {
       "universal_search": ""
     };
     this.selectedRowCount = 0;
-    // this.selectedCardRowCount = 0;
     this.productToolCardSummary = [];
-    // this.selectedAll = false;
     this.busy = true;
     this.filters = {};
     this.permissionObj = {};
     this.isSorting = false;
     this.scrollDisabled = false;
-    // this.queryParam = this.commonService.$location.search();
-    // this.openNotePopup = false;
-    // this.defaultState = this.productToolService.getDefaultState()[0].id;
-    // this.reportRequestObj = {
-    //     // page: 1,
-    //     pageSize: 25,
-    //     sort: 'status',
-    //     order: 'desc',
-    // };
-    // this.summaryTopBarConfig = this.productToolService.getSummaryTopBarConfig();
-    // this.summaryTopBarConfig.actions = this.productToolService.getDefaultActions(this.reportRequestObj,
-    //     this.permissions.permissions.Create);
-    // this.statusObj = this.productToolService.getStatusObject();
     this.initGridOptions();
     this.productToolSummary = [];
   }
@@ -106,10 +95,11 @@ export class ProductManagementComponent implements OnInit {
                 sort: col.getSort()
             }));
       if (allSortModels && allSortModels.length > 0) {
+        this.reportRequestObj.page = 1;
         this.reportRequestObj.sort = allSortModels[0].colId;
         this.reportRequestObj.order = allSortModels[0].sort;
       } else {
-        this.reportRequestObj.sort = 'status';
+        this.reportRequestObj.sort = '';
         this.reportRequestObj.order = 'asc';
       }
       this.productToolSummary = [];
@@ -127,6 +117,20 @@ export class ProductManagementComponent implements OnInit {
         this.openAttachmentListPopup(params.data.product_id);
       }else if (params.event.target.className === 'fal fa-comment note-modal' || params.event.target.className === 'fas fa-comment note-modal') {
         this.getNotes(params.data.product_id, params);
+      }
+    };
+    this.gridOptions.onCellMouseOver = (params) => {
+      if (params && params.event) {
+        const element = params.event.srcElement.querySelector('.add-tooltip');
+        if (element) {
+          const scrollWidth = params.event.srcElement.scrollWidth;
+          const offsetWidth = params.event.srcElement.offsetWidth;
+          if (offsetWidth < scrollWidth) {
+            this.renderer.addClass(element, 'tooltip-text');
+          } else {
+            this.renderer.removeClass(element, 'tooltip-text');
+          }
+        }
       }
     };
   }
@@ -196,7 +200,7 @@ export class ProductManagementComponent implements OnInit {
         },
         (error: any) => {
           this.isLoading = false;
-          console.log(error);          
+          console.error(error);          
         });
     }
 }
@@ -221,7 +225,9 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
     .subscribe((result) => {
         if (result !== undefined) {
-          this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
+          if(!attachments.data ||attachments.data.length !== result) {
+            this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
+          }
         }
     });
   }
@@ -231,10 +237,11 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
         if (entityIds.indexOf(this.productToolSummary[a].product_id) !== -1) {
             this.productToolSummary[a][keyName] = count;
         }
-        this.productToolSummary[a].checkbox = false;
+        this.productToolSummary[a].checked = false;
     }
     this.selectedRowCount = 0;
     this.selectedRows = [];
+    this.updateTopPanelConfig();
     this.gridOptions.api.redrawRows();
   }
 
@@ -261,18 +268,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     }
   }
 
-  async getDropdown(){
-    const token = localStorage.getItem('authToken');
-    try {
-      const response:any = await this.productManagementService.getDropdown(token);
-      this.dropdownData = response.data;
-    }
-    catch (error) {
-      console.error("Error fetching summary:", error);
-    }
-    this.filterList = this.dropdownData;
-  }
-
   /**
      * Function to call api and set ag-grid dataSource object
      *
@@ -286,7 +281,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       this.selectedRows = [];
       this.selectedCardRows = [];
       this.mixType = false;
-      // angular.element('.checkbox_select_all').prop('checked', false);
       this.isLoadingSummaryData = true;
       this.gridOptions.api.hideOverlay();
       this.reportRequestObj.page = 1;
@@ -295,10 +289,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       this.hasMoreRecords = true;
       this.isLoading = false;
       this.busy = true;
-      // if (this.isGridSortApplied !== true) {
-      //     this.summaryTopBarConfig.actions = this.productToolService.getDefaultActions(this.reportRequestObj,
-      //         this.permissions.permissions.Create);
-      // }
       this.isGridSortApplied = false;
       const dataSource = {
         rowCount: null,
@@ -312,11 +302,9 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
           else {
             this.successCallback(params);
           }
-          // if (!this.filtersList) {
-          // this.setFilterList();
-          // }
         }
       };
+      this.updateTopPanelConfig();
       this.gridOptions.api.setDatasource(dataSource);
     }
   }
@@ -404,73 +392,53 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     this.reportRequestObj.page = 1;
     this.reportRequestObj.universal_search = this.topPanelConfig.searchText.trim();
     this.productToolSummary = [];
-    if(selectedFilters.active_status){
-      const isStatusTrue = selectedFilters.active_status[0]?.name === 'Inactive';
-      this.topPanelConfig.actions.extraActions[3].tooltipText = isStatusTrue ? 'Activate' : 'Deactivate';
-      this.topPanelConfig.actions.extraActions[3].icon = isStatusTrue ? 'fas fa-check-circle':'fas fa-times-circle';
-      this.topPanelConfig.actions.extraActions[3].isActive = isStatusTrue ? true : false;
+    this.updateTopPanelConfig();
+    this.setDataSourceAgGrid();
+  }
+
+  /**
+   * Function to reset summary grid filters.
+   */
+    resetFilters() {
+        this.filtermodal = {};
+        this.reportRequestObj = {
+            "page": 1,
+            "pageSize": 25,
+            "sort": "status",
+            "order": "asc",
+            "universal_search": ""
+        }
+        this.topPanelConfig.searchText = '';
+        this.productToolSummary = [];
+        this.selectedRowCount = 0;
+        this.updateTopPanelConfig();
+        this.setDataSourceAgGrid();
     }
-    this.setDataSourceAgGrid();
-  }
 
-  resetFilters() {
-	  this.filtermodal = {};
-    this.reportRequestObj = {
-      "page": 1,
-      "pageSize": 25,
-      "sort": "status",
-      "order": "asc",
-      "universal_search": ""
+    universalSearch(text) {
+        this.reportRequestObj.universal_search = text;
+        this.productToolSummary = [];
+        this.setDataSourceAgGrid();
     }
-    this.topPanelConfig.searchText = '';
-    this.productToolSummary = [];
-    this.setDataSourceAgGrid();
-  }
-
-  universalSearch (text) {
-    this.reportRequestObj.universal_search = text;
-	this.productToolSummary = [];
-    this.setDataSourceAgGrid();
-  }
-	excelExport() {
-		const body = this.reportRequestObj;
-		this.downloading = true;
-
-		this.productManagementService.excelExport(body).subscribe((response) => {
-			const data = response.body;
-			if (data) {
-				const csvBlob = new Blob([data], { type: 'application/force-download' });
-				const fileName = this.getFileNameFromHeader(
-					response.headers.get('content-disposition')
-				);
-				saveAs(csvBlob, fileName || 'report.csv');
-			}
-			this.downloading = false;
-		});
-	}
-
-	getFileNameFromHeader(header: string | null): string | null {
-		if (!header) return null;
-		const result = header.split(';')[1].trim().split('=')[1];
-		return result.replace(/"/g, '');
-	}
 
   onSelectAllChanged(isChecked: boolean) {
     this.updateCheckboxState(isChecked);
   }
 
   updateCheckboxState(checked: boolean) {
-    for (const order of this.productToolSummary) {
-      order.checked = checked;
-      if(checked){
-        this.selectedRows.push(order.product_id);
-      }
-    }
-    if(!checked){
+    if (checked) {
+      this.selectedRows = this.productToolSummary.map(order => order.product_id);
+    } else {
       this.selectedRows = [];
     }
+
+    this.productToolSummary.forEach(order => {
+      order.checked = checked;
+    });
+    
     this.selectedAllRows = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
+    this.updateTopPanelConfig();
     this.gridOptions.api.redrawRows();
   }
 
@@ -493,18 +461,49 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     } else {
         this.selectedAllRows = true;
     }
+    this.updateTopPanelConfig();
     this.gridOptions.api.redrawRows();
   }
-  onClickAction(event){
-    if (event.key === 'notes') {
-    } else if (event.key === 'attachment') {
-    } else if (event.key === 'active') {
-      if (this.selectedRows && this.selectedRows.length > 0) {
-        this.getActivateAPI(event.isActive);
-      }
-    } else if (event.key === 'mass-upload') {
+
+  /**
+   * Function to call on click of top bar action items
+   * @param object action
+   */
+    onClickAction(action): void {
+        switch (action.key) {
+            case 'notes':
+                break;
+
+            case 'attachment':
+                if (this.selectedRows.length === 1) {
+                    this.openAttachmentListPopup(this.selectedRows[0]);
+                } else {
+                    this.showAttachment(true, this.selectedRows, {});
+                }
+                break;
+            case 'edit':
+                this.navigateToEdit();
+                break;
+            case 'mass_upload':
+                break;
+
+            case 'active':
+                if (this.selectedRows && this.selectedRows.length > 0) {
+                    this.getActivateAPI(action.isActive);
+                }
+                break;
+            case 'filter_button':
+                this.topPanelConfig.expandFilter = !this.topPanelConfig.expandFilter;
+                break;
+
+            case 'new_product':
+                this.router.navigate(['/product-management/add']);
+                break;
+
+            default:
+                break;
+        }
     }
-  }
 
   getActivateAPI(isActive) {
     this.spinner.show();
@@ -518,4 +517,38 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       }
     });
   }
+
+  /**
+   * Navigates to the product edit page based on the current route if a product ID is present.
+   *
+   * @returns {void}
+   * @author PSI-Enhancement
+   */
+  navigateToEdit() {
+    if (this.selectedRows[0]) {
+      if (this.selectedRows.length === 1) {
+        this.router.navigate([`product-management/${this.selectedRows[0]}/edit`]);
+      } else {
+        const modalData = {
+          title: 'You can only edit 1 product at a time.',
+          btnLabel: [
+            { type: 'Btn', label: 'Ok', class: 'primary' }
+          ]
+        }
+        this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+      }
+    }
+  }
+
+  /**
+   * Function to Update top panel config
+   */
+  updateTopPanelConfig () {
+    this.topPanelConfig.actions = this.productManagementService.getActionsIconsConfig(
+        this.selectedRowCount,
+        this.permissions,
+        this.reportRequestObj
+    );
+    
+  };
 }

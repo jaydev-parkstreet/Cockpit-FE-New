@@ -363,6 +363,62 @@ export class ProductMangementDetailService {
           .replace(/_/g, ' ')
           .replace(/\b\w/g, char => char.toUpperCase());
     }
+
+    /**
+     * Function to prepare data for product management system CRUD form.
+     * 
+     * @param none
+     * @returns Array of Object of Mappings
+     * @author PSI-Enhancement
+     */
+    getDetailsAuditTrailConfigApiRequest () {
+      return [
+        { data: 'client_name', label: 'Supplier:', typeOfFilter: null},
+        { data: 'sub_brand_product_name', label: 'Sub-Brand Product:', typeOfFilter: null },
+        { data: 'description', label: 'Description:', typeOfFilter: null },
+        { data: 'name', label: 'Fanciful Name:', typeOfFilter: null },
+        { data: 'group_name', label: 'Group:', typeOfFilter: null },
+        { data: 'producer_name', label: 'Producer:', typeOfFilter: null },
+        { data: 'case_unit_of_measure', label: 'Case UOM:', typeOfFilter: null },
+        { data: 'ex_works_cost', label: 'Announced Price:', typeOfFilter: null },
+        { data: 'prod_type', label: 'Product Type:', typeOfFilter: null },
+        { data: 'compliance', label: 'Compliance:', typeOfFilter: null },
+        { data: 'use_up', label: 'Use Up:', typeOfFilter: null },
+        { data: 'created_date', label: 'Date Created:', typeOfFilter: null },
+        { data: 'sub_type', label: 'Product Sub-Type:', typeOfFilter: null },
+        { data: 'category_name', label: 'Category:', typeOfFilter: null },
+        { data: 'source', label: 'Source:', typeOfFilter: null },
+        { data: 'country_name', label: 'Country of Origin:', typeOfFilter: null },
+        { data: 'vintage', label: 'Vintage:', typeOfFilter: null },
+        { data: 'varietal', label: 'Varietal:', typeOfFilter: null },
+        { data: 'abv', label: 'ABV %:', typeOfFilter: null },
+        { data: 'unit_length', label: 'Bottle / Unit | Length:', typeOfFilter: null },
+        { data: 'unit_width', label: 'Bottle / Unit | Width:', typeOfFilter: null },
+        { data: 'unit_height', label: 'Bottle / Unit | Height:', typeOfFilter: null },
+        { data: 'unit_weight', label: 'Bottle / Unit | Weight:', typeOfFilter: null },
+        { data: 'case_length', label: 'Case | Length:', typeOfFilter: null },
+        { data: 'case_width', label: 'Case | Width:', typeOfFilter: null },
+        { data: 'case_height', label: 'Case | Height:', typeOfFilter: null },
+        { data: 'case_weight', label: 'Case | Weight:', typeOfFilter: null },
+        { data: 'pallet_length', label: 'Pallet | Length:', typeOfFilter: null },
+        { data: 'pallet_width', label: 'Pallet | Width:', typeOfFilter: null },
+        { data: 'pallet_height', label: 'Pallet | Height:', typeOfFilter: null },
+        { data: 'pallet_weight', label: 'Pallet | Weight:', typeOfFilter: null },
+        { data: 'layers_per_pallet', label: 'Layers per Pallet:', typeOfFilter: null },
+        { data: 'cases_per_layer', label: 'Cases per Layer:', typeOfFilter: null },
+        { data: 'cases_per_pallet', label: 'Cases per Pallet:', typeOfFilter: null },
+        { data: 'product_id', label: 'Park Street Product Code:', typeOfFilter: null },
+        { data: 'upc_code', label: 'UPC Code:', typeOfFilter: null },
+        { data: 'scc_code', label: 'SCC Code:', typeOfFilter: null },
+        { data: 'system_id', label: 'Supplier Reference ID:', typeOfFilter: null },
+        { data: 'cola_ttb_id', label: 'COLA TTB ID:', typeOfFilter: null },
+        { data: 'nabca_code', label: 'NABCA Code:', typeOfFilter: null },
+        { data: 'unimerc_code', label: 'UNIMERC Code:', typeOfFilter: null },
+        { data: 'bdn_code', label: 'BDN Code:', typeOfFilter: null },
+        { data: 'status', label: 'Product Status:', typeOfFilter: null },
+        { data: 'is_active_txt', label: 'Active Status:', typeOfFilter: null }
+        ];
+    }
 }
 
 

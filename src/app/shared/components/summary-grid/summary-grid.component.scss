@@ -153,17 +153,14 @@
             .status-label {
                 color: $colors-neutral-black;
                 font-weight: 500;
-                display: inline-block;
-                width: 185px;
+                display: block;
+                max-width: 185px;
                 height: 23px;
                 font-size: 10px;
                 line-height: 14px;
                 padding: 5px 0px;
                 text-align: center;
                 font-family: $montserrat-medium;
-            }
-            .widthAction {
-                width: 182px !important;
             }
             .checkbox-container {
                 display: inline-block;

@@ -62,22 +62,18 @@ export class AttachmentTabComponent implements OnInit {
         }
       );
     }
-  /**
-  * Retrieves the list of dropdown items associated with the given client ID.
-  * 
-  * @returns An Observable containing the data of dropdown items.
-  * @author psi-enhancement
-  */
-  async getDropdown(){
-    const token = localStorage.getItem('authToken');
-    try {
-      const response:any = await this.productManagementService.getDropdown(token);
-      this.filterList = response.data;
+
+    async getDropdown(){
+      const token = localStorage.getItem('authToken');
+      console.log(token);
+      try {
+        const response:any = await this.productManagementService.getDropdown(token);
+        this.filterList = response.data;
+      }
+      catch (error) {
+        console.error("Error fetching summary:", error);
+      }
     }
-    catch (error) {
-      console.error("Error fetching summary:", error);
-    }
-  }
 
   showAttachment(multiple:any, entityIds:any, attachments:any) {
     let modalData:any;
