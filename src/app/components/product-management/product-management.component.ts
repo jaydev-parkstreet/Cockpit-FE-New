@@ -460,11 +460,6 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     openMassUploadExcelPopup() {
         const modalData = this.productManagementService.getMassExcelModalData();
         this.simpleModalService.addModal(MassUploadExcelModalComponent , { modalData })
-            .subscribe((result) => {
-                // if (result?.confirm) {
-                   
-                // } 
-            });
     }
   /**
    * Navigates to the product edit page based on the current route if a product ID is present.

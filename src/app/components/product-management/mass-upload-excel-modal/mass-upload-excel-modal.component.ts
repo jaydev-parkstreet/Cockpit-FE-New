@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SimpleModalComponent, SimpleModalService } from 'ngx-simple-modal';
 import { ProductManagementService } from '../product-management.service';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -10,25 +10,27 @@ export interface massUploadExcelModal {
 @Component({
     selector: 'app-mass-upload-excel-modal',
     templateUrl: './mass-upload-excel-modal.component.html',
-    styleUrls: ['./mass-upload-excel-modal.component.scss']
+    styleUrls: ['./mass-upload-excel-modal.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class MassUploadExcelModalComponent extends SimpleModalComponent<massUploadExcelModal, any> implements massUploadExcelModal, OnInit {
 
-    modalData: any;  // Add this property to the class
+    modalData: any;
     selectedFiles: any = [];
     errorMessage: string = '';
     showCard: boolean = false; 
     productDetail: any[] = [];
-
-    productCodeDetail = [];
+    productCodeDetail: any = [];
+    productCounts: any ;
+    isLoadingUploads: boolean = false;
 
     massTemplate: string = `
-  <div class="drag-drop-container">
-    <i class="fal fa-file"></i>
-    <span>Drag & drop files here or <em>browse</em></span>
-    <span>.xlsx only, 10 MB per file</span>
-  </div>
-`;
+    <div class="drag-drop-container">
+        <i class="fal fa-file"></i>
+        <span>Drag & drop files here or <em>browse</em></span>
+        <span>.xlsx only, 10 MB per file</span>
+    </div>
+    `;
 
     constructor(
         private productManagementService : ProductManagementService,
@@ -49,39 +51,39 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
         this.errorMessage = '';
 
         if (this.selectedFiles.length >= 1) {
-          this.errorMessage = 'You can upload only one file at a time.';
-          setTimeout(() => {
-            this.errorMessage = '';
-          }, 3000);
-          return;
+            this.errorMessage = 'You can upload only one file at a time.';
+            setTimeout(() => {
+                this.errorMessage = '';
+            }, 3000);
+            return;
         }
-      
+
         for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          const fileName = file.name;
-          const fileSize = file.size;
-          const fileExtension = fileName.split('.').pop()?.toLowerCase();
-          if (fileSize > maxSize) {
-            this.errorMessage = `${fileName} is too large! Please upload a file up to 10 MB.`;
-            setTimeout(() => {
-              this.errorMessage = '';
-            }, 3000);
-            return;
-          }
-          if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-            this.errorMessage = `Only ${allowedExtensions.join(', ')} files are allowed to be uploaded.`;
-            setTimeout(() => {
-              this.errorMessage = ''; 
-            }, 3000);
-            return;
-          }
-          validFiles.push(file);
+            const file = files[i];
+            const fileName = file.name;
+            const fileSize = file.size;
+            const fileExtension = fileName.split('.').pop()?.toLowerCase();
+            if (fileSize > maxSize) {
+                this.errorMessage = `${fileName} is too large! Please upload a file up to 10 MB.`;
+                setTimeout(() => {
+                    this.errorMessage = '';
+                }, 3000);
+                return;
+            }
+            if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+                this.errorMessage = `Only ${allowedExtensions.join(', ')} files are allowed to be uploaded.`;
+                setTimeout(() => {
+                    this.errorMessage = '';
+                }, 3000);
+                return;
+            }
+            validFiles.push(file);
         }
 
         if (validFiles.length > 0) {
-          this.selectedFiles = validFiles;
+            this.selectedFiles = validFiles;
         }
-      }
+    }
       
     transformProductDetail() {
         this.productDetail = [
@@ -102,24 +104,35 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
 
     onButtonClicked(event) {
         this.result = { event , sellectedFiles: this.selectedFiles };
-        console.log(this.selectedFiles);
-        // this.close();
         const uploadParams = new FormData();
         console.log(event , this.selectedFiles);
         if (event === 'Upload') {           
             let sellectedFiles =  this.selectedFiles;
             uploadParams.append('file', sellectedFiles[0]);
+            this.isLoadingUploads = true;
             this.productManagementService.uploadbulkProducts(uploadParams).subscribe((response) => {
-                console.log(response);
+                this.isLoadingUploads = false;
                 if (!response.hasError) {
                     this.productCodeDetail = response.data;
+                    this.productCounts = response.counts;
+                    this.modalData.btnLabel[0].label = 'Back';
+                    this.modalData.btnLabel[1].label = 'Done';
                     this.transformProductDetail();
                     this.showCard = !this.showCard;
-                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
                 } else {
-                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                    this.errorMessage = response.msg;
+                    setTimeout(() => {
+                      this.errorMessage = '';
+                    }, 3000);
                 }
             }); 
+        }  else if (event === 'Back') {
+            this.showCard = !this.showCard;
+            this.selectedFiles = [];
+            this.modalData.btnLabel[0].label = 'Cancel';
+            this.modalData.btnLabel[1].label = 'Upload';
+        } else {
+            this.close();
         }
     }
     convertFileSizes(size: any) {

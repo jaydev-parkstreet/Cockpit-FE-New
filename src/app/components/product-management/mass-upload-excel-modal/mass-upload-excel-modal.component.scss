@@ -1,9 +1,19 @@
 @import '../../../scss/variables/typography';
 @import '../../../scss/variables/colors';
+@import '../../../scss/mixin/mixin';
 .modal-content {
     width: 671px;
     height:auto;
-
+    .upload-spinner {
+        height: 320px;
+        background: #dfe3e8;
+    }
+    .uploadScroll {
+        height: 320px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        @include new-scrollbar;
+    }
     .modal-footer {
         text-decoration: none;
         border: none;

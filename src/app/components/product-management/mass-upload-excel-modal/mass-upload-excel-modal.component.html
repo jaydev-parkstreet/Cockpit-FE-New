@@ -4,12 +4,13 @@
         <div class="header-title">{{ modalData.title }}</div>
         <i class="fal fa-times modal-dismiss" (click)="close()"></i>
     </div>
-    <div class="typography-body-black-regular modal-body-container u-pg-py-3 u-pg-px-2" *ngIf="!showCard">
+    <div class="typography-body-black-regular modal-body-container u-pg-pt-3 u-pg-px-2" *ngIf="!showCard">
         <div class="upload-container">
             <div class="typography-h6-black-bold u-pg-mt-2" [innerHTML]="modalData.modalBodyTitle"></div>
             <div class="typography-body-black-regular u-pg-mt-2" [innerHTML]="modalData.modalBodyText"></div>
             
             <app-psi-upload-files
+                *ngIf='!isLoadingUploads'
                 [selectedFiles]="selectedFiles"
                 (changeFileUpload)="onFileChange($event)"
                 [fileSizeMessage]="massTemplate"
@@ -21,14 +22,29 @@
 
         </div>
     </div>
+    <div *ngIf='isLoadingUploads' class="upload-spinner u-pg-py-3 u-pg-mx-2 text-center u-flex-center u-flex-column">
+        <i class="fas fa-spinner fa-spin fa-3x fa-fw"></i>
+        <span class="typography-body-black-bold u-pg-mt-1">File is uploading may take a few minutes.</span>
+      </div>
     <div class="typography-body-black-regular modal-body-container u-pg-py-3 u-pg-px-2" *ngIf="showCard">
-        <div class="upload-container">
-            <div class="typography-h6-black-bold" [innerHTML]="modalData.successLabelText"></div>
-            <div class="typography-body-black-regular" [innerHTML]="modalData.errorLabelText"></div>
+        <div class="upload-container u-pg-pb-2">
+            <div class="typography-h6-black-bold u-pg-mt-2">Review Errors</div>
+            <div class="u-flex u-pg-mt-2 u-justify-between">
+                <div>
+                    <span class="typography-body-success-bold" [innerHTML]="modalData.successLabelText"></span>
+                    <span> {{productCounts.success}}</span>
+                </div>
+                <div>
+                    <span class="typography-body-error-bold" [innerHTML]="modalData.errorLabelText"></span>
+                    <span> {{productCounts.skip}}</span>
+                </div>
+            </div>
+            <div class="typography-body-black-regular u-pg-mt-2">If you would like to upload more SKUs press the “Back” button.</div>
         </div>
-        <app-product-summary-dimensions-card 
-            [rows]="productDetail">
-        </app-product-summary-dimensions-card>
+        <app-table-card
+            [rows]="productDetail"
+            [cardClass]="'uploadScroll u-pg-py-2 u-pg-pl-2'">
+        </app-table-card>
     </div>
     <div class="modal-footer footer w-100">
         <div *ngFor="let btn of modalData.btnLabel">

@@ -13,7 +13,7 @@ import { PsDefaultLinkComponent } from './components/ps-default-link/ps-default-
 import { PsiActionButtonsComponent } from './components/psi-action-buttons/psi-action-buttons.component';
 import { CmpHeaderWidgetComponent } from './components/cmp-header-widget/cmp-header-widget.component';
 import { CardLayoutDetailsComponent } from './components/card-layout-details/card-layout-details.component';
-import { ProductSummaryDimensionsCardComponent } from './components/product-summary-dimensions-card/product-summary-dimensions-card.component';
+import { TableCardComponent } from './components/table-card/table-card.component';
 import { CmpTabGroupComponent } from './components/cmp-tab-group/cmp-tab-group.component';
 import { SummaryGridComponent } from './components/summary-grid/summary-grid.component';
 import { AgGridModule } from 'ag-grid-angular';
@@ -35,7 +35,7 @@ import { NoRecordComponent } from './components/no-record/no-record.component';
     PsiActionButtonsComponent,
     CmpHeaderWidgetComponent,
     CardLayoutDetailsComponent,
-    ProductSummaryDimensionsCardComponent,
+    TableCardComponent,
     CmpTabGroupComponent,
     SummaryGridComponent,
     CmpAttachmentModalComponent,
@@ -62,7 +62,7 @@ import { NoRecordComponent } from './components/no-record/no-record.component';
     PsiActionButtonsComponent,
     CmpHeaderWidgetComponent,
     CardLayoutDetailsComponent,
-    ProductSummaryDimensionsCardComponent,
+    TableCardComponent,
     CmpTabGroupComponent,
     SummaryGridComponent,
     CmpButtonComponent,
