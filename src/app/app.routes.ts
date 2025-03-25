@@ -27,6 +27,7 @@ const AppRoutes = {
     },
     COMMON: {
         NOTES: 'notes',
+        MULTIPLE_NOTES_API: 'store-multiple-notes',
         NOTES_CHANGE_PERMISSION: 'notes/change-permission',
         ATTACHMENTS: 'files',
         ATTACHMENTS_PERMISSION: 'files/change-permission',

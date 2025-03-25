@@ -4,6 +4,8 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { environment } from 'src/environments/environment';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
+import { ProductManagementService } from '../../product-management/product-management.service';
+import { CmpNotesModalComponent } from 'src/app/shared/components/cmp-notes-modal/cmp-notes-modal.component';
 export interface Note {
   id: number;
   first_name: string;
@@ -31,16 +33,19 @@ export class NotesTabComponent implements OnInit {
     isLoadingNotes: boolean;
     fileServer: string;
     updateNotePermissionLoading: boolean = false;
+    filterList: any = {};
 
     constructor(
       private commonService: CommonService,
       private commonBackendService: CommonBackendService,
       private simpleModalService: SimpleModalService,
+      private productManagementService: ProductManagementService,
     ) {}
   
     ngOnInit(): void {
       this.fileServer = environment.fileServer;
       this.loadNotes();
+      this.getDropdown(); 
     }
 
   /**
@@ -68,9 +73,68 @@ export class NotesTabComponent implements OnInit {
         }
       );
     }
-  
+
+    /**
+    * Retrieves the list of dropdown items associated with the given client ID.
+    * 
+    * @returns An Observable containing the data of dropdown items.
+    * @author psi-enhancement
+    */
+    async getDropdown() {
+        const token = localStorage.getItem('authToken');
+        try {
+            const response: any = await this.productManagementService.getDropdown(token);
+            this.filterList = response.data;
+        }
+        catch (error) {
+            console.error("Error fetching summary:", error);
+        }
+    }
+
+    /**
+    * @createdDate 24-03-2025
+    * @author PSI-Enhancement
+    */
     addNote() {
-      console.log('Add Note clicked');
+        this.showNotesModal([this.entity], this.notes, false);
+    }
+
+     /**
+     * Function to open add notes popup.
+     *
+     * @createdDate 24-03-2025
+     * @author PSI-Enhancement
+     * @param number id
+     * @param array notes
+     * @param boolean multiple
+     */
+    showNotesModal(entityIds, notes, multiple) {
+        var noteDetails = { notes: [] };
+        noteDetails.notes = notes;
+        let modalData = {
+            notesPermission: this.filterList.entity_permissions,
+            cancelAction: { label: 'Cancel' },
+            saveAction: { label: 'Save' },
+            filtersList: this.filterList,
+            permissions: this.permissions,
+            entityIds: entityIds,
+            modalTitle: 'NOTES',
+            multiple,
+            newToast: true,
+            showDismissIcon: true,
+            showErrorInNewToast: true,
+            newToastMsg: 'Failed',
+            latestDesign: true,
+            noteDetails,
+            showLine: true,
+            noDataMessage: 'No Notes Found',
+        }
+        this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
+        .subscribe((result) => {
+            if (result !== undefined) {
+                this.loadNotes();
+            }
+        });
     }
 
     /**
