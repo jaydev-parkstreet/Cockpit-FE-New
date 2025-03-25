@@ -40,9 +40,13 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
     }
 
     ngOnInit(): void {
-        console.log(this);
     }
 
+    /**
+     *Function for on change file uploads.
+     * @author PSI-Enhancements
+     * @param event
+     */
     onFileChange(event: any): void {
         const files: FileList = event.target.files;
         const allowedExtensions = ['xlsx'];
@@ -84,7 +88,11 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
             this.selectedFiles = validFiles;
         }
     }
-      
+    
+    /**
+     *Function to map product details.
+     * @author PSI-Enhancements
+     */
     transformProductDetail() {
         this.productDetail = [
             {
@@ -102,10 +110,14 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
         ];
     }
 
+    /**
+     *Function to on button click event .
+     * @author PSI-Enhancements
+     * @param event
+     */
     onButtonClicked(event) {
         this.result = { event , sellectedFiles: this.selectedFiles };
         const uploadParams = new FormData();
-        console.log(event , this.selectedFiles);
         if (event === 'Upload') {           
             let sellectedFiles =  this.selectedFiles;
             uploadParams.append('file', sellectedFiles[0]);
@@ -135,6 +147,12 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
             this.close();
         }
     }
+
+    /**
+     *Function to convert required file size .
+     * @author PSI-Enhancements
+     * @param size
+     */
     convertFileSizes(size: any) {
         if (size >= 1024 * 1024) {
             return ((size / (1024 * 1024)).toFixed(2) + ' MB');
@@ -143,6 +161,11 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
         }
     }
 
+    /**
+     *Function to convert  file type .
+     * @author PSI-Enhancements
+     * @param fileType
+     */
     convertFileType(fileType: any) {
         const parts = fileType.split('/');
         return parts[1];

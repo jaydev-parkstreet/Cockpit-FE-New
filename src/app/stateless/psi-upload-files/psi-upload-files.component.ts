@@ -18,9 +18,7 @@ export class PsiUploadFilesComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-    console.log(this.fileSizeMessage);
-    
+  ngOnInit(): void {  
   }
 
   onFileChange(event: any): void {

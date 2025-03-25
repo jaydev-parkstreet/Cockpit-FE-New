@@ -521,11 +521,15 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     });
   }
 
+  /**
+   *Function to open upload mass bulk product popup.
+   * @author PSI-Enhancements
+   */ 
+  openMassUploadExcelPopup() {
+    const modalData = this.productManagementService.getMassExcelModalData();
+    this.simpleModalService.addModal(MassUploadExcelModalComponent, { modalData })
+  }
 
-    openMassUploadExcelPopup() {
-        const modalData = this.productManagementService.getMassExcelModalData();
-        this.simpleModalService.addModal(MassUploadExcelModalComponent , { modalData })
-    }
   /**
    * Navigates to the product edit page based on the current route if a product ID is present.
    *

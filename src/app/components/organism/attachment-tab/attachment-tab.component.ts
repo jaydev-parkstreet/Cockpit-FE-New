@@ -65,7 +65,6 @@ export class AttachmentTabComponent implements OnInit {
 
     async getDropdown(){
       const token = localStorage.getItem('authToken');
-      console.log(token);
       try {
         const response:any = await this.productManagementService.getDropdown(token);
         this.filterList = response.data;

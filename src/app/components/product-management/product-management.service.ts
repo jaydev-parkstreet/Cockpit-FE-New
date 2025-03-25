@@ -20,7 +20,6 @@ export class ProductManagementService {
 
     /**
       * Function to get top bar config.
-      * @createdDate 19-09-2024
       * @author PSI-Enhancements
       */
     getSummaryTopBarConfig() {
@@ -138,7 +137,7 @@ export class ProductManagementService {
      * Renders a checkbox in the grid column, checked or unchecked depending on the row data.
      * @param {object} params
      * @returns {string}
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     renderCheckbox(params) {
         let checkboxSelection = '';
@@ -172,7 +171,7 @@ export class ProductManagementService {
      *
      * @param {object} params
      * @returns {string}
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     renderDash(params) {
         if (params.value) {
@@ -187,7 +186,7 @@ export class ProductManagementService {
      *
      * @param params
      * @returns {string}
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     renderId(params) {
         if (params.value) {
@@ -201,7 +200,7 @@ export class ProductManagementService {
      * Returns the status of the product with an associated color.
      * @param {Object} params
      * @returns {String}
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     renderStatus(params) {
       const statusLabels = {
@@ -247,7 +246,7 @@ export class ProductManagementService {
      * @param permission
      * @param isActive
      * @returns {object} The config object for top panel.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getTopPanelConfig(permission, isActive = false) {
         return {
@@ -395,7 +394,7 @@ export class ProductManagementService {
      * @param placeholdertext
      * @param name
      * @returns An object
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getMultiSelectConfig(placeholdertext, name = 'name') {
         return {
@@ -422,7 +421,7 @@ export class ProductManagementService {
      * @param values
      * @param name
      * @returns An array of objects suitable for use in a dropdown
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     formatDropdownValue(values, name = '') {
         let dropdown = [];
@@ -442,7 +441,7 @@ export class ProductManagementService {
      * @param summaryData
      * @param token
      * @returns A Promise containing the summary data.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getSummary(summaryData: any, token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -454,7 +453,7 @@ export class ProductManagementService {
      * 
      * @param token
      * @returns An Observable containing the data of dropdown items.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getDropdown(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -466,7 +465,7 @@ export class ProductManagementService {
      * 
      * @param clientId
      * @returns An Observable containing the data of sub-brand products.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getSubBrandProducts(clientId: string, brandID: string) {
         const token = localStorage.getItem('authToken');
@@ -484,7 +483,7 @@ export class ProductManagementService {
      *
      * @param id The ID of the product.
      * @returns An Observable containing the product details from the server.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getDetails(id) {
         return this.http
@@ -496,7 +495,7 @@ export class ProductManagementService {
      * Retrieves the permission settings for the product tool.
      *
      * @returns A promise that resolves to the permission data from the server.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getPermission() {
         return this.http
@@ -508,7 +507,7 @@ export class ProductManagementService {
      * @param productId
      * @param isActive
      * @returns Observable containing the response from the server.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getActivateAPI(productId: string[], isActive) {
         const headers = new HttpHeaders({
@@ -529,7 +528,7 @@ export class ProductManagementService {
      * Makes an API call to export the given products to Excel.
      * @param obj
      * @returns An observable containing the HTTP response from the server.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     excelExport(obj) {
         return this.http
@@ -554,6 +553,10 @@ export class ProductManagementService {
         });
     }
 
+    /**
+     *Function to get config for mass bulk upload.
+     * @author PSI-Enhancements
+     */   
     getMassExcelModalData() {
         return {
             titleIcon: 'fas fa-layer-plus',
@@ -561,7 +564,6 @@ export class ProductManagementService {
             modalBodyTitle: 'Upload Excel File',
             requestObj: {},
             uploadFileKey: 'file',
-            // apiRoute: Routes.available.mobile_product_management_system_upload_bulk_product,
             modalBodyText: 'Upload bulk Products.',
             successLabelText: 'Allocated SKUs:',
             errorLabelText: 'Rows with Errors:',
@@ -572,7 +574,11 @@ export class ProductManagementService {
         };
     }
 
-
+    /**
+     *Function to upload mass bulk product.
+     * @author PSI-Enhancements
+     * @param obj
+     */   
     uploadbulkProducts(obj) { 
         return this.http
         .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.UPLOAD_BULK_PRODUCT, obj)
