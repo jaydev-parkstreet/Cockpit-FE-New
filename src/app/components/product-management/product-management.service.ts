@@ -211,13 +211,9 @@ export class ProductManagementService {
         'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium text-ellipsis',
         'Request Received': 'u-bg-neutral-light text-ellipsis',
       };
-      
-      let inActiveIcon = params.data && params.data.is_active === 0 
-        ? `<i class="fas fa-ban u-ml2 neutral-light icon-vertical-middle"></i>` 
-        : '';
   
       if (statusLabels[params.value]) {
-        return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>` + inActiveIcon;
+        return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>`;
       }
       return '--';
     }
@@ -263,31 +259,31 @@ export class ProductManagementService {
                     key: 'clients',
                     label: 'Supplier',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-4 noleftpadding',
                     setting: this.getMultiSelectConfig('Select Supplier')
                 }, {
                     key: 'product_state',
                     label: 'Product Status',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-4',
                     setting: this.getMultiSelectConfig('Select Status')
                 }, {
                     key: 'product_type',
                     label: 'Product Type',
-                    ype: 'multiselect-search',
+                    type: 'multiselect-search',
                     divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Type')
                 }, {
                     key: 'product_sub_type',
                     label: 'Product Sub-Type',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-4 noleftpadding',
                     setting: this.getMultiSelectConfig('Select Sub-Type')
                 }, {
                     key: 'source',
                     label: 'Source',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-4',
                     setting: this.getMultiSelectConfig('Select Source')
                 }, {
                     key: 'crm',
@@ -299,14 +295,14 @@ export class ProductManagementService {
                     key: 'brands',
                     label: 'Brand',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-4 noleftpadding',
                     showSelectAll: false,
                     setting: this.getMultiSelectConfigserver(environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.BRAND_SEARCH ,'Select Brand')
                 }, {
                     key: 'sub-brands',
                     label: 'Sub-Brand',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-4',
                     showSelectAll: false,
                     setting: this.getMultiSelectConfigserver(environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_SEARCH ,'Select Sub-Brand')
                 }, {
@@ -320,9 +316,11 @@ export class ProductManagementService {
                     key: 'organic',
                     label: 'Organic',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding', 
+                    divClass: 'col-4 noleftpadding', 
                     setting: this.getMultiSelectConfig('Select Organic')
-                }
+                },
+                { type: 'checkbox', name: 'is_active', label: 'Inactive Only', placeholder: 'Inactive Only', divClass: 'col-4' },
+                { type: 'checkbox', name: 'is_rejected', label: 'Rejected Only', placeholder: 'Rejected Only', divClass: 'col-4' }
             ],
         };
     }
@@ -355,6 +353,7 @@ export class ProductManagementService {
                     type: 'icon',
                     iconClass: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
                     showTooltip: true,
+                    isActive,
                     tooltipText: isActive ? 'Activate' : 'Deactivate',
                 }, {
                     key: 'edit',

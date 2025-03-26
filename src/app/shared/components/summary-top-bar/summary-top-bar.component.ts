@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { CmpInputDropdownComponent } from '../cmp-input-dropdown/cmp-input-dropdown.component';
+import { CmpCheckboxComponent } from '../cmp-checkbox/cmp-checkbox.component';
 
 @Component({
   selector: 'app-summary-top-bar',
@@ -22,10 +23,12 @@ export class SummaryTopBarComponent implements OnInit {
   tooltipText: any;
   // isExpandFilter = false;
   dropdown1Label = 'Product Status';
-  selectedFilters: { [key: string]: any[] } = {}
+  selectedFilters: { [key: string]: any } = {}
   isAllItemsSelected: boolean = false;
   isIndeterminate: boolean = false;
   @ViewChildren(CmpInputDropdownComponent) dropdowns: QueryList<CmpInputDropdownComponent>;
+  @ViewChildren(CmpCheckboxComponent) checkBoxes: QueryList<CmpCheckboxComponent>;
+  checkedItems: any = {};
   
   constructor(private router: Router) { }
 
@@ -42,6 +45,9 @@ export class SummaryTopBarComponent implements OnInit {
     this.isAllItemsSelected = value.length === this.filterList[key]?.length; 
     this.isIndeterminate = value.length > 0 && value.length < this.filterList[key]?.length; 
   }
+  onCheckedInput(key: any, value: any) {
+    this.selectedFilters[key] = value === true ? 1 : 0;
+  }
 
   applyFilterChanges() {
     this.applyFilters.emit(this.selectedFilters);
@@ -50,7 +56,7 @@ export class SummaryTopBarComponent implements OnInit {
   resetFilterChanges() {  
     this.selectedFilters = {};
     this.isAllItemsSelected = false;
-    this.isIndeterminate = false; 
+    this.isIndeterminate = false;
     if (this.config.allowSingleSelect) {
       this.selectedFilters = {}; 
     }
