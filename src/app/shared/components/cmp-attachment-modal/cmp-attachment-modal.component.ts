@@ -85,6 +85,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     }
     this.selectedFiles = validFiles;
     this.selectedFileCount = this.selectedFiles.length;
+    event.target.value = '';
   }
 
   /**
