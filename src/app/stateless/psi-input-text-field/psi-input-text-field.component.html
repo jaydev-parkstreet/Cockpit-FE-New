@@ -5,7 +5,7 @@
 <div [ngClass]="{'disabled' : field.disabled}">
     <input *ngIf="field?.type == 'text'"  class="w-100"
     [ngClass]="validationClasses"
-    [value]="form.value[field.name]"
+    [value]="valueEntered"
     [type]="field.type" [id]="field.name" [placeholder]="field.placeholder"
     [required]="field.required" (blur)="onValueChange($event)"/>
 </div>
