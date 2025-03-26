@@ -7,55 +7,54 @@ import { FilterListResolver } from './resolver/filter-list.resolver';
 import { PermissionResolver } from 'src/app/components/product-management/resolver/permission-resolver';
 
 const routes: Routes = [
-  {
-    path: '',
-    resolve: {
-      filterList: FilterListResolver,  
-      permissions: PermissionResolver  
-    },
-    children: [
-      {
+    {
         path: '',
-        component: ProductManagementComponent
-      },
-      {
-        path: 'add',
-        component: ProductAddComponent,
         resolve: {
-          filterList: FilterListResolver
-        }
-      },
-      {
-        path: ':id',
+            filterList: FilterListResolver,
+            permissions: PermissionResolver
+        },
         children: [
-          {
-            path: '',
-            component: ProductManagementDetailsComponent,
-          },
-          {
-            path: 'edit',
-            component: ProductAddComponent,
-            resolve: {
-              filterList: FilterListResolver
+            {
+                path: '',
+                component: ProductManagementComponent
+            },
+            {
+                path: 'add',
+                component: ProductAddComponent,
+                resolve: {
+                    filterList: FilterListResolver
+                }
+            },
+            {
+                path: ':id',
+                children: [
+                    {
+                        path: '',
+                        component: ProductManagementDetailsComponent,
+                    },
+                    {
+                        path: 'edit',
+                        component: ProductAddComponent,
+                        resolve: {
+                            filterList: FilterListResolver
+                        }
+                    },
+                    {
+                        path: 'clone',
+                        component: ProductAddComponent,
+                        data: { isDuplicate: true },
+                        resolve: {
+                            filterList: FilterListResolver
+                        }
+                    }
+                ]
             }
-          },
-          {
-            path: 'clone',
-            component: ProductAddComponent,
-            data: { isDuplicate: true },
-            resolve: {
-              filterList: FilterListResolver  
-            }
-          }
         ]
-      }
-    ]
-  }
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],  
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
-export class ProductManagementRoutingModule {}
-
+export class ProductManagementRoutingModule { }

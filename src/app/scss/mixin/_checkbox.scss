@@ -4,9 +4,9 @@
 
 @mixin custom-checkbox {
     display: flex;
-    justify-content: center;    
+    justify-content: center;
 }
-@mixin disbaled-checkbox {
+@mixin disabled-checkbox {
     cursor: not-allowed;
     opacity: 0.5;
 }
@@ -40,6 +40,7 @@
 
 @mixin checkmark {
     position: relative;
+    display: inline-block;
     top: 1px;
     left: 0;
     height: 16px;
@@ -56,26 +57,24 @@
 @mixin checkmark-after {
     content: "";
     position: absolute;
-    display: none;
+    display: block;
     left: 5px;
-    top: 2px;
+    top: 0px;
     width: 4px;
-    height: 8px;
+    height: 10px;
     border: solid $colors-neutral-white;
-    border-width: 0 1px 1px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
+    border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
 
-@mixin  check-all-checkmark-after {
-    left: 4px;
-    top: 7px;
-    width: 6px;
-    height: 1px;
-    border: solid $colors-neutral-white;
-    border-width: 0 1px 1px 0;
-    -webkit-transform: none;
-    -ms-transform: none;
-    transform: none;
+@mixin check-all-checkmark-after {
+    content: "";
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 2px;
+    background-color: $colors-neutral-white;
+    transform: translate(-50%, -50%);
 }

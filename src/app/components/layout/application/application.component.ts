@@ -2,16 +2,16 @@ import { Component, OnInit, ViewChild, AfterViewInit, Input } from '@angular/cor
 import { MainHeaderComponent } from '../main-header/main-header.component';
 
 @Component({
-  selector: 'app-application',
-  templateUrl: './application.component.html',
-  styleUrls: ['./application.component.scss']
+    selector: 'app-application',
+    templateUrl: './application.component.html',
+    styleUrls: ['./application.component.scss']
 })
 export class ApplicationComponent implements OnInit {
-  @ViewChild('mainHeader') mainHeader !: MainHeaderComponent;
+    @ViewChild('mainHeader') mainHeader !: MainHeaderComponent;
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
 }
