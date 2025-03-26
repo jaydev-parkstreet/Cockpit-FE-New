@@ -52,6 +52,11 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     this.filetype_dropdown = this.commonService.getSingleSelectDropdownConfig('Select file type', true);
   }
 
+ /**
+ *Function to file validations.
+ * @author PSI-Enhancements
+ * @param event
+ */
   onFileChange(event: any) {
     const files: FileList = event.target.files;
     const allowedExtensions = ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'];
@@ -82,13 +87,11 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     this.selectedFileCount = this.selectedFiles.length;
   }
 
-  deleteFile(index: number) {
-    if (confirm('Are you sure you want to remove this file?')) {
-      this.selectedFiles.splice(index, 1);
-      this.selectedFileCount = this.selectedFiles.length;
-    }
-  }
-
+  /**
+  *Function to change the file size format.
+  * @author PSI-Enhancements
+  * @param number
+  */
   convertFileSizes(size: any) {
     if (size >= 1024 * 1024) {
       return ((size / (1024 * 1024)).toFixed(2) + ' MB');
@@ -97,24 +100,48 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     }
   }
 
+  /**
+  *Function to change the file name format.
+  * @author PSI-Enhancements
+  * @param string
+  */
   convertFileType(fileType: any) {
     const parts = fileType.split('/');
     return parts[1];
   }
 
+  /**
+  *Function to remove extension from file name.
+  * @author PSI-Enhancements
+  * @param string
+  */
   removeExtensionFromFilename(filename: any) {
     const parts = filename.split('.');
     return parts[0];
   }
 
+  /**
+  *Function to get the visibility dropdown value.
+  * @author PSI-Enhancements
+  * @param obj
+  */
   getVisibilityDropdownValue(value: any) {
     this.permission_id = value[0].id;
   }
 
+  /**
+  *Function to get the file type dropdown value.
+  * @author PSI-Enhancements
+  * @param obj
+  */
   getFileTypeDropdownValue(value: any) {
     this.kindid = value[0].id;
   }
 
+  /**
+  *Function to upload attachment.
+  * @author PSI-Enhancements
+  */
   uploadAttachments() {
     this.selectedFileCount = this.selectedFiles.length;
     const uploadParams = new FormData();
@@ -139,12 +166,23 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     );
   }
 
+  /**
+  *Function to close modal.
+  * @author PSI-Enhancements
+  * @param number
+  */
   closeModal(mode: number) {
     this.result = mode === 1
       ? (this.modalData?.attachmentDetails?.data?.length || 1)
       : this.modalData?.attachmentDetails?.data?.length;
     this.close();
   }
+
+  /**
+  *Function to delete the attachment.
+  * @author PSI-Enhancements
+  * @param obj
+  */
   onDeleteClick(file: any) {
     let modalData;
 
@@ -176,6 +214,11 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
       });
   }
 
+  /**
+  *Function to change the attachment permission.
+  * @author PSI-Enhancements
+  * @param obj
+  */
   updateFilePermission(file: any) {
     if (file.isInternalUser === 0) {
       var permission_id = file.permission_id === this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_ME ? this.CONSTANTS.ENTITY_PERMISSIONS.PUBLIC_EVERYONE_ID : this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_ME;
@@ -200,6 +243,16 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
       );
   }
 
+  onFileDeleted(): void {
+    if (this.selectedFiles.length === 0) {
+      this.selectedFileCount = this.selectedFiles.length;
+    }
+  }
+
+  /**
+  *Function to update the state of submit button.
+  * @author PSI-Enhancements
+  */
   get isButtonDisabled(): boolean {
     return !this.selectedFileCount || this.selectedFileCount <= 0 || (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0) || !this.kindid;
   }
