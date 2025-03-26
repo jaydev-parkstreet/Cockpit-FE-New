@@ -66,7 +66,9 @@ export class ProductManagementDetailsComponent implements OnInit {
      */
     async getProductData(productId : string) {
         try {
+            this.spinner.show();
             await this.productManagementService.getDetails(productId).subscribe((res: any) => {
+                this.spinner.hide();
                 this.productDetails = res;
                 this.detailProduct = this.fieldsDetail(res);
                 this.productCodeDetail = this.getProductCodeDetails(res); 

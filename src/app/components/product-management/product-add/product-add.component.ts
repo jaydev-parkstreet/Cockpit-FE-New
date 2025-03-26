@@ -87,7 +87,9 @@ export class ProductAddComponent implements OnInit {
      * @author PSI-Enhancement
      */
     async getProductData (productId) {
+        this.spinner.show();
         this.productManagementService.getDetails(productId).subscribe((productData) => {
+            this.spinner.hide();
             this.renderConditionalFields(productData.prod_type, this.crudFiltersList, this.productForm);
             this.productId = productData.product_id;
             setTimeout(() => {
