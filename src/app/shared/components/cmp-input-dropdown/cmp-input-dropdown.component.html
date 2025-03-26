@@ -12,13 +12,7 @@
 
   <div class="dropdown-list" *ngIf="isOpen">
     <div *ngIf="showSearch" class="search-box position-relative d-flex u-align-center">
-      <input *ngIf="settings.serverSearch"
-        type="text"
-        class="form-control"
-        [(ngModel)]="searchText"
-        (input)="filterItems()"
-        placeholder="Search" />
-      <input *ngIf="!settings.serverSearch"
+      <input
         type="text"
         class="form-control"
         [(ngModel)]="searchText"

@@ -1,5 +1,8 @@
 import { ChangeDetectorRef, Component, EventEmitter, forwardRef, HostListener, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { InputDropdownService } from './input-dropdown.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 interface Item {
   id: number;
   name: string;
@@ -36,6 +39,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() required: boolean = false;
   @Input() isIndeterminate: boolean = false;
 
+  private searchSubject = new Subject<string>();
   isOpen: boolean = false;
   searchText: string = '';
   isAllSelected: boolean = false;
@@ -48,7 +52,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     selectAll: 'Select All',
     uncheckAll: 'Uncheck All'
   };
-  constructor() {}
+  constructor(private inputDropdownService: InputDropdownService) {}
 
   ngOnInit(): void {
     this.isOpen = false;
@@ -61,6 +65,9 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.updateFilteredItems(this.filteredItems);
     this.updateSelectAllState(this.filteredItems);
     this.originalItems = [...this.filteredItems];
+    this.searchSubject.pipe(debounceTime(300)).subscribe(searchText => {
+      this.fetchOptionsFromServer(searchText);
+    });
   }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -161,16 +168,28 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     return this.selectedItems.some(selectedItem => selectedItem.id === item.id);
   }
 
+  fetchOptionsFromServer(searchText: string): void {
+    if(searchText !== '') {
+      this.inputDropdownService.getOption(this.settings.apiUrl, searchText)
+        .subscribe(filteredItems => {
+          this.filteredItems = filteredItems.data;
+          this.hideList = this.filteredItems.length === 0;
+        });
+    }
+  }
+
   filterItems(): void {
     const searchTextLower = this.searchText.toLowerCase();
-    if (searchTextLower.trim().length === 0) {
-      this.filteredItems = [...this.originalItems];
-      this.hideList = false;
-      return;
+
+    if (this.settings.serverSearch) {
+      this.searchSubject.next(this.searchText);
+    } else {
+      this.filteredItems = searchTextLower.trim().length === 0
+        ? [...this.originalItems]
+        : this.originalItems.filter(item =>
+            item.name.toLowerCase().includes(searchTextLower)
+          );
     }
-    this.filteredItems = this.originalItems.filter((item: Item) =>
-      item.name.toLowerCase().includes(searchTextLower)
-    );
     this.hideList = this.filteredItems.length === 0;
   }
 
