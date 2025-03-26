@@ -4,7 +4,7 @@
 
 @mixin custom-checkbox {
     display: flex;
-    justify-content: center;    
+    justify-content: center;
 }
 @mixin disabled-checkbox {
     cursor: not-allowed;
@@ -75,6 +75,6 @@
     left: 50%;
     width: 8px;
     height: 2px;
-    background-color: white;
+    background-color: $colors-neutral-white;
     transform: translate(-50%, -50%);
 }

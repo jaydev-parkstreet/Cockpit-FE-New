@@ -5,97 +5,9 @@
 
 .modal-content {
     width: 480px;
-    // display: flex;
-    // flex-direction: column;
-    // margin: 20px auto;
-    // box-shadow: 0px 4px 8px 0px rgba(203, 203, 203, 0.15);
-    // border-radius: 0px;
-    // border: 0;
-    // .modal-header {
-    //     padding: 17px;
-    //     color: rgb(35, 35, 35);
-    //     font-size: 14px;
-    //     text-transform: uppercase;
-    //     box-shadow: 0px 2px 8px 0px rgba(205, 205, 205, 0.5);
-    //     display: flex;
-    //     align-items: center;
-        
-    //     .l-icn {
-    //         margin-top: 0px;
-    //         &:before {
-    //             font-size: 13px;
-    //         }
-    //     }
 
-    //     .header-title {
-    //         color: rgb(35, 35, 35);
-    //         font-size: 14px;
-    //         line-height: 14px;
-    //         font-family: $montserrat-regular;
-    //         text-transform: uppercase;
-    //         margin-left:10px;
-    //         margin-right: 5px;
-    //         width: 100% !important;
-    //     }
-
-    //     .fa-times{
-    //         float:right;
-    //         cursor: pointer;
-    //         font-size: 16px;
-    //         color: rgb(35, 35, 35);
-    //     }
-    // }
-    // .modalData.icon {
-    //     color: #e74536;
-    // }
-
-    // .popup-header,
-    // .popup-body {
-    //     color: #232323;
-    //     font-family: "Montserrat-Medium" !important;
-    //     font-size: 14px;
-    //     font-weight: 500;
-    //     display: flex;
-    //     justify-content: center;
-    //     flex-direction: column;
-    //     line-height: 1;
-    //     text-align: center;
-    //     padding: 16px 60px 0;
-
-    //     i {
-    //         font-size: 50px !important;
-    //         color: #e74536;
-    //         display: flex;
-    //         justify-content: center;
-    //         margin-bottom: 15px;
-    //         font-weight: 1000;
-
-    //     }
-
-    //     .fa-check-circle {
-    //         color: #AEDD77 !important;
-    //     }
-
-    //     .mt-5 {
-    //         margin-top: 25px;
-    //     }
-    // }
-
-    // .seperator {
-    //     margin-top: 16px;
-    //     height: 1px;
-    //     width: 74%;
-    //     border-top: 1px solid $colors-neutral-light;
-    // }
-    // .modal-footer {
-    //     border-top: 0 none;
-    //     justify-content: center;
-    //     gap: 16px;
-    //     padding: 16px 0 24px 0;
-    // }
     .modal-footer {
         border-top: 0 none;
-     
         gap: 16px;
         padding: 16px 0;
     }
