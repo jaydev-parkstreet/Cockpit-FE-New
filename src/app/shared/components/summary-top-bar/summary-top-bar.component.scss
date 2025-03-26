@@ -39,9 +39,4 @@
     i.action-icon:hover~.icon-tooltiptext {
         visibility: visible;
     }
-
-    .disabledToolTip {
-        background: $colors-neutral-black-v-high !important;
-        color: $colors-neutral-black !important;
-    }
 }
