@@ -9,11 +9,12 @@ import { environment } from 'src/environments/environment';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { CmpAttachmentModalComponent } from 'src/app/shared/components/cmp-attachment-modal/cmp-attachment-modal.component';
 import { ConfirmationModalComponent } from '../organism/confirmation-modal/confirmation-modal.component';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-management',
   templateUrl: './product-management.component.html',
-  styleUrls: ['./product-management.component.scss'],
+  styleUrls: ['./product-management.component.scss']
 })
 
 export class ProductManagementComponent implements OnInit {
@@ -47,6 +48,7 @@ export class ProductManagementComponent implements OnInit {
   FileSaver: any;
   downloading: boolean;
   filtermodal: any;
+  private timerSubscription!: Subscription;
 
   constructor(
     private productManagementService: ProductManagementService,
@@ -113,6 +115,16 @@ export class ProductManagementComponent implements OnInit {
           this.selectCheckBox(params);
       }else if (params.event.target.className === 'far fa-file show-attachment-modal' || params.event.target.className === 'fas fa-file show-attachment-modal') {
         this.openAttachmentListPopup(params.data.product_id);
+      } else if(params.colDef.cellRenderer === 'idRender' && (params.event.target.className === 're-sync')) {
+        this.productManagementService.syncOrder(params.value).subscribe( (response: any) => {
+          if(!response.hasError) {
+            params.data.ns_status = 2;
+            this.timerSubscription = interval(30000).subscribe(()=> {
+                this.getSyncStatusDetails(params);
+            });
+            this.gridOptions.api.redrawRows();
+          }
+        });
       }
     };
     this.gridOptions.onCellMouseOver = (params) => {
@@ -491,4 +503,31 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     );
     
   };
+
+    /**
+     * Fetches the synchronization status details for a specific product.
+     *
+     * @param {Object} params - The grid row parameters containing product data.
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
+    getSyncStatusDetails(params) {
+        this.productManagementService.getSyncStatusDetails(params.data.product_id).subscribe( (response: any) => {
+            if(!response.hasError && response.data) {
+                params.data.ns_status = response.data.status;
+                if(response.data.status === 1) {
+                    this.commonService.showToastV2Message(true, 'Sync Successful', null, 'success');
+                } else if(response.data.status === 3) {
+                    this.commonService.showToastV2Message(true, 'Sync Failed');
+                }
+                this.gridOptions.api.redrawRows();
+                this.timerSubscription.unsubscribe();
+            } else {
+                this.timerSubscription.unsubscribe();
+                params.data.ns_status = 3;
+                this.gridOptions.api.redrawRows();
+                this.commonService.showToastV2Message(true, 'Save Failed');
+            }
+        });
+    }
 }

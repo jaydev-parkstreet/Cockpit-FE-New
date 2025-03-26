@@ -408,13 +408,105 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-
             .add-tooltip {
                 display: none;
-
                 &.w-130 {
                     width: 130px;
                 }
+            }
+            
+            i.sync-failed,i.fa-clock {
+                padding-left: 4px;
+                cursor: pointer;
+                .tooltip-content_,.tooltip-content_pending_status {
+                    z-index: 9;
+                    top: 113%;
+                    width: fit-content;
+                    margin-left: -74px;
+                    transform: translate(0, -37%);
+                    color: $colors-neutral-black;
+                    background: $colors-neutral-white;
+                    font-weight: normal;
+                    position: absolute;
+                    display: none;
+                    border: 1px solid $colors-neutral-light;
+                    box-shadow: 0px 4px 8px 0px $colors-neutral-dark-t-15; 
+                    border-radius: 8px;
+                    padding: 8px;
+                    font-family: $montserrat-regular;
+                    font-size: 10px;
+                    .tooltip-text_ {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        .sync-heading {
+                            font-family: $montserrat-medium;
+                            font-size: 10px;
+                            margin-right: 4px;
+                        }
+                        .fail {
+                            color: $colors-neutral-black;
+                            font-family: $montserrat-medium;
+                            font-size: 10px;
+                            line-height: 10px;
+                            .fail-msg {
+                                color: $colors-v2-base-error;
+                                font-family: $montserrat-regular;
+                            }
+                            &:hover {
+                                cursor: default;
+                                text-decoration: none;
+                            }
+                        }
+                        .re-sync {
+                            height: 100%;
+                            font-family: $montserrat-regular;
+                            font-size: 10px;
+                            line-height: 0;
+                            cursor: pointer;
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+                    }
+                    i::before {
+                        content: '';
+                        position: absolute;
+                        width: 12px;
+                        height: 12px;
+                        left: 62px;
+                        top: 8%;
+                        transform: translate(100%, -70%) rotate(-45deg);
+                        background-color: $colors-neutral-white;
+                        border: 1px solid $colors-neutral-light;
+                        border-left: none;
+                        border-bottom: none;
+                    }
+                }
+                .tooltip-content_pending_status {
+                    margin-left: -45px;
+                    i::before {
+                        left: 32px;
+                    }
+                }
+            }
+            i.fa-clock {
+                .tooltip-content_ {
+                    top: 118%;
+                    margin-left: -52px;
+                    transform: translate(0, -37%);
+                    i::before {
+                        left: 40px;
+                        top: 7%;
+                    }
+                }
+            }
+            i.sync-failed:hover .tooltip-content_,
+            i.fa-clock:hover .tooltip-content_,
+            i.sync-failed:hover .tooltip-content_pending_status {
+                display: block;
+                position: absolute;
+                cursor: default;
             }
 
             .text-right {
