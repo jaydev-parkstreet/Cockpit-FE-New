@@ -65,7 +65,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.updateFilteredItems(this.filteredItems);
     this.updateSelectAllState(this.filteredItems);
     this.originalItems = [...this.filteredItems];
-    this.searchSubject.pipe(debounceTime(300)).subscribe(searchText => {
+    this.searchSubject.pipe(debounceTime(750)).subscribe(searchText => {
       this.fetchOptionsFromServer(searchText);
     });
   }
@@ -169,7 +169,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   }
 
   fetchOptionsFromServer(searchText: string): void {
-    if(searchText !== '') {
+    if(searchText.trim().length !== 0) {
       this.inputDropdownService.getOption(this.settings.apiUrl, searchText)
         .subscribe(filteredItems => {
           this.filteredItems = filteredItems.data;
@@ -182,7 +182,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     const searchTextLower = this.searchText.toLowerCase();
 
     if (this.settings.serverSearch) {
-      this.searchSubject.next(this.searchText);
+      this.searchSubject.next(searchTextLower);
     } else {
       this.filteredItems = searchTextLower.trim().length === 0
         ? [...this.originalItems]

@@ -292,21 +292,21 @@ export class ProductManagementService {
                     divClass: 'col-4 norightpadding', 
                     setting: this.getMultiSelectConfig('Select CRM')
                 }, {
-                    key: 'brands',
+                    key: 'brand',
                     label: 'Brand',
                     type: 'multiselect-search',
                     divClass: 'col-4 noleftpadding',
                     showSelectAll: false,
                     setting: this.getMultiSelectConfigserver(environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.BRAND_SEARCH ,'Select Brand')
                 }, {
-                    key: 'sub-brands',
+                    key: 'sub-brand',
                     label: 'Sub-Brand',
                     type: 'multiselect-search',
                     divClass: 'col-4',
                     showSelectAll: false,
                     setting: this.getMultiSelectConfigserver(environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_SEARCH ,'Select Sub-Brand')
                 }, {
-                    key: 'sub-brands-products',
+                    key: 'sub-brands-product',
                     label: 'Sub-Brand Product',
                     type: 'multiselect-search',
                     divClass: 'col-4 norightpadding',
