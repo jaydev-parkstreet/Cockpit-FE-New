@@ -1,58 +1,53 @@
 <div class="audit-tab u-mt1 u-bg-neutral-white u-neutral-black">
-    <ng-container *ngIf="!showLoader && auditList.length"> 
-        <div *ngFor="let row of auditList; let i = index; let last = last;" 
-            class="audit-row brder-bottom" 
+    <ng-container *ngIf="!showLoader && auditList.length">
+        <div *ngFor="let row of auditList; let i = index; let last = last;" class="audit-row brder-bottom"
             (click)="!row.hideArrow && !isExcludedType(row.type) && setActivePanel(i)"
             [ngClass]="{'u-pg-p-2': last, 'custom-padding': !last}">
             <div class="brder-bottom">
                 <div class="u-flex u-justify-between u-mb1">
-                    <div
-                        [ngClass]="{ 'u-pg-ml-3': isExcludedType(row.type) }"
+                    <div [ngClass]="{ 'u-pg-ml-3': isExcludedType(row.type) }"
                         class="col-left u-flex u-pg-g-1 u-align-center">
                         <span class="u-csr-ptr">
-                            <i 
-                                class="u-pg-mr-1 u-neutral-dark fa chevron-icon u-csr-ptr"
+                            <i class="u-pg-mr-1 u-neutral-dark fa chevron-icon u-csr-ptr"
                                 [ngClass]="row.show ? 'fa-chevron-up' : 'fa-chevron-down'"
                                 *ngIf="!row.hideArrow && !isExcludedType(row.type)">
                             </i>
-                            <a 
-                                target="_blank"
-                                class="typography-body-primary-medium u-link"
-                                [href]="row.profile_link"
+                            <a target="_blank" class="typography-body-primary-medium u-link" [href]="row.profile_link"
                                 [textContent]="row.user">
                             </a>
                         </span>
                         <h1 class="typography-body-black-regular u-pg-m-0 text-lowercase" [ngSwitch]="true">
                             <span *ngSwitchCase="row.type !== 'change status' && row.type !== 'emailed' && row.type !== 'receive' && !row.current_data.is_custom_tool && row.current_data.type !== 'entrant_nav'">
-                              {{ row.type }} this record
+                                {{ row.type }} this record
                             </span>
-                          
+
                             <span *ngSwitchCase="row.type === 'emailed'">
-                              {{ row.current_data.title }}
+                                {{ row.current_data.title }}
                             </span>
-                          
+
                             <span *ngSwitchCase="row.type === 'change status'">
-                              {{ row.current_data.status ? row.current_data.status : row.current_data.is_active_txt }} this record
+                                {{ row.current_data.status ? row.current_data.status : row.current_data.is_active_txt }}
+                                this record
                             </span>
-                          
+
                             <span *ngSwitchCase="row.type === 'receive'">
-                              {{ row.current_data.status }} this record
+                                {{ row.current_data.status }} this record
                             </span>
-                          
+
                             <span *ngSwitchCase="row.current_data.is_custom_tool">
-                              {{ row.description }}
+                                {{ row.description }}
                             </span>
-                          
+
                             <span *ngSwitchCase="row.current_data.type === 'entrant_nav' && row.type === 'archived'">
-                              {{ row.type }} this {{ row.current_data.competition_name }}
+                                {{ row.type }} this {{ row.current_data.competition_name }}
                             </span>
-                          
+
                             <span *ngSwitchCase="row.current_data.type === 'entrant_nav' && row.type === 'updated'">
-                              {{ row.type }} this {{ row.current_data.step_value }}
+                                {{ row.type }} this {{ row.current_data.step_value }}
                             </span>
-                          
+
                             <span *ngSwitchCase="row.current_data.type === 'entrant_nav' && row.type === 'created'">
-                              entered into {{ row.current_data.competition_name }}
+                                entered into {{ row.current_data.competition_name }}
                             </span>
                         </h1>
                     </div>
@@ -60,11 +55,9 @@
                         <span class="typography-body-dark-regular">{{row.date}}</span>
                     </div>
                 </div>
-                <div 
-                    *ngIf="row.show"
-                    class="audt-dtl">
-                    <app-ps-details
-                        [data]="row"
+                <div *ngIf="row.show" class="audt-dtl">
+                    <app-ps-details 
+                        [data]="row" 
                         [rowObjectKeysDetail]="rowObjectKeysDetail">
                     </app-ps-details>
                 </div>
@@ -74,9 +67,9 @@
     <div *ngIf="showLoader" class="u-pg-py-2 text-center">
         <i class="fas fa-spinner fa-spin fa-2x fa-fw"></i>
     </div>
-    <app-no-record
-        *ngIf="!showLoader && auditList.length === 0"
-        [iconClass] = "'far fa-surprise'"
-        [placeHolderText] = "'No Activity Found'">
+    <app-no-record 
+        *ngIf="!showLoader && auditList.length === 0" 
+        [iconClass]="'far fa-surprise'"
+        [placeHolderText]="'No Activity Found'">
     </app-no-record>
 </div>
