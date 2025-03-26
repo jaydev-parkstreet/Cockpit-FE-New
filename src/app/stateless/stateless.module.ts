@@ -10,24 +10,24 @@ import { PsDetailsComponent } from './ps-details/ps-details.component';
 
 
 @NgModule({
-  declarations: [
-    PsiAgGridComponent,
-    PsiPageColumnHeaderComponent,
-    PsiInputTextFieldComponent,
-    PsiCheckboxComponent,
-    PsiUploadFilesComponent,
-    PsDetailsComponent
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    PsiAgGridComponent,
-    PsiPageColumnHeaderComponent,
-    PsiInputTextFieldComponent,
-    PsiCheckboxComponent,
-    PsiUploadFilesComponent,
-    PsDetailsComponent
-  ]
+    declarations: [
+        PsiAgGridComponent,
+        PsiPageColumnHeaderComponent,
+        PsiInputTextFieldComponent,
+        PsiCheckboxComponent,
+        PsiUploadFilesComponent,
+        PsDetailsComponent
+    ],
+    imports: [
+        CommonModule
+    ],
+    exports: [
+        PsiAgGridComponent,
+        PsiPageColumnHeaderComponent,
+        PsiInputTextFieldComponent,
+        PsiCheckboxComponent,
+        PsiUploadFilesComponent,
+        PsDetailsComponent
+    ]
 })
 export class StatelessModule { }
