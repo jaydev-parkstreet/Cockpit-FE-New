@@ -183,7 +183,6 @@
                 font-family: $montserrat-regular;
                 font-size: 14px;
                 text-align: center;
-                justify-content: center;
             }
 
             .select-all {
@@ -239,7 +238,7 @@
                     margin-top: 2px;
                 }
                 &:hover {
-                    background: #fff2f1;
+                    background: $colors-v2-base-primary-v-low-t-05;
                 }
             }
 

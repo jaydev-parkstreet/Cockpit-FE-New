@@ -63,7 +63,8 @@ export class ProductManagementService {
             minWidth: 150,
             width: 150,
             field: 'product_id',
-            cellRenderer: 'idRender'
+            cellRenderer: 'idRender',
+            cellClass: 'tooltip-cell'
         },
         { headerName: 'Product Description', minWidth: 75, width: 193, field: 'description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Supplier', minWidth: 75, width: 115, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
@@ -189,11 +190,55 @@ export class ProductManagementService {
      * @author PSI-Enhancements
      */
     renderId(params) {
-        if (params.value) {
-            return `<a target="_blank" style="color: black;text-decoration: none;" onmouseover="this.style.textDecoration='underline'"
-                onmouseout="this.style.textDecoration='none'" href="product-management/${params.value}">${params.value}</a>`;
+        if (params.value === null || params.value === '---' || params.value === '-') {
+            return '--';
+        } else if (params.data && params.data.product_id) {
+            let fbStatusToolTip = '';
+            if (params.data.ns_status === 2) {
+                fbStatusToolTip = `
+                <i class="fas fa-clock sync-pending u-base-warning">
+                    <div class="tooltip-content_">
+                        <div class="tooltip-text_"><span class="sync-heading">Sync Status:</span> In Queue</div>
+                        <i></i>
+                    </div>
+                </i>`;
+            } else if (params.data.ns_status === 3 && params.data.status === "Pending") {
+                fbStatusToolTip = `
+                <i class="fas fa-exclamation-circle sync-failed u-base-error">
+                    <div class="tooltip-content_pending_status">
+                        <div class="tooltip-text_">
+                            <span class="fail">Sync Status:<span class="fail-msg"> Failed</span></span>
+                        </div>
+                        <i></i>
+                    </div>
+                </i>`;
+            }
+            else if (params.data.ns_status === 3 && params.data.status !== "Pending") {
+                fbStatusToolTip = `
+                <i class="fas fa-exclamation-circle sync-failed u-base-error">
+                    <div class="tooltip-content_">
+                        <div class="tooltip-text_ u-pg-g-1">
+                            <span class="fail">Sync Status:<span class="fail-msg"> Failed</span></span>
+                            <span class="re-sync">Re-Sync</span>
+                        </div>
+                        <i></i>
+                    </div>
+                </i>`;
+            }
+            return `
+                <div class="text-ellipsis">
+                    <a target="_blank" style="color: black; text-decoration: none;" 
+                        onmouseover="this.style.textDecoration='underline'"
+                        onmouseout="this.style.textDecoration='none'" 
+                        href="product-management/${params.value}">
+                        ${params.value}
+                    </a>
+                    ${fbStatusToolTip}
+                    <span class="add-tooltip">${params.value}</span>
+                </div>`;
+        } else {
+            return '<i class="fas fa-circle-notch fa-spin fa-2x fa-fw"></i>';
         }
-        return '-';
     }
 
     /**
@@ -583,6 +628,31 @@ export class ProductManagementService {
         return this.http
         .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.UPLOAD_BULK_PRODUCT, obj)
         .pipe(map((response: any) => response));
+    }
+
+    /**
+     * Syncs the product order with NS.
+     * @param productId
+     * @returns An Observable containing the response from the server.
+     * @author PSI-Enhancement
+     */
+    syncOrder(productId) {
+        let params = {
+            'productId' : productId
+        };
+        return this.http
+            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.NS_SYNC, params);
+    }
+
+    /**
+     * Fetches the sync status details for a product
+     * @param id
+     * @returns An observable containing the sync status details
+     * @author PSI-Enhancement
+     */
+    getSyncStatusDetails(id) {
+        return this.http
+          .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.NS_SYNC_STATUS + id);
     }
 
 }
