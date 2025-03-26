@@ -290,33 +290,38 @@ export class ProductManagementService {
                     divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Source')
                 }, {
+                    key: 'crm',
+                    label: 'CRM',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding', 
+                    setting: this.getMultiSelectConfig('Select CRM')
+                }, {
+                    key: 'brands',
+                    label: 'Brand',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    showSelectAll: false,
+                    setting: this.getMultiSelectConfigserver(environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.BRAND_SEARCH ,'Select Brand')
+                }, {
+                    key: 'sub-brands',
+                    label: 'Sub-Brand',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    showSelectAll: false,
+                    setting: this.getMultiSelectConfigserver(environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_SEARCH ,'Select Sub-Brand')
+                }, {
+                    key: 'sub-brands-products',
+                    label: 'Sub-Brand Product',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    showSelectAll: false,
+                    setting: this.getMultiSelectConfigserver(environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_PRODUCT_SEARCH ,'Select Sub-Brand Product')
+                }, {
                     key: 'organic',
                     label: 'Organic',
                     type: 'multiselect-search',
                     divClass: 'col-4 norightpadding', 
                     setting: this.getMultiSelectConfig('Select Organic')
-                }, {
-                    key: 'active_status',
-                    label: 'Active State',
-                    type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
-                    showSearch:false,
-                    showSelectAll: false,
-                    showCheckboxes: false,
-                    allowSingleSelect: true,
-                    setting: this.getMultiSelectConfig('Select State')
-                }, {
-                    key: 'bottles_per_case',
-                    label: 'Bottles Per Case',
-                    type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
-                    setting: this.getMultiSelectConfig('Select Bottles Per Case')
-                }, {
-                    key: 'container_sizes_filter',
-                    label: 'Container Size',
-                    type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
-                    setting: this.getMultiSelectConfig('Select Container Size')
                 }
             ],
         };
@@ -412,6 +417,27 @@ export class ProductManagementService {
             checkBoxes: true,
             buttonClasses: 'c-btn c-btn--secondary c-btn--full u-h3 ps-select',
             translationTexts: { buttonDefaultText: placeholdertext, searchPlaceholder: 'Search', noResultText: 'No results found' },
+        };
+    }
+
+    getMultiSelectConfigserver(apiurl, placeholdertext) {
+        return {
+            enableSearch: true,
+            showSelectAll: true,
+            serverSearch: true,
+            keyboardControls: true,
+            displayProp: 'name',
+            searchField: 'name',
+            apiUrl: apiurl,
+            showCheckAll: false,
+            apiKey: '',
+            scrollable: true,
+            clearSearchOnClose: true,
+            closeOnDeselect: false,
+            idProperty: 'id',
+            checkBoxes: true,
+            buttonClasses: 'c-btn c-btn--secondary c-btn--full u-h3 ps-select',
+            translationTexts: { buttonDefaultText: placeholdertext, searchPlaceholder: 'Search', noResultText: 'No results found' }
         };
     }
 
