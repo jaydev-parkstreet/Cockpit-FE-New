@@ -568,8 +568,8 @@ export class ProductManagementService {
             successLabelText: 'Allocated SKUs:',
             errorLabelText: 'Rows with Errors:',
             btnLabel: [
-                { type: 'Btn', label: 'Cancel', class: 'secondary' },
-                { type: 'Btn', label: 'Upload', class: 'primary' }
+                { type: 'Btn', label: 'Cancel', class: 'secondary', isDisable: false},
+                { type: 'Btn', label: 'Upload', class: 'primary' , isDisable: true}
             ]
         };
     }

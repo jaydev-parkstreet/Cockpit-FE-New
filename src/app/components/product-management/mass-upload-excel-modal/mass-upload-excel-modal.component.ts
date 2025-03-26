@@ -86,8 +86,19 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
 
         if (validFiles.length > 0) {
             this.selectedFiles = validFiles;
+            this.modalData.btnLabel[1].isDisable = false;
         }
     }
+
+    /**
+     *Function to disable button after delete file.
+     * @author PSI-Enhancements
+     */
+    onFileDeleted(): void {
+        if (this.selectedFiles.length === 0) {
+          this.modalData.btnLabel[1].isDisable = true;
+        }
+      }
     
     /**
      *Function to map product details.
