@@ -1,5 +1,4 @@
-<div class="dropdown-label" [ngClass]="{'asterisk-margin': field.required || field.isRequired}">
-    <span *ngIf="field.required || field.isRequired" class="required-asterisk">*</span>
+<div class="dropdown-label" [ngClass]="{'required': field.required || field.isRequired}">
     <span class="d-block" [textContent]="field.label"></span>
 </div>
 <div [ngClass]="{'disabled' : field.disabled}">
