@@ -102,6 +102,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
       CmpInputDropdownComponent.currentlyOpenDropdown.closeDropdown();
     }
     this.isOpen = !this.isOpen;
+    if(this.isOpen) this.clearSearch(null, false);
     CmpInputDropdownComponent.currentlyOpenDropdown = this.isOpen ? this : null;
 	this.handleFilteredItemsFromServerOnClose();
     this.dropdownStateChange.emit(this.isOpen);
@@ -183,7 +184,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
             this.isLoading = false;
         });
     } else {
-      // add selectedItems again as we have removed text from search
+      this.filteredItems = [...this.selectedItems];
     }
   }
 
@@ -210,16 +211,24 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.updateFilteredItems(this.originalItems);
     this.onDropDownChange.emit(this.selectedItems);
   }
-  clearSearch(event: Event = null): void {
-    this.searchText = ''; 
-    this.updateFilteredItems(this.originalItems); 
-    this.hideList = false;
-    this.selectedItems = []; 
-    this.isAllSelected = false; 
-    this.isAllSelected = false; 
-    this.updateFormControl(); 
-    event.stopPropagation(); 
-  }
+
+	/**
+	 * Clears the search input and resets the filtered items.
+	 * 
+	 * @param {Event}
+	 * @param {boolean}
+	 * @author PSI-Enhancement
+	 */
+	clearSearch(event: Event = null, stopEventPropagation: boolean = true): void {
+		this.searchText = '';
+		const itemsToFilter = this.settings.serverSearch ? this.selectedItems : this.originalItems;
+		this.updateFilteredItems(itemsToFilter);
+		this.hideList = false;
+		this.isAllSelected = false;
+		this.updateFormControl();
+
+		if(stopEventPropagation) event.stopPropagation();
+	}
 
   updateFilteredItems(items): void {
     this.filteredItems = Array.isArray(items) ? [...items] : [];

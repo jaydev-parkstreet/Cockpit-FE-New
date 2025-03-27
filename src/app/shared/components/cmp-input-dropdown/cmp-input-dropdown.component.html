@@ -15,7 +15,7 @@
         <div class="search-box" *ngIf="showSearch">
             <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search"
                 (input)="filterItems()">
-            <i class="far fa-times-circle u-absolute clear-search body u-fs14 " *ngIf="searchText"
+            <i class="far fa-times-circle u-absolute clear-search body u-fs14 u-csr-ptr" *ngIf="searchText"
                 (click)="clearSearch($event)">
             </i>
             <button class="search-icon">
