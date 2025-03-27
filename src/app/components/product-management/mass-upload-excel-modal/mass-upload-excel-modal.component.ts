@@ -105,7 +105,6 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
     onButtonClicked(event) {
         this.result = { event , sellectedFiles: this.selectedFiles };
         const uploadParams = new FormData();
-        console.log(event , this.selectedFiles);
         if (event === 'Upload') {           
             let sellectedFiles =  this.selectedFiles;
             uploadParams.append('file', sellectedFiles[0]);
