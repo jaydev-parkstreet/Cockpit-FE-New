@@ -196,7 +196,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
       this.filteredItems = searchTextLower.trim().length === 0
         ? [...this.originalItems]
         : this.originalItems.filter(item =>
-            item.name.toLowerCase().includes(searchTextLower)
+          String(item.name).toLowerCase().includes(searchTextLower)
           );
         this.hideList = this.filteredItems.length === 0;
     }
