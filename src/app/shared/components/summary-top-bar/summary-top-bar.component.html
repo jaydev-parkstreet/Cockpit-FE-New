@@ -94,7 +94,8 @@
                     [selectedItems]="selectedFilters[filter.key] || []"
                     [isAllItemsSelected]="isAllItemsSelected"
                     [isIndeterminate]="isIndeterminate"
-                    (onDropDownChange)="onFilterChange(filter.key, $event)">
+                    (onDropDownChange)="onFilterChange(filter.key, $event)"
+                    (dropdownClosedWithServerFilteredItems)="handleDropdownCloseWithServerFiltering(filter.key, $event)">
                 </app-cmp-input-dropdown>
             </div>
         </ng-container>

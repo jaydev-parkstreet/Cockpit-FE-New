@@ -1,18 +1,13 @@
 @import '../../../scss/variables/typography';
 @import '../../../scss/variables/colors';
 @import '../../../scss/mixin/mixin';
+@import '../../../scss/mixin/input';
 
 .input-dropdown {
     position: relative;
 
     .dropdown-label {
-        display: flex;
-        color: $colors-neutral-black;
-        font-family: $montserrat-regular !important;
-        font-size: 12px;
-        border: none !important;
-        margin: 0 0 6px 16px;
-        line-height: 16px;
+        @include psi-input-label;
     }
 
     .dropdown-header {
@@ -98,62 +93,7 @@
             margin: 10px;
             width: calc(100% - 20px);
             z-index: 1;
-
-            input.form-control {
-                height: 40px;
-                cursor: pointer;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                color: $colors-neutral-black;
-                font-family: $montserrat-regular;
-                font-size: 12px;
-                border: 1px solid $colors-neutral-light !important;
-                border-radius: 8px;
-                transition: border 0.2s ease;
-                box-shadow: none !important;
-                width: 100%;
-                padding-right: 72px;
-                caret-color: $colors-v2-base-secondary-v-medium;
-
-                &::placeholder {
-                    color: $colors-neutral-light;
-                    font-family: $montserrat-regular;
-                    font-size: 12px;
-                }
-
-                &:hover {
-                    outline: 2px solid $colors-neutral-dark;
-                    border-radius: 8px;
-                    border: 0;
-                }
-    
-                &:focus {
-                    outline: 2px solid $colors-v2-base-secondary-v-medium;
-                    border: 0;
-                }
-            }
-
-            .search-box-action-buttons {
-                .clear-search {
-                    @include action-icon;
-                    font-size: 16px;
-                    color: $colors-neutral-light;
-                    margin-right: 12px;
-                }
-    
-                .search-icon {
-                    border: none;
-                    font-size: 16px;
-                    padding: 10px;
-                    background: $colors-v2-base-primary-v-low-t-05;
-                    border-radius: 0 8px 8px 0;
-
-                    &:focus, &:focus-visible {
-                        outline: none;
-                    }
-                }
-            }
+            @include search-box;
         }
 
         .dropdown-content {
