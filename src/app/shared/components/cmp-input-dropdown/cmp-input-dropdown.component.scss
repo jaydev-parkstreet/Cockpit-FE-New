@@ -179,6 +179,15 @@
                 background: $colors-neutral-light;
             }
 
+            .loader {
+                font-family: $montserrat-regular;
+                font-size: 12px;
+                padding: 8px;
+                display: flex;
+                gap: 8px;
+                align-items: baseline;
+            }
+
             .no-results {
                 font-family: $montserrat-regular;
                 font-size: 14px;

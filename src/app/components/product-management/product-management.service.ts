@@ -297,21 +297,21 @@ export class ProductManagementService {
                     type: 'multiselect-search',
                     divClass: 'col-4 noleftpadding',
                     showSelectAll: false,
-                    setting: this.getMultiSelectConfigserver(environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.BRAND_SEARCH ,'Select Brand')
+                    setting: this.getMultiSelectConfig('Select Brand', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.BRAND_SEARCH)
                 }, {
                     key: 'sub-brand',
                     label: 'Sub-Brand',
                     type: 'multiselect-search',
                     divClass: 'col-4',
                     showSelectAll: false,
-                    setting: this.getMultiSelectConfigserver(environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_SEARCH ,'Select Sub-Brand')
+                    setting: this.getMultiSelectConfig('Select Sub-Brand', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_SEARCH)
                 }, {
                     key: 'sub-brands-product',
                     label: 'Sub-Brand Product',
                     type: 'multiselect-search',
                     divClass: 'col-4 norightpadding',
                     showSelectAll: false,
-                    setting: this.getMultiSelectConfigserver(environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_PRODUCT_SEARCH ,'Select Sub-Brand Product')
+                    setting: this.getMultiSelectConfig('Select Sub-Brand Product', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_PRODUCT_SEARCH)
                 }, {
                     key: 'organic',
                     label: 'Organic',
@@ -401,7 +401,7 @@ export class ProductManagementService {
      * @returns An object
      * @author psi-enhancements
      */
-    getMultiSelectConfig(placeholdertext, name = 'name') {
+    getMultiSelectConfig(placeholdertext, name = 'name', serverSearch = false, apiUrl = '') {
         return {
             enableSearch: true,
             dynamicTitle: true,
@@ -416,30 +416,9 @@ export class ProductManagementService {
             checkBoxes: true,
             buttonClasses: 'c-btn c-btn--secondary c-btn--full u-h3 ps-select',
             translationTexts: { buttonDefaultText: placeholdertext, searchPlaceholder: 'Search', noResultText: 'No results found' },
+            ...(serverSearch && { serverSearch, apiUrl })
         };
     }
-
-    getMultiSelectConfigserver(apiurl, placeholdertext) {
-        return {
-            enableSearch: true,
-            showSelectAll: true,
-            serverSearch: true,
-            keyboardControls: true,
-            displayProp: 'name',
-            searchField: 'name',
-            apiUrl: apiurl,
-            showCheckAll: false,
-            apiKey: '',
-            scrollable: true,
-            clearSearchOnClose: true,
-            closeOnDeselect: false,
-            idProperty: 'id',
-            checkBoxes: true,
-            buttonClasses: 'c-btn c-btn--secondary c-btn--full u-h3 ps-select',
-            translationTexts: { buttonDefaultText: placeholdertext, searchPlaceholder: 'Search', noResultText: 'No results found' }
-        };
-    }
-
 
     /**
      * Formats an array of objects into a dropdown-compatible format.

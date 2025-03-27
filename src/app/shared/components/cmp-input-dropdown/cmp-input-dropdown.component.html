@@ -27,6 +27,10 @@
     </div>
 
     <div class="dropdown-content">
+      <div *ngIf="isLoading" class="loader">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span>{{ texts.loaderText }}</span>
+      </div>
       <div *ngIf="hideList" class="no-results">
         <i class="fas fa-times"></i>
         <span>{{ texts.noResultText }}</span>
