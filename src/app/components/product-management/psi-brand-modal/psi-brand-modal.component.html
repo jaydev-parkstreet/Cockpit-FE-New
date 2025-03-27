@@ -2,7 +2,7 @@
     <div class="modal-header">
         <span class="title-icon {{modalData.titleIcon}}"></span>
         <div class="header-title " [innerText]="modalData.title"></div>
-        <em class="fa fa-times modal-dismiss" (click)="close()"></em>
+        <em class="fal fa-times modal-dismiss" (click)="close()"></em>
     </div>
     <div class="model-container-popup">
         <div *ngFor="let field of getConfigArray(modalData.config)">
