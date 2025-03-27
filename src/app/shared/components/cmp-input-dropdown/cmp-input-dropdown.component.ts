@@ -38,6 +38,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
   @Input() isIndeterminate: boolean = false;
+  @Output() dropdownClosedWithServerFilteredItems: EventEmitter<Item[]> = new EventEmitter<Item[]>();
 
   private searchSubject = new Subject<string>();
   isOpen: boolean = false;
@@ -100,11 +101,13 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     }
     this.isOpen = !this.isOpen;
     CmpInputDropdownComponent.currentlyOpenDropdown = this.isOpen ? this : null;
+	this.handleFilteredItemsFromServerOnClose();
     this.dropdownStateChange.emit(this.isOpen);
   }
 
   closeDropdown(): void {
     this.isOpen = false;
+	this.handleFilteredItemsFromServerOnClose();
     this.dropdownStateChange.emit(this.isOpen);
   }
 
@@ -265,4 +268,17 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
       }
     }
   }
+
+	/**
+	 * Handles the event when the dropdown is closed while using server-side filtering.
+	 * 
+	 * @param {void}
+   * @author PSI-Enhancements
+	 */
+	handleFilteredItemsFromServerOnClose(): void {
+		if (this.settings.serverSearch && !this.isOpen) {
+			this.filteredItems =  [...this.selectedItems];
+			this.dropdownClosedWithServerFilteredItems.emit(this.selectedItems);
+		}
+	}
 }

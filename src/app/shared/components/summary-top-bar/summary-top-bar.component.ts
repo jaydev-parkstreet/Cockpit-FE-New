@@ -82,4 +82,14 @@ export class SummaryTopBarComponent implements OnInit {
     this.isIndeterminate = !allSelected && Object.values(this.selectedFilters).some(val => val.length > 0);
   }
 
+  /**
+   * Handles the event when the dropdown is closed while using server-side filtering.
+   * 
+   * @param {string} key
+   * @param {any} selectedFilters
+   * @author [Your Name]
+   */
+    handleDropdownCloseWithServerFiltering(key, selectedFilters) {
+        this.filterList[key] = selectedFilters;
+    }
 }
