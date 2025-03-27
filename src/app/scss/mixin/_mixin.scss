@@ -108,8 +108,8 @@
 
 @mixin new-scrollbar {
     &::-webkit-scrollbar {
-        height: 24px;
         width: 24px;
+        height: 24px;
     }
 
     &::-webkit-scrollbar-corner {
@@ -118,13 +118,18 @@
 
     &::-webkit-scrollbar-thumb:vertical {
         border-radius: 10px;
-        background: $colors-v2-base-primary-v-low-t-05;
+        background: $colors-neutral-light-t-75;
         background-clip: padding-box;
-    }
-
-    &::-webkit-scrollbar-thumb:vertical {
         border-right: 8px solid rgba(0, 0, 0, 0);
         border-left: 8px solid rgba(0, 0, 0, 0);
+    }
+
+    &::-webkit-scrollbar-thumb:horizontal {
+        border-radius: 10px;
+        background: $colors-neutral-light-t-75;
+        background-clip: padding-box;
+        border-top: 8px solid rgba(0, 0, 0, 0);
+        border-bottom: 8px solid rgba(0, 0, 0, 0);
     }
 }
 
