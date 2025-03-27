@@ -36,13 +36,12 @@ export class AuthInterceptor implements HttpInterceptor {
             catchError((error: HttpErrorResponse) => this.handleError(error))
         );
     }
+
     private handleError(error: HttpErrorResponse): Observable<any> {
         if (error.status === 401) {
             this.authService.clearLocalStorage();
             this.router.navigate(['/login']);
-        } else {
-            this.commonService.showToastV2Message(true, error, 'fas fa-exclamation-circle');
+            return throwError(() => error);
         }
-        return throwError(() => error);
     }
 }

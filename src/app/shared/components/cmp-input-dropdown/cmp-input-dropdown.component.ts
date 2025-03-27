@@ -174,19 +174,30 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     return this.selectedItems.some(selectedItem => selectedItem.id === item.id);
   }
 
-  fetchOptionsFromServer(searchText: string): void {
-    if(searchText.trim().length !== 0) {
-      this.isLoading = true;
-      this.inputDropdownService.getOption(this.settings.apiUrl, searchText)
-        .subscribe(filteredItems => {
-            this.filteredItems = filteredItems.data;
-            this.hideList = this.filteredItems.length === 0;
-            this.isLoading = false;
-        });
-    } else {
-      this.filteredItems = [...this.selectedItems];
-    }
-  }
+	/**
+	 * Fetches options from the server based on the given search text.
+	 * 
+	 * @param searchText
+	 * @returns void
+	 * @author PSI-Enhancement
+	 */
+	fetchOptionsFromServer(searchText: string): void {
+		if (searchText.trim().length !== 0) {
+			this.isLoading = true;
+			this.inputDropdownService.getOption(this.settings.apiUrl, searchText)
+				.subscribe(response => {
+					this.filteredItems = response.hasError ? [] : response.data;
+					this.hideList = this.filteredItems.length === 0;
+					this.isLoading = false;
+				}, (error) => {
+					this.filteredItems = [];
+					this.hideList = true;
+					this.isLoading = false;
+				});
+		} else {
+			this.filteredItems = [...this.selectedItems];
+		}
+	}
 
   filterItems(): void {
     const searchTextLower = this.searchText.toLowerCase();
