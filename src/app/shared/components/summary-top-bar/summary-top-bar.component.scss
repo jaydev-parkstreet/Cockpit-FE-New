@@ -34,15 +34,10 @@
 }
 
 .btn-link {
-    cursor: pointer;
+    @include action-link;
     text-decoration: none;
     color: $colors-neutral-black;
     font-size: 12px;
-
-    &:hover {
-        color: $colors-v2-base-primary;
-        text-decoration: underline;
-    }
 }
 
 .filter-results {

@@ -45,10 +45,12 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   searchText: string = '';
   isAllSelected: boolean = false;
   hideList: boolean = false;
+  isLoading: boolean = false;
   originalItems: Item[] = [];
   static currentlyOpenDropdown: CmpInputDropdownComponent | null = null;
 
   texts = {
+    loaderText: 'Fetching Record...',
     noResultText: 'No results found',
     selectAll: 'Select All',
     uncheckAll: 'Uncheck All'
@@ -66,7 +68,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.updateFilteredItems(this.filteredItems);
     this.updateSelectAllState(this.filteredItems);
     this.originalItems = [...this.filteredItems];
-    this.searchSubject.pipe(debounceTime(300)).subscribe(searchText => {
+    this.searchSubject.pipe(debounceTime(750)).subscribe(searchText => {
       this.fetchOptionsFromServer(searchText);
     });
   }
@@ -172,28 +174,32 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   }
 
   fetchOptionsFromServer(searchText: string): void {
-    if(searchText !== '') {
+    if(searchText.trim().length !== 0) {
+      this.isLoading = true;
       this.inputDropdownService.getOption(this.settings.apiUrl, searchText)
         .subscribe(filteredItems => {
-          this.filteredItems = filteredItems.data;
-          this.hideList = this.filteredItems.length === 0;
+            this.filteredItems = filteredItems.data;
+            this.hideList = this.filteredItems.length === 0;
+            this.isLoading = false;
         });
+    } else {
+      // add selectedItems again as we have removed text from search
     }
   }
 
   filterItems(): void {
     const searchTextLower = this.searchText.toLowerCase();
-
+    this.hideList = false;
     if (this.settings.serverSearch) {
-      this.searchSubject.next(this.searchText);
+      this.searchSubject.next(searchTextLower);
     } else {
       this.filteredItems = searchTextLower.trim().length === 0
         ? [...this.originalItems]
         : this.originalItems.filter(item =>
             item.name.toLowerCase().includes(searchTextLower)
           );
+        this.hideList = this.filteredItems.length === 0;
     }
-    this.hideList = this.filteredItems.length === 0;
   }
 
   resetDropdownState() {
