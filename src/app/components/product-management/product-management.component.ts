@@ -198,7 +198,9 @@ export class ProductManagementComponent implements OnInit {
         this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
         .subscribe((result) => {
             if (result !== undefined) {
+              if(!notes || notes.length !== result) {
                 this.unSelectAllCheckbox(entityIds, result, 'total_notes');
+              }
             }
         });
     }
@@ -237,7 +239,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
     .subscribe((result) => {
         if (result !== undefined) {
-          if(!attachments.data ||attachments.data.length !== result) {
+          if(!attachments.data || attachments.data.length !== result) {
             this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
           }
         }
