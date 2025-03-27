@@ -86,7 +86,7 @@
         border: 1px solid $colors-neutral-light !important;
         border-top: none;
         background-color: $colors-neutral-white;
-        z-index: 1000;
+        z-index: 2;
         font-size: 12px;
         max-height: 400px;
         overflow: hidden;
@@ -177,6 +177,15 @@
 
             &::-webkit-scrollbar-thumb:hover {
                 background: $colors-neutral-light;
+            }
+
+            .loader {
+                font-family: $montserrat-regular;
+                font-size: 12px;
+                padding: 8px;
+                display: flex;
+                gap: 8px;
+                align-items: baseline;
             }
 
             .no-results {
