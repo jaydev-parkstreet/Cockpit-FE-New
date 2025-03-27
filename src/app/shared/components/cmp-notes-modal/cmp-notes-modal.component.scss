@@ -18,74 +18,80 @@
     .modal-body {
         padding: 16px;
 
-        .notes-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 16px;
-
-            .note-container {
+        .notes-padding {
+            min-height: 110px;
+            max-height: 164px;
+            overflow: auto;
+            @include new-scrollbar;
+            .notes-row {
                 display: flex;
-                gap: 8px;
-
-                .note-owner-image {
-                    width: 40px;
-                    height: 40px;
-                    position: relative;
-
-                    .profile-picture {
-                        width: 100%;
-                        height: 100%;
-                        border-radius: 50%;
-                        object-fit: cover;
+                justify-content: space-between;
+                margin-bottom: 16px;
+    
+                .note-container {
+                    display: flex;
+                    gap: 8px;
+    
+                    .note-owner-image {
+                        width: 40px;
+                        height: 40px;
+                        position: relative;
+    
+                        .profile-picture {
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 50%;
+                            object-fit: cover;
+                        }
+    
+                        .ps-logo {
+                            background: $colors-neutral-white;
+                            height: 16px;
+                            width: 16px;
+                            border-radius: 25px;
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                        }
                     }
-
-                    .ps-logo {
-                        background: $colors-neutral-white;
-                        height: 16px;
-                        width: 16px;
-                        border-radius: 25px;
-                        position: absolute;
-                        bottom: 0;
-                        right: 0;
-                    }
-                }
-
-                .note-meta {
-                    .note-meta-name {
-                        color: $colors-v2-base-primary;
-                        font-size: 12px;
-                        font-weight: 500;
-                        display: flex;
-                        gap: 8px;
-                        font-family: $montserrat-medium;
-                    }
-
-                    ::ng-deep span:nth-child(2) {
-                        font-size: 12px;
-                        font-family: $montserrat-regular;
-                        color: $colors-neutral-black;
-
-                        p {
-                            margin-bottom: 0;
+    
+                    .note-meta {
+                        .note-meta-name {
+                            color: $colors-v2-base-primary;
+                            font-size: 12px;
+                            font-weight: 500;
+                            display: flex;
+                            gap: 8px;
+                            font-family: $montserrat-medium;
+                        }
+    
+                        ::ng-deep span:nth-child(2) {
+                            font-size: 12px;
+                            font-family: $montserrat-regular;
+                            color: $colors-neutral-black;
+    
+                            p {
+                                margin-bottom: 0;
+                            }
                         }
                     }
                 }
-            }
-
-            .right-section {
-                display: flex;
-                justify-content: space-between;
-                gap: 10px;
-                font-size: 12px;
-                align-items: center;
-                line-height: 20px;
-
-                i {
-                    cursor: pointer;
-                    color: $colors-neutral-black-t-75;
-
-                    &:hover {
-                        color: $colors-neutral-black;
+    
+                .right-section {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 10px;
+                    font-size: 12px;
+                    align-items: center;
+                    line-height: 20px;
+    
+                    i {
+                        cursor: pointer;
+                        color: $colors-neutral-black-t-75;
+    
+                        &:hover {
+                            color: $colors-neutral-black;
+                        }
                     }
                 }
             }
