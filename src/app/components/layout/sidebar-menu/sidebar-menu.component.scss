@@ -10,6 +10,8 @@
     &__header {
         padding: 12px 16px;
         display: flex;
+        position: fixed;
+        top: 0;
         align-items: center;
         .menutoggle {
             float: left;
@@ -39,6 +41,8 @@
 
     &__content {
         font-family: $crimson-pro-regular;
+        position: fixed;
+        top: 64px;
         font-size: 16px;
         #mainMenu-items{
             li.sidebar-submenu-item:first-of-type {
@@ -83,15 +87,6 @@
 
                     .sidebar-icon {
                         font-weight: 900;
-                    }
-                    .das, .get {
-                        display: block;
-                    }
-                    .das {
-                        top:70px;
-                    }
-                    .get {
-                        top:114px;
                     }
                 }
                 &.sidebar-menu-active,
@@ -189,20 +184,6 @@
                     text-decoration: none;
                     color: $colors-neutral-white;
                 }
-                .sidebar-tooltip {
-                    display: block;
-                    background: #F1F1F1;
-                    color: #232323;
-                    padding: 4px 8px;
-                    top: -42px;
-                    left: 0;
-                    position: absolute;
-                    width: max-content;
-                    font-family: "Montserrat-Medium";
-                    font-size: 12px;
-                    border-radius: 8px;
-                    box-shadow: 0px 4px 8px 0px #4A4A4A26;
-                }
                 .das, .get {
                     display: none;
                     left: 54px;
@@ -293,6 +274,11 @@
 
 .expanded {
     width: 288px;
+    .sidebar-menu-item {
+        .sidebar-tooltip {
+            display: none;
+        }
+    }
 }
 
 .collapsed {
@@ -333,7 +319,34 @@
                 width: 272px;
                 border-radius: 8px;
                 padding: 8px;
-            }   
+            }
+            .sidebar-tooltip {
+                display: block;
+                background: #F1F1F1;
+                color: #232323;
+                padding: 4px 8px;
+                top: -42px;
+                left: 0;
+                position: absolute;
+                width: max-content;
+                font-family: "Montserrat-Medium";
+                font-size: 12px;
+                border-radius: 8px;
+                box-shadow: 0px 4px 8px 0px #4A4A4A26;
+            }
+            .das, .get {
+                display: none;
+                left: 56px;
+            }
+            .das {
+                top: 16px;
+            }
+            .get {
+                top: 62px;
+            }
+            &:hover .das, &:hover .get {
+                display: block;
+            }
         }
     }
     .sidebar__footer {
