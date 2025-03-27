@@ -189,4 +189,3 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
         return parts[1];
     }
 }
-
