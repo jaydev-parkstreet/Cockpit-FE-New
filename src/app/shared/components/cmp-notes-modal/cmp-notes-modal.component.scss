@@ -26,8 +26,6 @@
             .notes-row {
                 display: flex;
                 justify-content: space-between;
-                margin-bottom: 16px;
-    
                 .note-container {
                     display: flex;
                     gap: 8px;
@@ -57,12 +55,8 @@
     
                     .note-meta {
                         .note-meta-name {
-                            color: $colors-v2-base-primary;
-                            font-size: 12px;
-                            font-weight: 500;
                             display: flex;
                             gap: 8px;
-                            font-family: $montserrat-medium;
                         }
     
                         ::ng-deep span:nth-child(2) {
@@ -143,7 +137,7 @@
                         .ql-color-picker,
                         .ql-picker.ql-header,
                         .ql-icon-picker {
-                            background: white;
+                            background: $colors-neutral-white;
                             border: 1px solid $colors-neutral-light;
                             border-radius: 3px;
                             height: 23px;
