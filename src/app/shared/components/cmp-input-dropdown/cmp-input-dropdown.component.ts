@@ -96,17 +96,28 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   updateSelectAllStates(): void {
     this.isAllSelected = this.selectedItems.length === this.filteredItems.length;
   }
-  toggleDropdown(): void {
-    if (this.disabled || this.formControl?.disabled) return;
-    if (CmpInputDropdownComponent.currentlyOpenDropdown && CmpInputDropdownComponent.currentlyOpenDropdown !== this) {
-      CmpInputDropdownComponent.currentlyOpenDropdown.closeDropdown();
-    }
-    this.isOpen = !this.isOpen;
-    if(this.isOpen) this.clearSearch(null, false);
-    CmpInputDropdownComponent.currentlyOpenDropdown = this.isOpen ? this : null;
-	this.handleFilteredItemsFromServerOnClose();
-    this.dropdownStateChange.emit(this.isOpen);
-  }
+
+	/**
+	 * Toggles the dropdown open or closed.
+	 * 
+	 * @param none
+	 * @returns {void}
+	 * @author PSI-Enhancement
+	 */
+	toggleDropdown(): void {
+		if (this.disabled || this.formControl?.disabled) return;
+		if (CmpInputDropdownComponent.currentlyOpenDropdown && CmpInputDropdownComponent.currentlyOpenDropdown !== this) {
+			CmpInputDropdownComponent.currentlyOpenDropdown.closeDropdown();
+		}
+		this.isOpen = !this.isOpen;
+		if(this.isOpen) {
+			this.clearSearch(null, false);
+			this.showSelectAll && this.updateSelectAllStates();
+		};
+		CmpInputDropdownComponent.currentlyOpenDropdown = this.isOpen ? this : null;
+		this.handleFilteredItemsFromServerOnClose();
+		this.dropdownStateChange.emit(this.isOpen);
+	}
 
   closeDropdown(): void {
     this.isOpen = false;
