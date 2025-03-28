@@ -18,34 +18,33 @@ import { AuditTabComponent } from '../organism/audit-tab/audit-tab.component';
 
 
 @NgModule({
-  declarations: [
-    ProductManagementComponent, 
-    ProductAddComponent,
-    ProductManagementDetailsComponent, 
-    NotesTabComponent,
-    AttachmentTabComponent,
-    MassUploadExcelModalComponent,
-    AuditTabComponent
-  ],
-  providers: [{
-    provide: ErrorHandler,
-    useClass: ErrorHandler
-  }],
-  imports: [
-    CommonModule,
-    SharedModule,
-    ReactiveFormsModule,
-    FormsModule,
-    SimpleModalModule.forRoot({container: "modal-container"}),
-    StatelessModule,
-    AgGridModule,
-    RouterModule,
-    ProductManagementRoutingModule
-  ],
-  entryComponents: [
-  
-    ConfirmationModalComponent,
-  ],
-  exports: [ ]
+    declarations: [
+        ProductManagementComponent,
+        ProductAddComponent,
+        ProductManagementDetailsComponent,
+        NotesTabComponent,
+        AttachmentTabComponent,
+        MassUploadExcelModalComponent,
+        AuditTabComponent
+    ],
+    providers: [{
+        provide: ErrorHandler,
+        useClass: ErrorHandler
+    }],
+    imports: [
+        CommonModule,
+        SharedModule,
+        ReactiveFormsModule,
+        FormsModule,
+        SimpleModalModule.forRoot({ container: "modal-container" }),
+        StatelessModule,
+        AgGridModule,
+        RouterModule,
+        ProductManagementRoutingModule
+    ],
+    entryComponents: [
+        ConfirmationModalComponent,
+    ],
+    exports: []
 })
 export class ProductManagementModule { }

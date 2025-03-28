@@ -287,13 +287,15 @@ export class CommonService {
                         response.headers.get('content-disposition')
                     ));
                     saveAs(data, fileName || 'report.csv');
-                } {
+                    this.showToastV2Message(true, 'File Downloaded Successfully', 'fas fa-exclamation-circle', 'success');
+                } else {
                     this.showToastV2Message(true, 'No data found');
                 }
                 cb();
             },
             error: (error) => {
-                this.showToastV2Message(true, error);
+                this.showToastV2Message(true, "Failed to Export Data", 'fas fa-exclamation-circle');
+                cb();
             }
         });
     }

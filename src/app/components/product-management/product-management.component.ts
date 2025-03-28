@@ -11,12 +11,12 @@ import { CmpAttachmentModalComponent } from 'src/app/shared/components/cmp-attac
 import {MassUploadExcelModalComponent} from '../product-management/mass-upload-excel-modal/mass-upload-excel-modal.component';
 import { CmpNotesModalComponent } from 'src/app/shared/components/cmp-notes-modal/cmp-notes-modal.component';
 import { ConfirmationModalComponent } from '../organism/confirmation-modal/confirmation-modal.component';
-
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-management',
   templateUrl: './product-management.component.html',
-  styleUrls: ['./product-management.component.scss'],
+  styleUrls: ['./product-management.component.scss']
 })
 
 export class ProductManagementComponent implements OnInit {
@@ -50,6 +50,7 @@ export class ProductManagementComponent implements OnInit {
   FileSaver: any;
   downloading: boolean;
   filtermodal: any;
+  private timerSubscription!: Subscription;
 
   constructor(
     private productManagementService: ProductManagementService,
@@ -116,8 +117,18 @@ export class ProductManagementComponent implements OnInit {
           this.selectCheckBox(params);
       }else if (params.event.target.className === 'fal fa-file show-attachment-modal' || params.event.target.className === 'fas fa-file show-attachment-modal') {
         this.openAttachmentListPopup(params.data.product_id);
-      }else if (params.event.target.className === 'fal fa-comment note-modal' || params.event.target.className === 'fas fa-comment note-modal') {
+      } else if (params.event.target.className === 'fal fa-comment note-modal' || params.event.target.className === 'fas fa-comment note-modal') {
         this.getNotes(params.data.product_id, params);
+      } else if(params.colDef.cellRenderer === 'idRender' && (params.event.target.className === 're-sync')) {
+        this.productManagementService.syncOrder(params.value).subscribe( (response: any) => {
+          if(!response.hasError) {
+            params.data.ns_status = 2;
+            this.timerSubscription = interval(30000).subscribe(()=> {
+                this.getSyncStatusDetails(params);
+            });
+            this.gridOptions.api.redrawRows();
+          }
+        });
       }
     };
     this.gridOptions.onCellMouseOver = (params) => {
@@ -187,7 +198,9 @@ export class ProductManagementComponent implements OnInit {
         this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
         .subscribe((result) => {
             if (result !== undefined) {
+              if(!notes || notes.length !== result) {
                 this.unSelectAllCheckbox(entityIds, result, 'total_notes');
+              }
             }
         });
     }
@@ -226,7 +239,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
     .subscribe((result) => {
         if (result !== undefined) {
-          if(!attachments.data ||attachments.data.length !== result) {
+          if(!attachments.data || attachments.data.length !== result) {
             this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
           }
         }
@@ -381,7 +394,11 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
 	this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
         if (key == 'clients') {
             acc['client'] = selectedFilters[key].map((item: any) => item.id);
-        }else{
+        } else if (key == 'is_active' ) {
+            acc['active_status'] = [selectedFilters[key] == 0 ? '1' : '0'];
+        } else if (key == 'is_rejected') {
+            acc[key] = selectedFilters[key];
+        } else{
             acc[key] = selectedFilters[key].map((item: any) => item.id); 
         }
         return acc;
@@ -432,14 +449,14 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     } else {
       this.selectedRows = [];
     }
-
+    let inActive = false;
     this.productToolSummary.forEach(order => {
       order.checked = checked;
+      inActive = order.is_active === 0;
     });
-    
     this.selectedAllRows = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
-    this.updateTopPanelConfig();
+    this.updateTopPanelConfig(inActive);
     this.gridOptions.api.redrawRows();
   }
 
@@ -462,7 +479,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     } else {
         this.selectedAllRows = true;
     }
-    this.updateTopPanelConfig();
+    this.updateTopPanelConfig(params.data.is_active === 0);
     this.gridOptions.api.redrawRows();
   }
 
@@ -521,11 +538,15 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     });
   }
 
+  /**
+   *Function to open upload mass bulk product popup.
+   * @author PSI-Enhancements
+   */ 
+  openMassUploadExcelPopup() {
+    const modalData = this.productManagementService.getMassExcelModalData();
+    this.simpleModalService.addModal(MassUploadExcelModalComponent, { modalData })
+  }
 
-    openMassUploadExcelPopup() {
-        const modalData = this.productManagementService.getMassExcelModalData();
-        this.simpleModalService.addModal(MassUploadExcelModalComponent , { modalData })
-    }
   /**
    * Navigates to the product edit page based on the current route if a product ID is present.
    *
@@ -551,12 +572,40 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
   /**
    * Function to Update top panel config
    */
-  updateTopPanelConfig () {
+  updateTopPanelConfig (isActive?: boolean) {
     this.topPanelConfig.actions = this.productManagementService.getActionsIconsConfig(
         this.selectedRowCount,
         this.permissions,
-        this.reportRequestObj
+        this.reportRequestObj,
+        isActive
     );
     
   };
+
+    /**
+     * Fetches the synchronization status details for a specific product.
+     *
+     * @param {Object} params - The grid row parameters containing product data.
+     * @returns {void}
+     * @author PSI-Enhancement
+     */
+    getSyncStatusDetails(params) {
+        this.productManagementService.getSyncStatusDetails(params.data.product_id).subscribe( (response: any) => {
+            if(!response.hasError && response.data) {
+                params.data.ns_status = response.data.status;
+                if(response.data.status === 1) {
+                    this.commonService.showToastV2Message(true, 'Sync Successful', null, 'success');
+                } else if(response.data.status === 3) {
+                    this.commonService.showToastV2Message(true, 'Sync Failed');
+                }
+                this.gridOptions.api.redrawRows();
+                this.timerSubscription.unsubscribe();
+            } else {
+                this.timerSubscription.unsubscribe();
+                params.data.ns_status = 3;
+                this.gridOptions.api.redrawRows();
+                this.commonService.showToastV2Message(true, 'Save Failed');
+            }
+        });
+    }
 }

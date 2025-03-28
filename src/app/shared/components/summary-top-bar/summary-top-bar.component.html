@@ -37,65 +37,40 @@
                     (onClick)="onClickAction.emit(action)">
                 </app-cmp-button>
             </div>
-
         </div>
-
-        
-        <!-- <div *ngFor="let action of config.actions.extraActions; let first = first; let last = last;" class="icon-container u-flex u-pg-g-2" [ngClass]="action.divClass">
-            <div *ngIf="productChecked">
-                <i [class]="action.icon + ' action-icon'"
-                    [ngClass]="{'is-disabled': action.disabled, 'first': first, 'last': last}"
-                    *ngIf="action.type === 'icon' && action.permission" 
-                    (click)="onClickAction.emit(action)">
-                </i>
-                <span *ngIf="action.showTooltip" class="icon-tooltiptext" [ngClass]="action.className">
-                    {{action.tooltipText}}
-                </span>
-            </div>
-            <app-excel-export
-                *ngIf="action.type == 'export'"
-                [tooltipText]="tooltipText"
-                (onExcelSheet)="excelExport.emit()">
-            </app-excel-export>
-        </div>
-        <div class="filter-results m-margin-top" *ngIf="config.actions['result'].type === 'result'">
-            <b>{{ config.totalResult }}</b>
-            <span>&nbsp;&nbsp; 
-            <span>{{ config.totalResult === 1 ? 'Result' : 'Results' }}</span>
-            </span>
-        </div>
-        <div class="action-buttons u-flex u-pg-g-2">
-            <app-cmp-button 
-                [buttonIconLeft]="'fas fa-filter'" 
-                [buttonText]="'Filter'" 
-                [buttonClass]="isExpandFilter ? 'secondary filter-active' : 'secondary'"
-                (click)="toggleFilter()">
-            </app-cmp-button>
-
-            <app-cmp-button [buttonIconLeft]="'fas fa-plus-circle '" *ngIf="config.permission.permissions.Create" [buttonText]="'New Product'" [buttonClass]="'primary'"
-                (click)="addProduct.emit()">
-            </app-cmp-button>
-        </div> -->
     </div>
 </div>
 
 <div class="filter-container" *ngIf="config.expandFilter">
-    <div class="row">
-        <div class="filter-item" [ngClass]="filter.divClass" *ngFor="let filter of config.filtersConfig">
-            <app-cmp-input-dropdown
-                [label]="filter.label"
-                [showSelectAll]="filter.showSelectAll == false ? false : true"
-                [showCheckboxes]="filter.showCheckboxes == false ? false : true"
-                [allowSingleSelect]="filter.allowSingleSelect == true ? true : false"
-                [showSearch]="filter.showSearch == false ? false : true "
-                [settings]="filter.setting"
-                [filteredItems]="filterList && filterList[filter.key]"
-                [selectedItems]="selectedFilters[filter.key] || []"
-                [isAllItemsSelected]="isAllItemsSelected"
-                [isIndeterminate]="isIndeterminate"
-                (onDropDownChange)="onFilterChange(filter.key, $event)"
-              >
-            </app-cmp-input-dropdown>
+    <div class="u-flex u-pg-mb-2 filter-box">
+        <ng-container *ngFor="let filter of config.filtersConfig">
+            <div class="filter-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'multiselect-search'">
+                <app-cmp-input-dropdown
+                    [label]="filter.label"
+                    [showSelectAll]="filter.showSelectAll !== false"
+                    [showCheckboxes]="filter.showCheckboxes !== false"
+                    [allowSingleSelect]="filter.allowSingleSelect === true"
+                    [showSearch]="filter.showSearch !== false"
+                    [settings]="filter.setting"
+                    [filteredItems]="filterList && filterList[filter.key]"
+                    [selectedItems]="selectedFilters[filter.key] || []"
+                    [isAllItemsSelected]="isAllItemsSelected"
+                    [isIndeterminate]="isIndeterminate"
+                    (onDropDownChange)="onFilterChange(filter.key, $event)"
+                    (dropdownClosedWithServerFilteredItems)="handleDropdownCloseWithServerFiltering(filter.key, $event)">
+                </app-cmp-input-dropdown>
+            </div>
+        </ng-container>
+        <div class="col-12 u-flex">
+            <ng-container *ngFor="let filter of config.filtersConfig">
+                <div class="filter-item checkbox-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'checkbox'">
+                    <app-psi-checkbox
+                        [field]="filter"
+                        [checkedValue]="selectedFilters[filter.name]"
+                        (valueChanged)="onCheckedInput(filter.name, $event)">
+                    </app-psi-checkbox>
+                </div>
+            </ng-container>
         </div>
     </div>
     <div class="u-flex u-align-center u-pg-g-3">

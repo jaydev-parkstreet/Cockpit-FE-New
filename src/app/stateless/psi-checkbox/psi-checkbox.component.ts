@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-psi-checkbox',
@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class PsiCheckboxComponent implements OnInit {
 
   @Input() field: any;
-  @Input() form: any;
+  @Input() checkedValue: any;
   @Input() validationClasses: any;
   @Output() valueChanged: EventEmitter<any> = new EventEmitter<any>();
   

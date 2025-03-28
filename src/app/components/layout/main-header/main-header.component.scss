@@ -15,6 +15,12 @@
             padding: 12px 72px 12px 16px;
             font-size: 12px;
             caret-color: $colors-v2-base-secondary-v-medium;
+            background-color: $colors-neutral-light-t-20 !important;
+        }
+
+        ::placeholder {
+            color: $colors-neutral-light !important;
+            opacity: 1 !important;
         }
 
         .icon-container {
@@ -24,6 +30,7 @@
 
             .search-icon-container {
                 width: 40px;
+                font-size: 16px;
             }
         }
 
