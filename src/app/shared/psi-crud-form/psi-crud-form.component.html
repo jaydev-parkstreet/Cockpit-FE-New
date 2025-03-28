@@ -3,7 +3,9 @@
     <div class=" col-sm-12 p-0">
         <div class=" col-sm-6 lt-c">
             <app-psi-page-column-header
-                [headerTitle]="leftHeaderTitle">
+                [headerTitle]="leftHeaderTitle"
+                [clearAll]="clearAll"
+                (clearAllClicked)="clearAllSelections()">
             </app-psi-page-column-header>
         </div>
         <div class=" col-sm-6 rt-c">
