@@ -26,6 +26,7 @@
             .notes-row {
                 display: flex;
                 justify-content: space-between;
+                position: relative;
                 .note-container {
                     display: flex;
                     gap: 8px;
@@ -78,7 +79,9 @@
                     font-size: 12px;
                     align-items: center;
                     line-height: 20px;
-    
+                    position: absolute;
+                    background: $colors-neutral-white;
+                    right: 0;
                     i {
                         cursor: pointer;
                         color: $colors-neutral-black-t-75;
