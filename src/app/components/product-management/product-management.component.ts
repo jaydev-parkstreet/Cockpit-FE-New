@@ -156,11 +156,11 @@ export class ProductManagementComponent implements OnInit {
    * @param object param
    */
     getNotes(Id, param) {
-        // this.usSpinnerService.spin('app-loader');
+        this.spinner.show();
         this.commonService.getNotes(this.permissions.kind_id,
         this.permissions.tool_id, Id, this.permissions.menu_item_id).subscribe((result: any) => {
             this.showNotesModal(param.length === 0 ? Id : [Id], result.notes, false, param);
-            // this.usSpinnerService.stop('app-loader');
+            this.spinner.hide();
         })
     }
 
