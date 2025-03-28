@@ -2,7 +2,7 @@
     <div class="modal-header">
         <span class="title-icon {{modalData.titleIcon}}"></span>
         <div class="header-title " [innerText]="modalData.title"></div>
-        <em class="fa fa-times modal-dismiss" (click)="close()"></em>
+        <em class="fal fa-times modal-dismiss" (click)="close()"></em>
     </div>
     <div class="model-container-popup">
         <div *ngFor="let field of getConfigArray(modalData.config)">
@@ -27,7 +27,7 @@
             <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text' && field.display">
                 <app-psi-input-text-field
                     [field]="field"
-                    [form]="brandForm"
+                    [valueEntered]="brandForm.value[field.name]"
                     [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
                     (valueChanged)="onInputChange(field.name, $event)">
                 </app-psi-input-text-field>

@@ -17,9 +17,8 @@ export class InputDropdownService {
    * @param key
    * @param searchText
    */
-  getOption(apiUrl: string, key: string, searchText: string): Observable<any> {
+  getOption(apiUrl: string, searchText: string, method?: string): Observable<any> {
     const request = {
-      key: key,
       keyword: searchText,
     };
     return this.http.post<any>(apiUrl, request);

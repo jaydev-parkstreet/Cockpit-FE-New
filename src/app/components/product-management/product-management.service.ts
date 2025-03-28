@@ -48,8 +48,8 @@ export class ProductManagementService {
             headerName: '',
             field: 'data',
             cellRenderer: 'checkbox',
-            width: 150,
-            minWidth: 65,
+            width: 120,
+            minWidth: 100,
             maxWidth: 150,
             headerClass: 'check',
             suppressMenu: true,
@@ -255,13 +255,9 @@ export class ProductManagementService {
         'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium text-ellipsis',
         'Request Received': 'u-bg-neutral-light text-ellipsis',
       };
-      
-      let inActiveIcon = params.data && params.data.is_active === 0 
-        ? `<i class="fas fa-ban u-ml2 neutral-light icon-vertical-middle"></i>` 
-        : '';
   
       if (statusLabels[params.value]) {
-        return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>` + inActiveIcon;
+        return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>`;
       }
       return '--';
     }
@@ -307,61 +303,68 @@ export class ProductManagementService {
                     key: 'clients',
                     label: 'Supplier',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-4 noleftpadding',
                     setting: this.getMultiSelectConfig('Select Supplier')
                 }, {
                     key: 'product_state',
                     label: 'Product Status',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-4',
                     setting: this.getMultiSelectConfig('Select Status')
                 }, {
                     key: 'product_type',
                     label: 'Product Type',
-                    ype: 'multiselect-search',
+                    type: 'multiselect-search',
                     divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Type')
                 }, {
                     key: 'product_sub_type',
                     label: 'Product Sub-Type',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-4 noleftpadding',
                     setting: this.getMultiSelectConfig('Select Sub-Type')
                 }, {
                     key: 'source',
                     label: 'Source',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-4',
                     setting: this.getMultiSelectConfig('Select Source')
+                }, {
+                    key: 'crm',
+                    label: 'CRM',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding', 
+                    setting: this.getMultiSelectConfig('Select CRM')
+                }, {
+                    key: 'brand',
+                    label: 'Brand',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 noleftpadding',
+                    showSelectAll: false,
+                    setting: this.getMultiSelectConfig('Select Brand', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.BRAND_SEARCH)
+                }, {
+                    key: 'sub-brand',
+                    label: 'Sub-Brand',
+                    type: 'multiselect-search',
+                    divClass: 'col-4',
+                    showSelectAll: false,
+                    setting: this.getMultiSelectConfig('Select Sub-Brand', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_SEARCH)
+                }, {
+                    key: 'sub-brands-product',
+                    label: 'Sub-Brand Product',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    showSelectAll: false,
+                    setting: this.getMultiSelectConfig('Select Sub-Brand Product', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_PRODUCT_SEARCH)
                 }, {
                     key: 'organic',
                     label: 'Organic',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding', 
+                    divClass: 'col-4 noleftpadding', 
                     setting: this.getMultiSelectConfig('Select Organic')
-                }, {
-                    key: 'active_status',
-                    label: 'Active State',
-                    type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
-                    showSearch:false,
-                    showSelectAll: false,
-                    showCheckboxes: false,
-                    allowSingleSelect: true,
-                    setting: this.getMultiSelectConfig('Select State')
-                }, {
-                    key: 'bottles_per_case',
-                    label: 'Bottles Per Case',
-                    type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
-                    setting: this.getMultiSelectConfig('Select Bottles Per Case')
-                }, {
-                    key: 'container_sizes_filter',
-                    label: 'Container Size',
-                    type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
-                    setting: this.getMultiSelectConfig('Select Container Size')
-                }
+                },
+                { type: 'checkbox', name: 'is_active', label: 'Inactive Only', placeholder: 'Inactive Only', divClass: 'col-4' },
+                { type: 'checkbox', name: 'is_rejected', label: 'Rejected Only', placeholder: 'Rejected Only', divClass: 'col-4' }
             ],
         };
     }
@@ -394,6 +397,7 @@ export class ProductManagementService {
                     type: 'icon',
                     iconClass: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
                     showTooltip: true,
+                    isActive,
                     tooltipText: isActive ? 'Activate' : 'Deactivate',
                 }, {
                     key: 'edit',
@@ -441,7 +445,7 @@ export class ProductManagementService {
      * @returns An object
      * @author PSI-Enhancements
      */
-    getMultiSelectConfig(placeholdertext, name = 'name') {
+    getMultiSelectConfig(placeholdertext, name = 'name', serverSearch = false, apiUrl = '') {
         return {
             enableSearch: true,
             dynamicTitle: true,
@@ -456,9 +460,9 @@ export class ProductManagementService {
             checkBoxes: true,
             buttonClasses: 'c-btn c-btn--secondary c-btn--full u-h3 ps-select',
             translationTexts: { buttonDefaultText: placeholdertext, searchPlaceholder: 'Search', noResultText: 'No results found' },
+            ...(serverSearch && { serverSearch, apiUrl })
         };
     }
-
 
     /**
      * Formats an array of objects into a dropdown-compatible format.

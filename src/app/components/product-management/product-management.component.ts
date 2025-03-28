@@ -198,7 +198,9 @@ export class ProductManagementComponent implements OnInit {
         this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
         .subscribe((result) => {
             if (result !== undefined) {
+              if(!notes || notes.length !== result) {
                 this.unSelectAllCheckbox(entityIds, result, 'total_notes');
+              }
             }
         });
     }
@@ -237,7 +239,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
     .subscribe((result) => {
         if (result !== undefined) {
-          if(!attachments.data ||attachments.data.length !== result) {
+          if(!attachments.data || attachments.data.length !== result) {
             this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
           }
         }
@@ -392,7 +394,11 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
 	this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
         if (key == 'clients') {
             acc['client'] = selectedFilters[key].map((item: any) => item.id);
-        }else{
+        } else if (key == 'is_active' ) {
+            acc['active_status'] = [selectedFilters[key] == 0 ? '1' : '0'];
+        } else if (key == 'is_rejected') {
+            acc[key] = selectedFilters[key];
+        } else{
             acc[key] = selectedFilters[key].map((item: any) => item.id); 
         }
         return acc;
@@ -443,14 +449,14 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     } else {
       this.selectedRows = [];
     }
-
+    let inActive = false;
     this.productToolSummary.forEach(order => {
       order.checked = checked;
+      inActive = order.is_active === 0;
     });
-    
     this.selectedAllRows = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
-    this.updateTopPanelConfig();
+    this.updateTopPanelConfig(inActive);
     this.gridOptions.api.redrawRows();
   }
 
@@ -473,7 +479,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     } else {
         this.selectedAllRows = true;
     }
-    this.updateTopPanelConfig();
+    this.updateTopPanelConfig(params.data.is_active === 0);
     this.gridOptions.api.redrawRows();
   }
 
@@ -566,11 +572,12 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
   /**
    * Function to Update top panel config
    */
-  updateTopPanelConfig () {
+  updateTopPanelConfig (isActive?: boolean) {
     this.topPanelConfig.actions = this.productManagementService.getActionsIconsConfig(
         this.selectedRowCount,
         this.permissions,
-        this.reportRequestObj
+        this.reportRequestObj,
+        isActive
     );
     
   };
