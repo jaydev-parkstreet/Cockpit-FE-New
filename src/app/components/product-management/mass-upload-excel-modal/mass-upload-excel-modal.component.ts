@@ -40,51 +40,77 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
     }
 
     ngOnInit(): void {
-        console.log(this);
     }
 
+    /**
+     *Function for on change file uploads.
+     * @author PSI-Enhancements
+     * @param event
+     */
     onFileChange(event: any): void {
         const files: FileList = event.target.files;
         const allowedExtensions = ['xlsx'];
         const maxSize = 10 * 1024 * 1024;
         const validFiles: File[] = [];
         this.errorMessage = '';
-
+    
         if (this.selectedFiles.length >= 1) {
             this.errorMessage = 'You can upload only one file at a time.';
             setTimeout(() => {
                 this.errorMessage = '';
             }, 3000);
+            event.target.value = '';
             return;
         }
-
+    
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             const fileName = file.name;
             const fileSize = file.size;
             const fileExtension = fileName.split('.').pop()?.toLowerCase();
+    
             if (fileSize > maxSize) {
                 this.errorMessage = `${fileName} is too large! Please upload a file up to 10 MB.`;
                 setTimeout(() => {
                     this.errorMessage = '';
                 }, 3000);
+                event.target.value = '';
                 return;
             }
+    
             if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
                 this.errorMessage = `Only ${allowedExtensions.join(', ')} files are allowed to be uploaded.`;
                 setTimeout(() => {
                     this.errorMessage = '';
                 }, 3000);
+                event.target.value = '';
                 return;
             }
+
             validFiles.push(file);
         }
-
+    
         if (validFiles.length > 0) {
             this.selectedFiles = validFiles;
+            this.modalData.btnLabel[1].isDisable = false;
         }
+        event.target.value = '';
     }
-      
+
+    /**
+     *Function to disable button after delete file.
+     * @author PSI-Enhancements
+     */
+    onFileDeleted(): void {
+        if (this.selectedFiles.length === 0) {
+          this.modalData.btnLabel[1].isDisable = true;
+        }
+      }
+    
+    /**
+     *Function to map product details.
+     * @author PSI-Enhancements
+     */
     transformProductDetail() {
         this.productDetail = [
             {
@@ -102,6 +128,11 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
         ];
     }
 
+    /**
+     *Function to on button click event .
+     * @author PSI-Enhancements
+     * @param event
+     */
     onButtonClicked(event) {
         this.result = { event , sellectedFiles: this.selectedFiles };
         const uploadParams = new FormData();
@@ -134,6 +165,12 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
             this.close();
         }
     }
+
+    /**
+     *Function to convert required file size .
+     * @author PSI-Enhancements
+     * @param size
+     */
     convertFileSizes(size: any) {
         if (size >= 1024 * 1024) {
             return ((size / (1024 * 1024)).toFixed(2) + ' MB');
@@ -142,9 +179,13 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
         }
     }
 
+    /**
+     *Function to convert  file type .
+     * @author PSI-Enhancements
+     * @param fileType
+     */
     convertFileType(fileType: any) {
         const parts = fileType.split('/');
         return parts[1];
     }
 }
-

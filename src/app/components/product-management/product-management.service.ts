@@ -20,7 +20,6 @@ export class ProductManagementService {
 
     /**
       * Function to get top bar config.
-      * @createdDate 19-09-2024
       * @author PSI-Enhancements
       */
     getSummaryTopBarConfig() {
@@ -64,7 +63,8 @@ export class ProductManagementService {
             minWidth: 150,
             width: 150,
             field: 'product_id',
-            cellRenderer: 'idRender'
+            cellRenderer: 'idRender',
+            cellClass: 'tooltip-cell'
         },
         { headerName: 'Product Description', minWidth: 75, width: 193, field: 'description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Supplier', minWidth: 75, width: 115, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
@@ -138,7 +138,7 @@ export class ProductManagementService {
      * Renders a checkbox in the grid column, checked or unchecked depending on the row data.
      * @param {object} params
      * @returns {string}
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     renderCheckbox(params) {
         let checkboxSelection = '';
@@ -172,7 +172,7 @@ export class ProductManagementService {
      *
      * @param {object} params
      * @returns {string}
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     renderDash(params) {
         if (params.value) {
@@ -187,21 +187,65 @@ export class ProductManagementService {
      *
      * @param params
      * @returns {string}
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     renderId(params) {
-        if (params.value) {
-            return `<a target="_blank" style="color: black;text-decoration: none;" onmouseover="this.style.textDecoration='underline'"
-                onmouseout="this.style.textDecoration='none'" href="product-management/${params.value}">${params.value}</a>`;
+        if (params.value === null || params.value === '---' || params.value === '-') {
+            return '--';
+        } else if (params.data && params.data.product_id) {
+            let fbStatusToolTip = '';
+            if (params.data.ns_status === 2) {
+                fbStatusToolTip = `
+                <i class="fas fa-clock sync-pending u-base-warning">
+                    <div class="tooltip-content_">
+                        <div class="tooltip-text_"><span class="sync-heading">Sync Status:</span> In Queue</div>
+                        <i></i>
+                    </div>
+                </i>`;
+            } else if (params.data.ns_status === 3 && params.data.status === "Pending") {
+                fbStatusToolTip = `
+                <i class="fas fa-exclamation-circle sync-failed u-base-error">
+                    <div class="tooltip-content_pending_status">
+                        <div class="tooltip-text_">
+                            <span class="fail">Sync Status:<span class="fail-msg"> Failed</span></span>
+                        </div>
+                        <i></i>
+                    </div>
+                </i>`;
+            }
+            else if (params.data.ns_status === 3 && params.data.status !== "Pending") {
+                fbStatusToolTip = `
+                <i class="fas fa-exclamation-circle sync-failed u-base-error">
+                    <div class="tooltip-content_">
+                        <div class="tooltip-text_ u-pg-g-1">
+                            <span class="fail">Sync Status:<span class="fail-msg"> Failed</span></span>
+                            <span class="re-sync">Re-Sync</span>
+                        </div>
+                        <i></i>
+                    </div>
+                </i>`;
+            }
+            return `
+                <div class="text-ellipsis">
+                    <a target="_blank" style="color: black; text-decoration: none;" 
+                        onmouseover="this.style.textDecoration='underline'"
+                        onmouseout="this.style.textDecoration='none'" 
+                        href="product-management/${params.value}">
+                        ${params.value}
+                    </a>
+                    ${fbStatusToolTip}
+                    <span class="add-tooltip">${params.value}</span>
+                </div>`;
+        } else {
+            return '<i class="fas fa-circle-notch fa-spin fa-2x fa-fw"></i>';
         }
-        return '-';
     }
 
     /**
      * Returns the status of the product with an associated color.
      * @param {Object} params
      * @returns {String}
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     renderStatus(params) {
       const statusLabels = {
@@ -243,7 +287,7 @@ export class ProductManagementService {
      * @param permission
      * @param isActive
      * @returns {object} The config object for top panel.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getTopPanelConfig(permission, isActive = false) {
         return {
@@ -399,7 +443,7 @@ export class ProductManagementService {
      * @param placeholdertext
      * @param name
      * @returns An object
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getMultiSelectConfig(placeholdertext, name = 'name', serverSearch = false, apiUrl = '') {
         return {
@@ -426,7 +470,7 @@ export class ProductManagementService {
      * @param values
      * @param name
      * @returns An array of objects suitable for use in a dropdown
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     formatDropdownValue(values, name = '') {
         let dropdown = [];
@@ -446,7 +490,7 @@ export class ProductManagementService {
      * @param summaryData
      * @param token
      * @returns A Promise containing the summary data.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getSummary(summaryData: any, token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -458,7 +502,7 @@ export class ProductManagementService {
      * 
      * @param token
      * @returns An Observable containing the data of dropdown items.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getDropdown(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -470,7 +514,7 @@ export class ProductManagementService {
      * 
      * @param clientId
      * @returns An Observable containing the data of sub-brand products.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getSubBrandProducts(clientId: string, brandID: string) {
         const token = localStorage.getItem('authToken');
@@ -488,7 +532,7 @@ export class ProductManagementService {
      *
      * @param id The ID of the product.
      * @returns An Observable containing the product details from the server.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getDetails(id) {
         return this.http
@@ -500,7 +544,7 @@ export class ProductManagementService {
      * Retrieves the permission settings for the product tool.
      *
      * @returns A promise that resolves to the permission data from the server.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getPermission() {
         return this.http
@@ -512,7 +556,7 @@ export class ProductManagementService {
      * @param productId
      * @param isActive
      * @returns Observable containing the response from the server.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     getActivateAPI(productId: string[], isActive) {
         const headers = new HttpHeaders({
@@ -533,7 +577,7 @@ export class ProductManagementService {
      * Makes an API call to export the given products to Excel.
      * @param obj
      * @returns An observable containing the HTTP response from the server.
-     * @author psi-enhancements
+     * @author PSI-Enhancements
      */
     excelExport(obj) {
         return this.http
@@ -558,6 +602,10 @@ export class ProductManagementService {
         });
     }
 
+    /**
+     *Function to get config for mass bulk upload.
+     * @author PSI-Enhancements
+     */   
     getMassExcelModalData() {
         return {
             titleIcon: 'fas fa-layer-plus',
@@ -565,22 +613,50 @@ export class ProductManagementService {
             modalBodyTitle: 'Upload Excel File',
             requestObj: {},
             uploadFileKey: 'file',
-            // apiRoute: Routes.available.mobile_product_management_system_upload_bulk_product,
             modalBodyText: 'Upload bulk Products.',
             successLabelText: 'Allocated SKUs:',
             errorLabelText: 'Rows with Errors:',
             btnLabel: [
-                { type: 'Btn', label: 'Cancel', class: 'secondary' },
-                { type: 'Btn', label: 'Upload', class: 'primary' }
+                { type: 'Btn', label: 'Cancel', class: 'secondary', isDisable: false},
+                { type: 'Btn', label: 'Upload', class: 'primary' , isDisable: true}
             ]
         };
     }
 
-
+    /**
+     *Function to upload mass bulk product.
+     * @author PSI-Enhancements
+     * @param obj
+     */   
     uploadbulkProducts(obj) { 
         return this.http
         .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.UPLOAD_BULK_PRODUCT, obj)
         .pipe(map((response: any) => response));
+    }
+
+    /**
+     * Syncs the product order with NS.
+     * @param productId
+     * @returns An Observable containing the response from the server.
+     * @author PSI-Enhancement
+     */
+    syncOrder(productId) {
+        let params = {
+            'productId' : productId
+        };
+        return this.http
+            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.NS_SYNC, params);
+    }
+
+    /**
+     * Fetches the sync status details for a product
+     * @param id
+     * @returns An observable containing the sync status details
+     * @author PSI-Enhancement
+     */
+    getSyncStatusDetails(id) {
+        return this.http
+          .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.NS_SYNC_STATUS + id);
     }
 
 }

@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-ps-details',
-  templateUrl: './ps-details.component.html',
-  styleUrls: ['./ps-details.component.scss']
+    selector: 'app-ps-details',
+    templateUrl: './ps-details.component.html',
+    styleUrls: ['./ps-details.component.scss']
 })
 export class PsDetailsComponent implements OnInit {
 
@@ -23,12 +23,12 @@ export class PsDetailsComponent implements OnInit {
      * 
      * @author PSI-Enhancement
      */
-      hasData(key: string) {
-      return (
-        (this.data?.current_data?.[key] != undefined &&
-          this.data?.current_data?.[key] !== '') ||
-        (this.data?.previous_data?.[key] != undefined &&
-          this.data?.previous_data?.[key] !== '')
-      );
+    hasData(key: string) {
+        return (
+            (this.data?.current_data?.[key] != undefined &&
+                this.data?.current_data?.[key] !== '') ||
+            (this.data?.previous_data?.[key] != undefined &&
+                this.data?.previous_data?.[key] !== '')
+        );
     }
 }
