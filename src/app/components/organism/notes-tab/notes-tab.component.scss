@@ -8,6 +8,7 @@
     .note-row-tab {
         max-height: 400px;
         overflow: auto;
+        position: relative;
         @include new-scrollbar;
 
         &.custom-padding {
@@ -41,6 +42,10 @@
             .note-detail {
                 i {
                     font-size: 12px;
+                }
+                .right-section{
+                    position: absolute;
+                    right: 20px;
                 }
             }
 
