@@ -11,7 +11,7 @@
     <div class="modal-body w-100">
 
         <app-no-record 
-            *ngIf="modalData?.noteDetails?.notes.length == 0 && isNotesListVisible"
+            *ngIf="modalData?.noteDetails?.notes.length == 0 && isNotesListVisible && !modalData.multiple"
             [placeHolderText]="modalData.noDataMessage"
             [iconClass]="modalData.emptyDataIcon || 'far fa-surprise'">
         </app-no-record>

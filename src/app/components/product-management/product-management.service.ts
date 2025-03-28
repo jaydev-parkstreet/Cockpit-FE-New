@@ -60,8 +60,8 @@ export class ProductManagementService {
             cellClass: 'select-all-header-cell pl0px header-check check'
         }, {
             headerName: 'Product Code',
-            minWidth: 150,
-            width: 150,
+            minWidth: 200,
+            width: 200,
             field: 'product_id',
             cellRenderer: 'idRender',
             cellClass: 'tooltip-cell'
