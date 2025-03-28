@@ -44,7 +44,7 @@ export class SidebarMenuComponent implements OnInit {
     const submenuHeight = submenuElement.offsetHeight;
     this.renderer.setStyle(submenuElement, 'display', 'none');
     this.renderer.setStyle(submenuElement, 'visibility', 'visible');
-    let topPosition = parentRect.top - 64;
+    let topPosition = parentRect.top;
     if (this.isSidebarExpanded) {
       this.renderer.removeStyle(submenuItem, 'position');
       if (topPosition + submenuHeight > viewportHeight) {
@@ -97,7 +97,7 @@ export class SidebarMenuComponent implements OnInit {
         const submenuHeight = submenuItem.offsetHeight;
         this.renderer.setStyle(submenuItem, 'display', 'none');
         this.renderer.setStyle(submenuItem, 'visibility', 'visible');
-        let topPosition = parentRect.top - 64;
+        let topPosition = parentRect.top;
         if (topPosition + submenuHeight > viewportHeight) {
           this.renderer.setStyle(submenuItem, 'bottom', `16px`);
         } else {
