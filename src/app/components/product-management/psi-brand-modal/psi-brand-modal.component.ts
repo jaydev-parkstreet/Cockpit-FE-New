@@ -32,6 +32,10 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         this.getFormControl();
     }
 
+    /**
+     * Function to get form control fields.
+     * @author PSI-Enhancements
+     */
     getFormControl() {
         const controls = {};
         Object.keys(this.modalData.config).forEach(key => {
@@ -46,13 +50,20 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         });
         this.brandForm = new FormGroup(controls);
     }
-    
-    
-    
-    
+
+    /**
+     * Function to close popup.
+     * @author PSI-Enhancements
+     */
     cancel(): void {
         this.close();
     }
+
+    /**
+     * Function for button click event.
+     * @author PSI-Enhancements
+     * @param event
+     */
     onButtonClicked(event) {
         if (event === "Cancel") {
             this.result = { confirm: false };
@@ -67,6 +78,11 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         }
     }
 
+     /**
+     * Function to get config array.
+     * @author PSI-Enhancements
+     * @param config
+     */
     getConfigArray(config) {
         return Object.keys(config).map(key => config[key]);
     }
@@ -77,7 +93,6 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
      * @param event
      * @author PSI-Enhancements
      */
-
     onDropdownStateChange(field, event) {
         this.brandForm.get(field)?.setValue(event[0]);
         this.updateFilter({ field, event });
@@ -113,11 +128,25 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         return (control?.invalid || field?.hasError) && this.isCreateButtonDisabled;
     }
 
+
+    /**
+      * Function to update config.
+      * @param config
+      * @param isDisplayed
+      * @author PSI-Enhancements
+      */
     updateConfig = (config, isDisplayed) => {
         config.display = isDisplayed;
         config.isRequired = isDisplayed;
     };
 
+
+    /**
+      * Function to check brand and sub-brand is already exists or not.
+      * @param data
+      * @param clientId
+      * @author PSI-Enhancements
+      */
     CheckBrandValueExist(data, clientId) {
         if (data.field === 'new_brands') {
             const param = {
@@ -138,6 +167,13 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         }
     }
     
+
+    /**
+      * Function to check brand is already exists or not.
+      * @param data
+      * @param param
+      * @author PSI-Enhancements
+      */
     checkBrandExist(data, param) {
         this.ProductAddService.getBrandExist(param).subscribe(response => {
             this.modalData.config.new_brands.hasError = response.hasError;
@@ -151,6 +187,12 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         });
     }
 
+    /**
+      * Function to check Sub-brand is already exists or not.
+      * @param data
+      * @param param
+      * @author PSI-Enhancements
+      */
     checkSubBrandExits(data, param) {
         this.ProductAddService.getSubBrandExist(param).subscribe(response => {
             this.modalData.config.new_sub_brand.hasError = response.hasError;
@@ -164,7 +206,11 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         });
     }
 
-
+    /**
+      * Function to enable and disble create button.
+      * @param isCreateButtonDisabled
+      * @author PSI-Enhancements
+      */
     isDisableCheckCreateBrand(isCreateButtonDisabled) {
         this.brandForm.valueChanges.subscribe(() => {
             const isFormValid = this.brandForm.valid;
@@ -173,6 +219,11 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         }); 
     }
 
+    /**
+      * Function to update filters.
+      * @param data
+      * @author PSI-Enhancements
+      */
     updateFilter(data) {
         if (data.field === 'brand') {
             if (data.event[0].isNew) {
@@ -214,7 +265,11 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         this.changeDetector.detectChanges();
     }
     
-
+    /**
+      * Function to add fields control for brand and sub-brand.
+      * @param fieldName
+      * @author PSI-Enhancements
+      */
     addFieldControl(fieldName: string) {
        
         const fieldConfig = this.modalData.config[fieldName];
@@ -224,7 +279,6 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
             return;
         }
     
-        // Avoid adding duplicate controls
         if (!this.brandForm.get(fieldName)) {
             const isRequired = fieldConfig.required || fieldConfig.isRequired;
     
@@ -236,7 +290,6 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
                 )
             );
         } else {
-            // If control already exists, update validators
             const control = this.brandForm.get(fieldName);
             const isRequired = fieldConfig.required || fieldConfig.isRequired;
     
@@ -252,7 +305,11 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         this.changeDetector.detectChanges();
     }
     
-    
+    /**
+      * Function to update sub-brand client.
+      * @param selectedValue
+      * @author PSI-Enhancements
+      */
     updateSubBrandClient(selectedValue) {
         this.ProductAddService.getSubBrandClients(selectedValue[0]?.client_id, selectedValue[0]?.id).subscribe(subBrands => {
             let sub_brand = [...subBrands, { id: '', name: 'Create New', isNew: true }];

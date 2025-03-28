@@ -24,53 +24,53 @@ import { CmpNotesModalComponent } from './components/cmp-notes-modal/cmp-notes-m
 import { QuillModule } from 'ngx-quill'
 
 @NgModule({
-  declarations: [
-    HeaderToolComponent,
-    SearchBarComponent,
-    SummaryTopBarComponent,
-    ExcelExportComponent,
-    CmpButtonComponent,
-    CmpInputDropdownComponent,
-    CmpCheckboxComponent,  
-    PsDefaultLinkComponent,
-    PsiActionButtonsComponent,
-    CmpHeaderWidgetComponent,
-    CardLayoutDetailsComponent,
-    TableCardComponent,
-    CmpTabGroupComponent,
-    SummaryGridComponent,
-    CmpAttachmentModalComponent,
-    PsiCrudFormComponent,
-    NoRecordComponent,
-    CmpNotesModalComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule, 
-    ReactiveFormsModule,
-    StatelessModule,
-    AgGridModule,
-    QuillModule.forRoot()
-  ],
- 
-  exports: [
-    HeaderToolComponent,
-    SearchBarComponent,
-    SummaryTopBarComponent,  
-    CmpInputDropdownComponent, 
-    CmpCheckboxComponent,  
-    SummaryTopBarComponent,
-    PsDefaultLinkComponent,
-    PsiActionButtonsComponent,
-    CmpHeaderWidgetComponent,
-    CardLayoutDetailsComponent,
-    TableCardComponent,
-    CmpTabGroupComponent,
-    SummaryGridComponent,
-    CmpButtonComponent,
-    PsiCrudFormComponent,
-    NoRecordComponent,
-    CmpNotesModalComponent
-  ]
+    declarations: [
+        HeaderToolComponent,
+        SearchBarComponent,
+        SummaryTopBarComponent,
+        ExcelExportComponent,
+        CmpButtonComponent,
+        CmpInputDropdownComponent,
+        CmpCheckboxComponent,
+        PsDefaultLinkComponent,
+        PsiActionButtonsComponent,
+        CmpHeaderWidgetComponent,
+        CardLayoutDetailsComponent,
+        TableCardComponent,
+        CmpTabGroupComponent,
+        SummaryGridComponent,
+        CmpAttachmentModalComponent,
+        PsiCrudFormComponent,
+        NoRecordComponent,
+        CmpNotesModalComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        StatelessModule,
+        AgGridModule,
+        QuillModule.forRoot()
+    ],
+
+    exports: [
+        HeaderToolComponent,
+        SearchBarComponent,
+        SummaryTopBarComponent,
+        CmpInputDropdownComponent,
+        CmpCheckboxComponent,
+        SummaryTopBarComponent,
+        PsDefaultLinkComponent,
+        PsiActionButtonsComponent,
+        CmpHeaderWidgetComponent,
+        CardLayoutDetailsComponent,
+        TableCardComponent,
+        CmpTabGroupComponent,
+        SummaryGridComponent,
+        CmpButtonComponent,
+        PsiCrudFormComponent,
+        NoRecordComponent,
+        CmpNotesModalComponent
+    ]
 })
 export class SharedModule { }
