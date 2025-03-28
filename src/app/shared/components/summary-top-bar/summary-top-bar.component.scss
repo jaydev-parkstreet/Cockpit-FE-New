@@ -35,29 +35,6 @@
     text-decoration: none;
     color: $colors-neutral-black;
     font-size: 12px;
-
-    &:hover {
-        color: $colors-v2-base-primary;
-        text-decoration: underline;
-    }
-}
-
-.filter-results {
-    display: flex;
-    color: $colors-neutral-dark;
-    font-size: 14px;
-    border-left: 1px solid $colors-neutral-light;
-    height: 30px;
-    align-items: center;
-    padding-left: 16px;
-    margin-right: 16px;
-    b {
-        font-family: $montserrat-medium;
-        font-weight: 500;
-    }
-    span {
-        display: flex;
-    }
 }
 
 .icon-container {
