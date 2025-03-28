@@ -48,7 +48,7 @@
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
-                        [form]="form"
+                        [valueEntered]="form.value[field.name]"
                         [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
                         (valueChanged)="onInputChange(field.name, $event)">
                     </app-psi-input-text-field>
@@ -57,9 +57,10 @@
                     </div>
                 </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass"  *ngIf="field?.type == 'checkbox'">
+                    {{form?.value[field.name]}}
                     <app-psi-checkbox
                     [field]="field"
-                    [form]="form"
+                    [checkedValue]="form?.value[field.name]"
                     [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
                     (valueChanged)="onCheckedInput(field.name, $event)">
                     </app-psi-checkbox>
@@ -101,7 +102,7 @@
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
-                        [form]="form"
+                        [valueEntered]="form.value[field.name]"
                         [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
                         (valueChanged)="onInputChange(field.name, $event)">
                     </app-psi-input-text-field>
