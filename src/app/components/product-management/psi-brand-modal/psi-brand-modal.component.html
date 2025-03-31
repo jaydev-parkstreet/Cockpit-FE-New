@@ -29,13 +29,13 @@
                     [field]="field"
                     [valueEntered]="brandForm.value[field.name]"
                     [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
-                    (valueChanged)="onInputChange(field.name, $event)">
+                    (inputValueChange)="onInputChange(field.name, $event)">
                 </app-psi-input-text-field>
                 <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                     <span *ngIf="!field.validationMessage">
                         <span *ngIf="brandForm.get(field.name)?.errors?.required">Required</span>
                     </span>
-                    <span *ngIf="field.validationMessage && field.hasError">{{ field.validationMessage }}</span>
+                    <span *ngIf="field.validationMessage ">{{ field.validationMessage }}</span>
                 </div>
             </div>
         </div>

@@ -10,6 +10,7 @@ export class PsiInputTextFieldComponent implements OnInit {
   @Input() validationClasses: any;
   @Input() valueEntered: any;
   @Output() valueChanged: EventEmitter<string> = new EventEmitter<string>();
+  @Output() inputValueChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }
 
@@ -24,5 +25,10 @@ export class PsiInputTextFieldComponent implements OnInit {
   onValueChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.valueChanged.emit(value);
+  }
+
+  onInputValueChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.inputValueChange.emit(value);
   }
 }
