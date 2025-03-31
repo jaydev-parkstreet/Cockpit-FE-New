@@ -148,7 +148,7 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
                             if (response.hasError) {
                                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                             } else {
-                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                                 this.modalData.noteDetails.notes = this.modalData.noteDetails.notes.filter((item: any) => item.id !== id);
                             }
                         }, (error) => {
