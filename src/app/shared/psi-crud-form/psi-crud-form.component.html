@@ -66,6 +66,15 @@
                     </app-psi-checkbox>
                 </div>
             </div>
+            <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
+                <div *ngFor="let field of crudFieldConfig.btnLabel">
+                    <app-cmp-button
+                    [buttonText]="field.label"
+                    [buttonClass]="field.class"
+                    (onClick)="formSubmit.emit($event)">
+                    </app-cmp-button>
+                </div>
+            </div>
         </div>
 
         <!-- Right section -->
@@ -111,18 +120,6 @@
                     </div>
                 </div>
             </div>
-
-        </div>
-    </div>
-
-    <!-- Footer section -->
-    <div class="col-sm-6 u-flex justify-content-end">
-        <div class="u-pg-g-2 form-submit-button" *ngFor="let field of crudFieldConfig.btnLabel">
-            <app-cmp-button
-              [buttonText]="field.label"
-              [buttonClass]="field.class"
-              (onClick)="formSubmit.emit($event)">
-            </app-cmp-button>
         </div>
     </div>
 </div>
