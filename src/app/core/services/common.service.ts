@@ -287,7 +287,7 @@ export class CommonService {
                         response.headers.get('content-disposition')
                     ));
                     saveAs(data, fileName || 'report.csv');
-                    this.showToastV2Message(true, 'File Downloaded Successfully', 'fas fa-exclamation-circle', 'success');
+                    this.showToastV2Message(true, 'File Downloaded Successfully', 'fas fa-check-circle', 'success');
                 } else {
                     this.showToastV2Message(true, 'No data found');
                 }

@@ -204,20 +204,31 @@ export class ProductManagementComponent implements OnInit {
             }
         });
     }
-
-  openAttachmentListPopup (entity:any) {
-    if (this.permissions.permissions.Update) {
-        this.isLoadingSummaryData = true;
-        this.productManagementService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response:any) => {
-          this.isLoading = false;
-          this.showAttachment(false, [entity], response);
-        },
-        (error: any) => {
-          this.isLoading = false;
-          console.error(error);          
-        });
-    }
-}
+	
+	/**
+	 * Function to open Attachment Popup for the attachment list
+	 * 
+	 * @param entity 
+	 * @author PSI-Enhancement
+	 */
+	openAttachmentListPopup(entity: any) {
+		if (this.permissions.permissions.Update) {
+			this.spinner.show();
+			this.productManagementService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response: any) => {
+				if(!response.hasErrors) {
+					this.showAttachment(false, [entity], response);
+				} else {
+					this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+				}
+				this.isLoading = false;
+				this.spinner.hide();
+			},(error: any) => {
+				this.isLoading = false;
+				this.spinner.hide();
+				this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+			});
+		}
+	}
 
 showAttachment(multiple:any, entityIds:any, attachments:any) {
     let modalData:any;
@@ -266,6 +277,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
      * @author PSI-Enhancements
     */
   async getSummaryData() {
+    this.isLoadingSummaryData = true;
     this.spinner.show();
     const token = localStorage.getItem('authToken');
     const summaryData = this.reportRequestObj;
@@ -531,7 +543,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       this.spinner.hide();
       if (!response.hasError) {
         this.setDataSourceAgGrid();
-          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
       } else {
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
       }

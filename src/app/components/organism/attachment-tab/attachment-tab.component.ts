@@ -141,7 +141,7 @@ export class AttachmentTabComponent implements OnInit {
                             if (response.hasError) {
                                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                             } else {
-                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                                 this.attachments.data = this.attachments.data.filter((item: any) => item.upload_id !== upload_id);
                             }
                         }, (error) => {
@@ -175,7 +175,7 @@ export class AttachmentTabComponent implements OnInit {
                 if (response.hasError) {
                     this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
                 } else {
-                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                     file.permission_id = permission_id;
                 }
             }, (error) => {
