@@ -266,6 +266,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
      * @author PSI-Enhancements
     */
   async getSummaryData() {
+    this.isLoadingSummaryData = true;
     this.spinner.show();
     const token = localStorage.getItem('authToken');
     const summaryData = this.reportRequestObj;
