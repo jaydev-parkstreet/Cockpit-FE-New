@@ -66,7 +66,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     
     this.filteredItems = this.filteredItems || []
     this.updateFilteredItems(this.filteredItems);
-    this.updateSelectAllState(this.filteredItems);
+    this.updateSelectAllStates();
     this.originalItems = [...this.filteredItems];
     this.searchSubject.pipe(debounceTime(750)).subscribe(searchText => {
       this.fetchOptionsFromServer(searchText);
@@ -94,7 +94,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   }
 
   updateSelectAllStates(): void {
-    this.isAllSelected = this.selectedItems.length === this.filteredItems.length;
+    this.isAllSelected = this.selectedItems.length > 0;
   }
 
 	/**
@@ -142,6 +142,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
         this.selectedItems.splice(index, 1);
       }
     }
+    this.updateSelectAllStates();
     this.onDropDownChange.emit(this.selectedItems);
   }
 
@@ -169,9 +170,6 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  updateSelectAllState(items): void {
-    this.isAllSelected = this.selectedItems.length === items.length;
-  }
   updateDropdownState(): void {
 
     if (this.isActive && !this.disabled) {
