@@ -93,6 +93,14 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
       this.updateSelectAllStates();
   }
 
+  /**
+   * Updates the `isAllSelected` state based on the number of selected items.
+   * 
+   * @param none
+   * @createdAt 31-03-2025
+   * @author PSI-Enhancement
+   * @returns void
+   */
   updateSelectAllStates(): void {
     this.isAllSelected = this.selectedItems.length > 0;
   }
@@ -129,6 +137,14 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     return this.isOpen;
   }
 
+  /**
+   * Toggles the selection of a specific item in the dropdown.
+   * 
+   * @param {Item} item - The item to toggle selection for.
+   * @createdAt 31-03-2025
+   * @author PSI-Enhancement
+   * @returns void
+   */
   toggleSelection(item: Item): void {
     if (this.allowSingleSelect) {
       this.selectedItems = [item];
@@ -152,6 +168,14 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.toggleDropdown();
   }
 
+  /**
+   * Toggles the selection of all items in the dropdown.
+   * 
+   * @param none
+   * @createdAt 31-03-2025
+   * @author PSI-Enhancement
+   * @returns void
+   */  
   toggleSelectAll(): void {
     if (this.isAllSelected) {
       this.selectedItems = [];
@@ -161,21 +185,16 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.isAllSelected = !this.isAllSelected;
     this.onDropDownChange.emit(this.selectedItems);
     this.updateFormControl();
+    if(this.isOpen && (this.filteredItems.length === this.selectedItems.length ||
+      this.selectedItems.length === 0)) {
+      this.isOpen = false;
+    }
   }
 
   updateFormControl(): void {
     if (this.formControl) {
       this.formControl.setValue(this.selectedItems);
       this.formControl.updateValueAndValidity();
-    }
-  }
-
-  updateDropdownState(): void {
-
-    if (this.isActive && !this.disabled) {
-      this.isOpen = false;
-    } else {
-      this.isOpen = false;
     }
   }
 
@@ -208,6 +227,14 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
 		}
 	}
 
+  /**
+   * Filters the items based on the search text.
+   * 
+   * @param none
+   * @createdAt 31-03-2025
+   * @author PSI-Enhancement
+   * @returns void
+   */
   filterItems(): void {
     const searchTextLower = this.searchText.toLowerCase();
     this.hideList = false;
