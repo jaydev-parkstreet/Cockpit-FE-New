@@ -133,18 +133,20 @@ export class ProductManagementComponent implements OnInit {
     };
     this.gridOptions.onCellMouseOver = (params) => {
       if (params && params.event) {
-        const element = params.event.srcElement.querySelector('.add-tooltip');
-        if (element) {
-          const scrollWidth = params.event.srcElement.scrollWidth;
-          const offsetWidth = params.event.srcElement.offsetWidth;
-          if (offsetWidth < scrollWidth) {
-            this.renderer.addClass(element, 'tooltip-text');
-          } else {
-            this.renderer.removeClass(element, 'tooltip-text');
-          }
-        }
+		const agCelltooltip = params.event.target.closest('.tooltip-cell');
+		const tooltipCell = agCelltooltip?.querySelector('.add-tooltip');
+		if(tooltipCell) {
+			const textEllipsisElement = agCelltooltip.querySelector('.text-ellipsis');
+			const scrollWidth = textEllipsisElement.scrollWidth;
+			const offsetWidth = textEllipsisElement.offsetWidth;
+			if (offsetWidth < scrollWidth) {
+			  this.renderer.addClass(tooltipCell, 'tooltip-text');
+			} else {
+			  this.renderer.removeClass(tooltipCell, 'tooltip-text');
+			}	
+		}
       }
-    };
+    };	
   }
 
   /**
