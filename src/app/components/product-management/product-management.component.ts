@@ -50,7 +50,7 @@ export class ProductManagementComponent implements OnInit {
   FileSaver: any;
   downloading: boolean;
   filtermodal: any;
-  private timerSubscription!: Subscription;
+  private timerSubscriptions = new Map<number, Subscription>();
 
   constructor(
     private productManagementService: ProductManagementService,
@@ -123,9 +123,10 @@ export class ProductManagementComponent implements OnInit {
         this.productManagementService.syncOrder(params.value).subscribe( (response: any) => {
           if(!response.hasError) {
             params.data.ns_status = 2;
-            this.timerSubscription = interval(30000).subscribe(()=> {
+            const subscription = interval(30000).subscribe(()=> {
                 this.getSyncStatusDetails(params);
             });
+			this.timerSubscriptions.set(params.data.product_id, subscription);
             this.gridOptions.api.redrawRows();
           }
         });
@@ -613,13 +614,26 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
                     this.commonService.showToastV2Message(true, 'Sync Failed');
                 }
                 this.gridOptions.api.redrawRows();
-                this.timerSubscription.unsubscribe();
+                this.clearTimer(params.data.product_id);
             } else {
-                this.timerSubscription.unsubscribe();
+                this.clearTimer(params.data.product_id);
                 params.data.ns_status = 3;
                 this.gridOptions.api.redrawRows();
                 this.commonService.showToastV2Message(true, 'Save Failed');
             }
         });
     }
+
+	/**
+	 * Function to unsubscribe the subscription
+	 * 
+	 * @param productID 
+	 * @author PSI-Enhancement
+	 */
+	clearTimer(productID) {
+		if(this.timerSubscriptions.has(productID)) {
+			this.timerSubscriptions.get(productID).unsubscribe();
+			this.timerSubscriptions.delete(productID);
+		}
+	}
 }
