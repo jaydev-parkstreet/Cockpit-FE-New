@@ -343,4 +343,20 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
 			this.dropdownClosedWithServerFilteredItems.emit(this.selectedItems);
 		}
 	}
+
+    /**
+     * Clears the selected items in the dropdown.
+     * 
+     * @param {Event} event - The event object
+     * @author PSI-Enhancement
+     */
+    clearSelectedItems(event: Event): void {
+        event.stopPropagation();
+		this.searchText = '';
+		this.isAllSelected = false;
+        this.selectedItems = [];
+        this.onDropDownChange.emit(this.selectedItems);
+        this.isOpen && this.closeDropdown();
+		this.updateFormControl();
+    }
 }

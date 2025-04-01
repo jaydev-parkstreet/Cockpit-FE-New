@@ -41,6 +41,15 @@
             outline: 2px solid $colors-v2-base-error;
             border: 0;
         }
+
+        .clearSelectedItems {
+            right: 48px;
+            font-size: 16px;
+
+            &:hover {
+                color: $colors-neutral-black;
+            }
+        }
     }
 
     .dropdown-button {
