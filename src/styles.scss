@@ -46,6 +46,7 @@
 
 html {
     font-size: 16px;
+    @include scrollbar;
 }
 
 @font-face {
