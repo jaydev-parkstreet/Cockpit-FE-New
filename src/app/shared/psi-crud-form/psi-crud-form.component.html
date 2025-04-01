@@ -50,7 +50,7 @@
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
-                        [form]="form"
+                        [valueEntered]="form.value[field.name]"
                         [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
                         (valueChanged)="onInputChange(field.name, $event)">
                     </app-psi-input-text-field>
@@ -59,12 +59,22 @@
                     </div>
                 </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass"  *ngIf="field?.type == 'checkbox'">
+                    {{form?.value[field.name]}}
                     <app-psi-checkbox
                     [field]="field"
-                    [form]="form"
+                    [checkedValue]="form?.value[field.name]"
                     [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
                     (valueChanged)="onCheckedInput(field.name, $event)">
                     </app-psi-checkbox>
+                </div>
+            </div>
+            <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
+                <div *ngFor="let field of crudFieldConfig.btnLabel">
+                    <app-cmp-button
+                    [buttonText]="field.label"
+                    [buttonClass]="field.class"
+                    (onClick)="formSubmit.emit($event)">
+                    </app-cmp-button>
                 </div>
             </div>
         </div>
@@ -103,7 +113,7 @@
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
-                        [form]="form"
+                        [valueEntered]="form.value[field.name]"
                         [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.isDisabled}"
                         (valueChanged)="onInputChange(field.name, $event)">
                     </app-psi-input-text-field>
@@ -112,18 +122,6 @@
                     </div>
                 </div>
             </div>
-
-        </div>
-    </div>
-
-    <!-- Footer section -->
-    <div class="col-sm-6 u-flex justify-content-end">
-        <div class="u-pg-g-2 form-submit-button" *ngFor="let field of crudFieldConfig.btnLabel">
-            <app-cmp-button
-              [buttonText]="field.label"
-              [buttonClass]="field.class"
-              (onClick)="formSubmit.emit($event)">
-            </app-cmp-button>
         </div>
     </div>
 </div>

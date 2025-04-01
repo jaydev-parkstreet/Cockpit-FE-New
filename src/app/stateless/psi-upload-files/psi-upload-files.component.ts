@@ -15,6 +15,7 @@ export class PsiUploadFilesComponent implements OnInit {
     @Input() convertFileSizes: (size: number) => string;
     @Input() convertFileType: (type: string) => string;
     @Output() changeFileUpload = new EventEmitter<any>();
+    @Output() fileDeleted = new EventEmitter<void>();
 
     constructor() { }
 
@@ -37,5 +38,6 @@ export class PsiUploadFilesComponent implements OnInit {
      */
     deleteFile(index: number): void {
         this.selectedFiles.splice(index, 1);
+        this.fileDeleted.emit();
     }
 }

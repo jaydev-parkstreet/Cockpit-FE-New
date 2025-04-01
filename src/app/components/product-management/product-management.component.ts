@@ -133,18 +133,20 @@ export class ProductManagementComponent implements OnInit {
     };
     this.gridOptions.onCellMouseOver = (params) => {
       if (params && params.event) {
-        const element = params.event.srcElement.querySelector('.add-tooltip');
-        if (element) {
-          const scrollWidth = params.event.srcElement.scrollWidth;
-          const offsetWidth = params.event.srcElement.offsetWidth;
-          if (offsetWidth < scrollWidth) {
-            this.renderer.addClass(element, 'tooltip-text');
-          } else {
-            this.renderer.removeClass(element, 'tooltip-text');
-          }
-        }
+		const agCelltooltip = params.event.target.closest('.tooltip-cell');
+		const tooltipCell = agCelltooltip?.querySelector('.add-tooltip');
+		if(tooltipCell) {
+			const textEllipsisElement = agCelltooltip.querySelector('.text-ellipsis');
+			const scrollWidth = textEllipsisElement.scrollWidth;
+			const offsetWidth = textEllipsisElement.offsetWidth;
+			if (offsetWidth < scrollWidth) {
+			  this.renderer.addClass(tooltipCell, 'tooltip-text');
+			} else {
+			  this.renderer.removeClass(tooltipCell, 'tooltip-text');
+			}	
+		}
       }
-    };
+    };	
   }
 
   /**
@@ -156,11 +158,11 @@ export class ProductManagementComponent implements OnInit {
    * @param object param
    */
     getNotes(Id, param) {
-        // this.usSpinnerService.spin('app-loader');
+        this.spinner.show();
         this.commonService.getNotes(this.permissions.kind_id,
         this.permissions.tool_id, Id, this.permissions.menu_item_id).subscribe((result: any) => {
             this.showNotesModal(param.length === 0 ? Id : [Id], result.notes, false, param);
-            // this.usSpinnerService.stop('app-loader');
+            this.spinner.hide();
         })
     }
 
@@ -198,24 +200,37 @@ export class ProductManagementComponent implements OnInit {
         this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
         .subscribe((result) => {
             if (result !== undefined) {
+              if(!notes || notes.length !== result) {
                 this.unSelectAllCheckbox(entityIds, result, 'total_notes');
+              }
             }
         });
     }
-
-  openAttachmentListPopup (entity:any) {
-    if (this.permissions.permissions.Update) {
-        this.isLoadingSummaryData = true;
-        this.productManagementService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response:any) => {
-          this.isLoading = false;
-          this.showAttachment(false, [entity], response);
-        },
-        (error: any) => {
-          this.isLoading = false;
-          console.error(error);          
-        });
-    }
-}
+	
+	/**
+	 * Function to open Attachment Popup for the attachment list
+	 * 
+	 * @param entity 
+	 * @author PSI-Enhancement
+	 */
+	openAttachmentListPopup(entity: any) {
+		if (this.permissions.permissions.Update) {
+			this.spinner.show();
+			this.productManagementService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response: any) => {
+				if(!response.hasErrors) {
+					this.showAttachment(false, [entity], response);
+				} else {
+					this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+				}
+				this.isLoading = false;
+				this.spinner.hide();
+			},(error: any) => {
+				this.isLoading = false;
+				this.spinner.hide();
+				this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+			});
+		}
+	}
 
 showAttachment(multiple:any, entityIds:any, attachments:any) {
     let modalData:any;
@@ -237,7 +252,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
     .subscribe((result) => {
         if (result !== undefined) {
-          if(!attachments.data ||attachments.data.length !== result) {
+          if(!attachments.data || attachments.data.length !== result) {
             this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
           }
         }
@@ -264,6 +279,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
      * @author PSI-Enhancements
     */
   async getSummaryData() {
+    this.isLoadingSummaryData = true;
     this.spinner.show();
     const token = localStorage.getItem('authToken');
     const summaryData = this.reportRequestObj;
@@ -392,7 +408,11 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
 	this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
         if (key == 'clients') {
             acc['client'] = selectedFilters[key].map((item: any) => item.id);
-        }else{
+        } else if (key == 'is_active' ) {
+            acc['active_status'] = [selectedFilters[key] == 0 ? '1' : '0'];
+        } else if (key == 'is_rejected') {
+            acc[key] = selectedFilters[key];
+        } else{
             acc[key] = selectedFilters[key].map((item: any) => item.id); 
         }
         return acc;
@@ -443,14 +463,14 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     } else {
       this.selectedRows = [];
     }
-
+    let inActive = false;
     this.productToolSummary.forEach(order => {
       order.checked = checked;
+      inActive = order.is_active === 0;
     });
-    
     this.selectedAllRows = checked;
     this.selectedRowCount = this.selectedAllRows ? this.productToolSummary.length : 0;
-    this.updateTopPanelConfig();
+    this.updateTopPanelConfig(inActive);
     this.gridOptions.api.redrawRows();
   }
 
@@ -473,7 +493,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     } else {
         this.selectedAllRows = true;
     }
-    this.updateTopPanelConfig();
+    this.updateTopPanelConfig(params.data.is_active === 0);
     this.gridOptions.api.redrawRows();
   }
 
@@ -525,7 +545,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       this.spinner.hide();
       if (!response.hasError) {
         this.setDataSourceAgGrid();
-          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
       } else {
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
       }
@@ -566,11 +586,12 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
   /**
    * Function to Update top panel config
    */
-  updateTopPanelConfig () {
+  updateTopPanelConfig (isActive?: boolean) {
     this.topPanelConfig.actions = this.productManagementService.getActionsIconsConfig(
         this.selectedRowCount,
         this.permissions,
-        this.reportRequestObj
+        this.reportRequestObj,
+        isActive
     );
     
   };

@@ -1,5 +1,8 @@
 import { ChangeDetectorRef, Component, EventEmitter, forwardRef, HostListener, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { InputDropdownService } from './input-dropdown.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 interface Item {
   id: number;
   name: string;
@@ -35,20 +38,24 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
   @Input() isIndeterminate: boolean = false;
+  @Output() dropdownClosedWithServerFilteredItems: EventEmitter<Item[]> = new EventEmitter<Item[]>();
 
+  private searchSubject = new Subject<string>();
   isOpen: boolean = false;
   searchText: string = '';
   isAllSelected: boolean = false;
   hideList: boolean = false;
+  isLoading: boolean = false;
   originalItems: Item[] = [];
   static currentlyOpenDropdown: CmpInputDropdownComponent | null = null;
 
   texts = {
+    loaderText: 'Fetching Record...',
     noResultText: 'No results found',
     selectAll: 'Select All',
     uncheckAll: 'Uncheck All'
   };
-  constructor() {}
+  constructor(private inputDropdownService: InputDropdownService) {}
 
   ngOnInit(): void {
     this.isOpen = false;
@@ -59,8 +66,11 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     
     this.filteredItems = this.filteredItems || []
     this.updateFilteredItems(this.filteredItems);
-    this.updateSelectAllState(this.filteredItems);
+    this.updateSelectAllStates();
     this.originalItems = [...this.filteredItems];
+    this.searchSubject.pipe(debounceTime(750)).subscribe(searchText => {
+      this.fetchOptionsFromServer(searchText);
+    });
   }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -83,21 +93,43 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
       this.updateSelectAllStates();
   }
 
+  /**
+   * Updates the `isAllSelected` state based on the number of selected items.
+   * 
+   * @param none
+   * @createdAt 31-03-2025
+   * @author PSI-Enhancement
+   * @returns void
+   */
   updateSelectAllStates(): void {
-    this.isAllSelected = this.selectedItems.length === this.filteredItems.length;
+    this.isAllSelected = this.selectedItems.length > 0;
   }
-  toggleDropdown(): void {
-    if (this.disabled || this.formControl?.disabled) return;
-    if (CmpInputDropdownComponent.currentlyOpenDropdown && CmpInputDropdownComponent.currentlyOpenDropdown !== this) {
-      CmpInputDropdownComponent.currentlyOpenDropdown.closeDropdown();
-    }
-    this.isOpen = !this.isOpen;
-    CmpInputDropdownComponent.currentlyOpenDropdown = this.isOpen ? this : null;
-    this.dropdownStateChange.emit(this.isOpen);
-  }
+
+	/**
+	 * Toggles the dropdown open or closed.
+	 * 
+	 * @param none
+	 * @returns {void}
+	 * @author PSI-Enhancement
+	 */
+	toggleDropdown(): void {
+		if (this.disabled || this.formControl?.disabled) return;
+		if (CmpInputDropdownComponent.currentlyOpenDropdown && CmpInputDropdownComponent.currentlyOpenDropdown !== this) {
+			CmpInputDropdownComponent.currentlyOpenDropdown.closeDropdown();
+		}
+		this.isOpen = !this.isOpen;
+		if(this.isOpen) {
+			this.clearSearch(null, false);
+			this.showSelectAll && this.updateSelectAllStates();
+		};
+		CmpInputDropdownComponent.currentlyOpenDropdown = this.isOpen ? this : null;
+		this.handleFilteredItemsFromServerOnClose();
+		this.dropdownStateChange.emit(this.isOpen);
+	}
 
   closeDropdown(): void {
     this.isOpen = false;
+	this.handleFilteredItemsFromServerOnClose();
     this.dropdownStateChange.emit(this.isOpen);
   }
 
@@ -105,6 +137,14 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     return this.isOpen;
   }
 
+  /**
+   * Toggles the selection of a specific item in the dropdown.
+   * 
+   * @param {Item} item - The item to toggle selection for.
+   * @createdAt 31-03-2025
+   * @author PSI-Enhancement
+   * @returns void
+   */
   toggleSelection(item: Item): void {
     if (this.allowSingleSelect) {
       this.selectedItems = [item];
@@ -118,6 +158,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
         this.selectedItems.splice(index, 1);
       }
     }
+    this.updateSelectAllStates();
     this.onDropDownChange.emit(this.selectedItems);
   }
 
@@ -127,6 +168,14 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.toggleDropdown();
   }
 
+  /**
+   * Toggles the selection of all items in the dropdown.
+   * 
+   * @param none
+   * @createdAt 31-03-2025
+   * @author PSI-Enhancement
+   * @returns void
+   */  
   toggleSelectAll(): void {
     if (this.isAllSelected) {
       this.selectedItems = [];
@@ -136,6 +185,10 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.isAllSelected = !this.isAllSelected;
     this.onDropDownChange.emit(this.selectedItems);
     this.updateFormControl();
+    if(this.isOpen && (this.filteredItems.length === this.selectedItems.length ||
+      this.selectedItems.length === 0)) {
+      this.isOpen = false;
+    }
   }
 
   updateFormControl(): void {
@@ -145,33 +198,56 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  updateSelectAllState(items): void {
-    this.isAllSelected = this.selectedItems.length === items.length;
-  }
-  updateDropdownState(): void {
-
-    if (this.isActive && !this.disabled) {
-      this.isOpen = false;
-    } else {
-      this.isOpen = false;
-    }
-  }
-
   isSelected(item: Item): boolean {
     return this.selectedItems.some(selectedItem => selectedItem.id === item.id);
   }
 
+	/**
+	 * Fetches options from the server based on the given search text.
+	 * 
+	 * @param searchText
+	 * @returns void
+	 * @author PSI-Enhancement
+	 */
+	fetchOptionsFromServer(searchText: string): void {
+		if (searchText.trim().length !== 0) {
+			this.isLoading = true;
+			this.inputDropdownService.getOption(this.settings.apiUrl, searchText)
+				.subscribe(response => {
+					this.filteredItems = response.hasError ? [] : response.data;
+					this.hideList = this.filteredItems.length === 0;
+					this.isLoading = false;
+				}, (error) => {
+					this.filteredItems = [];
+					this.hideList = true;
+					this.isLoading = false;
+				});
+		} else {
+			this.filteredItems = [...this.selectedItems];
+		}
+	}
+
+  /**
+   * Filters the items based on the search text.
+   * 
+   * @param none
+   * @createdAt 31-03-2025
+   * @author PSI-Enhancement
+   * @returns void
+   */
   filterItems(): void {
     const searchTextLower = this.searchText.toLowerCase();
-    if (searchTextLower.trim().length === 0) {
-      this.filteredItems = [...this.originalItems];
-      this.hideList = false;
-      return;
+    this.hideList = false;
+    if (this.settings.serverSearch) {
+      this.searchSubject.next(searchTextLower);
+    } else {
+      this.filteredItems = searchTextLower.trim().length === 0
+        ? [...this.originalItems]
+        : this.originalItems.filter(item =>
+          String(item.name).toLowerCase().includes(searchTextLower)
+          );
+        this.hideList = this.filteredItems.length === 0;
     }
-    this.filteredItems = this.originalItems.filter((item: Item) =>
-      item.name.toLowerCase().includes(searchTextLower)
-    );
-    this.hideList = this.filteredItems.length === 0;
   }
 
   resetDropdownState() {
@@ -182,16 +258,24 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
     this.updateFilteredItems(this.originalItems);
     this.onDropDownChange.emit(this.selectedItems);
   }
-  clearSearch(event: Event = null): void {
-    this.searchText = ''; 
-    this.updateFilteredItems(this.originalItems); 
-    this.hideList = false;
-    this.selectedItems = []; 
-    this.isAllSelected = false; 
-    this.isAllSelected = false; 
-    this.updateFormControl(); 
-    event.stopPropagation(); 
-  }
+
+	/**
+	 * Clears the search input and resets the filtered items.
+	 * 
+	 * @param {Event}
+	 * @param {boolean}
+	 * @author PSI-Enhancement
+	 */
+	clearSearch(event: Event = null, stopEventPropagation: boolean = true): void {
+		this.searchText = '';
+		const itemsToFilter = this.settings.serverSearch ? this.selectedItems : this.originalItems;
+		this.updateFilteredItems(itemsToFilter);
+		this.hideList = false;
+		this.isAllSelected = false;
+		this.updateFormControl();
+
+		if(stopEventPropagation) event.stopPropagation();
+	}
 
   updateFilteredItems(items): void {
     this.filteredItems = Array.isArray(items) ? [...items] : [];
@@ -246,4 +330,17 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
       }
     }
   }
+
+	/**
+	 * Handles the event when the dropdown is closed while using server-side filtering.
+	 * 
+	 * @param {void}
+   * @author PSI-Enhancements
+	 */
+	handleFilteredItemsFromServerOnClose(): void {
+		if (this.settings.serverSearch && !this.isOpen) {
+			this.filteredItems =  [...this.selectedItems];
+			this.dropdownClosedWithServerFilteredItems.emit(this.selectedItems);
+		}
+	}
 }

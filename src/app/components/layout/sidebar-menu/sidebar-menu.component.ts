@@ -10,211 +10,213 @@ import { SidebarMenuService } from './sidebar-menu.service';
   styleUrls: ['./sidebar-menu.component.scss']
 })
 export class SidebarMenuComponent implements OnInit {
-  menuData: any;
-  isSidebarExpanded: boolean = false;
-  isDropdownVisible: boolean = false;
-  currentUserData: any;
-  oldCockpit: string = environment.oldCockpit;
-  currentRoute: any;
-  allowedRoutes = ['product_management_system'];
-  private hideTimeout: any;
+    menuData: any;
+    isSidebarExpanded: boolean = false;
+    isDropdownVisible: boolean = false;
+    currentUserData: any;
+    oldCockpit: string = environment.oldCockpit;
+    currentRoute: any;
+    allowedRoutes = ['product_management_system'];
+    private hideTimeout: any;
 
-  constructor(
-    private authService: AuthService,
-    private renderer: Renderer2,
-    private router: Router,
-    private sidebarMenuService: SidebarMenuService
-  ) { }
+    constructor(
+        private authService: AuthService,
+        private renderer: Renderer2,
+        private router: Router,
+        private sidebarMenuService: SidebarMenuService
+    ) { }
 
-  ngOnInit(): void {
-    this.currentUserData = this.authService.getUserData();
-    this.currentRoute = this.router.url;
-    this.getSidebarMenu();
-  }
-
-  showSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
-    const submenuItem = anchorElement.parentElement as HTMLElement;
-    if (!submenuItem) return;
-    const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
-    if (!submenuElement) return;
-    const parentRect = submenuItem.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    this.renderer.setStyle(submenuElement, 'visibility', 'hidden');
-    this.renderer.setStyle(submenuElement, 'display', 'block');
-    const submenuHeight = submenuElement.offsetHeight;
-    this.renderer.setStyle(submenuElement, 'display', 'none');
-    this.renderer.setStyle(submenuElement, 'visibility', 'visible');
-    let topPosition = parentRect.top;
-    if (this.isSidebarExpanded) {
-      this.renderer.removeStyle(submenuItem, 'position');
-      if (topPosition + submenuHeight > viewportHeight) {
-        this.renderer.setStyle(submenuElement, 'bottom', `16px`);
-      } else {
-        this.renderer.setStyle(submenuElement, 'top', `${topPosition - 16}px`);
-
-      }
-      this.renderer.setStyle(submenuElement, 'left', `calc(100% - 16px)`);
-    } else {
-      this.renderer.setStyle(submenuItem, 'position', `relative`);
-      if (topPosition + submenuHeight > viewportHeight) {
-        this.renderer.setStyle(submenuElement, 'bottom', `16px`);
-      } else {
-        this.renderer.setStyle(submenuElement, 'top', `-16px`);
-      }
-      this.renderer.setStyle(submenuElement, 'left', `calc(100% + 8px)`);
+    ngOnInit(): void {
+        this.currentUserData = this.authService.getUserData();
+        this.currentRoute = this.router.url;
+        this.getSidebarMenu();
     }
-    this.renderer.setStyle(submenuElement, 'display', 'block');
-    submenuElement.addEventListener('mouseenter', () => {
-      this.renderer.setStyle(submenuElement, 'display', 'block');
-    });
-    submenuElement.addEventListener('mouseleave', () => {
-      this.renderer.setStyle(submenuElement, 'display', 'none');
-    });
-  }
 
-  hideSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
-    const submenuItem = anchorElement.parentElement as HTMLElement;
-    if (!submenuItem) return;
-    const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
-    if (!submenuElement) return;
-    setTimeout(() => {
-      if (!submenuElement.matches(':hover')) {
-        this.renderer.setStyle(submenuElement, 'display', 'none');
-      }
-    }, 150);
-  }
-
-  showMenu(event: MouseEvent, anchorElement: HTMLElement) {
-    if (!this.isSidebarExpanded) {
-      const menuItem = anchorElement.parentElement as HTMLElement;
-      if (!menuItem) return;
-      const submenuItem = anchorElement.nextElementSibling as HTMLElement;
-      if (submenuItem && submenuItem.tagName === 'UL') {
-        const parentRect = menuItem.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        this.renderer.setStyle(submenuItem, 'visibility', 'hidden');
-        this.renderer.setStyle(submenuItem, 'display', 'block');
-        const submenuHeight = submenuItem.offsetHeight;
-        this.renderer.setStyle(submenuItem, 'display', 'none');
-        this.renderer.setStyle(submenuItem, 'visibility', 'visible');
-        let topPosition = parentRect.top;
-        if (topPosition + submenuHeight > viewportHeight) {
-          this.renderer.setStyle(submenuItem, 'bottom', `16px`);
-        } else {
-          this.renderer.setStyle(submenuItem, 'top', `${topPosition}px`);
+    /**
+     * Function to close the dropdown when clicking outside
+     * @author PSI-Enhancements
+     */
+    @HostListener('document:click', ['$event'])
+    clickOutside(event: Event) {
+        if (!(event.target as HTMLElement).closest('.footer-profile')) {
+            this.isDropdownVisible = false;
         }
+    }
+
+   /**
+    * Function to show sub menus on mouseover
+    * @author PSI-Enhancements
+    */
+    showSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
+        const submenuItem = anchorElement.parentElement as HTMLElement;
+        const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
+        if (!submenuItem || !submenuElement) return;
+
+        const parentRect = submenuItem.getBoundingClientRect();
+        const submenuHeight = this.calculateOffsetHeight(submenuElement);
+        const isOverflowing = parentRect.top + submenuHeight > window.innerHeight;
+
+        if (this.isSidebarExpanded) {
+            this.renderer.removeStyle(submenuItem, 'position');
+        } else {
+            this.renderer.setStyle(submenuItem, 'position', 'relative');
+        }
+
+        if (isOverflowing) {
+            this.renderer.setStyle(submenuElement, 'bottom', '16px');
+        } else {
+            this.renderer.setStyle(submenuElement, 'top', this.isSidebarExpanded ? `${parentRect.top - 16}px` : '-16px');
+        }
+
+        this.renderer.setStyle(submenuElement, 'left', `calc(100% ${this.isSidebarExpanded ? '- 16px' : '+ 8px'})`);
+        this.renderer.setStyle(submenuElement, 'display', 'block');
+        submenuElement.addEventListener('mouseenter', () => {
+            this.renderer.setStyle(submenuElement, 'display', 'block');
+        });
+        submenuElement.addEventListener('mouseleave', () => {
+            this.renderer.setStyle(submenuElement, 'display', 'none');
+        });
+    }
+
+    /**
+     * Function to Hide Submenu on mouseleave
+     */
+    hideSubmenu(event: MouseEvent, anchorElement: HTMLElement) {
+        const submenuItem = anchorElement.parentElement as HTMLElement;
+        const submenuElement = submenuItem.querySelector('.submenu-item') as HTMLElement;
+        if (!submenuItem || !submenuElement) return;
+        setTimeout(() => {
+            if (!submenuElement.matches(':hover')) {
+                this.renderer.setStyle(submenuElement, 'display', 'none');
+            }
+        }, 150);
+    }
+
+    /**
+    * Function to Show Menu on mouseover 
+    * @author PSI-Enhancements
+    */
+    showMenu(event: MouseEvent, anchorElement: HTMLElement) {
+        if (this.isSidebarExpanded) return;
+        const menuItem = anchorElement.parentElement as HTMLElement;
+        const submenuItem = anchorElement.nextElementSibling as HTMLElement;
+        if (!menuItem || !submenuItem || submenuItem.tagName !== 'UL') return;
+
+        const parentRect = menuItem.getBoundingClientRect();
+        const submenuHeight = this.calculateOffsetHeight(submenuItem);
+        const isOverflowing = parentRect.top + submenuHeight > window.innerHeight;
+
+        this.renderer.setStyle(submenuItem, isOverflowing ? 'bottom' : 'top', isOverflowing ? '16px' : `${parentRect.top}px`);
         this.renderer.setStyle(submenuItem, 'left', `calc(100% - 8px)`);
         this.renderer.setStyle(submenuItem, 'display', 'block');
         submenuItem.addEventListener('mouseenter', () => {
-          this.renderer.setStyle(submenuItem, 'display', 'block');
+            this.renderer.setStyle(submenuItem, 'display', 'block');
         });
         submenuItem.addEventListener('mouseleave', () => {
-          if (!this.isSidebarExpanded) {
-            this.renderer.setStyle(submenuItem, 'display', 'none');
-          }
+            if (!this.isSidebarExpanded) {
+                this.renderer.setStyle(submenuItem, 'display', 'none');
+            }
         });
-      }
-    } else {
-      return;
     }
-  }
   
-  hideMenu(event: MouseEvent, anchorElement: HTMLElement) {
-    if (!this.isSidebarExpanded) {
-      const submenuItem = anchorElement.nextElementSibling as HTMLElement;
-      if (submenuItem && submenuItem.tagName === 'UL') {
+    /**
+     * Function to Hide Menu on mouseleave
+     */
+    hideMenu(event: MouseEvent, anchorElement: HTMLElement) {
+        if (this.isSidebarExpanded) return;
+        const submenuItem = anchorElement.nextElementSibling as HTMLElement;
+        if (!submenuItem || submenuItem.tagName !== 'UL') return;
         setTimeout(() => {
-          if (!submenuItem.matches(':hover')) {
-            this.renderer.setStyle(submenuItem, 'display', 'none');
-          }
+            if (!submenuItem.matches(':hover')) {
+                this.renderer.setStyle(submenuItem, 'display', 'none');
+            }
         }, 150);
-      }
-    } else {
-      return;
     }
-  }
+
+    /**
+     * Function to Calculate offset height of element
+     * @author PSI-Enhancements
+     */
+    calculateOffsetHeight (submenuElement: HTMLElement) {  
+        this.renderer.setStyle(submenuElement, 'visibility', 'hidden');
+        this.renderer.setStyle(submenuElement, 'display', 'block');
+        const submenuHeight = submenuElement.offsetHeight;
+        this.renderer.setStyle(submenuElement, 'display', 'none');
+        this.renderer.setStyle(submenuElement, 'visibility', 'visible');
+        return submenuHeight;
+    }
 
   /**
    * Function to open and close submenus in expanded mode menu
    * @author PSI-Enhancements
    */
-  toggleMenuItems(menu: any) {
-    this.menuData.forEach((menuItems) => {
-      if (menuItems.id !== menu.id) {
-        menuItems.isExpanded = false;
-      }
-    });
-    menu.isExpanded = !menu.isExpanded;
-  }
+    toggleMenuItems(menu: any) {
+        this.menuData.forEach((menuItems) => {
+            if (menuItems.id !== menu.id) {
+                menuItems.isExpanded = false;
+            }
+        });
+        menu.isExpanded = !menu.isExpanded;
+    }
 
 
   /**
    * Function to get menu data & sidebar api
    * @author PSI-Enhancements
    */
-  getSidebarMenu() {
-    this.sidebarMenuService.getMenu().subscribe({
-      next: (response) => {
-        this.menuData = response.data.map((menu: any) => {
-          //this below line needs to be removed as the icon is coming null for beta in api
-          return menu.id === 495 ? { ...menu, icon: 'fas fa-hammer' } : menu;
+    getSidebarMenu() {
+        this.sidebarMenuService.getMenu().subscribe({
+            next: (response) => {
+                this.menuData = response.data.map((menu: any) => {
+                    //this below line needs to be removed as the icon is coming null for beta in api
+                    return menu.id === 495 ? { ...menu, icon: 'fas fa-hammer' } : menu;
+                });
+            },
+            error: (error) => {
+                this.menuData = [];
+            }
         });
-      },
-      error: (error) => {
-        this.menuData = [];
-      }
-    });
-  }
-
-  /**
-   * Function to toggle sidebar mode between expanded and collapsed mode
-   * @author PSI-Enhancements
-   */
-  toggleSidebar() {
-    this.isSidebarExpanded = !this.isSidebarExpanded;
-  }
-
-  /**
-   * Function to toggle footer dropdown in sidebar
-   * @author PSI-Enhancements
-   */
-  toggleDropdown(state: boolean) {
-    clearTimeout(this.hideTimeout);
-    if (state) {
-      this.isDropdownVisible = true;
-    } else {
-      this.hideTimeout = setTimeout(() => {
-        this.isDropdownVisible = false;
-      }, 100);
     }
-  }
-  /**
-   * Function to close the dropdown when clicking outside
-   * @author PSI-Enhancements
-   */
-  @HostListener('document:click', ['$event'])
-  clickOutside(event: Event) {
-    if (!(event.target as HTMLElement).closest('.footer-profile')) {
-      this.isDropdownVisible = false;
+
+    /**
+     * Function to toggle sidebar mode between expanded and collapsed mode
+     * @author PSI-Enhancements
+     */
+    toggleSidebar() {
+        this.isSidebarExpanded = !this.isSidebarExpanded;
     }
-  }
 
-  /**
-   * Function to logout user from the application
-   * @author PSI-Enhancements
-   */
-  logout(): void {
-    this.authService.logout();
-  }
+    /**
+     * Function to toggle footer dropdown in sidebar
+     * @author PSI-Enhancements
+     */
+    toggleDropdown(state: boolean) {
+        clearTimeout(this.hideTimeout);
+        if (state) {
+            this.isDropdownVisible = true;
+        } else {
+            this.hideTimeout = setTimeout(() => {
+                this.isDropdownVisible = false;
+            }, 100);
+        }
+    }
 
-  /**
-   * Function to set active route
-   * @author PSI-Enhancements
-   */
-  isActiveRoute(route: string): boolean {
-    if (!route) return false;
-      const currentPath = this.currentRoute.split('/').filter(Boolean).slice(0, 1).join('');
-      const menuPath = route.split('/').pop();
-      return currentPath === menuPath;
-  }
+    /**
+     * Function to logout user from the application
+     * @author PSI-Enhancements
+     */
+    logout(): void {
+        this.authService.logout();
+    }
+
+    /**
+     * Function to set active route
+     * @author PSI-Enhancements
+     */
+    isActiveRoute(route: string): boolean {
+        if (!route) return false;
+        const currentPath = this.currentRoute.split('/').filter(Boolean).slice(0, 1).join('');
+        const menuPath = route.split('/').pop();
+        return currentPath === menuPath;
+    }
 }

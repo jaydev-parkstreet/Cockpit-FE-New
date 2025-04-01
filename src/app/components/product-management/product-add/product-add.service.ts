@@ -35,7 +35,7 @@ export class ProductAddService {
                     options: crudFiltersList.clients || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Supplier', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Supplier')
                 },
                 {
                     key: 'brand',
@@ -47,7 +47,7 @@ export class ProductAddService {
                     options: crudFiltersList.brand || [],
                     isRequired: true,
                     isDisabled: true,
-                    inputSetting: this.commonService.getDropdownConfig('Select Brand', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Brand')
                 },
                 {
                     key: 'sub_brand_product_id',
@@ -59,7 +59,7 @@ export class ProductAddService {
                     options: crudFiltersList.sub_brand_product_id || [],
                     isRequired: true,
                     isDisabled: true,
-                    inputSetting: this.commonService.getDropdownConfig('Select Sub-Brand Product', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Sub-Brand Product')
                 },
                 { type: 'text', name: 'description', label: 'Description', placeholder: 'Enter Description', required: true, colClass: 'col-sm-12' },
                 { type: 'text', name: 'name', label: 'Fanciful Name', placeholder: 'Enter Fanciful Name', required: false, colClass: 'col-sm-12' },
@@ -73,7 +73,7 @@ export class ProductAddService {
                     options: crudFiltersList.groups || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Group', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Group')
                 },
                 {
                     key: 'producer',
@@ -85,7 +85,7 @@ export class ProductAddService {
                     options: crudFiltersList.producers || [],
                     isRequired: false,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select producer', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select producer')
                 },
                 {
                     key: 'case_unit_of_measure',
@@ -97,7 +97,7 @@ export class ProductAddService {
                     options: crudFiltersList.cases_uom || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Type', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Type')
                 },
                 {
                     key: 'container_type',
@@ -109,7 +109,7 @@ export class ProductAddService {
                     options: crudFiltersList.container_types || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Type', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Type')
                 },
                 { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false, colClass: 'col-sm-12' },
                 { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', colClass: 'col-sm-3' },
@@ -124,7 +124,7 @@ export class ProductAddService {
                     options: crudFiltersList.organic || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Organic', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Organic')
                 },
                 {
                     key: 'prod_type',
@@ -136,7 +136,7 @@ export class ProductAddService {
                     options: crudFiltersList.product_type || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Type', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Type')
                 }
             ],
             rightSection: [
@@ -196,7 +196,7 @@ export class ProductAddService {
                 options: crudFiltersList.product_sub_type || [],
                 isRequired: true,
                 isDisabled: false,
-                inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
+                inputSetting: this.commonService.getDropdownConfig('Select Sub-Type')
             },
             {
                 key: 'category',
@@ -208,7 +208,7 @@ export class ProductAddService {
                 options: crudFiltersList.categories || [],
                 isRequired: true,
                 isDisabled: false,
-                inputSetting: this.commonService.getDropdownConfig('Select Category', true)
+                inputSetting: this.commonService.getDropdownConfig('Select Category')
             },
             {
                 key: 'source',
@@ -220,7 +220,7 @@ export class ProductAddService {
                 options: crudFiltersList.source || [],
                 isRequired: true,
                 isDisabled: false,
-                inputSetting: this.commonService.getDropdownConfig('Select Source', true)
+                inputSetting: this.commonService.getDropdownConfig('Select Source')
             },
             {
                 key: 'country',
@@ -232,7 +232,7 @@ export class ProductAddService {
                 options: crudFiltersList.countries || [],
                 isRequired: true,
                 isDisabled: false,
-                inputSetting: this.commonService.getDropdownConfig('Select Country', true)
+                inputSetting: this.commonService.getDropdownConfig('Select Country')
             },
             { type: 'text', name: 'abv', label: 'ABV %', placeholder: 'Enter ABV %', required: true, colClass: 'col-sm-12'  },
             { type: 'text', name: 'cola_ttb_id', label: 'COLA TTB ID', placeholder: 'COLA TTB ID', isCode: true, required: true, colClass: 'col-sm-12'  },
@@ -263,7 +263,7 @@ export class ProductAddService {
                     options: crudFiltersList.vintages || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Vintage', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Vintage')
                 },
                 {
                     key: 'varietal',
@@ -275,7 +275,7 @@ export class ProductAddService {
                     options: crudFiltersList.varietals || [],
                     isRequired: false,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Varietal', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Varietal')
                 }
             ],
             malt: [
@@ -289,7 +289,7 @@ export class ProductAddService {
                     options: crudFiltersList.vintages || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Vintage', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Vintage')
                 }
             ],
             spirits: [
@@ -303,7 +303,7 @@ export class ProductAddService {
                     options: crudFiltersList.vintages || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Vintage', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Vintage')
                 }
             ],
             bulk: [
@@ -317,7 +317,7 @@ export class ProductAddService {
                     options: crudFiltersList.product_sub_type || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Sub-Type')
                 },
                 { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address' }
             ],
@@ -332,7 +332,7 @@ export class ProductAddService {
                     options: crudFiltersList.product_sub_type || [],
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
+                    inputSetting: this.commonService.getDropdownConfig('Select Sub-Type')
                 },
                 { type: 'text', name: 'manufactured_location_address', label: 'Manufactured Location Address', placeholder: 'Enter Manufactured Location Address', colClass: 'col-sm-12'  }
             ]
@@ -357,7 +357,7 @@ export class ProductAddService {
             options: crudFiltersList.product_sub_type || [],
             isRequired: true,
             isDisabled: false,
-            inputSetting: this.commonService.getDropdownConfig('Select Sub-Type', true)
+            inputSetting: this.commonService.getDropdownConfig('Select Sub-Type')
         };
     }
 
@@ -416,7 +416,7 @@ export class ProductAddService {
                 type: 'multiselect-dropdown',
                 isRequired: true,
                 colClass: 'col-xs-12',
-                inputSetting: this.commonService.getDropdownConfig('Select Brand', true),
+                inputSetting: this.commonService.getDropdownConfig('Select Brand'),
                 isDisabled: false,
                 display: true,
                 filters: { entity: [] },
@@ -438,7 +438,7 @@ export class ProductAddService {
                 type: 'multiselect-dropdown',
                 isRequired: true,
                 colClass: 'col-xs-12',
-                inputSetting: this.commonService.getDropdownConfig('Select Sub-Brand', true),
+                inputSetting: this.commonService.getDropdownConfig('Select Sub-Brand'),
                 isDisabled: true,
                 display: true,
                 filters: { entity: [] },
@@ -460,7 +460,7 @@ export class ProductAddService {
                 type: 'multiselect-dropdown',
                 isRequired: true,
                 colClass: 'col-xs-6 nopaddingleft',
-                inputSetting: this.commonService.getDropdownConfig('Select Option', true),
+                inputSetting: this.commonService.getDropdownConfig('Select Option'),
                 isDisabled: true,
                 display: true,
                 options: crudFiltersList.net_container_sizes || []
@@ -472,7 +472,7 @@ export class ProductAddService {
                 type: 'multiselect-dropdown',
                 isRequired: true,
                 colClass: 'col-xs-6 nopaddingright',
-                inputSetting: this.commonService.getDropdownConfig('Select Option', true),
+                inputSetting: this.commonService.getDropdownConfig('Select Option'),
                 isDisabled: true,
                 display: true,
                 options: crudFiltersList.units_per_case || []
