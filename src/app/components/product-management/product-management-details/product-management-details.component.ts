@@ -67,23 +67,32 @@ export class ProductManagementDetailsComponent implements OnInit {
     async getProductData(productId : string) {
         try {
             this.spinner.show();
-            await this.productManagementService.getDetails(productId).subscribe((res: any) => {
+            await this.productManagementService.getDetails(productId).then((res: any) => {
                 this.spinner.hide();
-                this.productDetails = res;
-                this.detailProduct = this.fieldsDetail(res);
-                this.productCodeDetail = this.getProductCodeDetails(res); 
-                this.productList = this.productFieldsDetail({ ...res });
-                this.getStatusUpdate();
-                this.getSyncStatusUpdate();
-                this.actionButtons = this.getactionButtons(this.permissions ,this.productDetails);
-                this.headerTitle = this.productDetails.description;
-                this.getAuditTrailData();
-                this.rowAuditTrailConfigApiRequest = this.productManagementDetailService.getDetailsAuditTrailConfigApiRequest();
+                if (!res.hasError) {
+                    this.updateProductData(res.data);
+                } else {
+                    this.commonService.showToastV2Message(true, res.msg, 'fas fa-exclamation-circle');
+                    this.router.navigate(['../']);
+                }
             });
           }
           catch (error) {
             console.error("Error fetching ProductData:", error);
           }
+    }
+
+    updateProductData(response) {
+        this.productDetails = response;
+        this.detailProduct = this.fieldsDetail(response);
+        this.productCodeDetail = this.getProductCodeDetails(response); 
+        this.productList = this.productFieldsDetail({ ...response });
+        this.getStatusUpdate();
+        this.getSyncStatusUpdate();
+        this.actionButtons = this.getactionButtons(this.permissions ,this.productDetails);
+        this.headerTitle = this.productDetails.description;
+        this.getAuditTrailData();
+        this.rowAuditTrailConfigApiRequest = this.productManagementDetailService.getDetailsAuditTrailConfigApiRequest();
     }
 
     /**
@@ -224,6 +233,9 @@ export class ProductManagementDetailsComponent implements OnInit {
             } else {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }
+        }, (error) => {
+            this.spinner.hide();
+            this.commonService.showToastV2Message(true, 'Status Change Failed', 'fas fa-exclamation-circle');
         });
     }
 
@@ -243,6 +255,9 @@ export class ProductManagementDetailsComponent implements OnInit {
             } else {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }
+        }, (error) => {
+            this.spinner.hide();
+            this.commonService.showToastV2Message(true, 'Status Change Failed', 'fas fa-exclamation-circle');
         });
     }
 

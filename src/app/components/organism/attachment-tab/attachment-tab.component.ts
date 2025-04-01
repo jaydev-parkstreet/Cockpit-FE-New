@@ -53,7 +53,7 @@ export class AttachmentTabComponent implements OnInit {
                 if (!response.hasErrors) {
                     this.attachments = response;
                 } else {
-                    this.commonService.showToastV2Message(true, 'Failed to load Attachments', 'fas fa-exclamation-circle');
+                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                 }
             }, (error) => {
                 this.commonService.showToastV2Message(true, 'Failed to load Attachments', 'fas fa-exclamation-circle');
@@ -136,7 +136,7 @@ export class AttachmentTabComponent implements OnInit {
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
                 if (result.btn.label === 'Yes') {
-                    this.productManagementService.deleteUploadFile(upload_id)
+                    this.commonBackendService.deleteUploadFile(upload_id)
                         .subscribe((response: any) => {
                             if (response.hasError) {
                                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');

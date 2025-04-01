@@ -537,7 +537,7 @@ export class ProductManagementService {
     getDetails(id) {
         return this.http
             .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DETAILS + id)
-            .pipe(map((response: any) => response.data));
+            .toPromise();
     }
 
     /**
@@ -585,21 +585,8 @@ export class ProductManagementService {
             .pipe(map((response: any) => response));
     }
 
-        uploadMultipleAttachments(reqObj: FormData) {
+    uploadMultipleAttachments(reqObj: FormData) {
         return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
-    }
-
-    changeFilePermission(data: any) {
-        return this.http.put(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS_PERMISSION, data);
-    }
-
-    deleteUploadFile(param: any) {
-        return this.http.delete(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS, {
-            params: new HttpParams().set('id', param),
-            headers: new HttpHeaders({
-                'Content-Type': ''
-            })
-        });
     }
 
     /**

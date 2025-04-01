@@ -21,7 +21,8 @@
         .notes-padding {
             min-height: 110px;
             max-height: 164px;
-            overflow: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
             @include new-scrollbar;
             .notes-row {
                 display: flex;
@@ -55,6 +56,12 @@
                     }
     
                     .note-meta {
+                        .notes-scroll {
+                            display: block;
+                            width: 42%;
+                            overflow-x: auto;
+                            @include new-scrollbar;
+                        }
                         .note-meta-name {
                             display: flex;
                             gap: 8px;

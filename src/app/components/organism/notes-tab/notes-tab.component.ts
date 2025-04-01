@@ -63,12 +63,15 @@ export class NotesTabComponent implements OnInit {
             this.permissions.menu_item_id
         ).subscribe(
             (response: any) => {
-                this.notes = response.notes;
+                if (!response.hasErrors) {
+                    this.notes = response.notes;
+                } else {
+                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                }
+                this.isLoadingNotes = false;
             },
             (error) => {
-                this.commonService.showToastV2Message(false, error.message || 'Failed to load notes', 'fas fa-exclamation-circle');
-            },
-            () => {
+                this.commonService.showToastV2Message(true, 'Failed to load notes', 'fas fa-exclamation-circle');
                 this.isLoadingNotes = false;
             }
         );
@@ -196,7 +199,7 @@ export class NotesTabComponent implements OnInit {
                             this.notes = this.commonService.deleteObjectFromArray(this.notes, 'id', id);
                             this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                         } else {
-                            this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+                            this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                         }
                     },
                     (error) => {
