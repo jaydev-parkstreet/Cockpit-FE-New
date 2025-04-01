@@ -4,7 +4,7 @@
         titleIcon="fas fa-wine-bottle">
     </app-header-tool>
     <div class="product-tool-container">
-        <div class="check-container">
+        <div class="check-container u-pg-pr-1">
             <div class="u-w-inherit">
                 <app-summary-top-bar
                     [productChecked]="selectedAllRows"
@@ -19,7 +19,7 @@
                 </app-summary-top-bar>
             </div>
         </div>
-        <div class="product-tool-grid u-pg-mb-1" [hidden]="productToolSummary.length == 0 && !isLoadingSummaryData">
+        <div class="product-tool-grid u-pg-mb-1 u-pg-pb-1" [hidden]="productToolSummary.length == 0 && !isLoadingSummaryData">
             <app-summary-grid
                 [gridOptions] = "gridOptions"
                 [selectAllOption] = "true"
@@ -28,10 +28,11 @@
                 [selectedRowCount]="selectedRowCount">
             </app-summary-grid>
         </div>
-        <app-no-record
-            *ngIf="!isLoadingSummaryData && productToolSummary.length <= 0"
-            [iconClass] = "'far fa-surprise'"
-            [placeHolderText] = "'No Products Found'">
-        </app-no-record>
+        <div class="no-record-container" *ngIf="!isLoadingSummaryData && productToolSummary.length <= 0">
+            <app-no-record
+                [iconClass] = "'far fa-surprise'"
+                [placeHolderText] = "'No Products Found'">
+            </app-no-record>
+        </div>
     </div>
 </div>

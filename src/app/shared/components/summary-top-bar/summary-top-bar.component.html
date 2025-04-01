@@ -41,8 +41,8 @@
     </div>
 </div>
 
-<div class="filter-container" *ngIf="config.expandFilter">
-    <div class="u-flex u-pg-mb-2 filter-box">
+<div class="filter-container u-pg-mb-2" *ngIf="config.expandFilter">
+    <div class="u-flex u-pg-mb-1 filter-box">
         <ng-container *ngFor="let filter of config.filtersConfig">
             <div class="filter-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'multiselect-search'">
                 <app-cmp-input-dropdown
