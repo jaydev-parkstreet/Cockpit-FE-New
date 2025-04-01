@@ -201,7 +201,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
       .subscribe((result) => {
         if (result.btn.label === 'Yes') {
-          this.productmanagementService.deleteUploadFile(file.upload_id)
+          this.commonBackendService.deleteUploadFile(file.upload_id)
             .subscribe((response: any) => {
               if (response.hasError) {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
