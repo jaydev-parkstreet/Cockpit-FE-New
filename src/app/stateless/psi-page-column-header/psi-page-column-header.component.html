@@ -1,5 +1,6 @@
-<div class="psi-page-column-header">
+<div class="psi-page-column-header u-flex u-justify-between">
     <span class="typography-v2-mon-body-black-regular"
         [textContent]="headerTitle">
     </span>
+    <span class="fas fa-eraser ft-i u-pointer" *ngIf="clearAll" (click)="onClearAllClick()"></span>
 </div>
