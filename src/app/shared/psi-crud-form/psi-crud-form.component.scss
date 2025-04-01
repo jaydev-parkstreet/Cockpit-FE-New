@@ -21,7 +21,9 @@
             flex: 1;
             padding-top: 16px;
             background-color: $colors-neutral-white;
-            margin-right: 4px
+            margin-right: 4px;
+            height: fit-content;
+            margin-bottom: 40px;
         }
 
         .right-section {
@@ -29,6 +31,8 @@
             padding-top: 16px;
             background-color: $colors-neutral-white;
             margin-left: 4px;
+            height: fit-content;
+            margin-bottom: 40px;
         }
 
         .section-header {
@@ -49,6 +53,5 @@
     .form-submit-button {
         background-color: $colors-neutral-light-v-low;
         padding: 16px;
-        justify-content: right;
     }
 }

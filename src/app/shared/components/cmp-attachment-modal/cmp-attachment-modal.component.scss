@@ -3,112 +3,120 @@
 @import '../../../../app/scss/mixin/_mixin';
 
 .content {
-  width: 624px;
-  .modal-header {
-    width: 100%;
-    .title-container {
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-  }
+    width: 624px;
 
-  .modal-body {
-    padding: 16px;
-    hr{margin: 20px;}
-    
-    .attachment-padding {
-      min-height: 110px;
-      max-height: 164px;
-      overflow: auto;
-      @include new-scrollbar;
+    .modal-header {
+        width: 100%;
 
-      .attachment-row {
-        min-height: 25px;
-        padding: 0 8px;
-
-        .attachment-list {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 8px 0;
-          border-bottom: 1px solid $colors-neutral-light;
-
-          .left-section {
+        .title-container {
             display: flex;
             align-items: center;
-
-            >i {
-              font-size: 14px;
-              color: $colors-neutral-black-t-75;
-            }
-
-            .attachment-name {
-              font-size: 14px;
-              font-family: $montserrat-regular;
-              color: $colors-neutral-black;
-              margin-left: 8px;
-              line-height: 20px;
-              text-decoration: none;
-              max-width: 205px;
-              overflow: hidden;
-              display: block;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-
-              &:hover {
-                color: $colors-v2-base-primary;
-                text-decoration: underline;
-              }
-            }
-
-            .private-file {
-              font-size: 12px;
-              margin-left: 5px;
-              font-family: $montserrat-regular;
-              color: $colors-neutral-dark;
-            }
-          }
-
-          .right-section {
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            font-size: 14px;
-            align-items: center;
-            line-height: 20px;
-
-            >i {
-              cursor: pointer;
-              color: $colors-neutral-black-t-75;
-
-              &:hover {
-                color: $colors-neutral-black;
-              }
-            }
-          }
-          .middle-section {
-            margin-left: 5px;
-            .typography-v2-mon-medium{
-              color: $colors-neutral-black;
-            }
-          }
+            width: 100%;
         }
-      }
     }
-  }
 
-  .modalData.icon {
-    color: #e74536;
-  }
+    .modal-body {
+        padding: 16px;
 
-  .modal-footer {
-    > *{
-      margin: 0;
+        hr {
+            margin: 20px;
+        }
+
+        .attachment-padding {
+            min-height: 110px;
+            max-height: 164px;
+            overflow: auto;
+            @include new-scrollbar;
+
+            .attachment-row {
+                min-height: 25px;
+                padding: 0 8px;
+
+                .attachment-list {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 8px 0;
+                    border-bottom: 1px solid $colors-neutral-light;
+
+                    .left-section {
+                        display: flex;
+                        align-items: center;
+
+                        >i {
+                            font-size: 14px;
+                            color: $colors-neutral-black-t-75;
+                        }
+
+                        .attachment-name {
+                            font-size: 14px;
+                            font-family: $montserrat-regular;
+                            color: $colors-neutral-black;
+                            margin-left: 8px;
+                            line-height: 20px;
+                            text-decoration: none;
+                            max-width: 205px;
+                            overflow: hidden;
+                            display: block;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+
+                            &:hover {
+                                color: $colors-v2-base-primary;
+                                text-decoration: underline;
+                            }
+                        }
+
+                        .private-file {
+                            font-size: 12px;
+                            margin-left: 5px;
+                            font-family: $montserrat-regular;
+                            color: $colors-neutral-dark;
+                        }
+                    }
+
+                    .right-section {
+                        display: flex;
+                        justify-content: space-between;
+                        gap: 16px;
+                        font-size: 14px;
+                        align-items: center;
+                        line-height: 20px;
+
+                        >i {
+                            cursor: pointer;
+                            color: $colors-neutral-black-t-75;
+
+                            &:hover {
+                                color: $colors-neutral-black;
+                            }
+                        }
+                    }
+
+                    .middle-section {
+                        margin-left: 5px;
+
+                        .typography-v2-mon-medium {
+                            color: $colors-neutral-black;
+                        }
+                    }
+                }
+            }
+        }
     }
-    display: flex;
-    justify-content: end;
-    border-top: 0 none;
-    padding: 16px 0 8px 0;
-  }
+
+    .modalData.icon {
+        color: #e74536;
+    }
+
+    .modal-footer {
+        >* {
+            margin: 0;
+        }
+
+        display: flex;
+        justify-content: end;
+        border-top: 0 none;
+        padding: 16px 0 8px 0;
+    }
 }
