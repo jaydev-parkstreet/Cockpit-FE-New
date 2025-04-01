@@ -2,6 +2,7 @@
 @import '../../../scss/variables/typography';
 
 .sidebar {
+    background-color: $colors-neutral-black;
     min-height: 100vh;
     position: sticky;
     top: 0;
