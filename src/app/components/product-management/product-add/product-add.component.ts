@@ -10,9 +10,9 @@ import { PsiBrandModalComponent } from '../psi-brand-modal/psi-brand-modal.compo
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
 
 @Component({
-  selector: 'app-product-add',
-  templateUrl: './product-add.component.html',
-  styleUrls: ['./product-add.component.scss'],
+    selector: 'app-product-add',
+    templateUrl: './product-add.component.html',
+    styleUrls: ['./product-add.component.scss'],
 })
 export class ProductAddComponent implements OnInit {
     @Output() updateFilters = new EventEmitter<any>();
@@ -33,8 +33,8 @@ export class ProductAddComponent implements OnInit {
     sub_brand: any[] = [];
     isBrandDisabled: boolean = true;
     isSubBrandDisabled: boolean = true;
-    modelFormat: any = {}; 
-    subBrandProducts: any[] = []; 
+    modelFormat: any = {};
+    subBrandProducts: any[] = [];
     uniqueId: any;
     productId: any;
     edit: boolean = false;
@@ -223,9 +223,9 @@ export class ProductAddComponent implements OnInit {
             }
         } else {
             this.openConfirmationPopup();
-        } 
+        }
     }
-    
+
     /**
      * Opens a confirmation popup modal asking the user if they wish to exit.
      * @author PSI-Enhancements
@@ -370,7 +370,7 @@ export class ProductAddComponent implements OnInit {
             this.changeDetector.detectChanges();
         }
     }
-    
+
     /**
      * Returns a unique identifier for each field
      * @param index
@@ -381,7 +381,7 @@ export class ProductAddComponent implements OnInit {
     trackByField(index: number, field: any): string {
         return field.name;
     }
-  
+
     /**
      * Enable the form control and update its value based on the given id and filter key
      * @param controlName
@@ -395,7 +395,7 @@ export class ProductAddComponent implements OnInit {
         this.productForm.patchValue({
             [controlName]: this.getDropDownArrayByIds(this.crudFiltersList?.[filterKey], id, controlName),
         });
-        
+
         this.changeDetector.detectChanges();
     }
 
@@ -416,7 +416,7 @@ export class ProductAddComponent implements OnInit {
                 { value: '', disabled: isDisabled },
                 isFieldRequired ? Validators.required : []
             );
-            
+
             controls[field.name] = formControl;
         });
         this.productForm = new FormGroup(controls);
@@ -609,37 +609,11 @@ export class ProductAddComponent implements OnInit {
         this.simpleModalService.addModal(PsiBrandModalComponent, { modalData })
             .subscribe((result) => {
                 if (result?.confirm) {
-                    if (result.formData.new_brands && !result.formData.net_contents) {                     
-                        const param = {
-                            client_id: clientId,
-                            brand_id: '',
-                            brand_name: result.formData.new_brands
-                        };
-                        this.spinner.show();
-                        this.ProductAddService.saveNewBrands(param).subscribe(response => {
-                            this.spinner.hide();
-                            if (!response.hasError) {
-                                this.getBrand(clientId);
-                                this.updateBrandAndSubBrandControls(clientId, response.data.brand[0].id, null);
-                            }
-                        });
+                    if (result.formData.new_brands && !result.formData.net_contents) {
+                        this.getBrand(clientId);
+                        this.updateBrandAndSubBrandControls(clientId, result.response.data.brand[0].id, null);
                     } else {
-                        const param = {
-                            client_id: clientId ? clientId : result.formData.brand.client_id,
-                            brand_id: result.formData.brand.id,
-                            brand_name: result.formData.new_brands,
-                            sub_brand_id: result.formData.sub_brand_product_id.id || '',
-                            sub_brand_name: result.formData.new_sub_brand,
-                            net_content_id: result.formData.net_contents.id,
-                            bpc_id: result.formData.units_cases.id
-                        };
-                        this.spinner.show();
-                        this.ProductAddService.saveNewSubBrands(param).subscribe(response => {
-                            this.spinner.hide();
-                            if (!response.hasError) {
-                                this.updateBrandAndSubBrandControls(clientId ? clientId : result.formData.brand.client_id, response.data.brand.id, response.data.sub_brand_product.id);
-                            }
-                        });
+                        this.updateBrandAndSubBrandControls(clientId ? clientId : result.formData.brand.client_id, result.response.data.brand.id, result.response.data.sub_brand_product.id);
                     }
                 } else {
                     this.updatesellectedData('brand', 'Select Brand');
