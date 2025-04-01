@@ -67,55 +67,55 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      */
     clearAllSelections(): void {
         const hasValues = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].some((field) => {
-          if (field.type === 'multiselect-dropdown' && this.sellectedData[field.key]?.length > 0) {
-            return true;
-          }
-          if (field.type === 'text' && this.form?.get(field.name)?.value?.trim() !== '') {
-            return true;
-          }
-          if (field.type === 'checkbox' && this.form?.get(field.name)?.value === true) {
-            return true;
-          }
-          return false;
-        });
-      
-        if (!hasValues) {return;}
-      
-        const modalData = {
-          title: 'All data will be lost.',
-          body: 'Are you sure you wish to clear all fields?',
-          iconClass: 'fas fa-exclamation-circle error',
-          btnLabel: [
-            { type: 'Btn', label: 'No', class: 'secondary' },
-            { type: 'Btn', label: 'Yes', class: 'primary' }
-          ]
-        };
-      
-        this.simpleModalService.addModal(ConfirmationModalComponent, { modalData }).subscribe((result) => {
-          if (result.btn.label === 'Yes') {
-            [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].forEach((field) => {
-              
-              if (field.type === 'multiselect-dropdown') {
-                this.sellectedData[field.key] = [];
-              }
-      
-              if (field.type === 'text' && this.form?.get(field.name)) {
-                this.form.get(field.name).setValue('');
-                this.form.get(field.name).markAsPristine();
-                this.form.get(field.name).markAsUntouched();
-              }
-      
-              if (field.type === 'checkbox' && this.form?.get(field.name)) {
-                this.form.get(field.name).setValue(false);
-                this.form.get(field.name).markAsPristine();
-                this.form.get(field.name).markAsUntouched();
-              }
-            });
-      
-            if (this.form) {
-              this.form.updateValueAndValidity();
+            if (field.type === 'multiselect-dropdown' && this.sellectedData[field.key]?.length > 0) {
+                return true;
             }
-          }
+            if (field.type === 'text' && this.form?.get(field.name)?.value?.trim() !== '') {
+                return true;
+            }
+            if (field.type === 'checkbox' && this.form?.get(field.name)?.value === '1') {
+                return true;
+            }
+            return false;
+        });
+
+        if (!hasValues) { return; }
+
+        const modalData = {
+            title: 'All data will be lost.',
+            body: 'Are you sure you wish to clear all fields?',
+            iconClass: 'fas fa-exclamation-circle error',
+            btnLabel: [
+                { type: 'Btn', label: 'No', class: 'secondary' },
+                { type: 'Btn', label: 'Yes', class: 'primary' }
+            ]
+        };
+
+        this.simpleModalService.addModal(ConfirmationModalComponent, { modalData }).subscribe((result) => {
+            if (result.btn.label === 'Yes') {
+                [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].forEach((field) => {
+
+                    if (field.type === 'multiselect-dropdown') {
+                        this.sellectedData[field.key] = [];
+                    }
+
+                    if (field.type === 'text' && this.form?.get(field.name)) {
+                        this.form.get(field.name).setValue('');
+                        this.form.get(field.name).markAsPristine();
+                        this.form.get(field.name).markAsUntouched();
+                    }
+
+                    if (field.type === 'checkbox' && this.form?.get(field.name)) {
+                        this.form.get(field.name).setValue('');
+                        this.form.get(field.name).markAsPristine();
+                        this.form.get(field.name).markAsUntouched();
+                    }
+                });
+
+                if (this.form) {
+                    this.form.updateValueAndValidity();
+                }
+            }
         });
     } 
 
