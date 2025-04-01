@@ -585,7 +585,7 @@ export class ProductManagementService {
             .pipe(map((response: any) => response));
     }
 
-        uploadMultipleAttachments(reqObj: FormData) {
+    uploadMultipleAttachments(reqObj: FormData) {
         return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
     }
 

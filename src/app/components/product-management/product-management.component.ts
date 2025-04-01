@@ -296,10 +296,15 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     const summaryData = this.reportRequestObj;
     try {
       const response: any = await this.productManagementService.getSummary(summaryData, token);
-      this.hasMoreRecords = response.data.length === 25;
-      this.summaryResponse = response.data;
-      this.processResponseData(response, this.params);
-	    this.topPanelConfig.totalResult = response.resultCount
+      if (!response.hasError) {        
+        this.hasMoreRecords = response.data.length === 25;
+        this.summaryResponse = response.data;
+        this.processResponseData(response, this.params);
+        this.topPanelConfig.totalResult = response.resultCount
+      } else {
+        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+        this.isLoadingSummaryData = false;
+      }
     } catch (error) {
       console.error("Error fetching summary:", error);
     } finally {
