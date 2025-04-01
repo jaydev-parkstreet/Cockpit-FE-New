@@ -235,6 +235,9 @@ export class ProductManagementDetailsComponent implements OnInit {
             } else {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }
+        }, (error) => {
+            this.spinner.hide();
+            this.commonService.showToastV2Message(true, 'Status Change Failed', 'fas fa-exclamation-circle');
         });
     }
 
@@ -254,6 +257,9 @@ export class ProductManagementDetailsComponent implements OnInit {
             } else {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }
+        }, (error) => {
+            this.spinner.hide();
+            this.commonService.showToastV2Message(true, 'Status Change Failed', 'fas fa-exclamation-circle');
         });
     }
 

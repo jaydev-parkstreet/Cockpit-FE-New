@@ -53,7 +53,7 @@ export class AttachmentTabComponent implements OnInit {
                 if (!response.hasErrors) {
                     this.attachments = response;
                 } else {
-                    this.commonService.showToastV2Message(true, 'Failed to load Attachments', 'fas fa-exclamation-circle');
+                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                 }
             }, (error) => {
                 this.commonService.showToastV2Message(true, 'Failed to load Attachments', 'fas fa-exclamation-circle');

@@ -209,60 +209,6 @@ export class CommonService {
       return url;
   }
 
-  /**
-  * Function to get notes.
-  * @createdDate 21-03-2025
-  * @author PSI-Enhancement
-  * @param number kind
-  * @param number tool
-  * @param string entity
-  * @param number menuItemId
-  */
-  getNotes(kind, tool, entity, menuItemId, otherTool?) {
-    let params = {
-      kind,
-      entity,
-      tool,
-      menu_item_id: menuItemId
-    };
-
-    if (!!otherTool) {
-      params['other_tools'] = otherTool;
-      delete params.kind;
-    }
-    return this.http.get(environment.apiUrl + AppRoutes.COMMON.NOTES, { params });
-  }
-
-  /**
-   * Function to save a note
-   * @createdDate 21-03-2025
-   * @author PSI-Enhancement
-   * @param string entityId
-   * @param object model
-   * @param object req
-   */
-  saveNote(entityId, modal, req) {
-    if (modal.id) {
-      req.entity_id = entityId[0];
-      req.id = modal.id;
-      return this.http.put(environment.apiUrl + AppRoutes.COMMON.NOTES, req);
-    } else {
-      req.entity_ids = entityId;
-      return this.http.post(environment.apiUrl + AppRoutes.COMMON.MULTIPLE_NOTES_API, req);
-    }
-  }
-
-  /**
- * Function to delete a note.
- * @createdDate 06-04-2018
- * @author Innovify
- * @param number id
- * @param number menuItemId
- */
-  deleteNote(id, menuItemId) {
-    return this.http.delete(environment.apiUrl + AppRoutes.COMMON.NOTES, { params: { id, menu_item_id: menuItemId } })
-  }
-
     /**
      * Function to export excel
      * 

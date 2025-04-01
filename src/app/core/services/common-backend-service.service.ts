@@ -32,6 +32,25 @@ export class CommonBackendService {
       return this.http.get(`${environment.apiUrl}${AppRoutes.COMMON.NOTES}`, { params });
     }
 
+	/**
+	 * Function to save a note
+	 * @createdDate 21-03-2025
+	 * @author PSI-Enhancement
+	 * @param string entityId
+	 * @param object model
+	 * @param object req
+	 */
+	saveNote(entityId, modal, req) {
+		if (modal.id) {
+		  	req.entity_id = entityId[0];
+		  	req.id = modal.id;
+		  	return this.http.put(environment.apiUrl + AppRoutes.COMMON.NOTES, req);
+		} else {
+		  	req.entity_ids = entityId;
+		  	return this.http.post(environment.apiUrl + AppRoutes.COMMON.MULTIPLE_NOTES_API, req);
+		}
+	}
+
     /**
      * Updates the privacy permission of a note.
      *

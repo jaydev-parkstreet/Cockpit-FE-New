@@ -589,10 +589,6 @@ export class ProductManagementService {
         return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
     }
 
-    changeFilePermission(data: any) {
-        return this.http.put(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS_PERMISSION, data);
-    }
-
     deleteUploadFile(param: any) {
         return this.http.delete(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS, {
             params: new HttpParams().set('id', param),

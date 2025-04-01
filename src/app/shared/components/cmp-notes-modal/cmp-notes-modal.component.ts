@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { ProductManagementService } from 'src/app/components/product-management/product-management.service';
 import AppConstant from 'src/app/app.constant';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
+import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 export interface notesModal {
     modalData: any;
@@ -21,6 +23,8 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
     constructor(
         private simpleModalService: SimpleModalService,
         private commonService: CommonService,
+        private commonBackendService: CommonBackendService,
+        private spinner : NgxSpinnerService,
         private productmanagementService: ProductManagementService,
     ) { super(); }
 
@@ -103,6 +107,7 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
     * @author PSI-Enhancements
     */
     uploadNotes() {
+        this.spinner.show();
         let modal = {
             note_description: this.editorContent,
             entity_kind: this.entity_kind,
@@ -116,11 +121,17 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
             permission_id: this.permission_id || 1,
             menu_item_id: this.modalData.filtersList.menu_item_id || this.modalData.permissions.menu_item_id,
         };
-        this.commonService.saveNote(this.modalData.entityIds, modal, req).subscribe((result: any) => {
+        this.commonBackendService.saveNote(this.modalData.entityIds, modal, req).subscribe((result: any) => {
             if (!result.hasError) {
                 this.displaySuccessMessage();
+            } else {
+                this.commonService.showToastV2Message(true, result.msg, 'fas fa-exclamation-circle');
             }
-        })
+            this.spinner.hide();
+        }, (error) => {
+            this.commonService.showToastV2Message(true, 'Failed to save note', 'fas fa-exclamation-circle');
+            this.spinner.hide();
+        });
     }
 
     /**
@@ -143,7 +154,7 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
                 if (result.btn.label === 'Yes') {
-                    this.commonService.deleteNote(id, this.modalData.permissions.menu_item_id)
+                    this.commonBackendService.deleteNote(id, this.modalData.permissions.menu_item_id)
                         .subscribe((response: any) => {
                             if (response.hasError) {
                                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
@@ -152,7 +163,7 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
                                 this.modalData.noteDetails.notes = this.modalData.noteDetails.notes.filter((item: any) => item.id !== id);
                             }
                         }, (error) => {
-                            this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+                            this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
                         });
                 }
             });
