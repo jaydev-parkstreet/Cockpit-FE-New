@@ -63,8 +63,10 @@ export class SidebarMenuComponent implements OnInit {
         }
 
         if (isOverflowing) {
+            this.renderer.removeStyle(submenuElement, 'top');
             this.renderer.setStyle(submenuElement, 'bottom', '16px');
         } else {
+            this.renderer.removeStyle(submenuElement, 'bottom');
             this.renderer.setStyle(submenuElement, 'top', this.isSidebarExpanded ? `${parentRect.top - 16}px` : '-16px');
         }
 

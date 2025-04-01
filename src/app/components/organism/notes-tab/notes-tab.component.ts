@@ -159,7 +159,7 @@ export class NotesTabComponent implements OnInit {
                 if (response.hasError) {
                     this.commonService.showToastV2Message(false, 'Failed to update privacy', 'fas fa-exclamation-circle');
                 } else {
-                    this.commonService.showToastV2Message(true, 'Privacy Updated', 'fas fa-exclamation-circle', 'success');
+                    this.commonService.showToastV2Message(true, 'Privacy Updated', 'fas fa-check-circle', 'success');
                     note.permission_id = newPermission;
                 }
             },
@@ -194,7 +194,7 @@ export class NotesTabComponent implements OnInit {
                     this.commonBackendService.deleteNote(id, this.permissions.menu_item_id).subscribe((response: any) => {
                         if (!response.hasError) {
                             this.notes = this.commonService.deleteObjectFromArray(this.notes, 'id', id);
-                            this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                            this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                         } else {
                             this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
                         }

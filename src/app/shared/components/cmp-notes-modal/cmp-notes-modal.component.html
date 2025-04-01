@@ -2,38 +2,45 @@
     <div class="modal-header">
         <div class="title-container">
             <i class="far fa-paperclip attach-icon"></i>
-            <span class="header-title" [innerText]="modalData?.modalTitle ? modalData.modalTitle : (isNotesListVisible ? (modalData?.multiple ? 'Add Note' : 'Notes') : 'Edit Notes')" ></span>
-          
+            <span class="header-title"
+                [innerText]="modalData?.modalTitle ? modalData.modalTitle : (isNotesListVisible ? (modalData?.multiple ? 'Add Note' : 'Notes') : 'Edit Notes')" >
+            </span>
         </div>
         <i class="fal fa-times close-popup" *ngIf="modalData?.showDismissIcon" (click)="closeModal(0)"></i>
     </div>
     <div class="modal-body w-100">
 
         <app-no-record 
-            *ngIf="modalData?.noteDetails?.notes.length == 0 && isNotesListVisible"
+            *ngIf="modalData?.noteDetails?.notes.length == 0 && isNotesListVisible && !modalData.multiple"
             [placeHolderText]="modalData.noDataMessage"
             [iconClass]="modalData.emptyDataIcon || 'far fa-surprise'">
         </app-no-record>
 
         <div *ngIf="modalData?.noteDetails?.notes?.length > 0 && isNotesListVisible">
-            <div *ngFor="let note of modalData?.noteDetails?.notes; let i = index" class="notes-row">
-                <div class="note-container">
-                    <div class="note-owner-image">
-                        <img class="profile-picture" [src]="fileServer + note.person_image">
-                        <img class="ps-logo"[src]="fileServer +'/images/cockpit/custom-ps-logo.svg'" />
+            <div class="notes-scroll">
+                <div class="notes-padding">
+                    <div class="notes-row u-pg-mb-2" *ngFor="let note of modalData?.noteDetails?.notes; let i = index">
+                        <div class="note-container">
+                            <div class="note-owner-image">
+                                <img class="profile-picture" [src]="fileServer + note.person_image">
+                                <img class="ps-logo"[src]="fileServer +'/images/cockpit/custom-ps-logo.svg'" />
+                            </div>
+                            <div class="note-meta">
+                                <span class="typography-paragraph-primary-medium note-meta-name">
+                                    {{note.first_name}} {{note.last_name}}
+                                    <span class="typography-paragraph-dark-regular" *ngIf="note.permission_id === 2 || note.permission_id === 3">
+                                        (Private)
+                                    </span>
+                                </span>
+                                <span [innerHTML]="note.content"></span>
+                            </div>
+                        </div>
+                        <div class="right-section">
+                            <i class="fas fa-pen" *ngIf="note.has_edit_permission" (click)="onEditClick(note)"></i>
+                            <i class="fas fa-trash" *ngIf="note.has_edit_permission" (click)="onDeleteClick(note.id)"></i>
+                            <span>{{note.en_created_at | date: 'MM/dd/yy'}}</span>
+                        </div>
                     </div>
-                    <div class="note-meta">
-                        <span class="note-meta-name">
-                            {{note.first_name}} {{note.last_name}}
-                            <span *ngIf="note.permission_id === 2 || note.permission_id === 3" class="typography-paragraph-dark-regular">(Private)</span>
-                        </span>
-                        <span [innerHTML]="note.content"></span>
-                    </div>
-                </div>
-                <div class="right-section">
-                    <i class="fas fa-pen" *ngIf="note.has_edit_permission" (click)="onEditClick(note)"></i>
-                    <i class="fas fa-trash" *ngIf="note.has_edit_permission" (click)="onDeleteClick(note.id)"></i>
-                    <span>{{note.en_created_at | date: 'MM/dd/yy'}}</span>
                 </div>
             </div>
         </div>
@@ -67,11 +74,16 @@
         </div>
     </div>
     <div class="modal-footer footer w-100">
-        <app-cmp-button [buttonText]="modalData.cancelAction.label" [buttonClass]="'secondary u-mr4 w-lg'"
+        <app-cmp-button
+            [buttonText]="modalData.cancelAction.label"
+            [buttonClass]="'secondary u-mr4 w-lg'"
             (click)="closeModal()">
         </app-cmp-button>
-        <app-cmp-button [buttonText]="modalData.saveAction.label" [buttonClass]="'primary w-lg'"
-            [isDisable]="!editorContent" (click)="!editorContent ? $event.stopPropagation() : uploadNotes()">
+        <app-cmp-button
+            [buttonText]="modalData.saveAction.label"
+            [buttonClass]="'primary w-lg'"
+            [isDisable]="!editorContent"
+            (click)="!editorContent ? $event.stopPropagation() : uploadNotes()">
         </app-cmp-button>
     </div>
 </div>
