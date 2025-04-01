@@ -156,7 +156,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     uploadParams.append('permission_id', this.permission_id || this.modalData.attachmentPermission[0].id);
     this.productmanagementService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
       if (!response.hasError) {
-        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+        this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
         this.closeModal(1);
       } else {
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
@@ -204,7 +204,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
               if (response.hasError) {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
               } else {
-                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                 this.modalData.attachmentDetails.data = this.modalData.attachmentDetails.data.filter((item: any) => item.upload_id !== file.upload_id);
               }
             }, (error) => {
@@ -236,7 +236,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
         } else {
           file.permission_id = permission_id;
-          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
         }
       }, (error) => {
         this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');

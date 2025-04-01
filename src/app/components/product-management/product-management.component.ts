@@ -50,7 +50,7 @@ export class ProductManagementComponent implements OnInit {
   FileSaver: any;
   downloading: boolean;
   filtermodal: any;
-  private timerSubscription!: Subscription;
+  private timerSubscriptions = new Map<number, Subscription>();
 
   constructor(
     private productManagementService: ProductManagementService,
@@ -123,9 +123,10 @@ export class ProductManagementComponent implements OnInit {
         this.productManagementService.syncOrder(params.value).subscribe( (response: any) => {
           if(!response.hasError) {
             params.data.ns_status = 2;
-            this.timerSubscription = interval(30000).subscribe(()=> {
+            const subscription = interval(30000).subscribe(()=> {
                 this.getSyncStatusDetails(params);
             });
+			this.timerSubscriptions.set(params.data.product_id, subscription);
             this.gridOptions.api.redrawRows();
           }
         });
@@ -133,18 +134,20 @@ export class ProductManagementComponent implements OnInit {
     };
     this.gridOptions.onCellMouseOver = (params) => {
       if (params && params.event) {
-        const element = params.event.srcElement.querySelector('.add-tooltip');
-        if (element) {
-          const scrollWidth = params.event.srcElement.scrollWidth;
-          const offsetWidth = params.event.srcElement.offsetWidth;
-          if (offsetWidth < scrollWidth) {
-            this.renderer.addClass(element, 'tooltip-text');
-          } else {
-            this.renderer.removeClass(element, 'tooltip-text');
-          }
-        }
+		const agCelltooltip = params.event.target.closest('.tooltip-cell');
+		const tooltipCell = agCelltooltip?.querySelector('.add-tooltip');
+		if(tooltipCell) {
+			const textEllipsisElement = agCelltooltip.querySelector('.text-ellipsis');
+			const scrollWidth = textEllipsisElement.scrollWidth;
+			const offsetWidth = textEllipsisElement.offsetWidth;
+			if (offsetWidth < scrollWidth) {
+			  this.renderer.addClass(tooltipCell, 'tooltip-text');
+			} else {
+			  this.renderer.removeClass(tooltipCell, 'tooltip-text');
+			}	
+		}
       }
-    };
+    };	
   }
 
   /**
@@ -204,20 +207,31 @@ export class ProductManagementComponent implements OnInit {
             }
         });
     }
-
-  openAttachmentListPopup (entity:any) {
-    if (this.permissions.permissions.Update) {
-        this.isLoadingSummaryData = true;
-        this.productManagementService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response:any) => {
-          this.isLoading = false;
-          this.showAttachment(false, [entity], response);
-        },
-        (error: any) => {
-          this.isLoading = false;
-          console.error(error);          
-        });
-    }
-}
+	
+	/**
+	 * Function to open Attachment Popup for the attachment list
+	 * 
+	 * @param entity 
+	 * @author PSI-Enhancement
+	 */
+	openAttachmentListPopup(entity: any) {
+		if (this.permissions.permissions.Update) {
+			this.spinner.show();
+			this.productManagementService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response: any) => {
+				if(!response.hasErrors) {
+					this.showAttachment(false, [entity], response);
+				} else {
+					this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+				}
+				this.isLoading = false;
+				this.spinner.hide();
+			},(error: any) => {
+				this.isLoading = false;
+				this.spinner.hide();
+				this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+			});
+		}
+	}
 
 showAttachment(multiple:any, entityIds:any, attachments:any) {
     let modalData:any;
@@ -266,6 +280,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
      * @author PSI-Enhancements
     */
   async getSummaryData() {
+    this.isLoadingSummaryData = true;
     this.spinner.show();
     const token = localStorage.getItem('authToken');
     const summaryData = this.reportRequestObj;
@@ -531,7 +546,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       this.spinner.hide();
       if (!response.hasError) {
         this.setDataSourceAgGrid();
-          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
       } else {
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
       }
@@ -599,13 +614,26 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
                     this.commonService.showToastV2Message(true, 'Sync Failed');
                 }
                 this.gridOptions.api.redrawRows();
-                this.timerSubscription.unsubscribe();
+                this.clearTimer(params.data.product_id);
             } else {
-                this.timerSubscription.unsubscribe();
+                this.clearTimer(params.data.product_id);
                 params.data.ns_status = 3;
                 this.gridOptions.api.redrawRows();
                 this.commonService.showToastV2Message(true, 'Save Failed');
             }
         });
     }
+
+	/**
+	 * Function to unsubscribe the subscription
+	 * 
+	 * @param productID 
+	 * @author PSI-Enhancement
+	 */
+	clearTimer(productID) {
+		if(this.timerSubscriptions.has(productID)) {
+			this.timerSubscriptions.get(productID).unsubscribe();
+			this.timerSubscriptions.delete(productID);
+		}
+	}
 }

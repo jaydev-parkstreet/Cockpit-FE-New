@@ -208,7 +208,7 @@ export class ProductAddComponent implements OnInit {
                         this.spinner.hide();
                         let productId = response.product_id;
                         if (this.edit && !this.duplicate) {
-                            this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-exclamation-circle', 'success');
+                            this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-check-circle', 'success');
                         } else {
                             this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                         }
