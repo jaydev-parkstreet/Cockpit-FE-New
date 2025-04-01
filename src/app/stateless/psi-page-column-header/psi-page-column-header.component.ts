@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-psi-page-column-header',
@@ -8,9 +8,15 @@ import { Component, OnInit, Input } from '@angular/core';
 export class PsiPageColumnHeaderComponent implements OnInit {
  
   @Input() headerTitle: string;
+  @Input() clearAll: boolean;
+  @Output() clearAllClicked: EventEmitter<void> = new EventEmitter<void>();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onClearAllClick(): void {
+    this.clearAllClicked.emit();
+  }
 }
