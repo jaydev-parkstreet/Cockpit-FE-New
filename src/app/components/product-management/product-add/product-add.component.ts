@@ -88,20 +88,25 @@ export class ProductAddComponent implements OnInit {
      */
     async getProductData (productId) {
         this.spinner.show();
-        this.productManagementService.getDetails(productId).subscribe((productData) => {
+        this.productManagementService.getDetails(productId).then((response : any) => {
             this.spinner.hide();
-            this.renderConditionalFields(productData.prod_type, this.crudFiltersList, this.productForm);
-            this.productId = productData.product_id;
-            setTimeout(() => {
-                if (this.duplicate) {
-                    delete productData.product_id;
-                }
-                if (!this.duplicate) {
-                    this.uniqueId = productData.id;
-                }
-                this.modelFormat = this.ProductAddService.formatModelProductTool(productData, this.crudFiltersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId, this.productId);
-                this.prefillForm(productData);
-            }, 100);
+            if (!response.hasError) {
+                this.renderConditionalFields(response.data.prod_type, this.crudFiltersList, this.productForm);
+                this.productId = response.data.product_id;
+                setTimeout(() => {
+                    if (this.duplicate) {
+                        delete response.data.product_id;
+                    }
+                    if (!this.duplicate) {
+                        this.uniqueId = response.data.id;
+                    }
+                    this.modelFormat = this.ProductAddService.formatModelProductTool(response.data, this.crudFiltersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId, this.productId);
+                    this.prefillForm(response.data);
+                }, 100);
+            } else {
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                this.router.navigate(['../']);
+            }
         });
     }
 

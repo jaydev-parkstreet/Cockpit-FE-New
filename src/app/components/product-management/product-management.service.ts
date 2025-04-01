@@ -537,7 +537,7 @@ export class ProductManagementService {
     getDetails(id) {
         return this.http
             .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DETAILS + id)
-            .pipe(map((response: any) => response.data));
+            .toPromise();
     }
 
     /**
