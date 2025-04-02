@@ -1,0 +1,498 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { InputDropdownService } from 'src/app/shared/components/cmp-input-dropdown/input-dropdown.service';
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { CommonService } from 'src/app/core/services/common.service';
+import AppRoutes from 'src/app/app.routes';
+import AppConstant from 'src/app/app.constant';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class summaryService {
+
+    constructor(
+        private http: HttpClient, private commonService: CommonService,
+        private dropdownService: InputDropdownService,
+    ) { }
+    CONSTANTS: any = AppConstant;
+
+    /**
+      * Function to get top bar config.
+      * @author PSI-VIII
+      */
+    getSummaryTopBarConfig() {
+        return {
+            filtersConfig: {
+                totalResult: 0,
+                filterArray: [
+
+                ]
+            },
+            placeholder: 'Search',
+            searchText: '',
+            searchOptions: {},
+            expandFilter: false,
+            actions: []
+        }
+    };
+
+    /**
+     * Function to return summary table header config array
+     * @createdDate 01-10-2024
+     * @author PSI-VIII
+     */
+    getSummaryTableHeaderConfig() {
+        return [{
+            headerName: '',
+            field: 'data',
+            cellRenderer: 'checkbox',
+            width: 120,
+            minWidth: 100,
+            maxWidth: 150,
+            headerClass: 'check',
+            suppressMenu: true,
+            suppressSorting: true,
+            sortable: false,
+            lockPosition: true,
+            resizable: false,
+            cellClass: 'select-all-header-cell pl0px header-check check'
+        }, {
+            headerName: 'Unique ID',
+            minWidth: 200,
+            width: 200,
+            field: 'unique_id',
+            cellRenderer: 'idRender',
+            cellClass: 'tooltip-cell'
+        },
+        { headerName: 'Supplier Name', minWidth: 75, width: 193, field: 'description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Status', minWidth: 75, width: 115, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Formula Description', minWidth: 75, width: 115, field: 'brand_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Classification',  minWidth: 120, width: 140, field: 'status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
+        { headerName: 'Submission ID', minWidth: 60, width: 108, field: 'ttb_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Formula ID', minWidth: 60, width: 108, field: 'ttb_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Date Requested', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
+        { headerName: 'Date Submitted', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
+        { headerName: 'Date Approved', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
+        { headerName: 'Date Expired', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
+        { headerName: 'Formula Approval Document', minWidth: 75, width: 134, field: 'product_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        ];
+    }
+
+    /**
+     * Gets the grid options for the formula summary table.
+     * @returns {any}
+     * @author PSI-VIII
+     */
+    getGridOption() {
+        return {
+            components: {
+                checkbox: (params) => this.renderCheckbox(params),
+                dashRenderer: (params) => this.renderDash(params),
+                idRender: (params) => this.renderId(params),
+                statusRenderer: (params) => this.renderStatus(params),
+                dateFormatRenderer: (params) => this.dateFormatRenderer(params)
+            },
+            enableColResize: true,
+            allowContextMenuWithControlKey: true,
+            rowBuffer: 0,
+            infiniteInitialRowCount: 1,
+            maxConcurrentDatasourceRequests: 2,
+            enableServerSideSorting: true,
+            suppressRowTransform: true,
+            defaultColDef: {
+                width: 200,
+                sortable: true,
+                resizable: true,
+                filter: false,
+            },
+            rowHeight: 38,
+            headerHeight: 38,
+            suppressRowClickSelection: true,
+            rowModelType: 'infinite',
+            paginationPageSize: 25,
+            sortingOrder: ['desc', 'asc'],
+            cacheBlockSize: 25,
+            cacheOverflowSize: 1,
+            debug: false,
+            suppressRowDeselection: true,
+            columnDefs: this.getSummaryTableHeaderConfig(),
+            rowSelection: 'multiRow',
+            overlayLoadingTemplate: `<div class="no-data-message">
+                                        <i class="far fa-surprise"></i>
+                                        <span>No Records Found.</span>
+                                    </div>`,
+            getRowId: (params) => params.data.unique_id,
+        };
+    }
+
+    /**
+     * Renders a checkbox in the grid column, checked or unchecked depending on the row data.
+     * @param {object} params
+     * @returns {string}
+     * @author PSI-VIII
+     */
+    renderCheckbox(params) {
+        let checkboxSelection = '';
+        if (params.data) {
+            if (params.data.checked) {
+                checkboxSelection = `<label class="checkbox-container">
+                                <input type="checkbox" class="checkbox_gir_row" checked>
+                                <span class="checkmark"></span>
+                            </label>`;
+            } else {
+                checkboxSelection = `<label class="checkbox-container">
+                                    <input type="checkbox" class="checkbox_gir_row">
+                                    <span class="checkmark"></span>
+                                </label>`;
+            }
+            checkboxSelection += `<span class="attachments-notes">
+                                <i class="${params.data.total_attachments <= 0 ? 'fal fa-file' : 'fas fa-file'} show-attachment-modal"></i>
+                                <span><i class="${params.data.total_notes <= 0 ? 'fal fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
+            if (params.data.unread_notes_count) {
+                checkboxSelection += `<span class="note-count ${params.data.unread_notes_count > 9 ? 'u-w-20' : ''}">
+                                    <p>${params.data.unread_notes_count}</p></span>`;
+            }
+            checkboxSelection += '</span>';
+        }
+        return checkboxSelection;
+    }
+
+    /**
+     * Render a dash when there is no value, otherwise render the value inside
+     * a text ellipsis container with a tooltip.
+     *
+     * @param {object} params
+     * @returns {string}
+     * @author PSI-VIII
+     */
+    renderDash(params) {
+        if (params.value) {
+            return `<div class="text-ellipsis"><span>${params.value}</span>
+                    <span class="add-tooltip">${params.value}</span></div>`;
+        }
+        return '--';
+    }
+
+    /**
+     * Creates an anchor link element for the formula ID.
+     *
+     * @param params
+     * @returns {string}
+     * @author PSI-VIII
+     */
+    renderId(params) {
+        if (params.value === null || params.value === '---' || params.value === '-') {
+            return '--';
+        } else if (params.data && params.data.unique_id) {
+            let fbStatusToolTip = '';
+            if (params.data.ns_status === 2) {
+                fbStatusToolTip = `
+                <i class="fas fa-clock sync-pending u-base-warning">
+                    <div class="tooltip-content_">
+                        <div class="tooltip-text_"><span class="sync-heading">Sync Status:</span> In Queue</div>
+                        <i></i>
+                    </div>
+                </i>`;
+            } else if (params.data.ns_status === 3 && params.data.status === "Pending") {
+                fbStatusToolTip = `
+                <i class="fas fa-exclamation-circle sync-failed u-base-error">
+                    <div class="tooltip-content_pending_status">
+                        <div class="tooltip-text_">
+                            <span class="fail">Sync Status:<span class="fail-msg"> Failed</span></span>
+                        </div>
+                        <i></i>
+                    </div>
+                </i>`;
+            }
+            else if (params.data.ns_status === 3 && params.data.status !== "Pending") {
+                fbStatusToolTip = `
+                <i class="fas fa-exclamation-circle sync-failed u-base-error">
+                    <div class="tooltip-content_">
+                        <div class="tooltip-text_ u-pg-g-1">
+                            <span class="fail">Sync Status:<span class="fail-msg"> Failed</span></span>
+                            <span class="re-sync">Re-Sync</span>
+                        </div>
+                        <i></i>
+                    </div>
+                </i>`;
+            }
+            return `
+                <div class="text-ellipsis">
+                    <a target="_blank" style="color: black; text-decoration: none;" 
+                        onmouseover="this.style.textDecoration='underline'"
+                        onmouseout="this.style.textDecoration='none'" 
+                        href="formula/${params.value}">
+                        ${params.value}
+                    </a>
+                    ${fbStatusToolTip}
+                    <span class="add-tooltip">${params.value}</span>
+                </div>`;
+        } else {
+            return '<i class="fas fa-circle-notch fa-spin fa-fw" style="font-size:20px"></i>';
+        }
+    }
+
+    /**
+     * Returns the status of the formula with an associated color.
+     * @param {Object} params
+     * @returns {String}
+     * @author PSI-VIII
+     */
+    renderStatus(params) {
+      const statusLabels = {
+        Approved: 'u-bg-success',
+        Pending: 'u-bg-warning',
+        'Pre-Approved': 'u-bg-primary text-ellipsis',
+        'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium text-ellipsis',
+        'Request Received': 'u-bg-neutral-light text-ellipsis',
+      };
+  
+      if (statusLabels[params.value]) {
+        return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>`;
+      }
+      return '--';
+    }
+
+    /**
+     * Function to get attachment list
+     * @param params 
+     * @author PSI-Enhancement
+     */
+    getAttachmentList (param:any) {        
+        return this.http.get(environment.apiRouteUrl+environment.version.v1+ AppRoutes.COMMON.ATTACHMENTS+'?', { params: param });
+    }
+
+    /**
+     * Cell Renderer for the formatting the Date
+     * 
+     * @param params 
+     * @returns string - Formated Date
+     * @author PSI-Enhancement
+     */
+    dateFormatRenderer(params) {
+        return this.commonService.dateFormat(params.value);
+    }
+
+    /**
+     * This function returns the config for top panel which includes search bar, filter dropdowns and action buttons.
+     * @param permission
+     * @param isActive
+     * @returns {object} The config object for top panel.
+     * @author PSI-VIII
+     */
+    getTopPanelConfig(permission, isActive = false) {
+        return {
+            placeholder: 'Search',
+            searchText: '',
+            searchOptions: {},
+            expandFilter: false,
+            totalResult: 0,
+            permission: permission,
+            actions: [],
+            filtersConfig: [
+                {
+                    key: 'clients',
+                    label: 'Supplier Name',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 noleftpadding',
+                    setting: this.getMultiSelectConfig('Select Supplier Name')
+                }, {
+                    key: 'product_state',
+                    label: 'Status',
+                    type: 'multiselect-search',
+                    divClass: 'col-4',
+                    setting: this.getMultiSelectConfig('Select Status')
+                }, {
+                    key: 'product_type',
+                    label: 'Submission ID',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding',
+                    setting: this.getMultiSelectConfig('Select Submission ID')
+                }, {
+                    key: 'product_sub_type',
+                    label: 'Formula ID',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 noleftpadding',
+                    setting: this.getMultiSelectConfig('Select Formula ID')
+                }, {
+                    key: 'source',
+                    label: 'Date Requested',
+                    type: 'multiselect-search',
+                    divClass: 'col-4',
+                    setting: this.getMultiSelectConfig('mm/dd/yyyy')
+                }, {
+                    key: 'crm',
+                    label: 'Date Approved',
+                    type: 'multiselect-search',
+                    divClass: 'col-4 norightpadding', 
+                    setting: this.getMultiSelectConfig('mm/dd/yyyy')
+                }, 
+                { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
+                { type: 'checkbox', name: 'is_rejected', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4' }
+            ],
+        };
+    }
+
+    getActionsIconsConfig (groupActions, permission, reqObj = {}, isActive = false) {
+        const actionIconsConfig: any = [];
+        if (groupActions) {
+            if (permission?.permissions?.Update) {
+                actionIconsConfig.push({
+                    key: 'attachment',
+                    type: 'icon',
+                    iconClass: 'far fa-paperclip',
+                    showTooltip: true,
+                    tooltipText: 'Attach',
+                }, {
+                    key: 'notes',
+                    type: 'icon',
+                    iconClass: 'fas fa-comment',
+                    showTooltip: true,
+                    tooltipText: 'Note',
+                })
+            }
+        }
+        actionIconsConfig.push({
+            type: 'export',
+            tooltipText: 'Export to Excel',
+            apiUrl: environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT,
+            params: this.commonService.parseRequest(reqObj)
+        });
+        actionIconsConfig.push({
+            key: 'result',
+            type: 'result',
+        });
+        actionIconsConfig.push({
+            key: 'filter_button',
+            type: 'filter_button',
+            buttonClass: 'secondary u-pg-w-16'
+        });
+        if (permission?.permissions?.Create) {
+            actionIconsConfig.push({
+                key: 'new_formula',
+                type: 'button',
+                divClass: '',
+                buttonText: 'FORMULA',
+                buttonIconLeft: 'fas fa-plus-circle',
+                buttonClass: 'primary large'
+            });
+        }
+        actionIconsConfig.push();
+        return actionIconsConfig;
+    }
+
+    /**
+     * Generates a configuration object for multi-select dropdowns.
+     *
+     * @param placeholdertext
+     * @param name
+     * @returns An object
+     * @author PSI-VIII
+     */
+    getMultiSelectConfig(placeholdertext, name = 'name', serverSearch = false, apiUrl = '') {
+        return {
+            enableSearch: true,
+            dynamicTitle: true,
+            showSelectAll: true,
+            keyboardControls: true,
+            displayProp: name,
+            searchField: name,
+            scrollable: true,
+            clearSearchOnClose: true,
+            closeOnDeselect: false,
+            idProperty: 'id',
+            checkBoxes: true,
+            buttonClasses: 'c-btn c-btn--secondary c-btn--full u-h3 ps-select',
+            translationTexts: { buttonDefaultText: placeholdertext, searchPlaceholder: 'Search', noResultText: 'No results found' },
+            ...(serverSearch && { serverSearch, apiUrl })
+        };
+    }
+
+    /**
+     * Formats an array of objects into a dropdown-compatible format.
+     * 
+     * @param values
+     * @param name
+     * @returns An array of objects suitable for use in a dropdown
+     * @author PSI-VIII
+     */
+    formatDropdownValue(values, name = '') {
+        let dropdown = [];
+        if (name) {
+            dropdown.push({ 'value': undefined, 'name': name });
+        }
+        for (let i = 0; i < values.length; i++) {
+            dropdown.push({ value: values[i].id, id: values[i].id, name: values[i].name });
+        }
+        return dropdown;
+
+    }
+
+    /**
+     * Fetches the summary data from the server based on the given summary data object.
+     * 
+     * @param summaryData
+     * @param token
+     * @returns A Promise containing the summary data.
+     * @author PSI-VIII
+     */
+    getSummary(summaryData: any, token) {
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.SUMMARY, summaryData, { headers }).toPromise();
+    }
+
+    /**
+     * Retrieves the list of dropdown items associated with the given client ID.
+     * 
+     * @param token
+     * @returns An Observable containing the data of dropdown items.
+     * @author PSI-VIII
+     */
+    getDropdown(token) {
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DROPDOWN, { headers }).toPromise();
+    }
+
+    /**
+     * Retrieves the formula details for a given formula ID.
+     *
+     * @param id The ID of the formula.
+     * @returns An Observable containing the formula details from the server.
+     * @author PSI-VIII
+     */
+    getDetails(id) {
+        return this.http
+            .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DETAILS + id)
+            .toPromise();
+    }
+
+    /**
+     * Retrieves the permission settings for the formula tool.
+     *
+     * @returns A promise that resolves to the permission data from the server.
+     * @author PSI-VIII
+     */
+    getPermission() {
+        return this.http
+            .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PERMISSION).toPromise();
+    }
+
+    /**
+     * Makes an API call to export the given formula to Excel.
+     * @param obj
+     * @returns An observable containing the HTTP response from the server.
+     * @author PSI-VIII
+     */
+    excelExport(obj) {
+        return this.http
+            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT, obj)
+            .pipe(map((response: any) => response));
+    }
+
+    uploadMultipleAttachments(reqObj: FormData) {
+        return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
+    }
+
+}
