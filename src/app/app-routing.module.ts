@@ -21,6 +21,15 @@ const routes: Routes = [
         path: '**',
         redirectTo: '/product-management',
         pathMatch: 'full'
+    },
+    {
+        path: 'formula',
+        loadChildren: () => import('./components/formula-tool/summary.module').then(m => m.SummaryModule)
+    },
+    {
+        path: '**',
+        redirectTo: '/formula',
+        pathMatch: 'full'
     }
 ];
 @NgModule({

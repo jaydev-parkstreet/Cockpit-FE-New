@@ -19,6 +19,18 @@ const routes: Routes = [
 						(m) => m.ProductManagementModule
 					),
 			},
+			{
+				path: '',
+				redirectTo: '/formula',
+				pathMatch: 'full',
+			},
+			{
+				path: 'formula',
+				loadChildren: () =>
+					import('../formula-tool/summary.module').then(
+						(m) => m.SummaryModule
+					),
+			},
 		],
 	},
 ];

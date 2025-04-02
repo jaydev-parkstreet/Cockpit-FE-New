@@ -1,0 +1,38 @@
+<div class="formula-tool u-pg-pt-1">
+    <app-header-tool
+        titleText="Formulas"
+        titleIcon="fas fa-file-alt">
+    </app-header-tool>
+    <div class="formula-tool-container">
+        <div class="check-container u-pg-pr-1">
+            <div class="u-w-inherit">
+                <app-summary-top-bar
+                    [productChecked]="selectedAllRows"
+                    [config]="topPanelConfig"
+                    [filterList]="filterList"
+                    (addProduct)="addFormula()"
+                    (applyFilters)="applyFilters($event)"
+                    (resetFilters)="resetFilters()"
+                    (onEnter)="universalSearch($event)"
+                    (onClickAction)="onClickAction($event)"
+                    >
+                </app-summary-top-bar>
+            </div>
+        </div>
+        <div class="formula-tool-grid u-pg-mb-1 u-pg-pb-1" [hidden]="formulaToolSummary.length == 0 && !isLoadingSummaryData">
+            <app-summary-grid
+                [gridOptions] = "gridOptions"
+                [selectAllOption] = "true"
+                (selectAllCheckbox) = "onSelectAllChanged($event)"
+                (setDataSource)="setDataSourceAgGrid()"
+                [selectedRowCount]="selectedRowCount">
+            </app-summary-grid>
+        </div>
+        <div class="no-record-container" *ngIf="!isLoadingSummaryData && formulaToolSummary.length <= 0">
+            <app-no-record
+                [iconClass] = "'far fa-surprise'"
+                [placeHolderText] = "'No Formulas Found'">
+            </app-no-record>
+        </div>
+    </div>
+</div>
