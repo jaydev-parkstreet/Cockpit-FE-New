@@ -79,6 +79,7 @@ export class ProductManagementDetailsComponent implements OnInit {
           }
           catch (error) {
             console.error("Error fetching ProductData:", error);
+            this.router.navigate(['../']);
           }
     }
 
