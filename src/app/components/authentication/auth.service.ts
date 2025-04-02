@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import AppRoutes from 'src/app/app.routes';
 import { Router } from '@angular/router';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-   private router: Router) {
+   private router: Router,private commonService: CommonService) {
     this.checkToken();
   }
 
@@ -54,16 +55,17 @@ export class AuthService {
   }
   
 
-  async logoutCall() {
-    return this.http.get(environment.apiUrl + AppRoutes.AUTHENTICATION.LOGOUT)
-      .toPromise()
-      .then(response => {
-        return response;
-      })
-      .catch(err => {
-        return true;
-      });
-  }
+    async logoutCall() {
+        this.commonService.showSpinner();
+        try {
+            const response = await this.http.get(environment.apiUrl + AppRoutes.AUTHENTICATION.LOGOUT).toPromise();
+            return response;
+        } catch (err) {
+            return true;
+        } finally {
+            this.commonService.hideSpinner();
+        }
+    }
   
 
   clearLocalStorage() {
