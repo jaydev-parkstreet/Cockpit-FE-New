@@ -69,7 +69,7 @@ export class ProductManagementService {
         { headerName: 'Product Description', minWidth: 75, width: 193, field: 'description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Supplier', minWidth: 75, width: 115, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Brand', minWidth: 75, width: 115, field: 'brand_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Product Status',  minWidth: 120, width: 140, field: 'status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
+        { headerName: 'Product Status',  minWidth: 150, width: 150, field: 'status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
         { headerName: 'TTB ID', minWidth: 60, width: 108, field: 'ttb_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Date Created', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
         { headerName: 'Product Type', minWidth: 75, width: 134, field: 'product_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
@@ -251,8 +251,8 @@ export class ProductManagementService {
       const statusLabels = {
         Approved: 'u-bg-success',
         Pending: 'u-bg-warning',
-        'Pre-Approved': 'u-bg-primary text-ellipsis',
-        'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium text-ellipsis',
+        'Pre-Approved': 'u-bg-secondary text-ellipsis',
+        'Needs Action-Waiting on Supplier': 'u-bg-warning-medium text-ellipsis',
         'Request Received': 'u-bg-neutral-light text-ellipsis',
       };
   

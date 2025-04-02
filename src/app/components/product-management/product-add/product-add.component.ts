@@ -62,16 +62,25 @@ export class ProductAddComponent implements OnInit {
         this.productTitle = 'Dimensions';
         this.crudFieldConfig = this.ProductAddService.getCrudFieldConfig(this.crudFiltersList);
         this.modalData = this.ProductAddService.getModalData()
-        if (!this.permissions.permissions.Create) {
-            this.router.navigate(['product-management']);
-        }
         let productId = this.route.snapshot.paramMap.get('id');
         this.duplicate = this.route.snapshot.data.isDuplicate || false;
         if (productId) {
             this.edit = true;
+            if (this.duplicate) {
+                if (!this.permissions.permissions.Create) {
+                    this.router.navigate(['product-management']);
+                }
+            } else {
+                if (!this.permissions.permissions.Update) {
+                    this.router.navigate(['product-management']);
+                }
+            }
         }
         else {
             this.edit = false;
+            if (!this.permissions.permissions.Create) {
+                this.router.navigate(['product-management']);
+            }
         }
         if (productId) {
             this.getProductData(productId);

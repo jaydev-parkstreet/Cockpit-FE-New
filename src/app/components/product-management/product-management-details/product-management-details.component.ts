@@ -338,9 +338,9 @@ export class ProductManagementDetailsComponent implements OnInit {
         } else if (this.status === 'Pending') {
             this.statusClass = 'badge med u-bg-warning';
         } else if (this.status === 'Pre-Approved') {
-            this.statusClass = 'badge med u-bg-primary';
+            this.statusClass = 'badge med u-bg-secondary';
         } else if (this.status === 'Needs Action-Waiting on Supplier') {
-            this.statusClass = 'badge med u-bg-warinig-medium';
+            this.statusClass = 'badge med u-bg-warning-medium';
         } else if (this.status === 'Request Received') {
             this.statusClass = 'badge med u-bg-neutral-light';
         }
