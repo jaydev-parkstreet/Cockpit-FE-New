@@ -106,7 +106,6 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
                     this.spinner.show();
                     this.ProductAddService.saveNewSubBrands(param).subscribe(response => {
                         this.spinner.hide();
-                        debugger
                         if (!response.hasError) {
                             this.result = { confirm: true, formData: this.brandForm.value, response: response };
                             this.close();
