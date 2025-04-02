@@ -170,8 +170,7 @@ export class SidebarMenuComponent implements OnInit {
         this.sidebarMenuService.getMenu().subscribe({
             next: (response) => {
                 this.menuData = response.data.map((menu: any) => {
-                    //this below line needs to be removed as the icon is coming null for beta in api
-                    return menu.id === 495 ? { ...menu, icon: 'fas fa-hammer' } : menu;
+                    return menu;
                 });
             },
             error: (error) => {

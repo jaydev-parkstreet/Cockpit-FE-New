@@ -17,29 +17,27 @@
         </app-no-record>
 
         <div *ngIf="modalData?.noteDetails?.notes?.length > 0 && isNotesListVisible">
-            <div class="notes-scroll">
-                <div class="notes-padding">
-                    <div class="notes-row u-pg-mb-2" *ngFor="let note of modalData?.noteDetails?.notes; let i = index">
-                        <div class="note-container">
-                            <div class="note-owner-image">
-                                <img class="profile-picture" [src]="fileServer + note.person_image">
-                                <img class="ps-logo"[src]="fileServer +'/images/cockpit/custom-ps-logo.svg'" />
-                            </div>
-                            <div class="note-meta">
-                                <span class="typography-paragraph-primary-medium note-meta-name">
-                                    {{note.first_name}} {{note.last_name}}
-                                    <span class="typography-paragraph-dark-regular" *ngIf="note.permission_id === 2 || note.permission_id === 3">
-                                        (Private)
-                                    </span>
+            <div class="notes-padding">
+                <div class="notes-row u-pg-mb-2" *ngFor="let note of modalData?.noteDetails?.notes; let i = index">
+                    <div class="note-container">
+                        <div class="note-owner-image">
+                            <img class="profile-picture" [src]="fileServer + note.person_image">
+                            <img class="ps-logo"[src]="fileServer +'/images/cockpit/custom-ps-logo.svg'" />
+                        </div>
+                        <div class="note-meta">
+                            <span class="typography-paragraph-primary-medium note-meta-name">
+                                {{note.first_name}} {{note.last_name}}
+                                <span class="typography-paragraph-dark-regular" *ngIf="note.permission_id === 2 || note.permission_id === 3">
+                                    (Private)
                                 </span>
-                                <span [innerHTML]="note.content"></span>
-                            </div>
+                            </span>
+                            <span class="notes-scroll" [innerHTML]="note.content"></span>
                         </div>
-                        <div class="right-section">
-                            <i class="fas fa-pen" *ngIf="note.has_edit_permission" (click)="onEditClick(note)"></i>
-                            <i class="fas fa-trash" *ngIf="note.has_edit_permission" (click)="onDeleteClick(note.id)"></i>
-                            <span>{{note.en_created_at | date: 'MM/dd/yy'}}</span>
-                        </div>
+                    </div>
+                    <div class="right-section">
+                        <i class="fas fa-pen" *ngIf="note.has_edit_permission" (click)="onEditClick(note)"></i>
+                        <i class="fas fa-trash" *ngIf="note.has_edit_permission" (click)="onDeleteClick(note.id)"></i>
+                        <span>{{note.en_created_at | date: 'MM/dd/yy'}}</span>
                     </div>
                 </div>
             </div>

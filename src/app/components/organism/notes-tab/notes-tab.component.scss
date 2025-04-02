@@ -7,7 +7,6 @@
 
     .note-row-tab {
         max-height: 400px;
-        overflow: auto;
         position: relative;
         @include new-scrollbar;
 
@@ -50,6 +49,10 @@
             }
 
             .note-content {
+                overflow: auto;
+                width: 90%;
+                max-height: 200px;
+                @include new-scrollbar;
                 * {
                     margin: 0;
                 }

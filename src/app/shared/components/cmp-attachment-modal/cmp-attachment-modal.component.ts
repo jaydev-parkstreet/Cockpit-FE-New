@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { ProductManagementService } from 'src/app/components/product-management/product-management.service';
 import AppConstant from 'src/app/app.constant';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
+import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 export interface ConfirmModel {
   modalData: any;
@@ -23,6 +25,8 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     private simpleModalService: SimpleModalService,
     private commonService: CommonService,
     private productmanagementService: ProductManagementService,
+    private commonBackendService: CommonBackendService,
+    private spinner: NgxSpinnerService
   ) {
     super();
   }
@@ -154,7 +158,9 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     uploadParams.append('tool', this.modalData.filtersList.tool_id);
     uploadParams.append('menu_item_id', this.modalData.filtersList.menu_item_id);
     uploadParams.append('permission_id', this.permission_id || this.modalData.attachmentPermission[0].id);
+    this.spinner.show();
     this.productmanagementService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
+      this.spinner.hide();
       if (!response.hasError) {
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
         this.closeModal(1);
@@ -162,9 +168,9 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
       }
     }, (error) => {
+      this.spinner.hide();
       this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
-    }
-    );
+    });
   }
 
   /**
@@ -199,7 +205,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
       .subscribe((result) => {
         if (result.btn.label === 'Yes') {
-          this.productmanagementService.deleteUploadFile(file.upload_id)
+          this.commonBackendService.deleteUploadFile(file.upload_id)
             .subscribe((response: any) => {
               if (response.hasError) {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
@@ -226,11 +232,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     } else if (file.isInternalUser === 1) {
       var permission_id = file.permission_id === this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID ? this.CONSTANTS.ENTITY_PERMISSIONS.PUBLIC_EVERYONE_ID : this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID;
     }
-    const data = {
-      entity_upload_id: file.upload_id,
-      permission_id: permission_id
-    };
-    this.productmanagementService.changeFilePermission(data)
+    this.commonBackendService.changeFilePermission(file.upload_id, permission_id)
       .subscribe((response: any) => {
         if (response.hasError) {
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');

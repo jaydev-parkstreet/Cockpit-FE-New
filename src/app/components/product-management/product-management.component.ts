@@ -12,6 +12,7 @@ import {MassUploadExcelModalComponent} from '../product-management/mass-upload-e
 import { CmpNotesModalComponent } from 'src/app/shared/components/cmp-notes-modal/cmp-notes-modal.component';
 import { ConfirmationModalComponent } from '../organism/confirmation-modal/confirmation-modal.component';
 import { interval, Subscription } from 'rxjs';
+import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
 
 @Component({
   selector: 'app-product-management',
@@ -58,6 +59,7 @@ export class ProductManagementComponent implements OnInit {
     private router: Router,
     private spinner : NgxSpinnerService,
     private commonService : CommonService,
+    private commonBackendService: CommonBackendService,
     private route: ActivatedRoute,
     private simpleModalService: SimpleModalService,
     private renderer: Renderer2
@@ -160,11 +162,19 @@ export class ProductManagementComponent implements OnInit {
    */
     getNotes(Id, param) {
         this.spinner.show();
-        this.commonService.getNotes(this.permissions.kind_id,
+        this.commonBackendService.getNotes(this.permissions.kind_id,
         this.permissions.tool_id, Id, this.permissions.menu_item_id).subscribe((result: any) => {
-            this.showNotesModal(param.length === 0 ? Id : [Id], result.notes, false, param);
-            this.spinner.hide();
-        })
+                if(!result.hasError) {
+                    this.showNotesModal(param.length === 0 ? Id : [Id], result.notes, false, param);
+                } else {
+                    this.commonService.showToastV2Message(true, result.msg, 'fas fa-exclamation-circle');
+                }
+                this.spinner.hide();
+              }, (error) => {
+                this.spinner.hide();
+                this.commonService.showToastV2Message(true, 'Failed to load notes', 'fas fa-exclamation-circle');
+            }
+        );
     }
 
     /**
@@ -286,10 +296,15 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     const summaryData = this.reportRequestObj;
     try {
       const response: any = await this.productManagementService.getSummary(summaryData, token);
-      this.hasMoreRecords = response.data.length === 25;
-      this.summaryResponse = response.data;
-      this.processResponseData(response, this.params);
-	    this.topPanelConfig.totalResult = response.resultCount
+      if (!response.hasError) {        
+        this.hasMoreRecords = response.data.length === 25;
+        this.summaryResponse = response.data;
+        this.processResponseData(response, this.params);
+        this.topPanelConfig.totalResult = response.resultCount
+      } else {
+        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+        this.isLoadingSummaryData = false;
+      }
     } catch (error) {
       console.error("Error fetching summary:", error);
     } finally {
