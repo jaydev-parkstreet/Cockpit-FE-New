@@ -70,7 +70,7 @@ export class SidebarMenuComponent implements OnInit {
             this.renderer.setStyle(submenuElement, 'top', this.isSidebarExpanded ? `${parentRect.top - 16}px` : '-16px');
         }
 
-        this.renderer.setStyle(submenuElement, 'left', `calc(100% ${this.isSidebarExpanded ? '- 16px' : '+ 8px'})`);
+        this.renderer.setStyle(submenuElement, 'left', `calc(100% ${this.isSidebarExpanded ? '- 16px' : '+ 16px'})`);
         this.renderer.setStyle(submenuElement, 'display', 'block');
         submenuElement.addEventListener('mouseenter', () => {
             this.renderer.setStyle(submenuElement, 'display', 'block');
