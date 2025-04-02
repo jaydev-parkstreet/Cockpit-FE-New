@@ -20,7 +20,7 @@ export class PsiInputTextFieldComponent implements OnInit {
   /**
    * Handles input Blur change events, emitting the new value to the valueChanged output.
    * @param event
-   * @author psi-enhancement
+   * @author PSI-Enhancement
    */
   onValueChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
@@ -30,7 +30,7 @@ export class PsiInputTextFieldComponent implements OnInit {
    /**
    * Handles input change events, emitting the new value to the valueChanged output.
    * @param event
-   * @author psi-enhancement
+   * @author PSI-Enhancement
    */
   onInputValueChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;

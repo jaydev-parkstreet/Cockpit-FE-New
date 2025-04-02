@@ -35,7 +35,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     /**
      * Responds to changes in data-bound input properties.
      * @param changes
-     * @author psi-enhancement
+     * @author PSI-Enhancements
      */
     ngOnChanges(changes: SimpleChanges) {
     }
@@ -44,7 +44,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      * Emits an event when the state of a dropdown changes.
      * @param field
      * @param event
-     * @author psi-enhancement
+     * @author PSI-Enhancements
      */
     onDropdownStateChange(field, event) {
         this.onDropDownChange.emit({ field, event });
@@ -54,7 +54,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      * Returns true if the field is invalid and the form has been submitted.
      * @param controlName
      * @returns boolean
-     * @author psi-enhancement
+     * @author PSI-Enhancements
      */
     isFieldInvalid(controlName: string): boolean {
         const control = this.form.get(controlName);
@@ -63,7 +63,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
 
     /**
      * Function of clear the form
-     * @author psi-enhancement
+     * @author PSI-Enhancements
      */
     clearAllSelections(): void {
         const hasValues = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].some((field) => {
@@ -124,7 +124,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      *
      * @param field
      * @param value
-     * @author psi-enhancement
+     * @author PSI-Enhancements
      */
     onInputChange(field, value) {
         this.form.get(field).setValue(value);
@@ -135,7 +135,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      *
      * @param field
      * @param isChecked
-     * @author psi-enhancement
+     * @author PSI-Enhancements
      */
     onCheckedInput(field, isChecked) {
         this.form.get(field)?.setValue(isChecked ? '1' : '0');
