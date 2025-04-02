@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ProductManagementService } from 'src/app/components/product-management/product-management.service';
 import AppConstant from 'src/app/app.constant';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
+import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
 
 export interface ConfirmModel {
   modalData: any;
@@ -23,6 +24,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     private simpleModalService: SimpleModalService,
     private commonService: CommonService,
     private productmanagementService: ProductManagementService,
+    private commonBackendService: CommonBackendService
   ) {
     super();
   }
@@ -156,7 +158,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     uploadParams.append('permission_id', this.permission_id || this.modalData.attachmentPermission[0].id);
     this.productmanagementService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
       if (!response.hasError) {
-        this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+        this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
         this.closeModal(1);
       } else {
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
@@ -199,12 +201,12 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
       .subscribe((result) => {
         if (result.btn.label === 'Yes') {
-          this.productmanagementService.deleteUploadFile(file.upload_id)
+          this.commonBackendService.deleteUploadFile(file.upload_id)
             .subscribe((response: any) => {
               if (response.hasError) {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
               } else {
-                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                 this.modalData.attachmentDetails.data = this.modalData.attachmentDetails.data.filter((item: any) => item.upload_id !== file.upload_id);
               }
             }, (error) => {
@@ -226,17 +228,13 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     } else if (file.isInternalUser === 1) {
       var permission_id = file.permission_id === this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID ? this.CONSTANTS.ENTITY_PERMISSIONS.PUBLIC_EVERYONE_ID : this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID;
     }
-    const data = {
-      entity_upload_id: file.upload_id,
-      permission_id: permission_id
-    };
-    this.productmanagementService.changeFilePermission(data)
+    this.commonBackendService.changeFilePermission(file.upload_id, permission_id)
       .subscribe((response: any) => {
         if (response.hasError) {
           this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
         } else {
           file.permission_id = permission_id;
-          this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+          this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
         }
       }, (error) => {
         this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');

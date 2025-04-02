@@ -63,8 +63,10 @@ export class SidebarMenuComponent implements OnInit {
         }
 
         if (isOverflowing) {
+            this.renderer.removeStyle(submenuElement, 'top');
             this.renderer.setStyle(submenuElement, 'bottom', '16px');
         } else {
+            this.renderer.removeStyle(submenuElement, 'bottom');
             this.renderer.setStyle(submenuElement, 'top', this.isSidebarExpanded ? `${parentRect.top - 16}px` : '-16px');
         }
 
@@ -168,8 +170,7 @@ export class SidebarMenuComponent implements OnInit {
         this.sidebarMenuService.getMenu().subscribe({
             next: (response) => {
                 this.menuData = response.data.map((menu: any) => {
-                    //this below line needs to be removed as the icon is coming null for beta in api
-                    return menu.id === 495 ? { ...menu, icon: 'fas fa-hammer' } : menu;
+                    return menu;
                 });
             },
             error: (error) => {

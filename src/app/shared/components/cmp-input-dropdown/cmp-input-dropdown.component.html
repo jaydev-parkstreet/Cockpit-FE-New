@@ -4,7 +4,7 @@
     </div>
     <div class="dropdown-header" [ngClass]="validationClasses"
         (click)="!disabled && !formControl?.disabled && toggleDropdown()" tabindex="0">
-        <span [ngClass]="selectedItems.length === 0 ? 'placeholder-text': ''">{{ getSelectedDisplayText() }}</span>
+        <span [ngClass]="(selectedItems.length === 0 || (selectedItems.length === 1 && selectedItems[0]?.id === undefined)) ? 'placeholder-text': ''">{{ getSelectedDisplayText() }}</span>
         <button class="dropdown-button" *ngIf="settings.versionStyle !== 'smart-search'"
             (click)="onChevronClick($event)">
             <i [ngClass]="isDropdownOpen() ? 'fal fa-chevron-up' : 'fal fa-chevron-down'" aria-hidden="true"></i>

@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
@@ -31,6 +31,25 @@ export class CommonBackendService {
 
       return this.http.get(`${environment.apiUrl}${AppRoutes.COMMON.NOTES}`, { params });
     }
+
+	/**
+	 * Function to save a note
+	 * @createdDate 21-03-2025
+	 * @author PSI-Enhancement
+	 * @param string entityId
+	 * @param object model
+	 * @param object req
+	 */
+	saveNote(entityId, modal, req) {
+		if (modal.id) {
+		  	req.entity_id = entityId[0];
+		  	req.id = modal.id;
+		  	return this.http.put(environment.apiUrl + AppRoutes.COMMON.NOTES, req);
+		} else {
+		  	req.entity_ids = entityId;
+		  	return this.http.post(environment.apiUrl + AppRoutes.COMMON.MULTIPLE_NOTES_API, req);
+		}
+	}
 
     /**
      * Updates the privacy permission of a note.
@@ -76,16 +95,17 @@ export class CommonBackendService {
     /**
      * Function to delete Attachment
      * 
-     * @param entity 
+     * @param param 
      * @returns {Observable} - An API response
      * @author PSI-Enhancement
      */
-    deleteAttachment(entity) {
-      let params = new HttpParams()
-        .set('id', entity);
-
-      return this.http
-        .delete(`${environment.apiUrl}${AppRoutes.COMMON.ATTACHMENTS}`, { params });
+    deleteUploadFile(param: any) {
+      return this.http.delete(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS, {
+          params: new HttpParams().set('id', param),
+          headers: new HttpHeaders({
+              'Content-Type': ''
+          })
+      });
     }
 
     /**

@@ -69,7 +69,7 @@ export class ProductManagementService {
         { headerName: 'Product Description', minWidth: 75, width: 193, field: 'description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Supplier', minWidth: 75, width: 115, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Brand', minWidth: 75, width: 115, field: 'brand_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Product Status',  minWidth: 100, width: 195, field: 'status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
+        { headerName: 'Product Status',  minWidth: 120, width: 140, field: 'status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
         { headerName: 'TTB ID', minWidth: 60, width: 108, field: 'ttb_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Date Created', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
         { headerName: 'Product Type', minWidth: 75, width: 134, field: 'product_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
@@ -237,7 +237,7 @@ export class ProductManagementService {
                     <span class="add-tooltip">${params.value}</span>
                 </div>`;
         } else {
-            return '<i class="fas fa-circle-notch fa-spin fa-2x fa-fw"></i>';
+            return '<i class="fas fa-circle-notch fa-spin fa-fw" style="font-size:20px"></i>';
         }
     }
 
@@ -537,7 +537,7 @@ export class ProductManagementService {
     getDetails(id) {
         return this.http
             .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DETAILS + id)
-            .pipe(map((response: any) => response.data));
+            .toPromise();
     }
 
     /**
@@ -585,21 +585,8 @@ export class ProductManagementService {
             .pipe(map((response: any) => response));
     }
 
-        uploadMultipleAttachments(reqObj: FormData) {
+    uploadMultipleAttachments(reqObj: FormData) {
         return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
-    }
-
-    changeFilePermission(data: any) {
-        return this.http.put(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS_PERMISSION, data);
-    }
-
-    deleteUploadFile(param: any) {
-        return this.http.delete(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS, {
-            params: new HttpParams().set('id', param),
-            headers: new HttpHeaders({
-                'Content-Type': ''
-            })
-        });
     }
 
     /**

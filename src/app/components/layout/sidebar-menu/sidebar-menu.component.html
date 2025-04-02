@@ -1,8 +1,8 @@
 <div class="sidebar" [ngClass]="isSidebarExpanded ? 'expanded' : 'collapsed'">
-    <div class="sidebar__header">
+    <div class="sidebar__header u-flex-h-center">
         <img [src]="isSidebarExpanded ? '../../../../assets/images/header-expanded-logo.svg' : '../../../../assets/images/header-collapsed-logo.svg'">
-        <div class="menutoggle" (click)="toggleSidebar()">
-            <i [class]="isSidebarExpanded ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"></i>
+        <div class="menutoggle u-pg-w-3 u-br-50 u-csr-ptr" (click)="toggleSidebar()">
+            <i class="u-flex-center u-pg-s-3" [ngClass]="isSidebarExpanded ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"></i>
         </div>
     </div>
     <div class="sidebar__content">
@@ -17,7 +17,7 @@
                         <a [attr.href]="menu.url == '/router.php/dashboard' ? oldCockpit + menu.url : null"  (mouseover)="showMenu($event, $event.currentTarget)" 
                             (mouseleave)="hideMenu($event, $event.currentTarget)">
                             <i [class]="menu.icon" class="sidebar-icon" [ngClass]="isSidebarExpanded ? 'u-pg-mr-1' : ''"></i>
-                            <span class="custom-width" *ngIf="isSidebarExpanded">{{menu.label}}</span>
+                            <span class="custom-width menu-heading" *ngIf="isSidebarExpanded">{{menu.label}}</span>
                             <em class="toggle-icon"
                                 [ngClass]= "menu.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
                                 *ngIf="menu.submenuItems && isSidebarExpanded">
@@ -62,11 +62,11 @@
         </div>
     </div>
     <div class="sidebar__footer">
-        <div class="footer-profile">
-            <div class="footer-profile-main"
+        <div class="footer-profile u-flex-center u-w-100">
+            <div class="footer-profile-main u-flex-h-center u-w-100 u-csr-ptr"
             (mouseenter)="toggleDropdown(true)"         
             (mouseleave)="toggleDropdown(false)">
-                <img [src]="oldCockpit + currentUserData.PictureUrl" alt=""/>
+                <img class="u-br-50 u-pg-s-5" [src]="oldCockpit + currentUserData.PictureUrl" alt=""/>
                 <span *ngIf="currentUserData" class="user-name">
                     <span [innerText]="currentUserData.first_name"></span>
                     <span [innerText]="currentUserData.last_name"></span>
