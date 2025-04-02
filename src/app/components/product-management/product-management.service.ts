@@ -589,15 +589,6 @@ export class ProductManagementService {
         return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
     }
 
-    deleteUploadFile(param: any) {
-        return this.http.delete(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS, {
-            params: new HttpParams().set('id', param),
-            headers: new HttpHeaders({
-                'Content-Type': ''
-            })
-        });
-    }
-
     /**
      *Function to get config for mass bulk upload.
      * @author PSI-Enhancements

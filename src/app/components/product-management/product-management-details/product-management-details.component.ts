@@ -35,7 +35,6 @@ export class ProductManagementDetailsComponent implements OnInit {
     isAuditDataIsLoading: boolean = false;
     auditList: any = [];
     rowAuditTrailConfigApiRequest: any = [];
-    productResponse: any;
 
     constructor(
         private productManagementService: ProductManagementService,
@@ -49,7 +48,6 @@ export class ProductManagementDetailsComponent implements OnInit {
 
     ngOnInit(): void {
         this.permissions = this.route.snapshot.data['permissions'];
-        // this.productResponse = this.route.snapshot.data['productData'];
         this.IconHeaderStatus = 'Inactive';
         this.codesTitle = 'CODES';
         this.dimensionTitle = 'DIMENSIONS';
@@ -81,6 +79,7 @@ export class ProductManagementDetailsComponent implements OnInit {
           }
           catch (error) {
             console.error("Error fetching ProductData:", error);
+            this.router.navigate(['../']);
           }
     }
 
