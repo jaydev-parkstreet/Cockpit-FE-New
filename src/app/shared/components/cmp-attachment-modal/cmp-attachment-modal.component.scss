@@ -26,6 +26,7 @@
             min-height: 110px;
             max-height: 164px;
             overflow: auto;
+            margin-top: 0!important;
             @include new-scrollbar;
 
             .attachment-row {
