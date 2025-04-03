@@ -104,7 +104,9 @@ export class ProductManagementDetailsComponent implements OnInit {
      */
     getSyncStatusUpdate() {
         if (this.productDetails.sync_status === 2) {
-            this.initiateSyncTimerForStatusDetails();
+            this.timerObj = setInterval(() => {
+                this.getSyncStatusDetails();
+            }, 30000);
         } else if (this.productDetails.sync_status === 3 || this.productDetails.sync_status === null) {
             this.syncStatusFail = true;
         }
@@ -151,7 +153,9 @@ export class ProductManagementDetailsComponent implements OnInit {
         this.actionButtons[0].class = 'fas fa-sync fa-spin';
         this.actionButtons[0].button = AppConstant.PRODUCT.SYNC_STATUS[2];
         this.productManagementDetailService.syncOrder(this.productDetails.id).subscribe( (result) =>{
-            this.initiateSyncTimerForStatusDetails();
+            this.timerObj= setInterval(() => {
+                this.getSyncStatusDetails();
+            }, 30000);
         });
         return true;
     }
@@ -568,23 +572,6 @@ export class ProductManagementDetailsComponent implements OnInit {
             }
             return cleanedData;
         }, {});
-    }
-
-    /**
-     * Initiates or resets the interval timer for getting sync details
-     * 
-     * @param none
-     * @returns void
-     * @author PSI-Enhancement
-     */
-    initiateSyncTimerForStatusDetails() {
-        if(this.timerObj) {
-            clearInterval(this.timerObj);
-            this.timerObj = null;
-        }
-        this.timerObj = setInterval(() => {
-            this.getSyncStatusDetails();
-        }, 30000);
     }
 }
 
