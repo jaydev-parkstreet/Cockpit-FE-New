@@ -24,7 +24,7 @@ const routes: Routes = [
     },
     {
         path: 'formula',
-        loadChildren: () => import('./components/formula-tool/summary.module').then(m => m.SummaryModule)
+        loadChildren: () => import('./components/formula-tool/summary.module').then(m => m.FormulaSummaryModule)
     },
     {
         path: '**',

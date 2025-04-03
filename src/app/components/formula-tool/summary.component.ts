@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { summaryService } from './summary.service';
+import { formulaService } from './summary.service';
 import { AuthService } from '../authentication/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -44,7 +44,7 @@ export class summaryComponent implements OnInit {
   permissionObj: any;
   isSorting: boolean;
   scrollDisabled: boolean;
-  topPanelConfig:any
+  topPanelConfig: any
   filterList: any = {};
   permissions: any = {};
   FileSaver: any;
@@ -53,21 +53,21 @@ export class summaryComponent implements OnInit {
   private timerSubscriptions = new Map<number, Subscription>();
 
   constructor(
-    private summaryService: summaryService,
+    private formulaService: formulaService,
     private authService: AuthService,
     private router: Router,
-    private spinner : NgxSpinnerService,
-    private commonService : CommonService,
+    private spinner: NgxSpinnerService,
+    private commonService: CommonService,
     private commonBackendService: CommonBackendService,
     private route: ActivatedRoute,
     private simpleModalService: SimpleModalService,
     private renderer: Renderer2
   ) { }
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
     this.filterList = this.route.snapshot.data['filterList'];
     this.permissions = this.route.snapshot.data['permissions'];
-    this.topPanelConfig = this.summaryService.getTopPanelConfig(this.permissions);
+    this.topPanelConfig = this.formulaService.getTopPanelConfig(this.permissions);
     this.updateTopPanelConfig();
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
@@ -89,14 +89,14 @@ export class summaryComponent implements OnInit {
 
 
   initGridOptions() {
-    this.gridOptions = this.summaryService.getGridOption();
-	  this.gridOptions.onSortChanged = (params) => {
-		const allSortModels = params.columnApi.getAllColumns()
-            .filter(col => col.getSort())
-            .map(col => ({
-                colId: col.getColId(),
-                sort: col.getSort()
-            }));
+    this.gridOptions = this.formulaService.getGridOption();
+    this.gridOptions.onSortChanged = (params) => {
+      const allSortModels = params.columnApi.getAllColumns()
+        .filter(col => col.getSort())
+        .map(col => ({
+          colId: col.getColId(),
+          sort: col.getSort()
+        }));
       if (allSortModels && allSortModels.length > 0) {
         this.reportRequestObj.page = 1;
         this.reportRequestObj.sort = allSortModels[0].colId;
@@ -115,8 +115,8 @@ export class summaryComponent implements OnInit {
     };
     this.gridOptions.onCellClicked = (params) => {
       if (params.colDef.cellRenderer === 'checkbox' && (params.event.srcElement.className === 'checkbox_gir_row')) {
-          this.selectCheckBox(params);
-      }else if (params.event.target.className === 'fal fa-file show-attachment-modal' || params.event.target.className === 'fas fa-file show-attachment-modal') {
+        this.selectCheckBox(params);
+      } else if (params.event.target.className === 'fal fa-file show-attachment-modal' || params.event.target.className === 'fas fa-file show-attachment-modal') {
         this.openAttachmentListPopup(params.data.unique_id);
       } else if (params.event.target.className === 'fal fa-comment note-modal' || params.event.target.className === 'fas fa-comment note-modal') {
         this.getNotes(params.data.unique_id, params);
@@ -124,20 +124,20 @@ export class summaryComponent implements OnInit {
     };
     this.gridOptions.onCellMouseOver = (params) => {
       if (params && params.event) {
-		const agCelltooltip = params.event.target.closest('.tooltip-cell');
-		const tooltipCell = agCelltooltip?.querySelector('.add-tooltip');
-		if(tooltipCell) {
-			const textEllipsisElement = agCelltooltip.querySelector('.text-ellipsis');
-			const scrollWidth = textEllipsisElement.scrollWidth;
-			const offsetWidth = textEllipsisElement.offsetWidth;
-			if (offsetWidth < scrollWidth) {
-			  this.renderer.addClass(tooltipCell, 'tooltip-text');
-			} else {
-			  this.renderer.removeClass(tooltipCell, 'tooltip-text');
-			}	
-		}
+        const agCelltooltip = params.event.target.closest('.tooltip-cell');
+        const tooltipCell = agCelltooltip?.querySelector('.add-tooltip');
+        if (tooltipCell) {
+          const textEllipsisElement = agCelltooltip.querySelector('.text-ellipsis');
+          const scrollWidth = textEllipsisElement.scrollWidth;
+          const offsetWidth = textEllipsisElement.offsetWidth;
+          if (offsetWidth < scrollWidth) {
+            this.renderer.addClass(tooltipCell, 'tooltip-text');
+          } else {
+            this.renderer.removeClass(tooltipCell, 'tooltip-text');
+          }
+        }
       }
-    };	
+    };
   }
 
   /**
@@ -147,90 +147,90 @@ export class summaryComponent implements OnInit {
    * @param number id
    * @param object param
    */
-    getNotes(Id, param) {
-        this.spinner.show();
-        this.commonBackendService.getNotes(this.permissions.kind_id,
-        this.permissions.tool_id, Id, this.permissions.menu_item_id).subscribe((result: any) => {
-                if(!result.hasError) {
-                    this.showNotesModal(param.length === 0 ? Id : [Id], result.notes, false, param);
-                } else {
-                    this.commonService.showToastV2Message(true, result.msg, 'fas fa-exclamation-circle');
-                }
-                this.spinner.hide();
-              }, (error) => {
-                this.spinner.hide();
-                this.commonService.showToastV2Message(true, 'Failed to load notes', 'fas fa-exclamation-circle');
-            }
-        );
-    }
+  getNotes(Id, param) {
+    this.spinner.show();
+    this.commonBackendService.getNotes(this.permissions.kind_id,
+      this.permissions.tool_id, Id, this.permissions.menu_item_id).subscribe((result: any) => {
+        if (!result.hasError) {
+          this.showNotesModal(param.length === 0 ? Id : [Id], result.notes, false, param);
+        } else {
+          this.commonService.showToastV2Message(true, result.msg, 'fas fa-exclamation-circle');
+        }
+        this.spinner.hide();
+      }, (error) => {
+        this.spinner.hide();
+        this.commonService.showToastV2Message(true, 'Failed to load notes', 'fas fa-exclamation-circle');
+      }
+      );
+  }
 
-    /**
-     * Function to open add notes popup.
-     *
-     * @author PSI-VIII
-     * @param number id
-     * @param array notes
+  /**
+    * Function to open add notes popup.
+    *
+    * @author PSI-VIII
+    * @param number id
+  * @param array notes
      * @param boolean multiple
      * @param object params
      */
-    showNotesModal(entityIds, notes, multiple, params) {
-        var noteDetails = { notes: [] };
-        noteDetails.notes = notes;
-        let modalData = {
-            notesPermission: this.filterList.entity_permissions,
-            cancelAction: { label: 'Cancel' },
-            saveAction: { label: 'Save' },
-            filtersList: this.filterList,
-            permissions: this.permissions,
-            entityIds: entityIds,
-            modalTitle: 'NOTES',
-            multiple,
-            newToast: true,
-            showDismissIcon: true,
-            showErrorInNewToast: true,
-            newToastMsg: 'Failed',
-            latestDesign: true,
-            noteDetails,
-            showLine: true,
-            noDataMessage: 'No Notes Found',
-        }
-        this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
-        .subscribe((result) => {
-            if (result !== undefined) {
-              if(!notes || notes.length !== result) {
-                this.unSelectAllCheckbox(entityIds, result, 'total_notes');
-              }
-            }
-        });
+  showNotesModal(entityIds, notes, multiple, params) {
+    var noteDetails = { notes: [] };
+    noteDetails.notes = notes;
+    let modalData = {
+      notesPermission: this.filterList.entity_permissions,
+      cancelAction: { label: 'Cancel' },
+      saveAction: { label: 'Save' },
+      filtersList: this.filterList,
+      permissions: this.permissions,
+      entityIds: entityIds,
+      modalTitle: 'NOTES',
+      multiple,
+      newToast: true,
+      showDismissIcon: true,
+      showErrorInNewToast: true,
+      newToastMsg: 'Failed',
+      latestDesign: true,
+      noteDetails,
+      showLine: true,
+      noDataMessage: 'No Notes Found',
     }
-	
-	/**
-	 * Function to open Attachment Popup for the attachment list
-	 * 
-	 * @param entity 
-	 * @author PSI-VIII
-	 */
-	openAttachmentListPopup(entity: any) {
-		if (this.permissions.permissions.Update) {
-			this.spinner.show();
-			this.summaryService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response: any) => {
-				if(!response.hasErrors) {
-					this.showAttachment(false, [entity], response);
-				} else {
-					this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
-				}
-				this.isLoading = false;
-				this.spinner.hide();
-			},(error: any) => {
-				this.isLoading = false;
-				this.spinner.hide();
-				this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
-			});
-		}
-	}
+    this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
+      .subscribe((result) => {
+        if (result !== undefined) {
+          if (!notes || notes.length !== result) {
+            this.unSelectAllCheckbox(entityIds, result, 'total_notes');
+          }
+        }
+      });
+  }
 
-showAttachment(multiple:any, entityIds:any, attachments:any) {
-    let modalData:any;
+  /**
+   * Function to open Attachment Popup for the attachment list
+   * 
+   * @param entity 
+   * @author PSI-VIII
+   */
+  openAttachmentListPopup(entity: any) {
+    if (this.permissions.permissions.Update) {
+      this.spinner.show();
+      this.formulaService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response: any) => {
+        if (!response.hasErrors) {
+          this.showAttachment(false, [entity], response);
+        } else {
+          this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+        }
+        this.isLoading = false;
+        this.spinner.hide();
+      }, (error: any) => {
+        this.isLoading = false;
+        this.spinner.hide();
+        this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+      });
+    }
+  }
+
+  showAttachment(multiple: any, entityIds: any, attachments: any) {
+    let modalData: any;
 
     modalData = {
       modalTitle: 'Attachment',
@@ -239,7 +239,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       emptyDataIcon: 'far fa-surprise',
       entityIds: entityIds,
       attachmentPermission: this.filterList.entity_permissions,
-      cancelAction: { label: 'Cancel' }, saveAction: { label: 'Save' },filtersList: this.filterList,
+      cancelAction: { label: 'Cancel' }, saveAction: { label: 'Save' }, filtersList: this.filterList,
       multiple: multiple,
       showFileType: true,
       fileTypeDropdown: this.permissions.entity_kinds,
@@ -247,21 +247,21 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
       attachmentDetails: JSON.parse(JSON.stringify(attachments)),
     };
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
-    .subscribe((result) => {
+      .subscribe((result) => {
         if (result !== undefined) {
-          if(!attachments.data || attachments.data.length !== result) {
+          if (!attachments.data || attachments.data.length !== result) {
             this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
           }
         }
-    });
+      });
   }
 
-  unSelectAllCheckbox(entityIds:any, count:any, keyName:any) {
+  unSelectAllCheckbox(entityIds: any, count: any, keyName: any) {
     for (var a in this.formulaToolSummary) {
-        if (entityIds.indexOf(this.formulaToolSummary[a].unique_id) !== -1) {
-            this.formulaToolSummary[a][keyName] = count;
-        }
-        this.formulaToolSummary[a].checked = false;
+      if (entityIds.indexOf(this.formulaToolSummary[a].unique_id) !== -1) {
+        this.formulaToolSummary[a][keyName] = count;
+      }
+      this.formulaToolSummary[a].checked = false;
     }
     this.selectedRowCount = 0;
     this.selectedRows = [];
@@ -269,19 +269,19 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     this.gridOptions.api.redrawRows();
   }
 
-  /**
-     * Function to get summary data
-     *
-     * @author PSI-VIII
-    */
+  /** 
+  * Function to get summary data
+  *
+  * @author PSI-VIII
+  */
   async getSummaryData() {
     this.isLoadingSummaryData = true;
     this.spinner.show();
     const token = localStorage.getItem('authToken');
     const summaryData = this.reportRequestObj;
     try {
-      const response: any = await this.summaryService.getSummary(summaryData, token);
-      if (!response.hasError) {        
+      const response: any = await this.formulaService.getSummary(summaryData, token);
+      if (!response.hasError) {
         this.hasMoreRecords = response.data.length === 25;
         this.summaryResponse = response.data;
         this.processResponseData(response, this.params);
@@ -346,7 +346,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
      * @param number startRow
      * @param number endRow
     */
-  getDisplayRows (data, startRow, endRow) {
+  getDisplayRows(data, startRow, endRow) {
     const rowsThisPage = data.slice(startRow, endRow);
     let lastRow = -1;
     if (!this.hasMoreRecords) {
@@ -362,7 +362,7 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
      * @param object response
      * @param object params
     */
-  processResponseData (response, params) {
+  processResponseData(response, params) {
     if (response.data.length > 0) {
       this.formulaToolSummary = [...this.formulaToolSummary || [], ...response.data];
       this.formulaCardSummary = [...this.formulaCardSummary || [], ...response.data];
@@ -399,17 +399,17 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
   }
 
   applyFilters(selectedFilters: any) {
-	this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
-        if (key == 'clients') {
-            acc['client'] = selectedFilters[key].map((item: any) => item.id);
-        } else if (key == 'is_active' ) {
-            acc['active_status'] = [selectedFilters[key] == 0 ? '1' : '0'];
-        } else if (key == 'is_rejected') {
-            acc[key] = selectedFilters[key];
-        } else{
-            acc[key] = selectedFilters[key].map((item: any) => item.id); 
-        }
-        return acc;
+    this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
+      if (key == 'clients') {
+        acc['client'] = selectedFilters[key].map((item: any) => item.id);
+      } else if (key == 'is_active') {
+        acc['active_status'] = [selectedFilters[key] == 0 ? '1' : '0'];
+      } else if (key == 'is_rejected') {
+        acc[key] = selectedFilters[key];
+      } else {
+        acc[key] = selectedFilters[key].map((item: any) => item.id);
+      }
+      return acc;
     }, {});
     this.reportRequestObj = {
       ...this.reportRequestObj,
@@ -425,21 +425,21 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
   /**
    * Function to reset summary grid filters.
    */
-    resetFilters() {
-        this.filtermodal = {};
-        this.reportRequestObj = {
-            "page": 1,
-            "pageSize": 25,
-            "sort": "",
-            "order": "asc",
-            "universal_search": ""
-        }
-        this.topPanelConfig.searchText = '';
-        this.formulaToolSummary = [];
-        this.selectedRowCount = 0;
-        this.updateTopPanelConfig();
-        this.setDataSourceAgGrid();
+  resetFilters() {
+    this.filtermodal = {};
+    this.reportRequestObj = {
+      "page": 1,
+      "pageSize": 25,
+      "sort": "",
+      "order": "asc",
+      "universal_search": ""
     }
+    this.topPanelConfig.searchText = '';
+    this.formulaToolSummary = [];
+    this.selectedRowCount = 0;
+    this.updateTopPanelConfig();
+    this.setDataSourceAgGrid();
+  }
 
   universalSearch(text) {
     this.reportRequestObj.universal_search = text;
@@ -469,23 +469,23 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
   }
 
   selectCheckBox(params: any) {
-    if(this.formulaToolSummary[params.rowIndex].checked) {
-        this.formulaToolSummary[params.rowIndex].checked = false;
-        this.selectedRowCount--;
-        let index = this.selectedRows.indexOf(params.data.unique_id);
-        if (index > -1) {
-            this.selectedRows.splice(index, 1);
-        }
+    if (this.formulaToolSummary[params.rowIndex].checked) {
+      this.formulaToolSummary[params.rowIndex].checked = false;
+      this.selectedRowCount--;
+      let index = this.selectedRows.indexOf(params.data.unique_id);
+      if (index > -1) {
+        this.selectedRows.splice(index, 1);
+      }
     } else {
-        this.formulaToolSummary[params.rowIndex].checked = true;
-        this.selectedRowCount++;
-        this.selectedRows.push(params.data.unique_id);
+      this.formulaToolSummary[params.rowIndex].checked = true;
+      this.selectedRowCount++;
+      this.selectedRows.push(params.data.unique_id);
     }
 
-    if(this.selectedRowCount === 0) {
-        this.selectedAllRows = false;
+    if (this.selectedRowCount === 0) {
+      this.selectedAllRows = false;
     } else {
-        this.selectedAllRows = true;
+      this.selectedAllRows = true;
     }
     this.updateTopPanelConfig(params.data.is_active === 0);
     this.gridOptions.api.redrawRows();
@@ -543,20 +543,20 @@ showAttachment(multiple:any, entityIds:any, attachments:any) {
     }
   }
 
-  updateTopPanelConfig (isActive?: boolean) {
-    this.topPanelConfig.actions = this.summaryService.getActionsIconsConfig(
-        this.selectedRowCount,
-        this.permissions,
-        this.reportRequestObj,
-        isActive
+  updateTopPanelConfig(isActive?: boolean) {
+    this.topPanelConfig.actions = this.formulaService.getActionsIconsConfig(
+      this.selectedRowCount,
+      this.permissions,
+      this.reportRequestObj,
+      isActive
     );
-    
+
   };
 
-	clearTimer(formulaID) {
-		if(this.timerSubscriptions.has(formulaID)) {
-			this.timerSubscriptions.get(formulaID).unsubscribe();
-			this.timerSubscriptions.delete(formulaID);
-		}
-	}
+  clearTimer(formulaID) {
+    if (this.timerSubscriptions.has(formulaID)) {
+      this.timerSubscriptions.get(formulaID).unsubscribe();
+      this.timerSubscriptions.delete(formulaID);
+    }
+  }
 }
