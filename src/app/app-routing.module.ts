@@ -25,11 +25,6 @@ const routes: Routes = [
     {
         path: 'formula',
         loadChildren: () => import('./components/formula-tool/summary.module').then(m => m.FormulaSummaryModule)
-    },
-    {
-        path: '**',
-        redirectTo: '/formula',
-        pathMatch: 'full'
     }
 ];
 @NgModule({
