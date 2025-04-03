@@ -328,7 +328,7 @@ export class ProductMangementDetailService {
               icon: 'fas fa-pen',
               showTooltip: true,
               tooltipText: 'Edit',
-              permission: permissions.permissions.Update && permissions.permissions.Create
+              permission: permissions.permissions.Update
           },
           {
               key: 'duplicate',
