@@ -63,6 +63,10 @@ export class AttachmentTabComponent implements OnInit {
         );
     }
 
+    /**
+     * Function to get Dropdown
+     * @author PSI-Enhancement
+     */
     async getDropdown() {
         const token = localStorage.getItem('authToken');
         try {
@@ -74,6 +78,14 @@ export class AttachmentTabComponent implements OnInit {
         }
     }
 
+    /**
+     * Function to show Attachment
+     * @param multiple
+     * @param entityIds
+     * @param attachments
+     * @returns void
+     * @author PSI-Enhancement 
+     */
     showAttachment(multiple: any, entityIds: any, attachments: any) {
         let modalData: any;
 
@@ -186,6 +198,12 @@ export class AttachmentTabComponent implements OnInit {
             )
     }
 
+    /**
+     * Function to add attachments
+     * @param file 
+     * @returns void
+     * @author PSI-Enhancement
+     */
     addAttachments() {
         this.showAttachment(false, [this.entity], this.attachments);
     }
