@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { AuthenticationModule } from './components/authentication/authentication.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ProductManagementModule } from './components/product-management/product-management.module';
-import { SummaryModule} from './components/formula-tool/summary.module';
+import { FormulaSummaryModule} from './components/formula-tool/summary.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthInterceptor } from './components/authentication/auth.interceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -29,7 +29,7 @@ import { PsiBrandModalComponent } from './components/product-management/psi-bran
         AuthenticationModule,
         HttpClientModule,
         ProductManagementModule,
-        SummaryModule,
+        FormulaSummaryModule,
         SharedModule,
         FormsModule,
         ReactiveFormsModule,

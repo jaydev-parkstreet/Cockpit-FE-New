@@ -34,4 +34,4 @@ import { SummaryRoutingModule } from './summary.routing.module';
     ],
     exports: []
 })
-export class SummaryModule { }
+export class FormulaSummaryModule { }

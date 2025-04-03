@@ -10,7 +10,7 @@ import AppConstant from 'src/app/app.constant';
 @Injectable({
     providedIn: 'root'
 })
-export class summaryService {
+export class formulaService {
 
     constructor(
         private http: HttpClient, private commonService: CommonService,
@@ -40,7 +40,6 @@ export class summaryService {
 
     /**
      * Function to return summary table header config array
-     * @createdDate 01-10-2024
      * @author PSI-VIII
      */
     getSummaryTableHeaderConfig() {
@@ -69,21 +68,21 @@ export class summaryService {
         { headerName: 'Supplier Name', minWidth: 75, width: 193, field: 'name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Status', minWidth: 75, width: 115, field: 'formula_status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Formula Description', minWidth: 75, width: 115, field: 'formula_description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Classification',  minWidth: 120, width: 140, field: 'classification_name', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
+        { headerName: 'Classification', minWidth: 120, width: 140, field: 'classification_name', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
         { headerName: 'Submission ID', minWidth: 60, width: 108, field: 'submission_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Formula ID', minWidth: 60, width: 108, field: 'formula_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Date Requested', field: 'date_requested_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
-        { headerName: 'Date Submitted', field: 'date_submitted_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
-        { headerName: 'Date Approved', field: 'date_approved_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
-        { headerName: 'Date Expired', field: 'date_expired_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
+        { headerName: 'Date Requested', field: 'date_requested_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Date Submitted', field: 'date_submitted_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Date Approved', field: 'date_approved_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Date Expired', field: 'date_expired_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
         { headerName: 'Formula Approval Document', minWidth: 75, width: 134, field: 'display_name', cellRenderer: 'openDocument', cellClass: 'tooltip-cell' },
         ];
     }
 
     /**
      * Gets the grid options for the formula summary table.
-     * @returns {any}
      * @author PSI-VIII
+     * @returns {any}
      */
     getGridOption() {
         return {
@@ -129,9 +128,9 @@ export class summaryService {
 
     /**
      * Renders a checkbox in the grid column, checked or unchecked depending on the row data.
+     * @author PSI-VIII
      * @param {object} params
      * @returns {string}
-     * @author PSI-VIII
      */
     renderCheckbox(params) {
         let checkboxSelection = '';
@@ -162,10 +161,9 @@ export class summaryService {
     /**
      * Render a dash when there is no value, otherwise render the value inside
      * a text ellipsis container with a tooltip.
-     *
+     * @author PSI-VIII
      * @param {object} params
      * @returns {string}
-     * @author PSI-VIII
      */
     renderDash(params) {
         if (params.value) {
@@ -177,10 +175,9 @@ export class summaryService {
 
     /**
      * Creates an anchor link element for the formula ID.
-     *
+     * @author PSI-VIII
      * @param params
      * @returns {string}
-     * @author PSI-VIII
      */
     renderId(params) {
         if (params.value === null || params.value === '---' || params.value === '-') {
@@ -236,40 +233,40 @@ export class summaryService {
 
     /**
      * Returns the status of the formula with an associated color.
+     * @author PSI-VIII
      * @param {Object} params
      * @returns {String}
-     * @author PSI-VIII
      */
     renderStatus(params) {
-      const statusLabels = {
-        Approved: 'u-bg-success',
-        Pending: 'u-bg-warning',
-        'Pre-Approved': 'u-bg-primary text-ellipsis',
-        'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium text-ellipsis',
-        'Request Received': 'u-bg-neutral-light text-ellipsis',
-      };
-  
-      if (statusLabels[params.value]) {
-        return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>`;
-      }
-      return '--';
+        const statusLabels = {
+            Approved: 'u-bg-success',
+            Pending: 'u-bg-warning',
+            'Pre-Approved': 'u-bg-primary text-ellipsis',
+            'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium text-ellipsis',
+            'Request Received': 'u-bg-neutral-light text-ellipsis',
+        };
+
+        if (statusLabels[params.value]) {
+            return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>`;
+        }
+        return '--';
     }
 
     /**
      * Function to get attachment list
+     * @author PSI-VIII
      * @param params 
-     * @author PSI-Enhancement
      */
-    getAttachmentList (param:any) {        
-        return this.http.get(environment.apiRouteUrl+environment.version.v1+ AppRoutes.COMMON.ATTACHMENTS+'?', { params: param });
+    getAttachmentList(param: any) {
+        return this.http.get(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS + '?', { params: param });
     }
 
     /**
      * Cell Renderer for the formatting the Date
      * 
+     * @author PSI-VIII
      * @param params 
      * @returns string - Formated Date
-     * @author PSI-Enhancement
      */
     dateFormatRenderer(params) {
         return this.commonService.dateFormat(params.value);
@@ -277,10 +274,10 @@ export class summaryService {
 
     /**
      * This function returns the config for top panel which includes search bar, filter dropdowns and action buttons.
+     * @author PSI-VIII
      * @param permission
      * @param isActive
      * @returns {object} The config object for top panel.
-     * @author PSI-VIII
      */
     getTopPanelConfig(permission, isActive = false) {
         return {
@@ -326,16 +323,16 @@ export class summaryService {
                     key: 'crm',
                     label: 'Date Approved',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding', 
+                    divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('mm/dd/yyyy')
-                }, 
+                },
                 { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
                 { type: 'checkbox', name: 'is_rejected', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4' }
             ],
         };
     }
 
-    getActionsIconsConfig (groupActions, permission, reqObj = {}, isActive = false) {
+    getActionsIconsConfig(groupActions, permission, reqObj = {}, isActive = false) {
         const actionIconsConfig: any = [];
         if (groupActions) {
             if (permission?.permissions?.Update) {
@@ -386,10 +383,10 @@ export class summaryService {
     /**
      * Generates a configuration object for multi-select dropdowns.
      *
+     * @author PSI-VIII
      * @param placeholdertext
      * @param name
      * @returns An object
-     * @author PSI-VIII
      */
     getMultiSelectConfig(placeholdertext, name = 'name', serverSearch = false, apiUrl = '') {
         return {
@@ -413,10 +410,10 @@ export class summaryService {
     /**
      * Formats an array of objects into a dropdown-compatible format.
      * 
+     * @author PSI-VIII
      * @param values
      * @param name
      * @returns An array of objects suitable for use in a dropdown
-     * @author PSI-VIII
      */
     formatDropdownValue(values, name = '') {
         let dropdown = [];
@@ -433,10 +430,10 @@ export class summaryService {
     /**
      * Fetches the summary data from the server based on the given summary data object.
      * 
+     * @author PSI-VIII
      * @param summaryData
      * @param token
      * @returns A Promise containing the summary data.
-     * @author PSI-VIII
      */
     getSummary(summaryData: any, token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -445,10 +442,9 @@ export class summaryService {
 
     /**
      * Retrieves the list of dropdown items associated with the given client ID.
-     * 
+     * @author PSI-VIII
      * @param token
      * @returns An Observable containing the data of dropdown items.
-     * @author PSI-VIII
      */
     getDropdown(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -456,12 +452,11 @@ export class summaryService {
     }
 
     /**
-     * Retrieves the formula details for a given formula ID.
-     *
-     * @param id The ID of the formula.
-     * @returns An Observable containing the formula details from the server.
-     * @author PSI-VIII
-     */
+    * Retrieves the formula details for a given formula ID.
+    * @author PSI-VIII
+    * @param id The ID of the formula.
+    * @returns An Observable containing the formula details from the server.
+    */
     getDetails(id) {
         return this.http
             .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DETAILS + id)
@@ -470,9 +465,8 @@ export class summaryService {
 
     /**
      * Retrieves the permission settings for the formula tool.
-     *
-     * @returns A promise that resolves to the permission data from the server.
      * @author PSI-VIII
+     * @returns A promise that resolves to the permission data from the server.
      */
     getPermission() {
         return this.http
@@ -481,9 +475,9 @@ export class summaryService {
 
     /**
      * Makes an API call to export the given formula to Excel.
+     * @author PSI-VIII
      * @param obj
      * @returns An observable containing the HTTP response from the server.
-     * @author PSI-VIII
      */
     excelExport(obj) {
         return this.http
