@@ -348,4 +348,12 @@ export class CommonService {
       return Object.keys(obj).length === 0;
     }
 
+  /**
+  *Function to file upload.
+  * @author PSI-Enhancements
+  */
+  uploadMultipleAttachments(reqObj: FormData) {
+    return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
+  }
+
 }

@@ -159,7 +159,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     uploadParams.append('menu_item_id', this.modalData.filtersList.menu_item_id);
     uploadParams.append('permission_id', this.permission_id || this.modalData.attachmentPermission[0].id);
     this.spinner.show();
-    this.productmanagementService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
+    this.commonService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
       this.spinner.hide();
       if (!response.hasError) {
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
