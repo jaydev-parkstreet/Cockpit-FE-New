@@ -3,7 +3,7 @@
 @import '../../../scss/utilities/colors';
 @import '../../../scss/utilities/base';
 @import '../../../scss/mixin/checkbox';
-
+@import '../../../scss/mixin/mixin';
 
 @mixin ag-icon-asc {
     background: transparent url(data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJsb25nLWFycm93LWFsdC11cCIgY2xhc3M9InN2Zy1pbmxpbmUtLWZhIGZhLWxvbmctYXJyb3ctYWx0LXVwIGZhLXctOCIgcm9sZT0iaW1nIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgNTEyIj48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik04OCAxNjYuMDU5VjQ2OGMwIDYuNjI3IDUuMzczIDEyIDEyIDEyaDU2YzYuNjI3IDAgMTItNS4zNzMgMTItMTJWMTY2LjA1OWg0Ni4wNTljMjEuMzgyIDAgMzIuMDktMjUuODUxIDE2Ljk3MS00MC45NzFsLTg2LjA1OS04Ni4wNTljLTkuMzczLTkuMzczLTI0LjU2OS05LjM3My0zMy45NDEgMGwtODYuMDU5IDg2LjA1OWMtMTUuMTE5IDE1LjExOS00LjQxMSA0MC45NzEgMTYuOTcxIDQwLjk3MUg4OHoiPjwvcGF0aD48L3N2Zz4=) center no-repeat;
@@ -335,27 +335,35 @@
         }
     }
 
-    .ag-body-viewport::-webkit-scrollbar {
-        height: 8px;
-        width: 8px;
+    .ag-body-viewport {
+        @include new-scrollbar;
+    }
+    
+    .ag-root {
+        @include new-scrollbar;
     }
 
-    .ag-body-viewport::-webkit-scrollbar-track {
-        -webkit-border-radius: 4px;
-        border-radius: 4px;
-    }
-    .ag-root ::-webkit-scrollbar {
-        height: 8px;
-        width: 8px;
-    }
-    .ag-root ::-webkit-scrollbar-thumb {
-        -webkit-border-radius: 4px;
-        border-radius: 4px;
-        background: $colors-neutral-light-t-50;
-        &:hover {
-            background: $colors-neutral-light;
-        }
-    }​   
+    // .ag-body-viewport::-webkit-scrollbar {
+    //     height: 8px;
+    //     width: 8px;
+    // }
+
+    // .ag-body-viewport::-webkit-scrollbar-track {
+    //     -webkit-border-radius: 4px;
+    //     border-radius: 4px;
+    // }
+    // .ag-root ::-webkit-scrollbar {
+    //     height: 8px;
+    //     width: 8px;
+    // }
+    // .ag-root ::-webkit-scrollbar-thumb {
+    //     -webkit-border-radius: 4px;
+    //     border-radius: 4px;
+    //     background: $colors-neutral-light-t-50;
+    //     &:hover {
+    //         background: $colors-neutral-light;
+    //     }
+    // }​   
     span.ag-header-icon.ag-sort-order {
         display: none;
     }
