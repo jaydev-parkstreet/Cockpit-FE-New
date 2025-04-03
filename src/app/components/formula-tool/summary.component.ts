@@ -19,7 +19,7 @@ import { CommonBackendService } from 'src/app/core/services/common-backend-servi
   styleUrls: ['./summary.scss']
 })
 
-export class summaryComponent implements OnInit {
+export class formulaComponent implements OnInit {
   reportRequestObj: any = {};
   summaryResponse: any;
   dropdownData: any;

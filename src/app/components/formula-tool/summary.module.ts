@@ -1,6 +1,6 @@
 import { ErrorHandler, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { summaryComponent } from './summary.component';
+import { formulaComponent } from './summary.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SimpleModalModule } from 'ngx-simple-modal';
@@ -12,7 +12,7 @@ import { SummaryRoutingModule } from './summary.routing.module';
 
 @NgModule({
     declarations: [
-        summaryComponent,
+        formulaComponent,
     ],
     providers: [{
         provide: ErrorHandler,
