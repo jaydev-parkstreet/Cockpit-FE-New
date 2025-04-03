@@ -207,8 +207,8 @@ export class formulaComponent implements OnInit {
   /**
    * Function to open Attachment Popup for the attachment list
    * 
-   * @param entity 
    * @author PSI-VIII
+   * @param entity 
    */
   openAttachmentListPopup(entity: any) {
     if (this.permissions.permissions.Update) {
