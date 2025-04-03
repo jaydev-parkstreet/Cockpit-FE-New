@@ -164,15 +164,15 @@ export class formulaComponent implements OnInit {
       );
   }
 
-  /**
+   /**
     * Function to open add notes popup.
     *
     * @author PSI-VIII
     * @param number id
-  * @param array notes
-     * @param boolean multiple
-     * @param object params
-     */
+    * @param array notes
+    * @param boolean multiple
+    * @param object params
+    */
   showNotesModal(entityIds, notes, multiple, params) {
     var noteDetails = { notes: [] };
     noteDetails.notes = notes;
