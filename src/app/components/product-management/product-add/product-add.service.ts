@@ -700,17 +700,4 @@ export class ProductAddService {
             .pipe(map((response :any) => response.data));
     }
 
-    getAllClearFieldModalData() {
-        return {
-            title: 'All data will be lost.',
-            body: 'Are you sure you wish to clear all fields?',
-            iconClass: 'fas fa-exclamation-circle error',
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-
-        }
-    }
-
 }

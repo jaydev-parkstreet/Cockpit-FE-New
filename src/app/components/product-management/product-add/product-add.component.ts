@@ -663,7 +663,7 @@ export class ProductAddComponent implements OnInit {
     * @author PSI-Enhancements
     */
     clearAllSelections(): void {
-        const modalData = this.ProductAddService.getAllClearFieldModalData();
+        const modalData = this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to clear all fields?');
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData }).subscribe((result) => {
             if (result.btn.label === 'Yes') {
                this.isClearAllFields = true;
