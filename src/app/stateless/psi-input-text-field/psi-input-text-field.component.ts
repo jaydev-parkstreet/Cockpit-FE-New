@@ -20,20 +20,32 @@ export class PsiInputTextFieldComponent implements OnInit {
   /**
    * Handles input Blur change events, emitting the new value to the valueChanged output.
    * @param event
-   * @author psi-enhancement
+   * @author PSI-Enhancement
    */
   onValueChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.valueChanged.emit(value);
   }
 
-   /**
+  /**
    * Handles input change events, emitting the new value to the valueChanged output.
    * @param event
-   * @author psi-enhancement
+   * @author PSI-Enhancement
    */
   onInputValueChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;
     this.inputValueChange.emit(value);
+    this.valueEntered = value;
+  }
+
+  /**
+   * Clear the input field and emit an empty string to the valueChanged output.
+   * @param event
+   * @author PSI-Enhancement
+   */
+  clearInput(): void {
+    this.valueEntered = '';
+    this.valueChanged.emit('');
+    this.inputValueChange.emit('');
   }
 }

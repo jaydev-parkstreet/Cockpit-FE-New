@@ -9,6 +9,18 @@
 input {
     @include psi-input;
 }
+
+i.clear-icon {
+    right: 32px;
+    top: 70%;
+    transform: translateY(-50%);
+    color: $colors-neutral-light;
+
+    &:hover {
+        color: $colors-neutral-dark;
+        cursor: pointer;
+    }
+}
 .ps-required-error {
     @include ps-required-error;
 }

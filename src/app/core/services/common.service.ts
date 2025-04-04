@@ -5,6 +5,7 @@ import AppConstant from 'src/app/app.constant';
 import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
 import { saveAs } from 'file-saver';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class CommonService {
   
   constructor(
     private http: HttpClient,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private spinner: NgxSpinnerService
   ) { }
 
   getDropdownConfig(
@@ -347,5 +349,30 @@ export class CommonService {
     isEmptyObj(obj) {
       return Object.keys(obj).length === 0;
     }
+
+    /**
+     * Function to show spinner
+     * @author PSI-Enhancement
+     */
+    showSpinner() {
+        this.spinner.show();
+    }
+
+    /**
+     * Function to hide spinner
+     * @author PSI-Enhancement
+     */
+    hideSpinner() {
+        this.spinner.hide();
+    }
+
+      /**
+  *Function to file upload.
+  * @author PSI-Enhancements
+  */
+  uploadMultipleAttachments(reqObj: FormData) {
+    return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
+  }
+
 
 }

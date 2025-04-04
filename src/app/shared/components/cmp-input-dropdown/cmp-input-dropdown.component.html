@@ -2,7 +2,7 @@
     <div class="dropdown-label" [ngClass]="{'required': required}">
         <span class="d-block" [textContent]="label" *ngIf="label"></span>
     </div>
-    <div class="dropdown-header" [ngClass]="validationClasses"
+    <div class="typography-paragraph-black-regular dropdown-headers u-flex u-align-center u-justify-between" [ngClass]="validationClasses"
         (click)="!disabled && !formControl?.disabled && toggleDropdown()" tabindex="0">
         <span [ngClass]="(selectedItems.length === 0 || (selectedItems.length === 1 && selectedItems[0]?.id === undefined)) ? 'placeholder-text': ''" class="w-100 u-truncate u-pg-pr-7">{{ getSelectedDisplayText() }}</span>
         <i class="fal fa-times-circle position-absolute u-neutral-light clearSelectedItems" 
@@ -32,7 +32,7 @@
                 <i class="fas fa-spinner fa-spin"></i>
                 <span>{{ texts.loaderText }}</span>
             </div>
-            <div *ngIf="hideList" class="no-results">
+            <div  class="no-results" *ngIf="hideList">
                 <i class="fas fa-times"></i>
                 <span>{{ texts.noResultText }}</span>
             </div>

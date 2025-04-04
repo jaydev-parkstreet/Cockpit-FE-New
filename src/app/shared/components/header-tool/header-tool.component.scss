@@ -18,5 +18,12 @@
 
     .Redirect-page {
         font-size: 16px;
+        a {
+            color: $colors-neutral-black;
+
+            &:hover {
+                color: $colors-v2-base-primary;
+            }
+        }
     }
 }
