@@ -135,15 +135,7 @@ export class AttachmentTabComponent implements OnInit {
      * @author PSI-Enhancement 
      */
     deleteAttachment(upload_id: number) {
-        let modalData = {
-            iconClass: 'fas fa-exclamation-circle',
-            title: 'Are you sure you want to delete the attachment?',
-            showLine: true,
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-        };
+        let modalData = this.commonService.getModalData('Are you sure you want to delete the attachment?', '');
 
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {

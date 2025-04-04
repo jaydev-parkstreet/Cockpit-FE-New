@@ -182,14 +182,7 @@ export class NotesTabComponent implements OnInit {
      * @author PSI-Enhancement
      */
     deleteNote(id) {
-        let modalData = {
-            title: 'Are you sure you want to delete the note?',
-            showLine: true,
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-        };
+        let modalData = this.commonService.getModalData('Are you sure you want to delete the note?', '');
 
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
