@@ -4,7 +4,7 @@
     </div>
     <div class="u-flex u-align-center u-justify-between" (click)="!disabled && !formControl?.disabled && toggleDropdown()">
         <input type='text' class="typography-paragraph-black-regular dropdown-headers u-truncate u-w-100"
-            [value]="getSelectedDisplayText()" [ngClass]="validationClasses"
+            [attr.value]="getSelectedDisplayText()" [ngClass]="validationClasses"
             [placeholder]="settings.translationTexts.buttonDefaultText" tabindex="0" readonly>
         <i class="fal fa-times-circle position-absolute u-neutral-light u-csr-ptr clearSelectedItems"
             *ngIf="selectedItems.length > 0" (click)="!disabled && !formControl?.disabled && clearSelectedItems($event)">

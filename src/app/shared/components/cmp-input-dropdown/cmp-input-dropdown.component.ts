@@ -341,13 +341,10 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
      * @author PSI-Enhancement
      */
     getSelectedDisplayText(): string {
-        if (this.selectedItems.length === 0) {
-            return this.settings?.translationTexts?.buttonDefaultText;
-        }
         if (this.allowSingleSelect) {
-            return this.selectedItems[0].name
+            return this.selectedItems[0]?.name
         }
-        const firstItemName = this.selectedItems[0].name;
+        const firstItemName = this.selectedItems[0]?.name;
         const additionalCount = this.selectedItems.length - 1;
         return additionalCount > 0 ? `${firstItemName}, +${additionalCount}` : firstItemName;
     }
