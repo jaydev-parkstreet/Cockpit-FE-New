@@ -41,7 +41,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         const hasValues = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].some((field) => {
             switch (field.type) {
                 case 'multiselect-dropdown':
-                    return this.sellectedData[field.key]?.length > 0;
+                    return this.form[field.key]?.value !== '';
                 case 'text':
                     return this.form?.get(field.name)?.value?.trim() !== '';
                 case 'checkbox':
