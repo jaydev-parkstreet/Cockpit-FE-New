@@ -42,6 +42,7 @@ export class ProductAddComponent implements OnInit {
     brandModalData: any;
     brandModalConfig: any;
     formSubmitted: boolean = false;
+    isClearAllFields: boolean = false;
 
     headerIconConfig = {
         showIcon: true, 
@@ -662,51 +663,14 @@ export class ProductAddComponent implements OnInit {
     * @author PSI-Enhancements
     */
     clearAllSelections(): void {
-        const hasValues = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].some((field) => {
-            if (field.type === 'multiselect-dropdown' && this.sellectedData[field.key]?.length > 0) {
-                return true;
-            }
-            if (field.type === 'text' && this.productForm?.get(field.name)?.value?.trim() !== '') {
-                return true;
-            }
-            if (field.type === 'checkbox' && this.productForm?.get(field.name)?.value === '1') {
-                return true;
-            }
-            return false;
-        });
-
-        if (!hasValues) { return; }
-
-        const modalData = {
-            title: 'All data will be lost.',
-            body: 'Are you sure you wish to clear all fields?',
-            iconClass: 'fas fa-exclamation-circle error',
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-        };
-
+        const modalData = this.ProductAddService.getAllClearFieldModalData();
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData }).subscribe((result) => {
             if (result.btn.label === 'Yes') {
-                [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].forEach((field) => {
-
-                    if (field.type === 'multiselect-dropdown') {
-                        this.sellectedData[field.key] = [];
-                    }
-
-                    if (field.type === 'text' && this.productForm?.get(field.name)) {
-                        this.productForm.get(field.name).setValue('');
-                        this.productForm.get(field.name).markAsPristine();
-                        this.productForm.get(field.name).markAsUntouched();
-                    }
-
-                    if (field.type === 'checkbox' && this.productForm?.get(field.name)) {
-                        this.productForm.get(field.name).setValue('');
-                        this.productForm.get(field.name).markAsPristine();
-                        this.productForm.get(field.name).markAsUntouched();
-                    }
-                });
+               this.isClearAllFields = true;
+               setTimeout(() => {
+                this.isClearAllFields = false;
+            });
+        
                 const disableFields = ['brand', 'sub_brand_product_id'];
                 this.crudFieldConfig.leftSection.forEach((field:any) => {
                     if (disableFields.includes(field.key)) {
