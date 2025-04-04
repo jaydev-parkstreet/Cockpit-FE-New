@@ -502,7 +502,7 @@ export class ProductAddComponent implements OnInit {
         };
 
         const addFieldControl = (field) => {
-            if (field.required) {
+            if (field.required || field.isRequired) {
                 productForm.addControl(field.name, new FormControl('', Validators.required));
             } else {
                 productForm.addControl(field.name, new FormControl(''));
