@@ -72,9 +72,14 @@ export class formulaComponent implements OnInit {
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
       "pageSize": 25,
-      "sort": "",
+      "sort": "unique_id",
       "order": "asc",
-      "universal_search": ""
+      "universal_search": "",
+      "submission_id": [],
+      "formula_status": [],
+      "formula_id": [],
+      "date_requested_from": "",
+      "date_requested_to": "",
     };
     this.selectedRowCount = 0;
     this.formulaCardSummary = [];
