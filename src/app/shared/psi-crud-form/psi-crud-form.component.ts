@@ -19,6 +19,12 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     @Output() onDropDownChange = new EventEmitter<any>();
     @Output() formSubmit = new EventEmitter<any>();
     @Output() clearAllClicked: EventEmitter<void> = new EventEmitter<void>();
+    @Input() set shouldClearAllFields(value: boolean) {
+        if (value) {
+            this.clearAllFields();
+        }
+    }
+
     showError: any;
 
     constructor(
@@ -32,7 +38,47 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     }
 
     clearAllSelections(): void {
+        const hasValues = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].some((field) => {
+            switch (field.type) {
+                case 'multiselect-dropdown':
+                    return this.sellectedData[field.key]?.length > 0;
+                case 'text':
+                    return this.form?.get(field.name)?.value?.trim() !== '';
+                case 'checkbox':
+                    return this.form?.get(field.name)?.value === '1';
+                default:
+                    return false;
+            }
+        });
+        if (!hasValues) { return; }
         this.clearAllClicked.emit();
+    }
+
+    clearAllFields(): void {
+        if (!this.form || !this.crudFieldConfig) return;
+        const clearField = (fieldName: string): void => {
+            const control = this.form.get(fieldName);
+            if (control) {
+                control.setValue('');
+                control.markAsPristine();
+                control.markAsUntouched();
+            }
+        };
+    
+        [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].forEach((field) => {
+            switch (field.type) {
+                case 'multiselect-dropdown':
+                    this.sellectedData[field.key] = [];
+                    break;
+                case 'text':
+                case 'checkbox':
+                    clearField(field.name);
+                    break;
+                default:
+                    break;
+            }
+        });
+        this.form.updateValueAndValidity();
     }
 
     /**
