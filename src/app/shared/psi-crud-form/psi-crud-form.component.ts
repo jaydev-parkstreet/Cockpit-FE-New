@@ -17,9 +17,9 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     @Input() formSubmitted: boolean;
     @Input() form: any;
     @Output() onDropDownChange = new EventEmitter<any>();
-    showError: any;
     @Output() formSubmit = new EventEmitter<any>();
     @Output() clearAllClicked: EventEmitter<void> = new EventEmitter<void>();
+    showError: any;
 
     constructor(
         public router: Router,

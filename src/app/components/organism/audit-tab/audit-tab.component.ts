@@ -18,9 +18,7 @@ export class AuditTabComponent implements OnInit {
 
 	/**
 	 * Toggles the visibility of the audit panel at the given index.
-	 * 
 	 * @param index - The index of the audit panel to toggle.
-	 * 
 	 * @author PSI-Enhancement
 	 */
 	setActivePanel(index) {
@@ -29,10 +27,8 @@ export class AuditTabComponent implements OnInit {
 
 	/**
 	 * Checks if the given type is in the list of excluded types.
-	 * 
 	 * @param type
 	 * @returns boolean
-	 * 
 	 * @author PSI-Enhancement
 	 */
 	isExcludedType(type: string) {

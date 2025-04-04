@@ -2,10 +2,10 @@
     <div class="dropdown-label" [ngClass]="{'required': required}">
         <span class="d-block" [textContent]="label" *ngIf="label"></span>
     </div>
-    <div class="dropdown-header" [ngClass]="validationClasses"
+    <div class="typography-paragraph-black-regular dropdown-headers u-flex u-align-center u-justify-between" [ngClass]="validationClasses"
         (click)="!disabled && !formControl?.disabled && toggleDropdown()" tabindex="0">
         <span [ngClass]="(selectedItems.length === 0 || (selectedItems.length === 1 && selectedItems[0]?.id === undefined)) ? 'placeholder-text': ''">{{ getSelectedDisplayText() }}</span>
-        <button class="dropdown-button" *ngIf="settings.versionStyle !== 'smart-search'"
+        <button class="dropdown-button u-flex u-align-center u-justify-between" *ngIf="settings.versionStyle !== 'smart-search'"
             (click)="onChevronClick($event)">
             <i [ngClass]="isDropdownOpen() ? 'fal fa-chevron-up' : 'fal fa-chevron-down'" aria-hidden="true"></i>
         </button>
@@ -28,7 +28,7 @@
                 <i class="fas fa-spinner fa-spin"></i>
                 <span>{{ texts.loaderText }}</span>
             </div>
-            <div *ngIf="hideList" class="no-results">
+            <div  class="no-results" *ngIf="hideList">
                 <i class="fas fa-times"></i>
                 <span>{{ texts.noResultText }}</span>
             </div>
