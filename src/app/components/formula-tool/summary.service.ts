@@ -65,7 +65,7 @@ export class formulaService {
             cellRenderer: 'idRender',
             cellClass: 'tooltip-cell'
         },
-        { headerName: 'Supplier Name', minWidth: 75, width: 193, field: 'name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Supplier Name', minWidth: 75, width: 193, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Status', minWidth: 75, width: 115, field: 'formula_status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Formula Description', minWidth: 75, width: 115, field: 'formula_description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Classification', minWidth: 120, width: 140, field: 'classification_name', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
@@ -91,7 +91,8 @@ export class formulaService {
                 dashRenderer: (params) => this.renderDash(params),
                 idRender: (params) => this.renderId(params),
                 statusRenderer: (params) => this.renderStatus(params),
-                dateFormatRenderer: (params) => this.dateFormatRenderer(params)
+                dateFormatRenderer: (params) => this.dateFormat(params),
+                openDocument: (params) => this.openDocument(params)
             },
             enableColResize: true,
             allowContextMenuWithControlKey: true,
@@ -268,8 +269,39 @@ export class formulaService {
      * @param params 
      * @returns string - Formated Date
      */
-    dateFormatRenderer(params) {
-        return this.commonService.dateFormat(params.value);
+    dateFormat(params) {
+        if (
+            params.value === null ||
+            params.value === "---" ||
+            params.value === "-"
+        ) {
+            return "--";
+        } else if (params.value) {
+            const isExpiredFormula = params.colDef.field === 'date_expired_display' && params.data.is_formula_expire === 1;
+            const colorStyle = isExpiredFormula ? 'color:#c52335;' : '';
+            
+            return `<div style="${colorStyle}" class="text-ellipsis add-tooltip" title="${params.value}">
+                        ${params.value}
+                    </div>`;
+        } else {
+            return params.value;
+        }
+    }
+
+    openDocument(params) {
+        var dispText = (params.value !== undefined && params.value !== null) ? params.value : '--';
+        var tooltipText = dispText;
+        var maxLength = 20;
+        var truncatedText = dispText.length > maxLength ? dispText.substring(0, maxLength) + '...' : dispText;
+        if (params.data && params.data.formula_document_file && dispText !== '--') {
+            return '<a class="u-pointer" target="_blank" href="' + params.data.formula_document_file + '"'
+                + (dispText.length > maxLength ? ' title="' + tooltipText + '"' : '') 
+                + ' style="color: #1B6AC9 !important;">'
+                + truncatedText + '</a>';
+        } else {
+            return '<span' + (dispText.length > maxLength ? ' title="' + tooltipText + '"' : '') + '>'
+                + truncatedText + '</span>';
+        }
     }
 
     /**
@@ -437,7 +469,7 @@ export class formulaService {
      */
     getSummary(summaryData: any, token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.SUMMARY, summaryData, { headers }).toPromise();
+        return this.http.post(environment.apiUrl + AppRoutes.FORMULA.SUMMARY, summaryData, { headers }).toPromise();
     }
 
     /**
