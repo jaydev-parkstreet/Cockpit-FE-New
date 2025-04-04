@@ -4,8 +4,12 @@
     </div>
     <div class="typography-paragraph-black-regular dropdown-headers u-flex u-align-center u-justify-between" [ngClass]="validationClasses"
         (click)="!disabled && !formControl?.disabled && toggleDropdown()" tabindex="0">
-        <span [ngClass]="(selectedItems.length === 0 || (selectedItems.length === 1 && selectedItems[0]?.id === undefined)) ? 'placeholder-text': ''">{{ getSelectedDisplayText() }}</span>
-        <button class="dropdown-button u-flex u-align-center u-justify-between" *ngIf="settings.versionStyle !== 'smart-search'"
+        <span [ngClass]="(selectedItems.length === 0 || (selectedItems.length === 1 && selectedItems[0]?.id === undefined)) ? 'placeholder-text': ''" class="w-100 u-truncate u-pg-pr-7">{{ getSelectedDisplayText() }}</span>
+        <i class="fal fa-times-circle position-absolute u-neutral-light clearSelectedItems" 
+            *ngIf="selectedItems.length > 0"
+            (click)="!disabled && !formControl?.disabled && clearSelectedItems($event)">
+        </i>
+        <button class="dropdown-button" *ngIf="settings.versionStyle !== 'smart-search'"
             (click)="onChevronClick($event)">
             <i [ngClass]="isDropdownOpen() ? 'fal fa-chevron-up' : 'fal fa-chevron-down'" aria-hidden="true"></i>
         </button>
