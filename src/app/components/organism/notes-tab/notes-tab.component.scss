@@ -51,7 +51,6 @@
             .note-content {
                 overflow: auto;
                 width: 90%;
-                max-height: 200px;
                 @include new-scrollbar;
                 * {
                     margin: 0;

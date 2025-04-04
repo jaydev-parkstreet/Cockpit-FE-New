@@ -31,10 +31,9 @@
                 .note-container {
                     display: flex;
                     gap: 8px;
-                    width: 100%;
+    
                     .note-owner-image {
-                        max-width: 40px;
-                        width: 100%;
+                        width: 40px;
                         height: 40px;
                         position: relative;
     
@@ -57,9 +56,11 @@
                     }
     
                     .note-meta {
-                        width: 100%;
                         .notes-scroll {
                             display: block;
+                            width: 42%;
+                            overflow-x: auto;
+                            @include new-scrollbar;
                         }
                         .note-meta-name {
                             display: flex;
@@ -73,9 +74,6 @@
     
                             p {
                                 margin-bottom: 0;
-                                width: 522px;
-                                overflow-x: auto;
-                                @include new-scrollbar;
                             }
                         }
                     }

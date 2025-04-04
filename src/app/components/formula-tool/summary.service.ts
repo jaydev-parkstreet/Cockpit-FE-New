@@ -10,7 +10,7 @@ import AppConstant from 'src/app/app.constant';
 @Injectable({
     providedIn: 'root'
 })
-export class ProductManagementService {
+export class formulaService {
 
     constructor(
         private http: HttpClient, private commonService: CommonService,
@@ -20,7 +20,7 @@ export class ProductManagementService {
 
     /**
       * Function to get top bar config.
-      * @author PSI-Enhancements
+      * @author PSI-VIII
       */
     getSummaryTopBarConfig() {
         return {
@@ -40,8 +40,7 @@ export class ProductManagementService {
 
     /**
      * Function to return summary table header config array
-     * @createdDate 01-10-2024
-     * @author PSI-Enhancements
+     * @author PSI-VIII
      */
     getSummaryTableHeaderConfig() {
         return [{
@@ -59,38 +58,31 @@ export class ProductManagementService {
             resizable: false,
             cellClass: 'select-all-header-cell pl0px header-check check'
         }, {
-            headerName: 'Product Code',
+            headerName: 'Unique ID',
             minWidth: 200,
             width: 200,
-            field: 'product_id',
+            field: 'unique_id',
             cellRenderer: 'idRender',
             cellClass: 'tooltip-cell'
         },
-        { headerName: 'Product Description', minWidth: 75, width: 193, field: 'description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Supplier', minWidth: 75, width: 115, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Brand', minWidth: 75, width: 115, field: 'brand_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Product Status',  minWidth: 120, width: 140, field: 'status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
-        { headerName: 'TTB ID', minWidth: 60, width: 108, field: 'ttb_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Date Created', field: 'created_date', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer'},
-        { headerName: 'Product Type', minWidth: 75, width: 134, field: 'product_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Product Sub-Type ', minWidth: 75, width: 171, field: 'sub_type', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Source', field: 'source', minWidth: 75, width: 125, cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'CRM', minWidth: 75, width: 140, field: 'crm', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        {
-            headerName: 'Organic',
-            field: 'is_organic',
-            minWidth: 75,
-            width: 125,
-            cellRenderer: 'dashRenderer',
-            cellClass: 'tooltip-cell'
-        }
+        { headerName: 'Supplier Name', minWidth: 75, width: 193, field: 'name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Status', minWidth: 75, width: 115, field: 'formula_status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Formula Description', minWidth: 75, width: 115, field: 'formula_description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Classification', minWidth: 120, width: 140, field: 'classification_name', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
+        { headerName: 'Submission ID', minWidth: 60, width: 108, field: 'submission_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Formula ID', minWidth: 60, width: 108, field: 'formula_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Date Requested', field: 'date_requested_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Date Submitted', field: 'date_submitted_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Date Approved', field: 'date_approved_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Date Expired', field: 'date_expired_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Formula Approval Document', minWidth: 75, width: 134, field: 'display_name', cellRenderer: 'openDocument', cellClass: 'tooltip-cell' },
         ];
     }
 
     /**
-     * Gets the grid options for the product summary table.
+     * Gets the grid options for the formula summary table.
+     * @author PSI-VIII
      * @returns {any}
-     * @author PSI-Enhancements
      */
     getGridOption() {
         return {
@@ -130,15 +122,15 @@ export class ProductManagementService {
                                         <i class="far fa-surprise"></i>
                                         <span>No Records Found.</span>
                                     </div>`,
-            getRowId: (params) => params.data.product_id,
+            getRowId: (params) => params.data.unique_id,
         };
     }
 
     /**
      * Renders a checkbox in the grid column, checked or unchecked depending on the row data.
+     * @author PSI-VIII
      * @param {object} params
      * @returns {string}
-     * @author PSI-Enhancements
      */
     renderCheckbox(params) {
         let checkboxSelection = '';
@@ -169,10 +161,9 @@ export class ProductManagementService {
     /**
      * Render a dash when there is no value, otherwise render the value inside
      * a text ellipsis container with a tooltip.
-     *
+     * @author PSI-VIII
      * @param {object} params
      * @returns {string}
-     * @author PSI-Enhancements
      */
     renderDash(params) {
         if (params.value) {
@@ -183,16 +174,15 @@ export class ProductManagementService {
     }
 
     /**
-     * Creates an anchor link element for the product ID.
-     *
+     * Creates an anchor link element for the formula ID.
+     * @author PSI-VIII
      * @param params
      * @returns {string}
-     * @author PSI-Enhancements
      */
     renderId(params) {
         if (params.value === null || params.value === '---' || params.value === '-') {
             return '--';
-        } else if (params.data && params.data.product_id) {
+        } else if (params.data && params.data.unique_id) {
             let fbStatusToolTip = '';
             if (params.data.ns_status === 2) {
                 fbStatusToolTip = `
@@ -230,7 +220,7 @@ export class ProductManagementService {
                     <a target="_blank" style="color: black; text-decoration: none;" 
                         onmouseover="this.style.textDecoration='underline'"
                         onmouseout="this.style.textDecoration='none'" 
-                        href="product-management/${params.value}">
+                        href="formula/${params.value}">
                         ${params.value}
                     </a>
                     ${fbStatusToolTip}
@@ -242,41 +232,41 @@ export class ProductManagementService {
     }
 
     /**
-     * Returns the status of the product with an associated color.
+     * Returns the status of the formula with an associated color.
+     * @author PSI-VIII
      * @param {Object} params
      * @returns {String}
-     * @author PSI-Enhancements
      */
     renderStatus(params) {
-      const statusLabels = {
-        Approved: 'u-bg-success',
-        Pending: 'u-bg-warning',
-        'Pre-Approved': 'u-bg-primary text-ellipsis',
-        'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium text-ellipsis',
-        'Request Received': 'u-bg-neutral-light text-ellipsis',
-      };
-  
-      if (statusLabels[params.value]) {
-        return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>`;
-      }
-      return '--';
+        const statusLabels = {
+            Approved: 'u-bg-success',
+            Pending: 'u-bg-warning',
+            'Pre-Approved': 'u-bg-primary text-ellipsis',
+            'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium text-ellipsis',
+            'Request Received': 'u-bg-neutral-light text-ellipsis',
+        };
+
+        if (statusLabels[params.value]) {
+            return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>`;
+        }
+        return '--';
     }
 
     /**
      * Function to get attachment list
+     * @author PSI-VIII
      * @param params 
-     * @author PSI-Enhancement
      */
-    getAttachmentList (param:any) {        
-        return this.http.get(environment.apiRouteUrl+environment.version.v1+ AppRoutes.COMMON.ATTACHMENTS+'?', { params: param });
+    getAttachmentList(param: any) {
+        return this.http.get(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.ATTACHMENTS + '?', { params: param });
     }
 
     /**
      * Cell Renderer for the formatting the Date
      * 
+     * @author PSI-VIII
      * @param params 
      * @returns string - Formated Date
-     * @author PSI-Enhancement
      */
     dateFormatRenderer(params) {
         return this.commonService.dateFormat(params.value);
@@ -284,10 +274,10 @@ export class ProductManagementService {
 
     /**
      * This function returns the config for top panel which includes search bar, filter dropdowns and action buttons.
+     * @author PSI-VIII
      * @param permission
      * @param isActive
      * @returns {object} The config object for top panel.
-     * @author PSI-Enhancements
      */
     getTopPanelConfig(permission, isActive = false) {
         return {
@@ -301,83 +291,49 @@ export class ProductManagementService {
             filtersConfig: [
                 {
                     key: 'clients',
-                    label: 'Supplier',
+                    label: 'Supplier Name',
                     type: 'multiselect-search',
                     divClass: 'col-4 noleftpadding',
-                    setting: this.getMultiSelectConfig('Select Supplier')
+                    setting: this.getMultiSelectConfig('Select Supplier Name')
                 }, {
                     key: 'product_state',
-                    label: 'Product Status',
+                    label: 'Status',
                     type: 'multiselect-search',
                     divClass: 'col-4',
                     setting: this.getMultiSelectConfig('Select Status')
                 }, {
                     key: 'product_type',
-                    label: 'Product Type',
+                    label: 'Submission ID',
                     type: 'multiselect-search',
                     divClass: 'col-4 norightpadding',
-                    setting: this.getMultiSelectConfig('Select Type')
+                    setting: this.getMultiSelectConfig('Select Submission ID')
                 }, {
                     key: 'product_sub_type',
-                    label: 'Product Sub-Type',
+                    label: 'Formula ID',
                     type: 'multiselect-search',
                     divClass: 'col-4 noleftpadding',
-                    setting: this.getMultiSelectConfig('Select Sub-Type')
+                    setting: this.getMultiSelectConfig('Select Formula ID')
                 }, {
                     key: 'source',
-                    label: 'Source',
+                    label: 'Date Requested',
                     type: 'multiselect-search',
                     divClass: 'col-4',
-                    setting: this.getMultiSelectConfig('Select Source')
+                    setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 }, {
                     key: 'crm',
-                    label: 'CRM',
-                    type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding', 
-                    setting: this.getMultiSelectConfig('Select CRM')
-                }, {
-                    key: 'brand',
-                    label: 'Brand',
-                    type: 'multiselect-search',
-                    divClass: 'col-4 noleftpadding',
-                    showSelectAll: false,
-                    setting: this.getMultiSelectConfig('Select Brand', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.BRAND_SEARCH)
-                }, {
-                    key: 'sub-brand',
-                    label: 'Sub-Brand',
-                    type: 'multiselect-search',
-                    divClass: 'col-4',
-                    showSelectAll: false,
-                    setting: this.getMultiSelectConfig('Select Sub-Brand', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_SEARCH)
-                }, {
-                    key: 'sub-brands-product',
-                    label: 'Sub-Brand Product',
+                    label: 'Date Approved',
                     type: 'multiselect-search',
                     divClass: 'col-4 norightpadding',
-                    showSelectAll: false,
-                    setting: this.getMultiSelectConfig('Select Sub-Brand Product', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_PRODUCT_SEARCH)
-                }, {
-                    key: 'organic',
-                    label: 'Organic',
-                    type: 'multiselect-search',
-                    divClass: 'col-4 noleftpadding', 
-                    setting: this.getMultiSelectConfig('Select Organic')
+                    setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 },
-                { type: 'checkbox', name: 'is_active', label: 'Inactive Only', placeholder: 'Inactive Only', divClass: 'col-4' },
-                { type: 'checkbox', name: 'is_rejected', label: 'Rejected Only', placeholder: 'Rejected Only', divClass: 'col-4' }
+                { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
+                { type: 'checkbox', name: 'is_rejected', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4' }
             ],
         };
     }
 
-    getActionsIconsConfig (groupActions, permission, reqObj = {}, isActive = false) {
+    getActionsIconsConfig(groupActions, permission, reqObj = {}, isActive = false) {
         const actionIconsConfig: any = [];
-        actionIconsConfig.push({
-            key: 'mass_upload',
-            type: 'icon',
-            iconClass: 'fas fa-layer-plus',
-            showTooltip: true,
-            tooltipText: 'Import bulk products',
-        });
         if (groupActions) {
             if (permission?.permissions?.Update) {
                 actionIconsConfig.push({
@@ -392,19 +348,6 @@ export class ProductManagementService {
                     iconClass: 'fas fa-comment',
                     showTooltip: true,
                     tooltipText: 'Note',
-                }, {
-                    key: 'active',
-                    type: 'icon',
-                    iconClass: isActive ? 'fas fa-check-circle' : 'fas fa-times-circle',
-                    showTooltip: true,
-                    isActive,
-                    tooltipText: isActive ? 'Activate' : 'Deactivate',
-                }, {
-                    key: 'edit',
-                    type: 'icon',
-                    iconClass: 'fas fa-pen',
-                    showTooltip: true,
-                    tooltipText: 'Edit',
                 })
             }
         }
@@ -425,10 +368,10 @@ export class ProductManagementService {
         });
         if (permission?.permissions?.Create) {
             actionIconsConfig.push({
-                key: 'new_product',
+                key: 'new_formula',
                 type: 'button',
                 divClass: '',
-                buttonText: 'New Product',
+                buttonText: 'FORMULA',
                 buttonIconLeft: 'fas fa-plus-circle',
                 buttonClass: 'primary large'
             });
@@ -440,10 +383,10 @@ export class ProductManagementService {
     /**
      * Generates a configuration object for multi-select dropdowns.
      *
+     * @author PSI-VIII
      * @param placeholdertext
      * @param name
      * @returns An object
-     * @author PSI-Enhancements
      */
     getMultiSelectConfig(placeholdertext, name = 'name', serverSearch = false, apiUrl = '') {
         return {
@@ -467,10 +410,10 @@ export class ProductManagementService {
     /**
      * Formats an array of objects into a dropdown-compatible format.
      * 
+     * @author PSI-VIII
      * @param values
      * @param name
      * @returns An array of objects suitable for use in a dropdown
-     * @author PSI-Enhancements
      */
     formatDropdownValue(values, name = '') {
         let dropdown = [];
@@ -487,10 +430,10 @@ export class ProductManagementService {
     /**
      * Fetches the summary data from the server based on the given summary data object.
      * 
+     * @author PSI-VIII
      * @param summaryData
      * @param token
      * @returns A Promise containing the summary data.
-     * @author PSI-Enhancements
      */
     getSummary(summaryData: any, token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -499,10 +442,9 @@ export class ProductManagementService {
 
     /**
      * Retrieves the list of dropdown items associated with the given client ID.
-     * 
+     * @author PSI-VIII
      * @param token
      * @returns An Observable containing the data of dropdown items.
-     * @author PSI-Enhancements
      */
     getDropdown(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -510,30 +452,11 @@ export class ProductManagementService {
     }
 
     /**
-     * Fetches the sub-brand products associated with the given client ID.
-     * 
-     * @param clientId
-     * @returns An Observable containing the data of sub-brand products.
-     * @author PSI-Enhancements
-     */
-    getSubBrandProducts(clientId: string, brandID: string) {
-        const token = localStorage.getItem('authToken');
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        const params = new HttpParams()
-            .set('client_id', clientId)
-            .set('brand_id', brandID);
-        return this.http
-            .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.GET_SUB_BRAND_PRODUCT_WITH_CLIENT_ID, { headers, params })
-            .pipe(map((response: any) => response.data));
-    }
-
-    /**
-     * Retrieves the product details for a given product ID.
-     *
-     * @param id The ID of the product.
-     * @returns An Observable containing the product details from the server.
-     * @author PSI-Enhancements
-     */
+    * Retrieves the formula details for a given formula ID.
+    * @author PSI-VIII
+    * @param id The ID of the formula.
+    * @returns An Observable containing the formula details from the server.
+    */
     getDetails(id) {
         return this.http
             .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DETAILS + id)
@@ -541,10 +464,9 @@ export class ProductManagementService {
     }
 
     /**
-     * Retrieves the permission settings for the product tool.
-     *
+     * Retrieves the permission settings for the formula tool.
+     * @author PSI-VIII
      * @returns A promise that resolves to the permission data from the server.
-     * @author PSI-Enhancements
      */
     getPermission() {
         return this.http
@@ -552,32 +474,10 @@ export class ProductManagementService {
     }
 
     /**
-     * Function to activate or deactivate a product.
-     * @param productId
-     * @param isActive
-     * @returns Observable containing the response from the server.
-     * @author PSI-Enhancements
-     */
-    getActivateAPI(productId: string[], isActive) {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-        });
-
-        const body = {
-            product_id: productId,
-            is_active: isActive ? 0 : 1,
-        };
-
-        return this.http
-            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PRODUCT_ACTIVE_DEACTIVATE, body, { headers })
-            .pipe(map((response: any) => response));
-    }
-
-    /**
-     * Makes an API call to export the given products to Excel.
+     * Makes an API call to export the given formula to Excel.
+     * @author PSI-VIII
      * @param obj
      * @returns An observable containing the HTTP response from the server.
-     * @author PSI-Enhancements
      */
     excelExport(obj) {
         return this.http
@@ -587,63 +487,6 @@ export class ProductManagementService {
 
     uploadMultipleAttachments(reqObj: FormData) {
         return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
-    }
-
-    /**
-     *Function to get config for mass bulk upload.
-     * @author PSI-Enhancements
-     */   
-    getMassExcelModalData() {
-        return {
-            titleIcon: 'fas fa-layer-plus',
-            title: 'UPLOAD BULK PRODUCT',
-            modalBodyTitle: 'Upload Excel File',
-            requestObj: {},
-            uploadFileKey: 'file',
-            modalBodyText: 'Upload bulk Products.',
-            successLabelText: 'Allocated SKUs:',
-            errorLabelText: 'Rows with Errors:',
-            btnLabel: [
-                { type: 'Btn', label: 'Cancel', class: 'secondary', isDisable: false},
-                { type: 'Btn', label: 'Upload', class: 'primary' , isDisable: true}
-            ]
-        };
-    }
-
-    /**
-     *Function to upload mass bulk product.
-     * @author PSI-Enhancements
-     * @param obj
-     */   
-    uploadbulkProducts(obj) { 
-        return this.http
-        .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.UPLOAD_BULK_PRODUCT, obj)
-        .pipe(map((response: any) => response));
-    }
-
-    /**
-     * Syncs the product order with NS.
-     * @param productId
-     * @returns An Observable containing the response from the server.
-     * @author PSI-Enhancement
-     */
-    syncOrder(productId) {
-        let params = {
-            'productId' : productId
-        };
-        return this.http
-            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.NS_SYNC, params);
-    }
-
-    /**
-     * Fetches the sync status details for a product
-     * @param id
-     * @returns An observable containing the sync status details
-     * @author PSI-Enhancement
-     */
-    getSyncStatusDetails(id) {
-        return this.http
-          .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.NS_SYNC_STATUS + id);
     }
 
 }

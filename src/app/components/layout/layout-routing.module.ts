@@ -19,6 +19,13 @@ const routes: Routes = [
 						(m) => m.ProductManagementModule
 					),
 			},
+			{
+				path: 'formula',
+				loadChildren: () =>
+					import('../formula-tool/summary.module').then(
+						(m) => m.FormulaSummaryModule
+					),
+			},
 		],
 	},
 ];
