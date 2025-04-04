@@ -29,6 +29,9 @@ const AppRoutes = {
         SUB_BRAND_SEARCH: 'product-tool/sub-brands',
         SUB_BRAND_PRODUCT_SEARCH: 'product-tool/sub-brands-products'
     },
+    FORMULA: {
+        SUMMARY: 'formula/summary',
+    },
     COMMON: {
         NOTES: 'notes',
         MULTIPLE_NOTES_API: 'store-multiple-notes',
