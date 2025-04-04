@@ -67,7 +67,7 @@ export class ProductAddComponent implements OnInit {
         this.leftTitle = 'PRODUCT DETAILS';
         this.productTitle = 'Dimensions';
         this.crudFieldConfig = this.ProductAddService.getCrudFieldConfig(this.crudFiltersList);
-        this.modalData = this.ProductAddService.getModalData()
+        this.modalData =this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to exit?');
         let productId = this.route.snapshot.paramMap.get('id');
         this.duplicate = this.route.snapshot.data.isDuplicate || false;
         if (productId) {
@@ -251,7 +251,7 @@ export class ProductAddComponent implements OnInit {
      * @author PSI-Enhancements
      */
     openConfirmationPopup() {
-        const modalData = this.ProductAddService.getModalData();
+        const modalData = this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to exit?');
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
                 if (result.btn.label === 'Yes') {

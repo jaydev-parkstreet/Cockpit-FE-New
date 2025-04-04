@@ -141,16 +141,8 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
     * @author PSI-Enhancements
     */
     onDeleteClick(id: any) {
-        let modalData;
+       let modalData = this.commonService.getModalData('Are you sure you want to delete the note?', '');
 
-        modalData = {
-            title: 'Are you sure you want to delete the note?',
-            iconClass: 'fas fa-exclamation-circle error',
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-        };
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
                 if (result.btn.label === 'Yes') {
