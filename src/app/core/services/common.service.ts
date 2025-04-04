@@ -375,4 +375,24 @@ export class CommonService {
   }
 
 
+  /**
+   * function to get modal data
+   * @author PSI-Enhancement
+   * @param title
+   * @param body
+   * @returns object
+   */
+  getModalData(title, body) {
+    return {
+      title: title,
+      body: body,
+      iconClass: 'fas fa-exclamation-circle error',
+      showLine: true,
+      btnLabel: [
+        { type: 'Btn', label: 'No', class: 'secondary' },
+        { type: 'Btn', label: 'Yes', class: 'primary' }
+      ]
+    };
+  }
+
 }
