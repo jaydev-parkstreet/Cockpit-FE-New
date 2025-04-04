@@ -270,7 +270,7 @@ export class ProductAddComponent implements OnInit {
             || fieldName == "is_organic" || fieldName == "producer" || fieldName == "case_unit_of_measure" || fieldName == "brand"
             || fieldName == "varietal" || fieldName == "vintage" || fieldName == "sub_type" || fieldName == "category" || fieldName == "source"
             || fieldName == "country") {
-            this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
+            this.productForm.get(fieldName)?.setValue(selectedValue[0]?.id);
         }
         else {
             this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
@@ -283,13 +283,18 @@ export class ProductAddComponent implements OnInit {
         } else if (selectedValue[0]?.client_id) {
             this.clientId = selectedValue[0]?.client_id;
         }
+        if (fieldName === 'client_id' && selectedValue.length === 0) {
+            this.updateSelectedData(['brand', 'sub_brand_product_id'], true);
+        }
+        if (fieldName === 'brand' && selectedValue.length === 0) {
+            this.updateSelectedData(['sub_brand_product_id'], true);
+        }
         if (fieldName === 'client_id' && selectedValue.length > 0) {
             this.isBrandDisabled = !selectedValue;
             brandControl.setValue('');
             subBrandControl.setValue('');
             subBrandControl.disable();
-            this.updatesellectedData('brand', 'Select Brand');
-            this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
+            this.updateSelectedData(['brand', 'sub_brand_product_id']);
             this.isSubBrandDisabled = true;
             if (selectedValue && brandControl) {
                 brandControl.enable();
@@ -298,9 +303,9 @@ export class ProductAddComponent implements OnInit {
             this.changeDetector.detectChanges();
         }
 
-        if (fieldName === 'brand') {
+        if (fieldName === 'brand' && selectedValue.length > 0) {
             this.isSubBrandDisabled = !selectedValue;
-            this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
+            this.updateSelectedData(['sub_brand_product_id']);
             subBrandControl.setValue('');
             if (selectedValue[0]?.isNew) {
                 this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
@@ -462,15 +467,6 @@ export class ProductAddComponent implements OnInit {
         });
     }
 
-    /**
-     * Updates the sellectedData object to include a default value for the given key.
-     * @param key
-     * @param defaultText
-     * @author PSI-Enhancement
-     */
-    updatesellectedData(key: string, defaultText: string) {
-        this.sellectedData[key] = [{ name: defaultText }];
-    }
 
     /**
      * Configures and renders form fields based on the selected product type.
@@ -635,8 +631,7 @@ export class ProductAddComponent implements OnInit {
                         this.updateBrandAndSubBrandControls(clientId ? clientId : result.formData.brand.client_id, result.response.data.brand.id, result.response.data.sub_brand_product.id);
                     }
                 } else {
-                    this.updatesellectedData('brand', 'Select Brand');
-                    this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
+                    this.updateSelectedData(['brand', 'sub_brand_product_id']);
                 }
             });
     }
@@ -719,5 +714,29 @@ export class ProductAddComponent implements OnInit {
             }
         });
     } 
+
+    /**
+     * Function to empty data in model
+     * @param fieldKeys
+     * @param isDisabled
+     * @author PSI-Enhancements
+     */
+    updateSelectedData(fields: string[], disableFields: boolean = false) {
+        fields.forEach(field => this.sellectedData[field] = []);
+        if (disableFields) this.setFieldDisabled(fields, true);
+    }
+
+    /**
+     * Function to set field disabled
+     * @param fieldKeys
+     * @param isDisabled
+     * @author PSI-Enhancements
+     */
+    setFieldDisabled(fieldKeys, isDisabled) {
+        fieldKeys.forEach(key => {
+            const field = this.crudFieldConfig.leftSection.find(element => element.key === key);
+            if (field) field.isDisabled = isDisabled;
+        });
+    }
 
 }
