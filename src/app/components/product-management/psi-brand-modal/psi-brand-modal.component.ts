@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnChanges, O
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SimpleModalComponent, SimpleModalService } from 'ngx-simple-modal';
 import { ProductAddService } from '../product-add/product-add.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from 'src/app/core/services/common.service';
 
 export interface BrandModal {
     modalData: any;
@@ -24,7 +24,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         private formBuilder: FormBuilder,
         private ProductAddService: ProductAddService,
         private changeDetector: ChangeDetectorRef,
-        private spinner: NgxSpinnerService,
+        private commonService: CommonService,
     ) {
         super();
     }
@@ -81,9 +81,9 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
                         brand_id: '',
                         brand_name: this.result.formData.new_brands
                     };
-                     this.spinner.show();
+                    this.commonService.showSpinner();
                     this.ProductAddService.saveNewBrands(param).subscribe(response => {
-                        this.spinner.hide();
+                        this.commonService.hideSpinner();
                         if (!response.hasError) {
                             this.result = { confirm: true, formData: this.brandForm.value, response: response };
                             this.close();
@@ -103,9 +103,9 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
                         net_content_id: this.result.formData.net_contents.id,
                         bpc_id: this.result.formData.units_cases.id
                     };
-                    this.spinner.show();
+                    this.commonService.showSpinner();
                     this.ProductAddService.saveNewSubBrands(param).subscribe(response => {
-                        this.spinner.hide();
+                        this.commonService.hideSpinner();
                         if (!response.hasError) {
                             this.result = { confirm: true, formData: this.brandForm.value, response: response };
                             this.close();
