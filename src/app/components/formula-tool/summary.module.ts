@@ -9,10 +9,12 @@ import { StatelessModule } from 'src/app/stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { RouterModule } from '@angular/router';
 import { SummaryRoutingModule } from './summary.routing.module';
+import { FormulaDetailsComponent } from './formula-details/formula-details.component';
 
 @NgModule({
     declarations: [
         formulaComponent,
+        FormulaDetailsComponent
     ],
     providers: [{
         provide: ErrorHandler,

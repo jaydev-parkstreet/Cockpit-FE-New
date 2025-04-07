@@ -1,0 +1,71 @@
+<div ui-view class="formula-tool-details u-pg-pt-1 u-pg-mb-2">
+    <app-header-tool
+        titleText="Formulas"
+        titleIcon="fas fa-file-alt">
+    </app-header-tool>
+
+    <div class="formula-tool-details-container u-pg-pb-2">
+        <div class="action-bar u-flex u-flex u-justify-between u-align-center u-pg-mt-1">
+            <div class="back-link">
+                <i class="fas fa-chevron-left"></i>
+                <span class="typography-body-dark-regular link-text" (click)="onClickback()">{{backToFormulaTitle}}</span>
+            </div>
+            <div>
+                <app-psi-action-buttons 
+                    [actionButtons]="actionButtons"
+                    (actionClicked)="onClickAction($event)">
+                </app-psi-action-buttons>
+            </div>
+        </div>
+        <div class="formula-tool-details-wrapper u-pg-mt-1">
+            <div class="row">
+                <div class="col-sm-6 u-pr2 left-side">
+                    <app-cmp-header-widget 
+                        [headerTitle]="headerTitle" 
+                        [hasTooltip]="true" 
+                        [badgeText]="status"
+                        [badgeClass]="statusClass"
+                        [iconHeaderStatus]="IconHeaderStatus"
+                        [rightErrorIconDescriptionClass]="'u-bg-error'">
+                    </app-cmp-header-widget>
+                    <app-card-layout-details 
+                        [rows]="detailFormula">
+                    </app-card-layout-details>
+                    <app-cmp-tab-group 
+                        [tabGroupConfig]="tabGroupConfig" 
+                        [activeTab]="activeTab"
+                        (tabClick)="clickTabGroup($event)">
+                    </app-cmp-tab-group>
+                    <app-notes-tab
+                        *ngIf = "activeTab === 'notes'"
+                        [entity] = "formulaDetails.id"
+                        [permissions] = "permissions">
+                    </app-notes-tab>
+                    <app-attachment-tab
+                        *ngIf = "activeTab === 'attachments'"
+                        [entity] = "formulaDetails.id"
+                        [permissions] = "permissions"
+                        [showFileType] = true
+                        [showPrivacyIcon] = true>
+                    </app-attachment-tab>
+                    <app-audit-tab
+                        *ngIf="activeTab === 'auditTrail'"
+                        [showLoader]="isAuditDataIsLoading"
+                        [auditList]="auditList"
+                        [rowObjectKeysDetail] = "rowAuditTrailConfigApiRequest">
+                    </app-audit-tab>
+                </div>
+                <div class="col-sm-6 u-pl2 right-side u-pg-pl-2">
+                    <div>
+                        <app-cmp-header-widget 
+                            [headerTitle]="documentTitle">
+                        </app-cmp-header-widget>
+                        <app-card-layout-details 
+                            [rows]="documentDetails">
+                        </app-card-layout-details>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
