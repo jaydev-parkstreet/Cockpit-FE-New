@@ -3,7 +3,6 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
 import { ProductManagementService } from '../product-management.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ProductAddService } from './product-add.service';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { PsiBrandModalComponent } from '../psi-brand-modal/psi-brand-modal.component';
@@ -56,7 +55,6 @@ export class ProductAddComponent implements OnInit {
         private route: ActivatedRoute,
         private formBuilder: FormBuilder,
         private productManagementService: ProductManagementService,
-        private spinner : NgxSpinnerService,
         private commonService: CommonService,
         private simpleModalService: SimpleModalService
     ) { }
@@ -102,9 +100,9 @@ export class ProductAddComponent implements OnInit {
      * @author PSI-Enhancement
      */
     async getProductData (productId) {
-        this.spinner.show();
+        this.commonService.showSpinner();
         this.productManagementService.getDetails(productId).then((response : any) => {
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             if (!response.hasError) {
                 this.renderConditionalFields(response.data.prod_type, this.crudFiltersList, this.productForm);
                 this.productId = response.data.product_id;
@@ -222,10 +220,10 @@ export class ProductAddComponent implements OnInit {
                     this.uniqueId,
                     this.productId
                 );
-                this.spinner.show()
+                this.commonService.showSpinner();
                 this.ProductAddService.getProductManagementSystemSave(formattedModel).subscribe(response => {
                     if (!response.hasError) {
-                        this.spinner.hide();
+                        this.commonService.hideSpinner();
                         let productId = response.product_id;
                         if (this.edit && !this.duplicate) {
                             this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-check-circle', 'success');
@@ -234,7 +232,7 @@ export class ProductAddComponent implements OnInit {
                         }
                         this.router.navigateByUrl(`/product-management/${productId}`);
                     } else {
-                        this.spinner.hide();
+                        this.commonService.hideSpinner();
                         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                     }
                 });

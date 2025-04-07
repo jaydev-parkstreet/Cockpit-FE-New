@@ -106,7 +106,7 @@ export class CmpInputDropdownComponent implements OnInit, ControlValueAccessor {
      * @returns void
      */
     updateSelectAllStates(): void {
-        this.isAllSelected = this.selectedItems.length > 0;
+        this.isAllSelected = this.selectedItems?.length > 0;
     }
 
     /**

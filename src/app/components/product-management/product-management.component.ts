@@ -2,10 +2,7 @@ import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ProductManagementService } from './product-management.service';
 import { AuthService } from '../authentication/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { saveAs } from 'file-saver';
 import { CommonService } from 'src/app/core/services/common.service';
-import { environment } from 'src/environments/environment';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { CmpAttachmentModalComponent } from 'src/app/shared/components/cmp-attachment-modal/cmp-attachment-modal.component';
 import { MassUploadExcelModalComponent } from '../product-management/mass-upload-excel-modal/mass-upload-excel-modal.component';
@@ -55,9 +52,7 @@ export class ProductManagementComponent implements OnInit {
 
 	constructor(
 		private productManagementService: ProductManagementService,
-		private authService: AuthService,
 		private router: Router,
-		private spinner: NgxSpinnerService,
 		private commonService: CommonService,
 		private commonBackendService: CommonBackendService,
 		private route: ActivatedRoute,
@@ -163,7 +158,7 @@ export class ProductManagementComponent implements OnInit {
 	 * @param object param
 	 */
 	getNotes(Id, param) {
-		this.spinner.show();
+		this.commonService.showSpinner();
 		this.commonBackendService.getNotes(this.permissions.kind_id,
 			this.permissions.tool_id, Id, this.permissions.menu_item_id).subscribe((result: any) => {
 				if (!result.hasError) {
@@ -171,9 +166,9 @@ export class ProductManagementComponent implements OnInit {
 				} else {
 					this.commonService.showToastV2Message(true, result.msg, 'fas fa-exclamation-circle');
 				}
-				this.spinner.hide();
+				this.commonService.hideSpinner();
 			}, (error) => {
-				this.spinner.hide();
+				this.commonService.hideSpinner();
 				this.commonService.showToastV2Message(true, 'Failed to load notes', 'fas fa-exclamation-circle');
 			}
 			);
@@ -226,7 +221,7 @@ export class ProductManagementComponent implements OnInit {
 	 */
 	openAttachmentListPopup(entity: any) {
 		if (this.permissions.permissions.Update) {
-			this.spinner.show();
+			this.commonService.showSpinner();
 			this.productManagementService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response: any) => {
 				if (!response.hasErrors) {
 					this.showAttachment(false, [entity], response);
@@ -234,10 +229,10 @@ export class ProductManagementComponent implements OnInit {
 					this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
 				}
 				this.isLoading = false;
-				this.spinner.hide();
+				this.commonService.hideSpinner();
 			}, (error: any) => {
 				this.isLoading = false;
-				this.spinner.hide();
+				this.commonService.hideSpinner();
 				this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
 			});
 		}
@@ -303,7 +298,7 @@ export class ProductManagementComponent implements OnInit {
 	 */
 	async getSummaryData() {
 		this.isLoadingSummaryData = true;
-		this.spinner.show();
+		this.commonService.showSpinner();
 		const token = localStorage.getItem('authToken');
 		const summaryData = this.reportRequestObj;
 		try {
@@ -320,7 +315,7 @@ export class ProductManagementComponent implements OnInit {
 		} catch (error) {
 			console.error("Error fetching summary:", error);
 		} finally {
-			this.spinner.hide();
+			this.commonService.hideSpinner();
 		}
 	}
 
@@ -596,9 +591,9 @@ export class ProductManagementComponent implements OnInit {
 	 * @param boolean isActive
 	 */
 	getActivateAPI(isActive) {
-		this.spinner.show();
+		this.commonService.showSpinner();
 		this.productManagementService.getActivateAPI(this.selectedRows, !isActive).subscribe((response) => {
-			this.spinner.hide();
+			this.commonService.hideSpinner();
 			if (!response.hasError) {
 				this.setDataSourceAgGrid();
 				this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');

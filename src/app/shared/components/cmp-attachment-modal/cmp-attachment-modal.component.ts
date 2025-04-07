@@ -6,7 +6,6 @@ import { ProductManagementService } from 'src/app/components/product-management/
 import AppConstant from 'src/app/app.constant';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
 import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 export interface ConfirmModel {
   modalData: any;
@@ -26,7 +25,6 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     private commonService: CommonService,
     private productmanagementService: ProductManagementService,
     private commonBackendService: CommonBackendService,
-    private spinner: NgxSpinnerService
   ) {
     super();
   }
@@ -50,10 +48,12 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   selectedFiles: any = [];
   CONSTANTS: any = AppConstant;
   fileSizeMessage:string;
+  modelAttachmentPermission: any = [];
 
   ngOnInit(): void {
     this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);
     this.filetype_dropdown = this.commonService.getSingleSelectDropdownConfig('Select file type', true);
+    this.modelAttachmentPermission = [this.modalData?.attachmentPermission[0]];
   }
 
  /**
@@ -131,7 +131,8 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   * @param obj
   */
   getVisibilityDropdownValue(value: any) {
-    this.permission_id = value[0].id;
+    this.permission_id = value[0]?.id;
+    this.modelAttachmentPermission = value;
   }
 
   /**
@@ -140,7 +141,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   * @param obj
   */
   getFileTypeDropdownValue(value: any) {
-    this.kindid = value[0].id;
+    this.kindid = value[0]?.id;
   }
 
   /**
@@ -158,9 +159,9 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     uploadParams.append('tool', this.modalData.filtersList.tool_id);
     uploadParams.append('menu_item_id', this.modalData.filtersList.menu_item_id);
     uploadParams.append('permission_id', this.permission_id || this.modalData.attachmentPermission[0].id);
-    this.spinner.show();
+    this.commonService.showSpinner();
     this.commonService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
-      this.spinner.hide();
+      this.commonService.hideSpinner();
       if (!response.hasError) {
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
         this.closeModal(1);
@@ -168,7 +169,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
       }
     }, (error) => {
-      this.spinner.hide();
+      this.commonService.hideSpinner();
       this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
     });
   }
@@ -243,12 +244,14 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     }
   }
 
-  /**
-  *Function to update the state of submit button.
-  * @author PSI-Enhancements
-  */
-  get isButtonDisabled(): boolean {
-    return !this.selectedFileCount || this.selectedFileCount <= 0 || (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0) || !this.kindid;
-  }
+    /**
+    *Function to update the state of submit button.
+    * @author PSI-Enhancements
+    */
+    get isButtonDisabled(): boolean {
+        return !this.selectedFileCount || this.selectedFileCount <= 0 ||
+            (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0) ||
+            !this.kindid || this.modelAttachmentPermission.length === 0;
+    }
 
 }

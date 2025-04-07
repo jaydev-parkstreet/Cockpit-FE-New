@@ -80,7 +80,7 @@
         <app-cmp-button
             [buttonText]="modalData.saveAction.label"
             [buttonClass]="'primary w-lg'"
-            [isDisable]="!editorContent"
+            [isDisable]="isButtonDisabled"
             (click)="!editorContent ? $event.stopPropagation() : uploadNotes()">
         </app-cmp-button>
     </div>

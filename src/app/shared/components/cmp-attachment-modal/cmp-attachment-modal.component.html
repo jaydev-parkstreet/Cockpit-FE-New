@@ -72,12 +72,12 @@
                         [showCheckboxes]="false" 
                         [allowSingleSelect]="true" 
                         [showSearch]="false"
-                        [selectedItems]="[modalData.attachmentPermission[0]]"
+                        [selectedItems]="modelAttachmentPermission"
+                        (onDropDownChange)="getVisibilityDropdownValue($event)"
                         [filteredItems]="modalData.attachmentPermission" 
                         [isAllItemsSelected]="false"
                         [isIndeterminate]="false" 
                         [settings]="dropdownConfig"
-                        (onDropDownChange)="getVisibilityDropdownValue($event)"
                         >
                     </app-cmp-input-dropdown>
                 </div>
