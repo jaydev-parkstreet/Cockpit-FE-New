@@ -1,4 +1,4 @@
-<div class="product-management u-pg-pt-1">
+<div class="product-management u-pg-pt-1 u-pg-pb-2">
     <app-header-tool
         titleText="Product Management System"
         titleIcon="fas fa-wine-bottle">
@@ -19,7 +19,7 @@
                 </app-summary-top-bar>
             </div>
         </div>
-        <div class="product-tool-grid u-pg-mb-1 u-pg-pb-1" [hidden]="productToolSummary.length == 0 && !isLoadingSummaryData">
+        <div class="product-tool-grid u-pg-pb-1" [hidden]="productToolSummary.length == 0 && !isLoadingSummaryData">
             <app-summary-grid
                 [gridOptions] = "gridOptions"
                 [selectAllOption] = "true"
