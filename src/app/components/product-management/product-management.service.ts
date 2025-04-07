@@ -585,10 +585,6 @@ export class ProductManagementService {
             .pipe(map((response: any) => response));
     }
 
-    uploadMultipleAttachments(reqObj: FormData) {
-        return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
-    }
-
     /**
      *Function to get config for mass bulk upload.
      * @author PSI-Enhancements

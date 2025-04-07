@@ -366,4 +366,33 @@ export class CommonService {
         this.spinner.hide();
     }
 
+      /**
+  *Function to file upload.
+  * @author PSI-Enhancements
+  */
+  uploadMultipleAttachments(reqObj: FormData) {
+    return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
+  }
+
+
+  /**
+   * function to get modal data
+   * @author PSI-Enhancement
+   * @param title
+   * @param body
+   * @returns object
+   */
+  getModalData(title, body) {
+    return {
+      title: title,
+      body: body,
+      iconClass: 'fas fa-exclamation-circle error',
+      showLine: true,
+      btnLabel: [
+        { type: 'Btn', label: 'No', class: 'secondary' },
+        { type: 'Btn', label: 'Yes', class: 'primary' }
+      ]
+    };
+  }
+
 }

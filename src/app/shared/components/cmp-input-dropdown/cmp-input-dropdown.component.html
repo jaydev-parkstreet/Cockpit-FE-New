@@ -2,11 +2,14 @@
     <div class="dropdown-label" [ngClass]="{'required': required}">
         <span class="d-block" [textContent]="label" *ngIf="label"></span>
     </div>
-    <div class="dropdown-header" [ngClass]="validationClasses"
-        (click)="!disabled && !formControl?.disabled && toggleDropdown()" tabindex="0">
-        <span [ngClass]="(selectedItems.length === 0 || (selectedItems.length === 1 && selectedItems[0]?.id === undefined)) ? 'placeholder-text': ''">{{ getSelectedDisplayText() }}</span>
-        <button class="dropdown-button" *ngIf="settings.versionStyle !== 'smart-search'"
-            (click)="onChevronClick($event)">
+    <div class="u-flex u-align-center u-justify-between" (click)="!disabled && !formControl?.disabled && toggleDropdown()">
+        <input type='text' class="typography-paragraph-black-regular dropdown-headers u-truncate u-w-100"
+            [attr.value]="getSelectedDisplayText()" [ngClass]="validationClasses"
+            [placeholder]="settings.translationTexts.buttonDefaultText" tabindex="0" readonly>
+        <i class="fal fa-times-circle position-absolute u-neutral-light u-csr-ptr clearSelectedItems"
+            *ngIf="selectedItems?.length > 0" (click)="!disabled && !formControl?.disabled && clearSelectedItems($event)">
+        </i>
+        <button class="dropdown-button" *ngIf="settings.versionStyle !== 'smart-search'">
             <i [ngClass]="isDropdownOpen() ? 'fal fa-chevron-up' : 'fal fa-chevron-down'" aria-hidden="true"></i>
         </button>
     </div>
@@ -28,7 +31,7 @@
                 <i class="fas fa-spinner fa-spin"></i>
                 <span>{{ texts.loaderText }}</span>
             </div>
-            <div *ngIf="hideList" class="no-results">
+            <div  class="no-results" *ngIf="hideList">
                 <i class="fas fa-times"></i>
                 <span>{{ texts.noResultText }}</span>
             </div>

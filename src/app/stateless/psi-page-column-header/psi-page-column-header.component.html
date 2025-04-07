@@ -2,5 +2,5 @@
     <span class="typography-v2-mon-body-black-regular"
         [textContent]="headerTitle">
     </span>
-    <span class="fas fa-eraser ft-i u-pointer" *ngIf="clearAll" (click)="onClearAllClick()"></span>
+    <span class="u-pointer" [ngClass]="headerIconConfig?.iconClass" *ngIf="headerIconConfig?.showIcon" (click)="onClearAllClick()"></span>
 </div>
