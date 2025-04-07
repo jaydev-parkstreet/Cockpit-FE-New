@@ -7,7 +7,7 @@
             [attr.value]="getSelectedDisplayText()" [ngClass]="validationClasses"
             [placeholder]="settings.translationTexts.buttonDefaultText" tabindex="0" readonly>
         <i class="fal fa-times-circle position-absolute u-neutral-light u-csr-ptr clearSelectedItems"
-            *ngIf="selectedItems.length > 0" (click)="!disabled && !formControl?.disabled && clearSelectedItems($event)">
+            *ngIf="selectedItems?.length > 0" (click)="!disabled && !formControl?.disabled && clearSelectedItems($event)">
         </i>
         <button class="dropdown-button" *ngIf="settings.versionStyle !== 'smart-search'">
             <i [ngClass]="isDropdownOpen() ? 'fal fa-chevron-up' : 'fal fa-chevron-down'" aria-hidden="true"></i>

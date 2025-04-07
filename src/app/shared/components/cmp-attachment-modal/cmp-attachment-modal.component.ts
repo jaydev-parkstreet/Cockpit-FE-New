@@ -48,10 +48,12 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   selectedFiles: any = [];
   CONSTANTS: any = AppConstant;
   fileSizeMessage:string;
+  modelAttachmentPermission: any = [];
 
   ngOnInit(): void {
     this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);
     this.filetype_dropdown = this.commonService.getSingleSelectDropdownConfig('Select file type', true);
+    this.modelAttachmentPermission = [this.modalData?.attachmentPermission[0]];
   }
 
  /**
@@ -129,7 +131,8 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   * @param obj
   */
   getVisibilityDropdownValue(value: any) {
-    this.permission_id = value[0].id;
+    this.permission_id = value[0]?.id;
+    this.modelAttachmentPermission = value;
   }
 
   /**
@@ -138,7 +141,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   * @param obj
   */
   getFileTypeDropdownValue(value: any) {
-    this.kindid = value[0].id;
+    this.kindid = value[0]?.id;
   }
 
   /**
@@ -241,12 +244,14 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     }
   }
 
-  /**
-  *Function to update the state of submit button.
-  * @author PSI-Enhancements
-  */
-  get isButtonDisabled(): boolean {
-    return !this.selectedFileCount || this.selectedFileCount <= 0 || (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0) || !this.kindid;
-  }
+    /**
+    *Function to update the state of submit button.
+    * @author PSI-Enhancements
+    */
+    get isButtonDisabled(): boolean {
+        return !this.selectedFileCount || this.selectedFileCount <= 0 ||
+            (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0) ||
+            !this.kindid || this.modelAttachmentPermission.length === 0;
+    }
 
 }
