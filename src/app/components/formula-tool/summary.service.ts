@@ -480,7 +480,7 @@ export class formulaService {
      */
     getDropdown(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DROPDOWN, { headers }).toPromise();
+        return this.http.get(environment.apiUrl + AppRoutes.FORMULA.DROPDOWN, { headers }).toPromise();
     }
 
     /**
@@ -491,7 +491,7 @@ export class formulaService {
     */
     getDetails(id) {
         return this.http
-            .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.DETAILS + id)
+            .get(environment.apiUrl + AppRoutes.FORMULA.DETAILS + id)
             .toPromise();
     }
 

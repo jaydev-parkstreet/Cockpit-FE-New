@@ -1,0 +1,21 @@
+@import '../../../scss/variables/colors';
+@import '../../../scss/variables/typography';
+
+.formula-tool-details {
+    background-color: $colors-neutral-light-v-low;
+
+    .formula-tool-details-container {
+        margin: 8px 16px 0;
+
+        .formula-tool-details-wrapper {
+            
+            .left-side {
+                padding-right: 4px;
+            }
+
+            .right-side {
+                padding-left: 4px;
+            }
+        }
+    }
+}
