@@ -280,8 +280,8 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
       * @author PSI-Enhancements
       */
     updateFilter(data) {
-        if (data.field === 'brand') {
-            if (data.event[0].isNew) {
+        if (data.event.length > 0 && data.field === 'brand') {
+            if ( data.event[0].isNew) {
                 this.updateConfig(this.modalData.config.brand, false);
                 this.updateConfig(this.modalData.config.new_brands, true);
                 this.updateConfig(this.modalData.config.sub_brand_product_id, false);
@@ -299,8 +299,8 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
             }
         }
 
-        if (data.field === 'sub_brand_product_id') {
-            if (data.event[0].isNew) {
+        if (data.event.length > 0 && data.field === 'sub_brand_product_id') {
+            if ( data.event[0].isNew) {
                 this.updateConfig(this.modalData.config.sub_brand_product_id, false);
                 this.updateConfig(this.modalData.config.new_sub_brand, true);
                 this.modalData.config.net_contents.isDisabled = false;
@@ -313,7 +313,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
             }
         }
 
-        this.checkValdition()
+        this.checkValidation()
         this.changeDetector.detectChanges();
     }
 
@@ -321,8 +321,8 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
       * Function validation for sub brand creation.
       * @author PSI-Enhancements
       */
-    checkValdition() {
-        if (this.brandForm.value.sub_brand_product_id.name === 'Create New') {
+    checkValidation() {
+        if (this.brandForm.value.sub_brand_product_id && this.brandForm.value.sub_brand_product_id.name === 'Create New') {
             this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', true, this.modalData.client_id);
             this.brandForm.get('sub_brand_product_id').setValue('');
         } else if (
@@ -332,7 +332,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
             this.brandForm.value.units_cases
         ) {
             this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', false, this.modalData.client_id);
-        }  else if (
+        } else if (
             this.brandForm.value.new_sub_brand &&
             this.brandForm.value.brand &&
             this.brandForm.value.net_contents &&
@@ -340,10 +340,9 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
             !this.modalData.config.new_sub_brand.hasError
         ) {
             this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', false, this.modalData.client_id);
-        }else{
+        } else {
             this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', true, this.modalData.client_id);
         }
-
     }
 
     /**
