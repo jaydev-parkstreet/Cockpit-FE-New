@@ -295,12 +295,12 @@ export class ProductAddComponent implements OnInit {
             brandControl.setValue('');
             subBrandControl.setValue('');
             subBrandControl.disable();
-            this.updateSelectedData(['brand', 'sub_brand_product_id']);
             this.isSubBrandDisabled = true;
             if (selectedValue && brandControl) {
                 brandControl.enable();
                 this.getBrand(this.clientId);
             }
+            this.updateSelectedData(['brand', 'sub_brand_product_id'],true);
             this.changeDetector.detectChanges();
         }
 
