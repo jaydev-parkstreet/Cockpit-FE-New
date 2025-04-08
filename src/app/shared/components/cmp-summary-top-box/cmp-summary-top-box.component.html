@@ -1,9 +1,8 @@
-<div class="summary-boxes" id="summary-boxes">
-    <div class="previous-box u-flex u-justify-between u-align-center">
+<div class="summary-top-box-container" id="summary-top-box-container">
+    <div class="arrow-container u-flex u-justify-between u-align-center left" [ngClass]="{ 'u-cursor-not-allowed': curPage <= 0 }" (click)="scrollCarousel('true', '');">
         <i class="fal fa-chevron-left"></i>
     </div>
-
-    <div class="summary-box" *ngFor="let boxData of summaryBoxData; let i = index">
+    <div class="summary-box" [ngStyle]="{'min-width': cardMinWidth}" *ngFor="let boxData of paginatedData; let i = index">
         <div class="typography-body-dark-medium summary-header">
             <span>{{ boxData.title }}</span>
             <div class="info-tooltip" *ngIf="boxData.headerIconClass">
@@ -18,12 +17,11 @@
             <div class="summary-value">
                 <span class="typography-body-black-regular">{{ balance.value }}</span>
             </div>
-           
         </div>
     </div>
- 
 
-    <div class="next-box u-flex u-justify-between u-align-center">
+    <div class="arrow-container u-flex u-justify-between u-align-center right" [ngClass]="{ 'u-cursor-not-allowed': curPage >= summaryBoxDataLength - cardToDisplay }"
+        (click)="scrollCarousel('', 'true');">
         <i class="fal fa-chevron-right"></i>
     </div>
 </div>

@@ -1,24 +1,26 @@
 @import "../../../scss/variables/typography";
 @import "../../../scss/variables/colors";
 
-.summary-boxes {
+.summary-top-box-container {
     display: flex;
     justify-content: space-between;
 
-    .previous-box,
-    .next-box {
+
+    .arrow-container {
         color: $colors-neutral-dark;
-        height: 209px;
+        height: auto;
         width: 16px;
         background: $colors-neutral-white;
-    }
 
-    .previous-box {
-        margin-right: 4px;
-    }
+        &.left {
+            margin-right: 4px;
+            padding: 4px;
+        }
 
-    .next-box {
-        margin-left: 4px;
+        &.right {
+            margin-left: 4px;
+            padding: 4px;
+        }
     }
 
     .summary-box {

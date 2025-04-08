@@ -697,6 +697,16 @@ export class ProductManagementService {
                 { label: 'Open', value: '0 / $0.00', hideDolar: true, isString: true },
                 { label: 'Applied', value: '0 / $0.00', hideDolar: true, isString: true }
             ]
+        },{
+            title: 'Summary Account',
+            headerToolTip:"aaa",
+            headerIconClass: 'fas fa-info-circle',
+            data: [
+                { label: 'Chargeback', value: '0 / $0.00', hideDolar: true, isString: true },
+                { label: 'Non-PSI', value: '0 / $0.00', hideDolar: true, isString: true },
+                { label: 'Supplier', value: '0 / $0.00', hideDolar: true, isString: true },
+                { label: 'Other', value: '0 / $0.00', hideDolar: true, isString: true }
+            ]
         },
     ];
     }
