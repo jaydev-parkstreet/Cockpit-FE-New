@@ -31,6 +31,7 @@ const AppRoutes = {
     },
     FORMULA: {
         SUMMARY: 'formula/summary',
+        DROPDOWN: 'formula/dropdowns',
     },
     COMMON: {
         NOTES: 'notes',

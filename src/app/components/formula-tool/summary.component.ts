@@ -65,7 +65,12 @@ export class formulaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.filterList = this.route.snapshot.data['filterList'];
+    const token = this.authService.getToken();
+    this.formulaService.getDropdown(token).then(result => {
+      this.filterList = result;
+    }).catch(error => {
+      console.error('Failed to fetch dropdown:', error);
+    });
     this.permissions = this.route.snapshot.data['permissions'];
     this.topPanelConfig = this.formulaService.getTopPanelConfig(this.permissions);
     this.updateTopPanelConfig();
@@ -80,6 +85,7 @@ export class formulaComponent implements OnInit {
       "formula_id": [],
       "date_requested_from": "",
       "date_requested_to": "",
+      "client_id": ""
     };
     this.selectedRowCount = 0;
     this.formulaCardSummary = [];
@@ -435,7 +441,7 @@ export class formulaComponent implements OnInit {
     this.reportRequestObj = {
       "page": 1,
       "pageSize": 25,
-      "sort": "",
+      "sort": "unique_id",
       "order": "asc",
       "universal_search": ""
     }
