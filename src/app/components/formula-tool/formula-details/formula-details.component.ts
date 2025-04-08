@@ -414,12 +414,18 @@ export class FormulaDetailsComponent implements OnInit {
         }, {});
     }
 
+    /**
+     * The function `updateArchives` handles archiving and unarchiving of data based on user input
+     * through a modal dialog.
+     * @returns 
+     * @author PSI-VIII
+     */
     updateArchives(): void {
         const archiveData: any = {
           ids: [this.formulaDetails.id],
           archive_status: parseInt(this.formulaDetails.is_archived, 10),
         };
-      
+
         let modalTitle = '';
         let archiveWarningMessage = '';
         let archiveFailedMessage = 'Failed';
@@ -453,5 +459,5 @@ export class FormulaDetailsComponent implements OnInit {
               this.getFormulaData(this.formulaDetails.id);
             }
           });
-      }    
+      } 
 }
