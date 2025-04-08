@@ -44,7 +44,6 @@ export class FormulaCrudComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        debugger
         this.permissions = this.route.snapshot.data['permissions'];
         this.filtersList = this.route.snapshot.data['filterList'];
         const token = this.authService.getToken();
