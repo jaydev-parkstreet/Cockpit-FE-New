@@ -521,4 +521,17 @@ export class formulaService {
         return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
     }
 
+    /**
+     * The function `updateMultipleArchives` sends a POST request to the API endpoint for archiving
+     * multiple items.
+     * @param {FormData} reqObj - FormData object containing data to update multiple archives
+     * @returns The `updateMultipleArchives` function is returning a POST request to the specified API
+     * route URL concatenated with the version and the specific route for archiving formulas, using the
+     * data provided in the `reqObj`.
+     * @author PSI-VIII
+     */
+    updateMultipleArchives(reqObj: FormData) {
+        return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.FORMULA.ARCHIVE, reqObj);
+    }
+
 }
