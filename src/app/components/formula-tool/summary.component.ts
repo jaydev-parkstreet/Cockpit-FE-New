@@ -610,7 +610,7 @@ export class formulaComponent implements OnInit {
       ? this.reportRequestObj.is_archived[0]
       : this.reportRequestObj?.is_archived;
   
-    this.archiveStatus = +isArchivedVal || 0;
+      this.archiveStatus = isArchivedVal == '1' || isArchivedVal == 1 ? 1 : 0;
   
     let modalTitle = '';
     this.archiveFailedMessage = 'Failed';
