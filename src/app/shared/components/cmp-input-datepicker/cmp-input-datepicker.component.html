@@ -1,0 +1,21 @@
+<div class="input-datepicker-range">
+    <div>
+        <div class="c-label" *ngIf="dateLabel">
+            <label class="typography-paragraph-black-regular u-pg-mb-0" for="">{{dateLabel}}</label>
+        </div>
+        <div >
+            <input type="text" class="form-control" bsDatepicker #dp="bsDatepicker" style="visibility: none;" />
+            <button type="button" class="dropdownbtn u-flex-h-center u-relative" (click)="toggleDropdown()">
+                <span class="placeholder-text u-pg-pr-4">
+                    {{calculatedPlaceholder}}
+                </span>
+                <span class="clear-date u-flex-center u-pg-s-2">
+                    <i class="fal fa-times-circle"></i>
+                </span>
+                <span class="iconButton u-flex-center u-pg-s-5">
+                    <i class="fas fa-calendar-alt"></i>
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
