@@ -585,21 +585,14 @@ export class formulaComponent implements OnInit {
    * the value of `is_archived` in a report request object.
    * @author PSI-VIII
    */
-  changeArchiveUnarchiveTooltipText(){
-    const isArchivedVal = Array.isArray(this.reportRequestObj.is_archived)
+  changeArchiveUnarchiveTooltipText() {
+    const isArchived = Array.isArray(this.reportRequestObj.is_archived)
       ? this.reportRequestObj.is_archived[0]
       : this.reportRequestObj.is_archived;
-  
-    if (isArchivedVal !== undefined) {
-      if (+isArchivedVal === 1) {
-        this.topPanelConfig.actions[2].tooltipText = 'Unarchive';
-      } else {
-        this.topPanelConfig.actions[2].tooltipText = 'Archive';
-      }
-    } else {
-      this.topPanelConfig.actions[2].tooltipText = 'Archive';
-    }
+    this.topPanelConfig.actions[2].tooltipText =
+      isArchived == 1 ? 'Unarchive' : 'Archive';
   }
+  
 
   /**
    * The function `updateMultipleArchives` updates the archive status of selected rows based on user
