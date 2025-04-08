@@ -8,6 +8,8 @@ import AppConstant from 'src/app/app.constant';
 import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
 import * as moment from 'moment';
 import { AuthService } from '../../authentication/auth.service';
+import { FsArchiveModalComponent } from '../fs-archive-modal/fs-archive-modal.component';
+import { SimpleModalService } from 'ngx-simple-modal';
 
 @Component({
     selector: 'app-formula-details',
@@ -35,6 +37,9 @@ export class FormulaDetailsComponent implements OnInit {
     auditList: any = [];
     rowAuditTrailConfigApiRequest: any = [];
     filterList: any;
+    archiveData: any;
+    archiveWarningMessage: string = '';
+    archiveFailedMessage: string = '';
 
     constructor(
         private formulaService: formulaService,
@@ -45,6 +50,7 @@ export class FormulaDetailsComponent implements OnInit {
         private commonService : CommonService,
         private commonBackendService: CommonBackendService,
         private authService: AuthService,
+        private modalService: SimpleModalService
     ) { }
 
     ngOnInit(): void {
@@ -110,8 +116,8 @@ export class FormulaDetailsComponent implements OnInit {
     onClickAction(action) {
          if (action.key === 'edit') {
             this.navigateToEdit();
-        }  else if (action.key === 'Activate') {
-            //this.getActivateAPI();
+        }  else if (action.key === 'Archive') {
+            this.updateArchives();
         }
         else{
             return true;
@@ -407,4 +413,45 @@ export class FormulaDetailsComponent implements OnInit {
             return cleanedData;
         }, {});
     }
+
+    updateArchives(): void {
+        const archiveData: any = {
+          ids: [this.formulaDetails.id],
+          archive_status: parseInt(this.formulaDetails.is_archived, 10),
+        };
+      
+        let modalTitle = '';
+        let archiveWarningMessage = '';
+        let archiveFailedMessage = 'Failed';
+      
+        if (archiveData.archive_status === 1) {
+          archiveData.archive = 'N';
+          archiveWarningMessage = 'Unarchived Successfully';
+          modalTitle = 'Are you sure you want to unarchive it?';
+        } else {
+          archiveData.archive = 'Y';
+          archiveWarningMessage = 'Archived Successfully';
+          modalTitle = 'Are you sure you want to archive it?';
+        }
+      
+        const modalData = {
+          title: modalTitle,
+          iconClass: 'fas fa-exclamation-circle fa-4x u-red',
+          btnLabel: [
+            { type: 'Btn', label: 'No', class: 'secondary' },
+            { type: 'Btn', label: 'Yes', class: 'primary' }
+          ],
+          archiveData,
+          archiveWarningMessage,
+          archiveFailedMessage,
+          detail: true
+        };
+      
+        this.modalService.addModal(FsArchiveModalComponent, { modalData })
+          .subscribe((confirmed: boolean) => {
+            if (confirmed) {
+              this.getFormulaData(this.formulaDetails.id);
+            }
+          });
+      }    
 }
