@@ -1,0 +1,21 @@
+<div class="summary-boxes" id="summary-boxes">
+    <div class="previous-box u-flex u-justify-between u-align-center">
+        <i class="fal fa-chevron-left"></i>
+    </div>
+
+    <div class="summary-box" *ngFor="let data of summaryBoxData; let i = index">
+        <div class="typography-body-dark-medium summary-header">
+            <span>{{ data.title }}</span>
+            <div class="info-tooltip" *ngIf="data.headerToolTip">
+                <i class="{{data.headerIconClass}} icon-class"></i>
+                <span class="typography-body-black-regular white-tooltip " *ngIf="data.headerToolTip">
+                    {{ data.headerToolTip }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="next-box u-flex u-justify-between u-align-center">
+        <i class="fal fa-chevron-right"></i>
+    </div>
+</div>

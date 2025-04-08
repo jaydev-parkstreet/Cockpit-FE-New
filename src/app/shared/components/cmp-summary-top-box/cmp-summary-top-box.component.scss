@@ -1,0 +1,89 @@
+@import "../../../scss/variables/typography";
+@import "../../../scss/variables/colors";
+
+.summary-boxes {
+    display: flex;
+    justify-content: space-between;
+
+    .previous-box,
+    .next-box {
+        color: $colors-neutral-dark;
+        height: 209px;
+        width: 16px;
+        background: $colors-neutral-white;
+    }
+
+    .previous-box {
+        margin-right: 4px;
+    }
+
+    .next-box {
+        margin-left: 4px;
+    }
+
+    .summary-box {
+        background: $colors-neutral-white;
+        margin: 0 4px;
+        width: 33%;
+        padding: 16px;
+
+        .summary-header {
+            position: relative;
+            border-bottom: 1px solid $colors-neutral-light;
+            margin-bottom: 16px;
+            display: flex;
+
+            .info-tooltip {
+                position: relative;
+
+                .icon-class {
+                    font-size: 13px;
+                    top: 7px;
+                    position: absolute;
+                    margin-left: 4px;
+                }
+
+                .white-tooltip {
+                    visibility: hidden;
+                    position: absolute;
+                    top: 24px;
+                    background: $colors-neutral-white;
+                    border-radius: 8px;
+                    border: 1px solid $colors-neutral-light;
+                    min-height: 31px;
+                    width: 234px;
+                    color: $colors-neutral-black;
+                    font-family: $montserrat-regular;
+                    font-size: 14px;
+                    font-weight: 400;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1;
+                    transform: translateX(calc(-50% + 6px));
+
+                    &::before {
+                        content: '';
+                        height: 10px;
+                        width: 10px;
+                        border-top: 1px solid $colors-neutral-light;
+                        border-left: 1px solid $colors-neutral-light;
+                        position: absolute;
+                        transform: rotate(45deg);
+                        top: -6px;
+                        z-index: 2;
+                        left: 50%;
+                        background-color: $colors-neutral-white;
+                    }
+                }
+
+                &:hover {
+                    .white-tooltip {
+                        visibility: visible;
+                    }
+                }
+            }
+        }
+
+    }
+}

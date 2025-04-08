@@ -21,7 +21,8 @@ import { CmpAttachmentModalComponent } from './components/cmp-attachment-modal/c
 import { PsiCrudFormComponent } from './psi-crud-form/psi-crud-form.component';
 import { NoRecordComponent } from './components/no-record/no-record.component';
 import { CmpNotesModalComponent } from './components/cmp-notes-modal/cmp-notes-modal.component';
-import { QuillModule } from 'ngx-quill'
+import { QuillModule } from 'ngx-quill';
+import { CmpSummaryTopBoxComponent } from './components/cmp-summary-top-box/cmp-summary-top-box.component'
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { QuillModule } from 'ngx-quill'
         CmpAttachmentModalComponent,
         PsiCrudFormComponent,
         NoRecordComponent,
-        CmpNotesModalComponent
+        CmpNotesModalComponent,
+        CmpSummaryTopBoxComponent
     ],
     imports: [
         CommonModule,
@@ -70,7 +72,8 @@ import { QuillModule } from 'ngx-quill'
         CmpButtonComponent,
         PsiCrudFormComponent,
         NoRecordComponent,
-        CmpNotesModalComponent
+        CmpNotesModalComponent,
+        CmpSummaryTopBoxComponent
     ]
 })
 export class SharedModule { }

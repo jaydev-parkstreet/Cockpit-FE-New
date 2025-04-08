@@ -50,6 +50,13 @@ export class ProductManagementComponent implements OnInit {
 	filtermodal: any;
 	private timerSubscriptions = new Map<number, Subscription>();
 
+
+
+
+
+	// summary-top-box-code
+	summaryBoxData: any;
+
 	constructor(
 		private productManagementService: ProductManagementService,
 		private router: Router,
@@ -81,6 +88,14 @@ export class ProductManagementComponent implements OnInit {
 		this.scrollDisabled = false;
 		this.initGridOptions();
 		this.productToolSummary = [];
+
+
+
+
+
+
+	// summary-top-box-code
+		this.summaryBoxData = this.productManagementService.getSummaryBoxData();
 	}
 
 

@@ -642,4 +642,62 @@ export class ProductManagementService {
           .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.NS_SYNC_STATUS + id);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// summary-top-box-code
+
+
+
+
+    /**
+     * Function to get summary box config.
+     * @createdDate 31-05-2023
+     * @returns array
+     */
+    getSummaryBoxData () {
+        return [{
+            title: 'Summary Account',
+            headerToolTip:"aaa",
+            headerIconClass: 'fas fa-info-circle',
+            data: [
+                { label: 'Chargeback', value: '0 / $0.00', hideDolar: true, isString: true },
+                { label: 'Non-PSI', value: '0 / $0.00', hideDolar: true, isString: true },
+                { label: 'Supplier', value: '0 / $0.00', hideDolar: true, isString: true },
+                { label: 'Other', value: '0 / $0.00', hideDolar: true, isString: true }
+            ]
+        }, {
+            title: 'Approval Status',
+            headerToolTip:"bbb",
+            headerIconClass: 'fas fa-map-marker-alt',
+            data: [
+                { label: 'Pending', value: '0 / $0.00', hideDolar: true, isString: true },
+                { label: 'Approved', value: '0 / $0.00', hideDolar: true, isString: true },
+                { label: 'Rejected', value: '0 / $0.00', hideDolar: true, isString: true },
+                { label: 'Paid By Distributor', value: '0 / $0.00', hideDolar: true, isString: true }
+            ]
+        }, 
+        {
+            title: 'Credit Status',
+            headerToolTip:"ccc",
+            headerIconClass: 'fas fa-warehouse',
+            data: [
+                { label: 'Open', value: '0 / $0.00', hideDolar: true, isString: true },
+                { label: 'Applied', value: '0 / $0.00', hideDolar: true, isString: true }
+            ]
+        },
+    ];
+    }
 }
