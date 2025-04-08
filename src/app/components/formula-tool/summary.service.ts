@@ -240,8 +240,8 @@ export class formulaService {
      */
     renderStatus(params) {
         const statusLabels = {
-            Approved: 'u-bg-success',
-            Rejected: 'u-bg-error',
+            'Approved': 'u-bg-success',
+            'Rejected': 'u-bg-error',
             'Pre-Approved': 'u-bg-primary',
             'Needs Action - Waiting on Supplier': 'u-bg-warning text-ellipsis',
             'Request Received': 'u-bg-neutral-light',
