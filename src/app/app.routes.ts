@@ -29,6 +29,13 @@ const AppRoutes = {
         SUB_BRAND_SEARCH: 'product-tool/sub-brands',
         SUB_BRAND_PRODUCT_SEARCH: 'product-tool/sub-brands-products'
     },
+    FORMULA: {
+        SUMMARY: 'formula/summary',
+        DETAILS: 'formula/details?id=',
+        PERMISSION: 'formula/permissions',
+        DROPDOWN: 'formula/dropdowns',
+        ARCHIVE: 'formula/archive_action'
+    },
     COMMON: {
         NOTES: 'notes',
         MULTIPLE_NOTES_API: 'store-multiple-notes',

@@ -3,7 +3,6 @@ import { CommonService } from 'src/app/core/services/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder, Form } from '@angular/forms';
 import { ProductManagementService } from '../product-management.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ProductAddService } from './product-add.service';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { PsiBrandModalComponent } from '../psi-brand-modal/psi-brand-modal.component';
@@ -42,6 +41,12 @@ export class ProductAddComponent implements OnInit {
     brandModalData: any;
     brandModalConfig: any;
     formSubmitted: boolean = false;
+    isClearAllFields: boolean = false;
+
+    headerIconConfig = {
+        showIcon: true, 
+        iconClass: 'fas fa-eraser'
+    };
 
     constructor(
         private ProductAddService: ProductAddService,
@@ -50,7 +55,6 @@ export class ProductAddComponent implements OnInit {
         private route: ActivatedRoute,
         private formBuilder: FormBuilder,
         private productManagementService: ProductManagementService,
-        private spinner : NgxSpinnerService,
         private commonService: CommonService,
         private simpleModalService: SimpleModalService
     ) { }
@@ -61,10 +65,11 @@ export class ProductAddComponent implements OnInit {
         this.leftTitle = 'PRODUCT DETAILS';
         this.productTitle = 'Dimensions';
         this.crudFieldConfig = this.ProductAddService.getCrudFieldConfig(this.crudFiltersList);
-        this.modalData = this.ProductAddService.getModalData()
+        this.modalData =this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to exit?');
         if (!this.permissions.permissions.Create) {
             this.router.navigate(['product-management']);
         }
+        
         let productId = this.route.snapshot.paramMap.get('id');
         this.duplicate = this.route.snapshot.data.isDuplicate || false;
         if (productId) {
@@ -87,9 +92,9 @@ export class ProductAddComponent implements OnInit {
      * @author PSI-Enhancement
      */
     async getProductData (productId) {
-        this.spinner.show();
+        this.commonService.showSpinner();
         this.productManagementService.getDetails(productId).then((response : any) => {
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             if (!response.hasError) {
                 this.renderConditionalFields(response.data.prod_type, this.crudFiltersList, this.productForm);
                 this.productId = response.data.product_id;
@@ -207,10 +212,10 @@ export class ProductAddComponent implements OnInit {
                     this.uniqueId,
                     this.productId
                 );
-                this.spinner.show()
+                this.commonService.showSpinner();
                 this.ProductAddService.getProductManagementSystemSave(formattedModel).subscribe(response => {
                     if (!response.hasError) {
-                        this.spinner.hide();
+                        this.commonService.hideSpinner();
                         let productId = response.product_id;
                         if (this.edit && !this.duplicate) {
                             this.commonService.showToastV2Message(true, 'Edited Successfully!', 'fas fa-check-circle', 'success');
@@ -219,7 +224,7 @@ export class ProductAddComponent implements OnInit {
                         }
                         this.router.navigateByUrl(`/product-management/${productId}`);
                     } else {
-                        this.spinner.hide();
+                        this.commonService.hideSpinner();
                         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                     }
                 });
@@ -236,7 +241,7 @@ export class ProductAddComponent implements OnInit {
      * @author PSI-Enhancements
      */
     openConfirmationPopup() {
-        const modalData = this.ProductAddService.getModalData();
+        const modalData = this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to exit?');
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
                 if (result.btn.label === 'Yes') {
@@ -256,7 +261,7 @@ export class ProductAddComponent implements OnInit {
             || fieldName == "is_organic" || fieldName == "producer" || fieldName == "case_unit_of_measure" || fieldName == "brand"
             || fieldName == "varietal" || fieldName == "vintage" || fieldName == "sub_type" || fieldName == "category" || fieldName == "source"
             || fieldName == "country") {
-            this.productForm.get(fieldName)?.setValue(selectedValue[0].id);
+            this.productForm.get(fieldName)?.setValue(selectedValue[0]?.id);
         }
         else {
             this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
@@ -269,24 +274,29 @@ export class ProductAddComponent implements OnInit {
         } else if (selectedValue[0]?.client_id) {
             this.clientId = selectedValue[0]?.client_id;
         }
+        if (fieldName === 'client_id' && selectedValue.length === 0) {
+            this.updateSelectedData(['brand', 'sub_brand_product_id'], true);
+        }
+        if (fieldName === 'brand' && selectedValue.length === 0) {
+            this.updateSelectedData(['sub_brand_product_id'], true);
+        }
         if (fieldName === 'client_id' && selectedValue.length > 0) {
             this.isBrandDisabled = !selectedValue;
             brandControl.setValue('');
             subBrandControl.setValue('');
             subBrandControl.disable();
-            this.updatesellectedData('brand', 'Select Brand');
-            this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
             this.isSubBrandDisabled = true;
             if (selectedValue && brandControl) {
                 brandControl.enable();
                 this.getBrand(this.clientId);
             }
+            this.updateSelectedData(['brand', 'sub_brand_product_id'],true);
             this.changeDetector.detectChanges();
         }
 
-        if (fieldName === 'brand') {
+        if (fieldName === 'brand' && selectedValue.length > 0) {
             this.isSubBrandDisabled = !selectedValue;
-            this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
+            this.updateSelectedData(['sub_brand_product_id']);
             subBrandControl.setValue('');
             if (selectedValue[0]?.isNew) {
                 this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
@@ -448,15 +458,6 @@ export class ProductAddComponent implements OnInit {
         });
     }
 
-    /**
-     * Updates the sellectedData object to include a default value for the given key.
-     * @param key
-     * @param defaultText
-     * @author PSI-Enhancement
-     */
-    updatesellectedData(key: string, defaultText: string) {
-        this.sellectedData[key] = [{ name: defaultText }];
-    }
 
     /**
      * Configures and renders form fields based on the selected product type.
@@ -502,7 +503,7 @@ export class ProductAddComponent implements OnInit {
         };
 
         const addFieldControl = (field) => {
-            if (field.required) {
+            if (field.required || field.isRequired) {
                 productForm.addControl(field.name, new FormControl('', Validators.required));
             } else {
                 productForm.addControl(field.name, new FormControl(''));
@@ -621,8 +622,7 @@ export class ProductAddComponent implements OnInit {
                         this.updateBrandAndSubBrandControls(clientId ? clientId : result.formData.brand.client_id, result.response.data.brand.id, result.response.data.sub_brand_product.id);
                     }
                 } else {
-                    this.updatesellectedData('brand', 'Select Brand');
-                    this.updatesellectedData('sub_brand_product_id', 'Select Sub-Brand Product');
+                    this.updateSelectedData(['brand', 'sub_brand_product_id']);
                 }
             });
     }
@@ -642,4 +642,55 @@ export class ProductAddComponent implements OnInit {
             this.isSubBrandDisabled = false;
         });
     }
+
+    /**
+    * Function of clear the form
+    * @author PSI-Enhancements
+    */
+    clearAllSelections(): void {
+        const modalData = this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to clear all fields?');
+        this.simpleModalService.addModal(ConfirmationModalComponent, { modalData }).subscribe((result) => {
+            if (result.btn.label === 'Yes') {
+               this.isClearAllFields = true;
+               setTimeout(() => {
+                this.isClearAllFields = false;
+            });
+        
+                const disableFields = ['brand', 'sub_brand_product_id'];
+                this.crudFieldConfig.leftSection.forEach((field:any) => {
+                    if (disableFields.includes(field.key)) {
+                        field.isDisabled = true;
+                    }
+                });
+                if (this.productForm) {
+                    this.productForm.updateValueAndValidity();
+                }
+            }
+        });
+    } 
+
+    /**
+     * Function to empty data in model
+     * @param fieldKeys
+     * @param isDisabled
+     * @author PSI-Enhancements
+     */
+    updateSelectedData(fields: string[], disableFields: boolean = false) {
+        fields.forEach(field => this.sellectedData[field] = []);
+        if (disableFields) this.setFieldDisabled(fields, true);
+    }
+
+    /**
+     * Function to set field disabled
+     * @param fieldKeys
+     * @param isDisabled
+     * @author PSI-Enhancements
+     */
+    setFieldDisabled(fieldKeys, isDisabled) {
+        fieldKeys.forEach(key => {
+            const field = this.crudFieldConfig.leftSection.find(element => element.key === key);
+            if (field) field.isDisabled = isDisabled;
+        });
+    }
+
 }

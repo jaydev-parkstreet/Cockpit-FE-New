@@ -63,6 +63,10 @@ export class AttachmentTabComponent implements OnInit {
         );
     }
 
+    /**
+     * Function to get Dropdown
+     * @author PSI-Enhancement
+     */
     async getDropdown() {
         const token = localStorage.getItem('authToken');
         try {
@@ -74,6 +78,14 @@ export class AttachmentTabComponent implements OnInit {
         }
     }
 
+    /**
+     * Function to show Attachment
+     * @param multiple
+     * @param entityIds
+     * @param attachments
+     * @returns void
+     * @author PSI-Enhancement 
+     */
     showAttachment(multiple: any, entityIds: any, attachments: any) {
         let modalData: any;
 
@@ -123,15 +135,7 @@ export class AttachmentTabComponent implements OnInit {
      * @author PSI-Enhancement 
      */
     deleteAttachment(upload_id: number) {
-        let modalData = {
-            iconClass: 'fas fa-exclamation-circle',
-            title: 'Are you sure you want to delete the attachment?',
-            showLine: true,
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-        };
+        let modalData = this.commonService.getModalData('Are you sure you want to delete the attachment?', '');
 
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
@@ -186,6 +190,12 @@ export class AttachmentTabComponent implements OnInit {
             )
     }
 
+    /**
+     * Function to add attachments
+     * @param file 
+     * @returns void
+     * @author PSI-Enhancement
+     */
     addAttachments() {
         this.showAttachment(false, [this.entity], this.attachments);
     }

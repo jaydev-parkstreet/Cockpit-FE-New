@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductManagementService } from '../product-management.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from 'src/app/core/services/common.service';
 import { ProductMangementDetailService } from './product-mangement-detail.service';
 import AppConstant from 'src/app/app.constant';
@@ -41,7 +40,6 @@ export class ProductManagementDetailsComponent implements OnInit {
         private productManagementDetailService: ProductMangementDetailService,
         private route: ActivatedRoute,
         private router: Router,
-        private spinner :NgxSpinnerService,
         private commonService : CommonService,
         private commonBackendService: CommonBackendService
     ) { }
@@ -66,9 +64,9 @@ export class ProductManagementDetailsComponent implements OnInit {
      */
     async getProductData(productId : string) {
         try {
-            this.spinner.show();
+            this.commonService.showSpinner();
             await this.productManagementService.getDetails(productId).then((res: any) => {
-                this.spinner.hide();
+                this.commonService.hideSpinner();
                 if (!res.hasError) {
                     this.updateProductData(res.data);
                 } else {
@@ -205,9 +203,9 @@ export class ProductManagementDetailsComponent implements OnInit {
      * @author PSI-Enhancement
      */
     getApproveAPI() {
-        this.spinner.show();
+        this.commonService.showSpinner();
         this.productManagementDetailService.getApproveAPI(this.productDetails.product_id).subscribe(response => {
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             if (!response.hasError) {
                 this.getProductData(this.productDetails.product_id);
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
@@ -224,9 +222,9 @@ export class ProductManagementDetailsComponent implements OnInit {
      * @author PSI-Enhancement
      */
     getPreApproveAPI() {
-        this.spinner.show();
+        this.commonService.showSpinner();
         this.productManagementDetailService.getPreApproveAPI(this.productDetails.product_id).subscribe((response) => {
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             if (!response.hasError) {
                 this.getProductData(this.productDetails.product_id);
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
@@ -234,7 +232,7 @@ export class ProductManagementDetailsComponent implements OnInit {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }
         }, (error) => {
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             this.commonService.showToastV2Message(true, 'Status Change Failed', 'fas fa-exclamation-circle');
         });
     }
@@ -246,9 +244,9 @@ export class ProductManagementDetailsComponent implements OnInit {
      * @author PSI-Enhancement
      */
     getNeedActionAPI() {
-        this.spinner.show();
+        this.commonService.showSpinner();
         this.productManagementDetailService.getNeedActionAPI(this.productDetails.product_id).subscribe((response) => {
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             if (!response.hasError) {
                 this.getProductData(this.productDetails.product_id);
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
@@ -256,7 +254,7 @@ export class ProductManagementDetailsComponent implements OnInit {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }
         }, (error) => {
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             this.commonService.showToastV2Message(true, 'Status Change Failed', 'fas fa-exclamation-circle');
         });
     }
@@ -268,9 +266,9 @@ export class ProductManagementDetailsComponent implements OnInit {
      * @author PSI-Enhancement
      */
     getActivateAPI() {
-        this.spinner.show();
+        this.commonService.showSpinner();
         this.productManagementService.getActivateAPI([this.productDetails.product_id], this.productDetails.is_active).subscribe((response) => {
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             if (!response.hasError) {
                 this.getProductData(this.productDetails.product_id);
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');

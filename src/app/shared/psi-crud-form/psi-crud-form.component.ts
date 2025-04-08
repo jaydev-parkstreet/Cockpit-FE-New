@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { SimpleModalService } from 'ngx-simple-modal';
-import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
-
 @Component({
     selector: 'app-psi-crud-form',
     templateUrl: './psi-crud-form.component.html',
@@ -11,7 +9,7 @@ import { ConfirmationModalComponent } from 'src/app/components/organism/confirma
 export class PsiCrudFormComponent implements OnInit, OnChanges {
 
     @Input() leftHeaderTitle: string;
-    @Input() clearAll: boolean;
+    @Input() headerIconConfig: any;
     @Input() rightHeaderTitle: string;
     @Input() rightHeaderBottomTitle: string;
     @Input() crudFieldConfig: any;
@@ -19,8 +17,15 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     @Input() formSubmitted: boolean;
     @Input() form: any;
     @Output() onDropDownChange = new EventEmitter<any>();
-    showError: any;
     @Output() formSubmit = new EventEmitter<any>();
+    @Output() clearAllClicked: EventEmitter<void> = new EventEmitter<void>();
+    @Input() set shouldClearAllFields(value: boolean) {
+        if (value) {
+            this.clearAllFields();
+        }
+    }
+
+    showError: any;
 
     constructor(
         public router: Router,
@@ -30,6 +35,50 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     ngOnInit(): void {
         this.showError = false
         this.formSubmitted = false
+    }
+
+    clearAllSelections(): void {
+        const hasValues = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].some((field) => {
+            switch (field.type) {
+                case 'multiselect-dropdown':
+                case 'text':
+                    return this.form?.get(field.name)?.value?.trim() !== '';
+                case 'checkbox':
+                    return this.form?.get(field.name)?.value === '1';
+                default:
+                    return false;
+            }
+        });
+        if (!hasValues) { return; }
+        this.clearAllClicked.emit();
+    }
+
+    clearAllFields(): void {
+        if (!this.form || !this.crudFieldConfig) return;
+        const clearField = (fieldName: string): void => {
+            const control = this.form.get(fieldName);
+            if (control) {
+                control.setValue('');
+                control.markAsPristine();
+                control.markAsUntouched();
+            }
+        };
+    
+        [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].forEach((field) => {
+            switch (field.type) {
+                case 'multiselect-dropdown':
+                    clearField(field.name);
+                    this.sellectedData[field.key] = [];
+                    break;
+                case 'text':
+                case 'checkbox':
+                    clearField(field.name);
+                    break;
+                default:
+                    break;
+            }
+        });
+        this.form.updateValueAndValidity();
     }
 
     /**
@@ -60,64 +109,6 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         const control = this.form.get(controlName);
         return control?.invalid && this.formSubmitted;
     }
-
-    /**
-     * Function of clear the form
-     * @author psi-enhancement
-     */
-    clearAllSelections(): void {
-        const hasValues = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].some((field) => {
-            if (field.type === 'multiselect-dropdown' && this.sellectedData[field.key]?.length > 0) {
-                return true;
-            }
-            if (field.type === 'text' && this.form?.get(field.name)?.value?.trim() !== '') {
-                return true;
-            }
-            if (field.type === 'checkbox' && this.form?.get(field.name)?.value === '1') {
-                return true;
-            }
-            return false;
-        });
-
-        if (!hasValues) { return; }
-
-        const modalData = {
-            title: 'All data will be lost.',
-            body: 'Are you sure you wish to clear all fields?',
-            iconClass: 'fas fa-exclamation-circle error',
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-        };
-
-        this.simpleModalService.addModal(ConfirmationModalComponent, { modalData }).subscribe((result) => {
-            if (result.btn.label === 'Yes') {
-                [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].forEach((field) => {
-
-                    if (field.type === 'multiselect-dropdown') {
-                        this.sellectedData[field.key] = [];
-                    }
-
-                    if (field.type === 'text' && this.form?.get(field.name)) {
-                        this.form.get(field.name).setValue('');
-                        this.form.get(field.name).markAsPristine();
-                        this.form.get(field.name).markAsUntouched();
-                    }
-
-                    if (field.type === 'checkbox' && this.form?.get(field.name)) {
-                        this.form.get(field.name).setValue('');
-                        this.form.get(field.name).markAsPristine();
-                        this.form.get(field.name).markAsUntouched();
-                    }
-                });
-
-                if (this.form) {
-                    this.form.updateValueAndValidity();
-                }
-            }
-        });
-    } 
 
     /**
      * Updates the form control value based on the input change.

@@ -24,7 +24,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     private simpleModalService: SimpleModalService,
     private commonService: CommonService,
     private productmanagementService: ProductManagementService,
-    private commonBackendService: CommonBackendService
+    private commonBackendService: CommonBackendService,
   ) {
     super();
   }
@@ -48,10 +48,12 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   selectedFiles: any = [];
   CONSTANTS: any = AppConstant;
   fileSizeMessage:string;
+  modelAttachmentPermission: any = [];
 
   ngOnInit(): void {
     this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);
     this.filetype_dropdown = this.commonService.getSingleSelectDropdownConfig('Select file type', true);
+    this.modelAttachmentPermission = [this.modalData?.attachmentPermission[0]];
   }
 
  /**
@@ -129,7 +131,8 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   * @param obj
   */
   getVisibilityDropdownValue(value: any) {
-    this.permission_id = value[0].id;
+    this.permission_id = value[0]?.id;
+    this.modelAttachmentPermission = value;
   }
 
   /**
@@ -138,7 +141,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   * @param obj
   */
   getFileTypeDropdownValue(value: any) {
-    this.kindid = value[0].id;
+    this.kindid = value[0]?.id;
   }
 
   /**
@@ -156,7 +159,9 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     uploadParams.append('tool', this.modalData.filtersList.tool_id);
     uploadParams.append('menu_item_id', this.modalData.filtersList.menu_item_id);
     uploadParams.append('permission_id', this.permission_id || this.modalData.attachmentPermission[0].id);
-    this.productmanagementService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
+    this.commonService.showSpinner();
+    this.commonService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
+      this.commonService.hideSpinner();
       if (!response.hasError) {
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
         this.closeModal(1);
@@ -164,6 +169,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
         this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
       }
     }, (error) => {
+      this.commonService.hideSpinner();
       this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
     }
     );
@@ -187,16 +193,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   * @param obj
   */
   onDeleteClick(file: any) {
-    let modalData;
-
-    modalData = {
-      title: 'Are you sure you want to delete the attachment?',
-      iconClass: 'fas fa-exclamation-circle error',
-      btnLabel: [
-        { type: 'Btn', label: 'No', class: 'secondary' },
-        { type: 'Btn', label: 'Yes', class: 'primary' }
-      ]
-    };
+	let modalData = this.commonService.getModalData('Are you sure you want to delete the attachment?', '');
 
     this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
       .subscribe((result) => {
@@ -248,12 +245,14 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     }
   }
 
-  /**
-  *Function to update the state of submit button.
-  * @author PSI-Enhancements
-  */
-  get isButtonDisabled(): boolean {
-    return !this.selectedFileCount || this.selectedFileCount <= 0 || (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0) || !this.kindid;
-  }
+    /**
+    *Function to update the state of submit button.
+    * @author PSI-Enhancements
+    */
+    get isButtonDisabled(): boolean {
+        return !this.selectedFileCount || this.selectedFileCount <= 0 ||
+            (this.modalData.fileTypeDropdown && this.modalData.fileTypeDropdown.length <= 0) ||
+            !this.kindid || this.modelAttachmentPermission.length === 0;
+    }
 
 }

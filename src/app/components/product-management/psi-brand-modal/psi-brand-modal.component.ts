@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnChanges, O
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SimpleModalComponent, SimpleModalService } from 'ngx-simple-modal';
 import { ProductAddService } from '../product-add/product-add.service';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from 'src/app/core/services/common.service';
 
 export interface BrandModal {
     modalData: any;
@@ -24,7 +24,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
         private formBuilder: FormBuilder,
         private ProductAddService: ProductAddService,
         private changeDetector: ChangeDetectorRef,
-        private spinner: NgxSpinnerService,
+        private commonService: CommonService,
     ) {
         super();
     }
@@ -81,9 +81,9 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
                         brand_id: '',
                         brand_name: this.result.formData.new_brands
                     };
-                     this.spinner.show();
+                    this.commonService.showSpinner();
                     this.ProductAddService.saveNewBrands(param).subscribe(response => {
-                        this.spinner.hide();
+                        this.commonService.hideSpinner();
                         if (!response.hasError) {
                             this.result = { confirm: true, formData: this.brandForm.value, response: response };
                             this.close();
@@ -103,10 +103,9 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
                         net_content_id: this.result.formData.net_contents.id,
                         bpc_id: this.result.formData.units_cases.id
                     };
-                    this.spinner.show();
+                    this.commonService.showSpinner();
                     this.ProductAddService.saveNewSubBrands(param).subscribe(response => {
-                        this.spinner.hide();
-                        debugger
+                        this.commonService.hideSpinner();
                         if (!response.hasError) {
                             this.result = { confirm: true, formData: this.brandForm.value, response: response };
                             this.close();
@@ -281,8 +280,8 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
       * @author PSI-Enhancements
       */
     updateFilter(data) {
-        if (data.field === 'brand') {
-            if (data.event[0].isNew) {
+        if (data.event.length > 0 && data.field === 'brand') {
+            if ( data.event[0].isNew) {
                 this.updateConfig(this.modalData.config.brand, false);
                 this.updateConfig(this.modalData.config.new_brands, true);
                 this.updateConfig(this.modalData.config.sub_brand_product_id, false);
@@ -300,8 +299,8 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
             }
         }
 
-        if (data.field === 'sub_brand_product_id') {
-            if (data.event[0].isNew) {
+        if (data.event.length > 0 && data.field === 'sub_brand_product_id') {
+            if ( data.event[0].isNew) {
                 this.updateConfig(this.modalData.config.sub_brand_product_id, false);
                 this.updateConfig(this.modalData.config.new_sub_brand, true);
                 this.modalData.config.net_contents.isDisabled = false;
@@ -314,7 +313,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
             }
         }
 
-        this.checkValdition()
+        this.checkValidation()
         this.changeDetector.detectChanges();
     }
 
@@ -322,8 +321,8 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
       * Function validation for sub brand creation.
       * @author PSI-Enhancements
       */
-    checkValdition() {
-        if (this.brandForm.value.sub_brand_product_id.name === 'Create New') {
+    checkValidation() {
+        if (this.brandForm.value.sub_brand_product_id && this.brandForm.value.sub_brand_product_id.name === 'Create New') {
             this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', true, this.modalData.client_id);
             this.brandForm.get('sub_brand_product_id').setValue('');
         } else if (
@@ -333,7 +332,7 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
             this.brandForm.value.units_cases
         ) {
             this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', false, this.modalData.client_id);
-        }  else if (
+        } else if (
             this.brandForm.value.new_sub_brand &&
             this.brandForm.value.brand &&
             this.brandForm.value.net_contents &&
@@ -341,10 +340,9 @@ export class PsiBrandModalComponent extends SimpleModalComponent<BrandModal, any
             !this.modalData.config.new_sub_brand.hasError
         ) {
             this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', false, this.modalData.client_id);
-        }else{
+        } else {
             this.modalData = this.ProductAddService.getBrandModalData(this.modalData.config, '', true, this.modalData.client_id);
         }
-
     }
 
     /**

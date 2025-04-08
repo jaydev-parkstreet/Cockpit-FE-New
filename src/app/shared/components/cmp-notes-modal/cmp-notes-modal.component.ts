@@ -6,7 +6,6 @@ import { ProductManagementService } from 'src/app/components/product-management/
 import AppConstant from 'src/app/app.constant';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
 import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 
 export interface notesModal {
     modalData: any;
@@ -24,7 +23,6 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
         private simpleModalService: SimpleModalService,
         private commonService: CommonService,
         private commonBackendService: CommonBackendService,
-        private spinner : NgxSpinnerService,
         private productmanagementService: ProductManagementService,
     ) { super(); }
 
@@ -76,6 +74,7 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
             this.defaultPermission = (this.modalData.defaultPermission) ? this.modalData.defaultPermission : 0;
             this.notes_permission = this.modalData.notesPermission[this.defaultPermission].id;
             this.filters = this.modalData.notesPermission[this.defaultPermission];
+            this.permission_id= this.modalData.notesPermission[this.defaultPermission];
         }
         this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);
     }
@@ -86,7 +85,7 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
     * @author PSI-Enhancements
     */
     getVisibilityDropdownValue(value: any) {
-        this.permission_id = value[0].id;
+        this.permission_id = value[0]?.id;
     }
 
     /**
@@ -107,7 +106,7 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
     * @author PSI-Enhancements
     */
     uploadNotes() {
-        this.spinner.show();
+        this.commonService.showSpinner();
         let modal = {
             note_description: this.editorContent,
             entity_kind: this.entity_kind,
@@ -127,10 +126,10 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
             } else {
                 this.commonService.showToastV2Message(true, result.msg, 'fas fa-exclamation-circle');
             }
-            this.spinner.hide();
+            this.commonService.hideSpinner();
         }, (error) => {
             this.commonService.showToastV2Message(true, 'Failed to save note', 'fas fa-exclamation-circle');
-            this.spinner.hide();
+            this.commonService.hideSpinner();
         });
     }
 
@@ -141,16 +140,8 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
     * @author PSI-Enhancements
     */
     onDeleteClick(id: any) {
-        let modalData;
+       let modalData = this.commonService.getModalData('Are you sure you want to delete the note?', '');
 
-        modalData = {
-            title: 'Are you sure you want to delete the note?',
-            iconClass: 'fas fa-exclamation-circle error',
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-        };
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
                 if (result.btn.label === 'Yes') {
@@ -216,5 +207,13 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
                 };
             }
         }
+    }
+
+    /**
+     *Function to update the state of submit button.
+     * @author PSI-Enhancements
+     */
+    get isButtonDisabled(): boolean {
+        return !this.editorContent || !this.permission_id; 
     }
 }
