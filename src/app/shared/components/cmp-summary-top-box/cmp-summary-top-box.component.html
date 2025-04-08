@@ -3,17 +3,25 @@
         <i class="fal fa-chevron-left"></i>
     </div>
 
-    <div class="summary-box" *ngFor="let data of summaryBoxData; let i = index">
+    <div class="summary-box" *ngFor="let boxData of summaryBoxData; let i = index">
         <div class="typography-body-dark-medium summary-header">
-            <span>{{ data.title }}</span>
-            <div class="info-tooltip" *ngIf="data.headerToolTip">
-                <i class="{{data.headerIconClass}} icon-class"></i>
-                <span class="typography-body-black-regular white-tooltip " *ngIf="data.headerToolTip">
-                    {{ data.headerToolTip }}
+            <span>{{ boxData.title }}</span>
+            <div class="info-tooltip" *ngIf="boxData.headerIconClass">
+                <i class="{{boxData.headerIconClass}} icon-class"></i>
+                <span class="typography-body-black-regular white-tooltip " *ngIf="boxData.headerToolTip">
+                    {{ boxData.headerToolTip }}
                 </span>
             </div>
         </div>
+
+        <div *ngFor="let balance of boxData.data; let j = index">
+            <div class="summary-value">
+                <span class="typography-body-black-regular">{{ balance.value }}</span>
+            </div>
+           
+        </div>
     </div>
+ 
 
     <div class="next-box u-flex u-justify-between u-align-center">
         <i class="fal fa-chevron-right"></i>
