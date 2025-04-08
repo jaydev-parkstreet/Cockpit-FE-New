@@ -6,11 +6,12 @@
 
     <app-psi-crud-form
         [leftHeaderTitle]="leftTitle"
-        [clearAll]="true"
         [rightHeaderTitle]="formulaTitle"
         [sellectedData]="sellectedData"
         [crudFieldConfig]="crudFieldConfig"
         [formSubmitted]="formSubmitted"
+        [shouldClearAllFields]="true"
+        (clearAllClicked)="onClearAllClicked()"
         [form]="formulaForm"
         (onDropDownChange)="onDropdownStateChange($event.field , $event.event)"
         (formSubmit)="onSubmit($event)">

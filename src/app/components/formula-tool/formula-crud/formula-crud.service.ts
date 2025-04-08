@@ -85,39 +85,38 @@ export class FormulaCrudService {
                                         isDisabled: false
                                 },
                                 {
-                                        key: 'ingredient',
-                                        name: 'ingredient',
-                                        label: 'Ingredient',
-                                        type: 'multiselect-dropdown',
-                                        colClass: 'col-sm-12',
-                                        filters: { entity: [] },
-                                        options: filtersList.ingredients || [],
-                                        isRequired: true,
-                                        isDisabled: false,
-                                        inputSetting: this.commonService.getDropdownConfig('Select Ingredient')
-                                },
-                                {
-                                        key: 'quantity',
-                                        name: 'quantity',
-                                        label: 'Quantity',
+                                        key: 'client_id',
+                                        name: 'name',
+                                        label: 'client ID',
                                         type: 'text',
                                         colClass: 'col-sm-12',
-                                        placeholder: 'Enter Quantity',
+                                        placeholder: 'Enter Formula Name',
                                         isRequired: true,
                                         isDisabled: false
                                 },
-                                {
-                                        key: 'unit',
-                                        name: 'unit',
-                                        label: 'Unit',
-                                        type: 'multiselect-dropdown',
-                                        colClass: 'col-sm-12',
-                                        filters: { entity: [] },
-                                        options: filtersList.units || [],
-                                        isRequired: true,
-                                        isDisabled: false,
-                                        inputSetting: this.commonService.getDropdownConfig('Select Unit')
-                                }
+                        
+                                // {
+                                //         key: 'quantity',
+                                //         name: 'quantity',
+                                //         label: 'Quantity',
+                                //         type: 'text',
+                                //         colClass: 'col-sm-12',
+                                //         placeholder: 'Enter Quantity',
+                                //         isRequired: true,
+                                //         isDisabled: false
+                                // },
+                                // {
+                                //         key: 'unit',
+                                //         name: 'unit',
+                                //         label: 'Unit',
+                                //         type: 'multiselect-dropdown',
+                                //         colClass: 'col-sm-12',
+                                //         filters: { entity: [] },
+                                //         options: filtersList.units || [],
+                                //         isRequired: true,
+                                //         isDisabled: false,
+                                //         inputSetting: this.commonService.getDropdownConfig('Select Unit')
+                                // }
                         ],
                         rightSection: [
                                 {
@@ -146,7 +145,7 @@ export class FormulaCrudService {
          */
         saveFormula(formulaData) {
                 return this.http
-                        .post(environment.apiUrl + AppRoutes.FORMULA.SAVE_API, formulaData)
+                        .post(environment.apiUrl + AppRoutes.FORMULA.SAVE, formulaData)
                         .pipe(map((response: any) => response));
         }
 
@@ -155,30 +154,15 @@ export class FormulaCrudService {
          * 
          * @returns An Observable containing the list of ingredients.
          */
-        getIngredients() {
-                const token = localStorage.getItem('authToken');
-                const headers = new HttpHeaders({
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                });
-                return this.http
-                        .get(environment.apiUrl + AppRoutes.FORMULA.GET_INGREDIENTS, { headers })
-                        .pipe(map((response: any) => response.data));
-        }
+        // getIngredients() {
+        //         const token = localStorage.getItem('authToken');
+        //         const headers = new HttpHeaders({
+        //                 'Authorization': `Bearer ${token}`,
+        //                 'Content-Type': 'application/json'
+        //         });
+        //         return this.http
+        //                 .get(environment.apiUrl + AppRoutes.FORMULA.GET_INGREDIENTS, { headers })
+        //                 .pipe(map((response: any) => response.data));
+        // }
 
-        /**
-         * Fetches the list of units for the formula.
-         * 
-         * @returns An Observable containing the list of units.
-         */
-        getUnits() {
-                const token = localStorage.getItem('authToken');
-                const headers = new HttpHeaders({
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                });
-                return this.http
-                        .get(environment.apiUrl + AppRoutes.FORMULA.GET_UNITS, { headers })
-                        .pipe(map((response: any) => response.data));
-        }
 }

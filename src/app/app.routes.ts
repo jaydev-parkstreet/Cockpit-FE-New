@@ -34,7 +34,9 @@ const AppRoutes = {
         DETAILS: 'formula/details?id=',
         PERMISSION: 'formula/permissions',
         DROPDOWN: 'formula/dropdowns',
-        ARCHIVE: 'formula/archive_action'
+        ARCHIVE: 'formula/archive_action',
+        SAVE: 'formula/save',
+        GET_INGREDIENTS: 'formula/get-ingredients',
     },
     COMMON: {
         NOTES: 'notes',

@@ -7,8 +7,7 @@ import { FormulaCrudService } from './formula-crud.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
-
-
+import { AuthService } from '../../authentication/auth.service'
 @Component({
     selector: 'app-formula-crud',
     templateUrl: './formula-crud.component.html',
@@ -20,10 +19,10 @@ export class FormulaCrudComponent implements OnInit {
     leftTitle: string;
     formulaTitle: string;
     crudFieldConfig: any;
-    filtersList: { types: Array<{ id: number; name: string }>; categories: Array<{ id: number; name: string }> };
+    filtersList: any;
     modalData: any;
     permissions: any;
-    selectedData: any = {};
+    sellectedData: any = {};
     duplicate: boolean = false;
     formulaId: any;
     // modelFormat: any = {};
@@ -40,12 +39,20 @@ export class FormulaCrudComponent implements OnInit {
         private formBuilder: FormBuilder,
         private spinner: NgxSpinnerService,
         private commonService: CommonService,
-        private simpleModalService: SimpleModalService
+        private simpleModalService: SimpleModalService,
+        private authService: AuthService,
     ) { }
 
     ngOnInit(): void {
+        debugger
         this.permissions = this.route.snapshot.data['permissions'];
         this.filtersList = this.route.snapshot.data['filterList'];
+        const token = this.authService.getToken();
+        this.formulaService.getDropdown(token).then(result => {
+            this.filtersList = result;
+        }).catch(error => {
+            console.error('Failed to fetch dropdown:', error);
+        });
         this.leftTitle = 'FORMULA DETAILS';
         this.formulaTitle = 'Formula Configuration';
         this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
@@ -67,6 +74,8 @@ export class FormulaCrudComponent implements OnInit {
             this.getFormulaData(formulaId);
         }
         this.getFormControl();
+        console.log('this.filtersList', this.filtersList);
+        
         // this.modelFormat = this.FormulaCrudService.formatModelProductTool(this.formulaForm.value, this.filtersList, this.edit, this.duplicate,this.formulaId);
     }
 
@@ -110,11 +119,20 @@ export class FormulaCrudComponent implements OnInit {
         for (let i = 0; i < list?.length; i++) {
             if (list[i].id == value) {
                 result.push(list[i]);
-                this.selectedData[name] = result;
+                this.sellectedData[name] = result;
                 return result;
             }
         }
         return result.length === 0 ? null : result;
+    }
+
+    onClearAllClicked(): void {
+        console.log('Clear All button clicked');
+        // Add any additional logic here if needed
+    }
+    onDropdownStateChange(field: any, event: any): void {
+        console.log('Dropdown state changed:', field, event);
+        // Add any additional logic here if needed
     }
 
     onSubmit(event: string) {

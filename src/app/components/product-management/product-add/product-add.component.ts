@@ -83,6 +83,8 @@ export class ProductAddComponent implements OnInit {
         }
 
         this.getFormControl();
+        console.log('this.crudFiltersList', this.crudFiltersList);
+
         this.modelFormat = this.ProductAddService.formatModelProductTool(this.productForm.value, this.crudFiltersList, this.subBrandProducts, this.edit, this.duplicate, this.uniqueId,this.productId);
     }
 
