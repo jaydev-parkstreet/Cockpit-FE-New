@@ -10,11 +10,13 @@ import { AgGridModule } from 'ag-grid-angular';
 import { RouterModule } from '@angular/router';
 import { SummaryRoutingModule } from './summary.routing.module';
 import { FormulaDetailsComponent } from './formula-details/formula-details.component';
+import { FsArchiveModalComponent } from './fs-archive-modal/fs-archive-modal.component';
 
 @NgModule({
     declarations: [
         formulaComponent,
-        FormulaDetailsComponent
+        FormulaDetailsComponent,
+        FsArchiveModalComponent
     ],
     providers: [{
         provide: ErrorHandler,
@@ -25,14 +27,15 @@ import { FormulaDetailsComponent } from './formula-details/formula-details.compo
         SharedModule,
         ReactiveFormsModule,
         FormsModule,
-        SimpleModalModule.forRoot({ container: "modal-container" }),
         StatelessModule,
         AgGridModule,
         RouterModule,
-        SummaryRoutingModule
+        SummaryRoutingModule,
+        SimpleModalModule.forRoot({ container: "modal-container" })
     ],
     entryComponents: [
         ConfirmationModalComponent,
+        FsArchiveModalComponent
     ],
     exports: []
 })
