@@ -32,9 +32,9 @@ export class FsArchiveModalComponent
       this.formulaService.updateMultipleArchives(this.modalData.archiveData).subscribe(
         (response: any) => {
           if (response.status === 500 || response.status === -1 || response.hasError) {
-            this.commonService.showToastV2Message(false, this.modalData.archiveFailedMessage, 'fas fa-exclamation-triangle', 'error');
+            this.commonService.showToastV2Message(false, this.modalData.archiveFailedMessage, 'fas fa-exclamation-circle', 'error');
           } else {
-            this.commonService.showToastV2Message(true, this.modalData.archiveWarningMessage, 'fas fa-check-circle', 'success');
+            this.commonService.showToastV2Message(true, this.modalData.archiveWarningMessage, 'fas fa-exclamation-circle', 'error');
             if (this.modalData.archiveData.archive === 'N') {
               this.router.navigate([this.router.url]);
             }
@@ -43,7 +43,7 @@ export class FsArchiveModalComponent
           this.close();
         },
         (error) => {
-          this.commonService.showToastV2Message(false, 'Archiving failed', 'fas fa-exclamation-triangle', 'error');
+          this.commonService.showToastV2Message(false, 'Archiving failed', 'fas fa-exclamation-circle', 'error');
           this.close();
         }
       );
@@ -52,6 +52,3 @@ export class FsArchiveModalComponent
     }
   }
 }
-
-
-

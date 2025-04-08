@@ -381,7 +381,7 @@ export class formulaService {
                     setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 },
                 { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
-                { type: 'checkbox', name: 'is_rejected', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4' }
+                { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4' , id: 1}
             ],
         };
     }
@@ -402,6 +402,15 @@ export class formulaService {
                     iconClass: 'fas fa-comment',
                     showTooltip: true,
                     tooltipText: 'Note',
+                })
+            }
+            if (permission?.permissions?.Delete) {
+                actionIconsConfig.push({
+                    key: 'archive',
+                    type: 'icon',
+                    iconClass: 'fas fa-archive action-icon',
+                    showTooltip: true,
+                    tooltipText: 'Archive',
                 })
             }
         }
