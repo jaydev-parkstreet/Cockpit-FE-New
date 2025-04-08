@@ -14,7 +14,7 @@
             <i 
             *ngIf="note.has_edit_permission"
             class="fas fa-pen" 
-            (click)="addNote(note)">
+            (click)="editNote(note)">
             </i>
             <div *ngIf="allowChangePrivacy" class="u-icon-tooltip u-flex-center">
               <i
