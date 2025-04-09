@@ -22,6 +22,7 @@ import { PsiCrudFormComponent } from './psi-crud-form/psi-crud-form.component';
 import { NoRecordComponent } from './components/no-record/no-record.component';
 import { CmpNotesModalComponent } from './components/cmp-notes-modal/cmp-notes-modal.component';
 import { QuillModule } from 'ngx-quill'
+import { CmpDateRangeComponent } from './components/cmp-date-range/cmp-date-range.component';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { QuillModule } from 'ngx-quill'
         CmpAttachmentModalComponent,
         PsiCrudFormComponent,
         NoRecordComponent,
-        CmpNotesModalComponent
+        CmpNotesModalComponent,
+        CmpDateRangeComponent
     ],
     imports: [
         CommonModule,
@@ -70,7 +72,8 @@ import { QuillModule } from 'ngx-quill'
         CmpButtonComponent,
         PsiCrudFormComponent,
         NoRecordComponent,
-        CmpNotesModalComponent
+        CmpNotesModalComponent,
+        CmpDateRangeComponent
     ]
 })
 export class SharedModule { }

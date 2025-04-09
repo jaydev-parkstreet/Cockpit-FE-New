@@ -61,6 +61,12 @@
                 </app-cmp-input-dropdown>
             </div>
         </ng-container>
+        <div class="col-md-4 filter-item">
+            <app-cmp-date-range 
+                [label]="'Date'"
+                [required]="true" >
+            </app-cmp-date-range>
+        </div>
         <div class="col-12 u-flex">
             <ng-container *ngFor="let filter of config.filtersConfig">
                 <div class="filter-item checkbox-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'checkbox'">

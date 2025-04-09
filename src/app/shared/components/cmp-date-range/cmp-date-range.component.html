@@ -1,0 +1,43 @@
+<div class="input-dropdown">
+    <div class="dropdown-label" [ngClass]="{'required': required}">
+        <span class="d-block" [textContent]="label" *ngIf="label"></span>
+    </div>
+    <div class="u-flex u-align-center u-justify-between" (click)="toggleDropdown()">
+        <input type='text' class="typography-paragraph-black-regular dropdown-headers u-truncate u-w-100"
+            placeholder="select" tabindex="0" readonly>
+        <i class="fal fa-times-circle position-absolute u-neutral-light u-csr-ptr clearSelectedItems"></i>
+        <button class="dropdown-button">
+            <i [ngClass]="isDropdownOpen() ? 'fal fa-chevron-up' : 'fal fa-chevron-down'" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <div class="dropdown-list" *ngIf="isOpen">
+        <div class="dropdown-content">
+            <div>
+                <div class="date-filters">
+                    <div class="date-filter-item active-item">L30</div>
+                    <div class="date-filter-item">MTD</div>
+                    <div class="date-filter-item">QTD</div>
+                    <div class="date-filter-item">YTD</div>
+                </div>
+                <div class="input-datepicker-range" *ngFor="let item of [1, 2]">
+                    <div>
+                        <div>
+                            <button class="dropdownbtn u-flex-h-center u-relative" (click)="toggleDropdown()">
+                                <span class="placeholder-text u-pg-pr-4">
+                                    -
+                                </span>
+                                <span class="clear-date u-flex-center u-pg-s-2">
+                                    <i class="fal fa-times-circle"></i>
+                                </span>
+                                <span class="iconButton u-flex-center u-pg-s-5">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
