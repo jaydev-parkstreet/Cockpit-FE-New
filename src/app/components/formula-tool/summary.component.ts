@@ -164,8 +164,8 @@ export class formulaComponent implements OnInit {
    */
   getNotes(Id, param) {
     this.spinner.show();
-    this.commonBackendService.getNotes(this.permissions.kind_id,
-      this.permissions.tool_id, Id, this.permissions.menu_item_id).subscribe((result: any) => {
+    this.commonBackendService.getNotes(this.filterList.note_kind_id,
+      this.filterList.tool_id, Id, this.filterList.menu_item_id).subscribe((result: any) => {
         if (!result.hasError) {
           this.showNotesModal(param.length === 0 ? Id : [Id], result.notes, false, param);
         } else {
@@ -213,7 +213,7 @@ export class formulaComponent implements OnInit {
       .subscribe((result) => {
         if (result !== undefined) {
           if (!notes || notes.length !== result) {
-            this.unSelectAllCheckbox(entityIds, result, 'total_notes');
+            this.unSelectAllCheckbox(entityIds, result, 'note_count');
           }
         }
       });
@@ -257,7 +257,7 @@ export class formulaComponent implements OnInit {
       cancelAction: { label: 'Cancel' }, saveAction: { label: 'Save' }, filtersList: this.filterList,
       multiple: multiple,
       showFileType: true,
-      fileTypeDropdown: this.permissions.entity_kinds,
+      fileTypeDropdown: this.filterList.entity_kinds,
       showPrivacyIcon: true,
       attachmentDetails: JSON.parse(JSON.stringify(attachments)),
     };
@@ -265,7 +265,7 @@ export class formulaComponent implements OnInit {
       .subscribe((result) => {
         if (result !== undefined) {
           if (!attachments.data || attachments.data.length !== result) {
-            this.unSelectAllCheckbox(entityIds, result, 'total_attachments');
+            this.unSelectAllCheckbox(entityIds, result, 'attachment_count');
           }
         }
       });

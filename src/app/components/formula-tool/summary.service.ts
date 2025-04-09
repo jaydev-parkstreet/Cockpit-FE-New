@@ -148,8 +148,8 @@ export class formulaService {
                                 </label>`;
             }
             checkboxSelection += `<span class="attachments-notes">
-                                <i class="${params.data.total_attachments <= 0 ? 'fal fa-file' : 'fas fa-file'} show-attachment-modal"></i>
-                                <span><i class="${params.data.total_notes <= 0 ? 'fal fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
+                                <i class="${params.data.attachment_count <= 0 ? 'fal fa-file' : 'fas fa-file'} show-attachment-modal"></i>
+                                <span><i class="${params.data.note_count <= 0 ? 'fal fa-comment' : 'fas fa-comment'} note-modal"></i></span>`;
             if (params.data.unread_notes_count) {
                 checkboxSelection += `<span class="note-count ${params.data.unread_notes_count > 9 ? 'u-w-20' : ''}">
                                     <p>${params.data.unread_notes_count}</p></span>`;
