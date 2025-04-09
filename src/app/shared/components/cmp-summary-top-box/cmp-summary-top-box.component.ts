@@ -6,7 +6,7 @@ import { Component, Input, OnInit, ElementRef, ViewChild, EventEmitter, Output }
 })
 export class CmpSummaryTopBoxComponent implements OnInit {
 	@ViewChild('summaryBoxContainer') summaryBoxContainer: ElementRef;
-	@Output() onValueClick: EventEmitter<any> = new EventEmitter();
+	@Output() onValueClick = new EventEmitter<any>();
 	@Input() summaryBoxData: any;
 	@Input() cardToDisplay: number;
 	summaryBoxDataLength: number;
@@ -66,7 +66,11 @@ export class CmpSummaryTopBoxComponent implements OnInit {
 		}
 	}
 
-	clickOnRowValue(row) {
-		this.onValueClick.emit(row);
-	}
+	// /**
+	//  * Function to handle event on value click
+	//  * @author PSI-Enhancement
+	//  */
+	// clickOnRowValue(row) {
+	// 	this.onValueClick.emit(row);
+	// }
 }
