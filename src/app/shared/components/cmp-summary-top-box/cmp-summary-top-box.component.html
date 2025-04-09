@@ -1,8 +1,9 @@
 <div class="summary-top-box-container" id="summary-top-box-container">
-    <div class="arrow-container u-flex u-justify-between u-align-center left" [ngClass]="{ 'u-cursor-not-allowed': curPage <= 0 }" (click)="scrollCarousel('true', '');">
+    <div class="arrow-container u-flex u-justify-between u-align-center left"
+        [ngClass]="{ 'u-cursor-not-allowed': curPage <= 0 }" (click)="scrollCarousel('true', '');">
         <i class="fal fa-chevron-left"></i>
     </div>
-    <div class="summary-box" [ngStyle]="{'min-width': cardMinWidth}" *ngFor="let boxData of paginatedData; let i = index">
+    <div class="summary-box" [ngStyle]="{'min-width': cardMinWidth}" *ngFor="let boxData of SummaryData; let i = index">
         <div class="typography-body-dark-medium summary-header">
             <span>{{ boxData.title }}</span>
             <div class="info-tooltip" *ngIf="boxData.headerIconClass">
@@ -13,14 +14,20 @@
             </div>
         </div>
 
-        <div *ngFor="let balance of boxData.data; let j = index">
-            <div class="summary-value">
-                <span class="typography-body-black-regular">{{ balance.value }}</span>
+        <div class="card-summary">
+            <div class="u-flex u-justify-between u-pg-mt-2" *ngFor="let row of boxData.data;">
+                <div class="typography-paragraph-black-medium u-truncate row-lable">
+                    <span [textContent]="row.label"></span>
+                </div>
+                <div class="typography-paragraph-dark-regular" [ngClass]="{ 'txt-red': row.className === 'txt-red' }"
+                    (click)="row.className === 'txt-red' ? setActive(row) : ''"  [textContent]="row.value">
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="arrow-container u-flex u-justify-between u-align-center right" [ngClass]="{ 'u-cursor-not-allowed': curPage >= summaryBoxDataLength - cardToDisplay }"
+    <div class="arrow-container u-flex u-justify-between u-align-center right"
+        [ngClass]="{ 'u-cursor-not-allowed': curPage >= summaryBoxDataLength - cardToDisplay }"
         (click)="scrollCarousel('', 'true');">
         <i class="fal fa-chevron-right"></i>
     </div>

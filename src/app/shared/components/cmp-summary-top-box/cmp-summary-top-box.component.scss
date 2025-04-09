@@ -12,6 +12,7 @@
         width: 16px;
         background: $colors-neutral-white;
 
+
         &.left {
             margin-right: 4px;
             padding: 4px;
@@ -28,21 +29,22 @@
         margin: 0 4px;
         width: 33%;
         padding: 16px;
+        min-height: 185px;
 
         .summary-header {
             position: relative;
             border-bottom: 1px solid $colors-neutral-light;
-            margin-bottom: 16px;
+            padding-bottom: 5px;
             display: flex;
 
             .info-tooltip {
                 position: relative;
 
                 .icon-class {
-                    font-size: 13px;
-                    top: 7px;
+                    font-size: 12px;
+                    top: 5px;
                     position: absolute;
-                    margin-left: 4px;
+                    margin-left: 8px;
                 }
 
                 .white-tooltip {
@@ -87,5 +89,19 @@
             }
         }
 
+    }
+
+    .card-summary {
+
+        .row-lable {
+            flex: 0 0 60%;
+            overflow: hidden;
+        }
+
+        .txt-red:hover {
+            color: $colors-v2-base-primary;
+            text-decoration: underline;
+            cursor: pointer;
+        }
     }
 }
