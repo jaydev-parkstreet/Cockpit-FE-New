@@ -34,6 +34,7 @@ export class NotesTabComponent implements OnInit {
     fileServer: string;
     updateNotePermissionLoading: boolean = false;
     filterList: any = {};
+    edit_note:boolean = false;
 
     constructor(
         private commonService: CommonService,
@@ -102,6 +103,10 @@ export class NotesTabComponent implements OnInit {
         this.showNotesModal([this.entity], this.notes, false);
     }
 
+    editNote(note:any) {
+        this.showNotesModal([this.entity], note, false);
+    }
+
     /**
     * Function to open add notes popup.
     *
@@ -131,6 +136,7 @@ export class NotesTabComponent implements OnInit {
             noteDetails,
             showLine: true,
             noDataMessage: 'No Notes Found',
+            defaultPermission : notes.permission_id,
         }
         this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
             .subscribe((result) => {

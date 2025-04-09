@@ -71,7 +71,12 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
         this.isNotesListVisible = true;
         this.filters = {};
         if (this.modalData.notesPermission) {
-            this.defaultPermission = (this.modalData.defaultPermission) ? this.modalData.defaultPermission : 0;
+            if (this.modalData.defaultPermission) {
+                this.onEditClick(this.modalData.noteDetails.notes);
+                this.defaultPermission = this.modalData.notesPermission.findIndex((item: any) => item.id === this.modalData.defaultPermission);
+            }else{
+                this.defaultPermission = 0;
+            }
             this.notes_permission = this.modalData.notesPermission[this.defaultPermission].id;
             this.filters = this.modalData.notesPermission[this.defaultPermission];
             this.permission_id= this.modalData.notesPermission[this.defaultPermission];
@@ -110,14 +115,14 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
         let modal = {
             note_description: this.editorContent,
             entity_kind: this.entity_kind,
-            notes_permission: this.permission_id || 1,
+            notes_permission: (typeof this.permission_id == 'number' ? this.permission_id : this.permission_id.id) || 1,
             id: this.selectedNoteId
         };
         let req = {
             tool_id: this.modalData.filtersList.tool_id || this.modalData.permissions.tool_id,
             entity_kind: this.modalData.filtersList.note_kind_id || this.modalData.filtersList.kind_id || this.modalData.permissions.kind_id,
             content: this.editorContent,
-            permission_id: this.permission_id || 1,
+            permission_id: (typeof this.permission_id == 'number' ? this.permission_id : this.permission_id.id) || 1,
             menu_item_id: this.modalData.filtersList.menu_item_id || this.modalData.permissions.menu_item_id,
         };
         this.commonBackendService.saveNote(this.modalData.entityIds, modal, req).subscribe((result: any) => {
@@ -172,7 +177,7 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
         if (this.modalData.multiple) {
             count = 1;
         } else if (this.selectedNoteId) {
-            count = this.modalData.noteDetails.notes.length;
+            count = 1;
             toastMessage = 'Note Updated';
         } else {
             count = this.modalData.noteDetails.notes.length + 1;
