@@ -2,40 +2,39 @@
 @import '../../../scss/variables/typography';
 @import '../../../scss/mixin/input';
 
-.input-datepicker-range {
+.input-datepicker {
     .c-label {
         @include psi-input-label; 
     }
+    .datepicker-container {
+        height: 40px;
+
+        input {
+           @include psi-input;
+            background-color: $colors-neutral-white !important;
+        }
+
+    }
+
+    .clear-date {
+        position: absolute;
+        right: 48px;
+        color: $colors-neutral-light;
+
+        &:hover {
+            cursor: pointer;
+            color: $colors-neutral-black;
+        }
+
+    }
 
     .dropdownbtn {
-        width: 100%;
+        border: none;
+        right: 0px;
+        width: 40px;
         height: 40px;
-        border-radius: 8px;
-        border: 1px solid $colors-neutral-light;
-        background-color: $colors-neutral-white;
-        padding-left: 16px;
-
-        .placeholder-text {
-            text-align: start;
-            flex: 1;
-        }
-
-        .clear-date {
-            position: absolute;
-            right: 48px;
-            color: $colors-neutral-light;
-
-            &:hover {
-                cursor: pointer;
-                color: $colors-neutral-black;
-            }
-
-        }
-
-        .iconButton {
-            background-color: $colors-v2-base-primary-v-low-t-05;
-            border-radius: 0 8px 8px 0;
-        }
+        background-color: $colors-v2-base-primary-v-low-t-05;
+        border-radius: 0 8px 8px 0;
     }
 
 }

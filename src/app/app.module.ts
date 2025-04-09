@@ -15,6 +15,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { LayoutModule } from './components/layout/layout.module';
 import { DatePipe } from '@angular/common';
 import { PsiBrandModalComponent } from './components/product-management/psi-brand-modal/psi-brand-modal.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import { PsiBrandModalComponent } from './components/product-management/psi-bran
         StatelessModule,
         AgGridModule,
         NgxSpinnerModule,
-        LayoutModule
+        LayoutModule,
+        BrowserAnimationsModule
     ],
     exports: [
 

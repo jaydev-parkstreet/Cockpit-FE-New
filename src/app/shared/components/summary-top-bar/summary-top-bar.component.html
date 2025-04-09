@@ -60,6 +60,11 @@
                     (dropdownClosedWithServerFilteredItems)="handleDropdownCloseWithServerFiltering(filter.key, $event)">
                 </app-cmp-input-dropdown>
             </div>
+            <div class="filter-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'daterange'">
+                <app-cmp-input-datepicker
+                    [dateLabel]="filter.label">
+                </app-cmp-input-datepicker>       
+            </div>
         </ng-container>
         <div class="col-12 u-flex">
             <ng-container *ngFor="let filter of config.filtersConfig">
