@@ -45,16 +45,17 @@ export class FormulaCrudComponent implements OnInit {
 
     ngOnInit(): void {
         this.permissions = this.route.snapshot.data['permissions'];
-        this.filtersList = this.route.snapshot.data['filterList'];
         const token = this.authService.getToken();
         this.formulaService.getDropdown(token).then(result => {
             this.filtersList = result;
-        }).catch(error => {
+            this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
+          
+          }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
-        });
+          });
         this.leftTitle = 'FORMULA DETAILS';
         this.formulaTitle = 'Formula Configuration';
-        this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
+        
         this.modalData = this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to exit?');
 
         if (!this.permissions.permissions.Create) {
@@ -72,9 +73,7 @@ export class FormulaCrudComponent implements OnInit {
         if (formulaId) {
             this.getFormulaData(formulaId);
         }
-        this.getFormControl();
-        console.log('this.filtersList', this.filtersList);
-        
+        this.getFormControl();      
         // this.modelFormat = this.FormulaCrudService.formatModelProductTool(this.formulaForm.value, this.filtersList, this.edit, this.duplicate,this.formulaId);
     }
 
