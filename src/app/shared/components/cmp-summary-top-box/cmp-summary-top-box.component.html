@@ -20,7 +20,7 @@
                     <span [textContent]="row.label"></span>
                 </div>
                 <div class="typography-paragraph-dark-regular" [ngClass]="{ 'txt-red': row.className === 'txt-red' }"
-                    (click)="row.className === 'txt-red' ? setActive(row) : ''"  [textContent]="row.value">
+                    (click)="row.className === 'txt-red' ? clickOnRowValue(row) : ''"  [textContent]="row.value">
                 </div>
             </div>
         </div>
