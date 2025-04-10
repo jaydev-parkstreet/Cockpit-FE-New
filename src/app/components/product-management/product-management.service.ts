@@ -642,4 +642,159 @@ export class ProductManagementService {
           .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.NS_SYNC_STATUS + id);
     }
 
+
+
+
+
+
+
+
+
+
+
+	// summary-top-box-code
+
+
+
+
+    getSummaryBoxData() {
+        return [
+            {
+                "title": "My Orders Queue",
+                "headerToolTip": "aaa",
+                "iconClass": 'fas fa-info-circle',
+                "data": [
+                    {
+                        "label": "Approved Not Issued",
+                        "value": "0",
+                        "isString": true,
+                        "className": "txt-red"
+                    },
+                    {
+                        "label": "Shipped Not Fulfilled",
+                        "value": "0",
+                        "isString": true,
+                        "className": "txt-red"
+                    },
+                    {
+                        "label": "Fulfilled Not Received",
+                        "value": "0",
+                        "isString": true,
+                        "className": "txt-red"
+                    },
+                    {
+                        "label": "Total Orders to Execute",
+                        "value": "0",
+                        "isString": true,
+                        "className": "total-order-txt-bold txt-red"
+                    },
+                    {
+                        "label": "Approved Not Issued",
+                        "value": "0",
+                        "isString": true,
+                        "className": "txt-red"
+                    },
+                ]
+            },
+            {
+                "title": "Filtered Totals",
+                "headerToolTip": "aaa",
+                "iconClass": 'fas fa-info-circle',
+                "data": [
+                    {
+                        "label": "Open Orders",
+                        "value": "11,430",
+                        "isString": true,
+                        "className": "txt-red"
+                    },
+                    {
+                        "label": "Unassigned Orders",
+                        "value": "2,843",
+                        "isString": true,
+                        "className": "txt-red"
+                    },
+                    {
+                        "label": "Closed Orders",
+                        "value": "0",
+                        "isString": true,
+                        "className": "txt-red"
+                    }
+                ]
+            },
+            {
+                "title": "Global Totals",
+                "headerToolTip": "aaa",
+                "iconClass": 'fas fa-info-circle',
+                "data": [
+                    {
+                        "label": "All Open Orders",
+                        "value": "18,463",
+                        "isString": true
+                    },
+                    {
+                        "label": "All Unassigned Orders",
+                        "value": "144,935",
+                        "isString": true
+                    },
+                    {
+                        "label": "All Closed Orders",
+                        "value": "272,980",
+                        "isString": true
+                    }
+                ]
+            },
+            {
+                "title": "Filtered Totals",
+                "headerToolTip": "aaa",
+                "iconClass": 'fas fa-info-circle',
+                "data": [
+                    {
+                        "label": "Open Orders",
+                        "value": "11,430",
+                        "isString": true,
+                        "className": "txt-red"
+                    },
+                    {
+                        "label": "Unassigned Orders",
+                        "value": "2,843",
+                        "isString": true,
+                        "className": "txt-red"
+                    },
+                    {
+                        "label": "Closed Orders",
+                        "value": "0",
+                        "isString": true,
+                        "className": "txt-red"
+                    }
+                ]
+            },
+            {
+                "title": "Filtered Totals",
+                "headerToolTip": "aaa",
+                "iconClass": 'fas fa-info-circle',
+                "data": [
+                    {
+                        "label": "Open Orders",
+                        "value": "11,430",
+                        "isString": true,
+                        "className": "txt-red"
+                    },
+                    {
+                        "label": "Unassigned Orders",
+                        "value": "2,843",
+                        "isString": true,
+                        "className": "txt-red"
+                    },
+                    {
+                        "label": "Closed Orders",
+                        "value": "0",
+                        "isString": true,
+                        "className": "txt-red"
+                    }
+                ]
+            },
+        ]
+    }
+
+
 }
