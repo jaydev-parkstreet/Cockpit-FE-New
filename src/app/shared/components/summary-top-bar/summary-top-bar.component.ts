@@ -29,11 +29,41 @@ export class SummaryTopBarComponent implements OnInit {
   @ViewChildren(CmpInputDropdownComponent) dropdowns: QueryList<CmpInputDropdownComponent>;
   @ViewChildren(CmpCheckboxComponent) checkBoxes: QueryList<CmpCheckboxComponent>;
   checkedItems: any = {};
-  
+  datesArray: any = [];
   constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.tooltipText = 'Export To Excel';
+    this.datesArray= [
+      {
+          "id": 15,
+          "name": "Last 30 Days",
+          "start": "2025-03-09",
+          "end": "2025-04-09",
+          "mobile_name": "L30"
+      },
+      {
+          "id": 5,
+          "name": "This Month-to-Date",
+          "start": "2025-04-01",
+          "end": "2025-04-09",
+          "mobile_name": "MTD"
+      },
+      {
+          "id": 7,
+          "name": "This Quarter-to-Date",
+          "start": "2025-04-01",
+          "end": "2025-04-09",
+          "mobile_name": "QTD"
+      },
+      {
+          "id": 9,
+          "name": "This Year-to-Date",
+          "start": "2025-01-01",
+          "end": "2025-04-09",
+          "mobile_name": "YTD"
+      }
+    ]
   }
 
   // toggleFilter() {

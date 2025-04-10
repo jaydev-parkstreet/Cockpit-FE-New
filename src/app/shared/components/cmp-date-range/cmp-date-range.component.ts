@@ -1,19 +1,32 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { DateRangeOption } from 'src/app/interface/date-range';
 
 @Component({
   selector: 'app-cmp-date-range',
   templateUrl: './cmp-date-range.component.html',
-  styleUrls: ['./cmp-date-range.component.scss']
+  styleUrls: ['./cmp-date-range.component.scss'],
+  providers: [DatePipe]
 })
 export class CmpDateRangeComponent implements OnInit {
 
   isOpen: boolean = false;
+  defaultDateValues:DateRangeOption | null;
+  selectedDate:string;
+  fromDate: string;
+  toDate: string;
   @Input() label: string;
   @Input() required: boolean = false;
+  @Input() datesArray: DateRangeOption | null;
+  @Input() showToDate: boolean = false;
 
-  constructor() { }
+  constructor(private datePipe: DatePipe) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges() {
+    this.setDateValues('');
   }
 
   toggleDropdown(): void {
@@ -42,6 +55,42 @@ export class CmpDateRangeComponent implements OnInit {
   */
   isDropdownOpen(): boolean {
     return this.isOpen;
+  }
+
+  onDateSelected(event: { type: 'from' | 'to' | 'default', value: Date | null }) {
+    console.log(event);
+    if (event.type === 'from' || event.type === 'default') {
+      this.fromDate = this.datePipe.transform(event.value, 'MM/dd/yyyy');
+    } else {
+      this.toDate = this.datePipe.transform(event.value, 'MM/dd/yyyy');
+    }
+  
+    this.formatDateRange();
+  }
+
+  formatDateRange(): any {
+    console.log(this.fromDate, this.toDate);
+    const placeholder = 'mm/dd/yyyy';
+  
+    const fromStr = this.fromDate || placeholder;
+    const toStr = this.toDate || placeholder;
+    console.log(fromStr, toStr);
+    this.selectedDate = this.showToDate ? `${fromStr} - ${toStr}` : fromStr;
+
+  }
+
+  setDateValues(value:any) {
+    console.log(value,this.fromDate);
+    if (!value) {
+      this.defaultDateValues = this.datesArray ? this.datesArray[0] : null;
+    }else{
+      this.defaultDateValues = value;
+    }
+    console.log(this.defaultDateValues);
+
+    this.fromDate = this.datePipe.transform(this.defaultDateValues?.start, 'MM/dd/yyyy');
+    this.toDate = this.datePipe.transform(this.defaultDateValues?.end, 'MM/dd/yyyy');
+    this.formatDateRange();
   }
 
 }

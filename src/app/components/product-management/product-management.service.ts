@@ -363,6 +363,11 @@ export class ProductManagementService {
                     divClass: 'col-4 noleftpadding', 
                     setting: this.getMultiSelectConfig('Select Organic')
                 },
+                {
+                    label: 'Product Code',
+                    type: 'daterange',
+                    divClass: 'col-4 noleftpadding',
+                },
                 { type: 'checkbox', name: 'is_active', label: 'Inactive Only', placeholder: 'Inactive Only', divClass: 'col-4' },
                 { type: 'checkbox', name: 'is_rejected', label: 'Rejected Only', placeholder: 'Rejected Only', divClass: 'col-4' }
             ],
