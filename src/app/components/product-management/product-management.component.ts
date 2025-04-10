@@ -51,9 +51,6 @@ export class ProductManagementComponent implements OnInit {
 	filtermodal: any;
 	private timerSubscriptions = new Map<number, Subscription>();
 
-	currentStep: number;
-	tracketData: { id: number; label: string }[];
-
 	constructor(
 		private productManagementService: ProductManagementService,
 		private router: Router,
@@ -85,24 +82,6 @@ export class ProductManagementComponent implements OnInit {
 		this.scrollDisabled = false;
 		this.initGridOptions();
 		this.productToolSummary = [];
-
-		
-
-		// progress step bar code
-		this.currentStep = 5; 
-		this.tracketData = [
-		  { id: 1, label: 'Step 1' },
-		  { id: 2, label: 'Step 2' },
-		  { id: 3, label: 'Step 3' },
-		  { id: 4, label: 'Step 4' },
-		  { id: 5, label: 'Step 5' },
-		  { id: 6, label: 'Step 6' },
-		  { id: 7, label: 'Step 4' },
-		  { id: 8, label: 'Step 5' },
-		  { id: 9, label: 'Step 6' },
-		  { id: 10, label: 'Step 7' }
-
-		];
 	}
 
 
