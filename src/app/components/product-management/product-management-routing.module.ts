@@ -21,9 +21,6 @@ const routes: Routes = [
             {
                 path: 'add',
                 component: ProductAddComponent,
-                resolve: {
-                    filterList: FilterListResolver
-                }
             },
             {
                 path: ':id',
@@ -35,17 +32,11 @@ const routes: Routes = [
                     {
                         path: 'edit',
                         component: ProductAddComponent,
-                        resolve: {
-                            filterList: FilterListResolver
-                        }
                     },
                     {
                         path: 'clone',
                         component: ProductAddComponent,
                         data: { isDuplicate: true },
-                        resolve: {
-                            filterList: FilterListResolver
-                        }
                     }
                 ]
             }
