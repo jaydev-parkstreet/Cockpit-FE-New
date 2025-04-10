@@ -88,14 +88,6 @@ export class ProductManagementComponent implements OnInit {
 		this.scrollDisabled = false;
 		this.initGridOptions();
 		this.productToolSummary = [];
-
-
-
-
-
-
-	// summary-top-box-code
-		this.summaryBoxData = this.productManagementService.getSummaryBoxData();
 	}
 
 
@@ -699,15 +691,5 @@ export class ProductManagementComponent implements OnInit {
 			this.timerSubscriptions.get(productID).unsubscribe();
 			this.timerSubscriptions.delete(productID);
 		}
-	}
-
-
-
-	// summary top-box-code
-	onValueClick(row) {
-		debugger
-	}
-	onToggleSummaryBox(isCardExpanded) {
-		debugger
 	}
 }
