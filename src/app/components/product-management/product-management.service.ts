@@ -366,7 +366,14 @@ export class ProductManagementService {
                 {
                     label: 'Product Code',
                     type: 'daterange',
-                    divClass: 'col-4 noleftpadding',
+                    divClass: 'col-4',
+                    setting: this.commonService.getDatepickerConfig('Select Product Date')
+                },
+                {
+                    label: 'Enhance',
+                    type: 'daterange',
+                    divClass: 'col-4',
+                    setting: this.commonService.getDatepickerConfig()
                 },
                 { type: 'checkbox', name: 'is_active', label: 'Inactive Only', placeholder: 'Inactive Only', divClass: 'col-4' },
                 { type: 'checkbox', name: 'is_rejected', label: 'Rejected Only', placeholder: 'Rejected Only', divClass: 'col-4' }

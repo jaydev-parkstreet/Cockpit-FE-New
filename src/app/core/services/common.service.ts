@@ -395,4 +395,17 @@ export class CommonService {
     };
   }
 
+    /**
+     * function to get Datepicker Config
+     * @author PSI-Enhancement
+     * @returns object
+     */
+    getDatepickerConfig(placeholder = 'mm/dd/yyyy', required = false, disabled = false) {
+        return {
+            placeholder,
+            required,
+            disabled
+        }
+    }
+
 }

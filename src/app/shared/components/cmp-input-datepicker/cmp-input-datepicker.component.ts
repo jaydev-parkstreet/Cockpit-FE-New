@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Setting } from 'src/app/interfaces/setting';
 
 @Component({
     selector: 'app-cmp-input-datepicker',
@@ -7,39 +8,20 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 })
 export class CmpInputDatepickerComponent implements OnInit {
     @Input() dateLabel: string;
-    @Input() value?: Date | null;
-    @Input() minDate?: Date | null = null;
-    @Input() maxDate?: Date | null = null;
-    @Input() placeholder: string = 'Select date';
-    @Output() valueChange = new EventEmitter<Date | null>();
-    calculatedPlaceholder: string;
-    defaultPlaceholder: string;
-
+    @Input() selectedDate: Date;
+    @Input() setting: Setting;
+    @Output() dateModelChange = new EventEmitter<Date | null>();
     @ViewChild('dp') datepicker?: any;
 
     constructor() {
-        this.defaultPlaceholder = 'mm/dd/yyyy';
-        this.calculatedPlaceholder = this.defaultPlaceholder;
     }
-
-
-
-    myDateValue: Date;
 
     ngOnInit() {
-        this.myDateValue = new Date();
+
     }
-
-
-
-    ngOnChanges() {
-        this.updatePlaceholder();
-    }
-    ngAfterViewInit() { }
 
     /**
      * Function to open and close datepicker dropdown.
-     * @param {MouseEvent} event
      * @author PSI-Enhancement
      * @returns void
      */
@@ -47,30 +29,26 @@ export class CmpInputDatepickerComponent implements OnInit {
         this.datepicker?.toggle();
     }
 
-
-    onDateChange(date: Date | undefined) {
-        this.value = date ?? null;
-        this.updatePlaceholder();
-        this.valueChange.emit(this.value);
+    /**
+     * Function when date value changes.
+     * @param {MouseEvent} event
+     * @author PSI-Enhancement
+     * @returns void
+     */
+    onDateChange(date: Date) {
+       this.selectedDate = date;
+       this.dateModelChange.emit(this.selectedDate);
     }
 
-    updatePlaceholder() {
-        this.calculatedPlaceholder = this.value
-            ? this.formatDate(this.value)
-            : this.placeholder;
-    }
-
-    formatDate(date: Date): string {
-        const d = new Date(date);
-        return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1)
-            .toString()
-            .padStart(2, '0')}-${d.getFullYear()}`;
-    }
-
+    /**
+     * Function to clear selected date.
+     * @param {MouseEvent} event
+     * @author PSI-Enhancement
+     * @returns void
+     */
     clearDate() {
-        this.value = null;
-        this.updatePlaceholder();
-        this.valueChange.emit(null);
+        this.selectedDate = null;
+        this.dateModelChange.emit(this.selectedDate);
     }
 
 }

@@ -15,11 +15,11 @@
     font-family: $montserrat-regular;
     caret-color: $colors-v2-base-secondary-v-medium;
 
-    &:hover {
+    &:not([disabled]):hover {
         outline: 2px solid $colors-neutral-black;
         border: none;
     }
-    &:focus {
+    &:not([disabled]):focus {
         outline: 2px solid $colors-v2-base-secondary-v-medium;
         border: none;
     }

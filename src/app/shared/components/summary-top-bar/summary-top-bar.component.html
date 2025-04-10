@@ -62,7 +62,9 @@
             </div>
             <div class="filter-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'daterange'">
                 <app-cmp-input-datepicker
-                    [dateLabel]="filter.label">
+                    [dateLabel]="filter.label"
+                    [setting]="filter.setting"
+                    >
                 </app-cmp-input-datepicker>       
             </div>
         </ng-container>
