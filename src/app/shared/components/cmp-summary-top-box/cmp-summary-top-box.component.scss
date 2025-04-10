@@ -92,53 +92,25 @@
                 }
             }
         }
-
-        // .card-summary {
-        //     overflow: hidden;
-        //     transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-
-        //     &.collapsed {
-        //         max-height: 0;
-        //         padding: 0;
-        //         display: none;
-        //     }
-
-        //     &.expanded {
-        //         max-height: 500px;  // Adjust this value as needed
-        //         padding: 10px;
-        //         display: block;
-        //         overflow: visible;
-        //     }
-
-        //     .row-lable {
-        //         flex: 0 0 60%;
-        //         overflow: hidden;
-        //     }
-
-        //     .txt-red:hover {
-        //         color: $colors-v2-base-primary;
-        //         text-decoration: underline;
-        //         cursor: pointer;
-        //     }
-        // }
-        .card-summary {
-            overflow: hidden;
-            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
         
+        .card-summary {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+
+
             &.collapsed {
                 max-height: 0;
-                padding: 0;
-                display: none;
+                transition-duration: 1s;
             }
-        
+
             &.expanded {
-                max-height: 500px;
-                display: block;
-                overflow: visible;
+                max-height: 700px;
+                transition-duration: 2s;
             }
-        
+
             &.default {
-                display: block;
+                max-height: 1000px;
             }
         
             .row-lable {
