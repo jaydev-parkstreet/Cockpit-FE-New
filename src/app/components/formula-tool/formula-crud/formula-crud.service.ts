@@ -75,65 +75,276 @@ export class FormulaCrudService {
                 return {
                         leftSection: [
                                 {
-                                        key: 'name',
-                                        name: 'name',
-                                        label: 'Formula Name',
-                                        type: 'text',
-                                        colClass: 'col-sm-12',
-                                        placeholder: 'Enter Formula Name',
-                                        isRequired: true,
-                                        isDisabled: false
+                                  key: 'id',
+                                  name: 'id',
+                                  label: 'UNIQUE ID',
+                                  type: 'text',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Enter Unique ID')
                                 },
                                 {
-                                        key: 'client_id',
-                                        name: 'name',
-                                        label: 'client ID',
-                                        type: 'text',
-                                        colClass: 'col-sm-12',
-                                        placeholder: 'Enter Formula Name',
-                                        isRequired: true,
-                                        isDisabled: false
+                                  key: 'client_name',
+                                  name: 'client_name',
+                                  label: 'Supplier Name',
+                                  type: 'text',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Enter Supplier Name')
                                 },
-                        
-                                // {
-                                //         key: 'quantity',
-                                //         name: 'quantity',
-                                //         label: 'Quantity',
-                                //         type: 'text',
-                                //         colClass: 'col-sm-12',
-                                //         placeholder: 'Enter Quantity',
-                                //         isRequired: true,
-                                //         isDisabled: false
-                                // },
-                                // {
-                                //         key: 'unit',
-                                //         name: 'unit',
-                                //         label: 'Unit',
-                                //         type: 'multiselect-dropdown',
-                                //         colClass: 'col-sm-12',
-                                //         filters: { entity: [] },
-                                //         options: filtersList.units || [],
-                                //         isRequired: true,
-                                //         isDisabled: false,
-                                //         inputSetting: this.commonService.getDropdownConfig('Select Unit')
-                                // }
-                        ],
+                                {
+                                  key: 'client_id',
+                                  name: 'client_id',
+                                  label: 'Supplier',
+                                  type: 'multiselect-dropdown',
+                                  colClass: 'col-sm-12',
+                                  filters: { entity: [] },
+                                  options: filtersList.client_id || [],
+                                  isRequired: true,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Select Supplier')
+                                },
+                                {
+                                  key: 'formula_description',
+                                  name: 'formula_description',
+                                  label: 'Formula Description',
+                                  type: 'text',
+                                  colClass: 'col-sm-12',
+                                  isRequired: true,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Enter Formula Description')
+                                },
+                                {
+                                  key: 'formula_status',
+                                  name: 'formula_status',
+                                  label: 'Status',
+                                  type: 'single-select',
+                                  colClass: 'col-sm-12',
+                                  filters: { entity: [] },
+                                  options: filtersList.formula_status || [],
+                                  isRequired: true,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Select Status')
+                                },
+                                {
+                                  key: 'product_origin',
+                                  name: 'product_origin',
+                                  label: 'Product Origin',
+                                  type: 'radio',
+                                  colClass: 'col-sm-12',
+                                  radio: [
+                                    { value: 'D', name: 'Domestic' },
+                                    { value: 'I', name: 'Imported' }
+                                  ],
+                                  isRequired: true,
+                                  isDisabled: false
+                                },
+                                {
+                                  key: 'product_type',
+                                  name: 'product_type',
+                                  label: 'Product Type',
+                                  type: 'single-select',
+                                  colClass: 'col-sm-12',
+                                  filters: { entity: [] },
+                                  options: filtersList.product_type || [],
+                                  isRequired: true,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Select Product Type')
+                                },
+                                {
+                                  key: 'classification',
+                                  name: 'classification',
+                                  label: 'Classification',
+                                  type: 'single-select',
+                                  colClass: 'col-sm-12',
+                                  filters: { entity: [] },
+                                  options: filtersList.classification || [],
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Select Classification')
+                                },
+                                {
+                                  key: 'submission_id',
+                                  name: 'submission_id',
+                                  label: 'Submission ID',
+                                  type: 'text',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Enter Submission ID')
+                                },
+                                {
+                                  key: 'formula_id',
+                                  name: 'formula_id',
+                                  label: 'Formula ID',
+                                  type: 'text',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Enter Formula ID')
+                                },
+                                {
+                                  key: 'date_requested',
+                                  name: 'date_requested',
+                                  label: 'Date Requested',
+                                  type: 'datepicker',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
+                                },
+                                {
+                                  key: 'commodity_statement',
+                                  name: 'commodity_statement',
+                                  label: 'Commodity Statement',
+                                  type: 'text',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Enter Commodity Statement')
+                                },
+                                {
+                                  key: 'composition',
+                                  name: 'composition',
+                                  label: 'Statement of Composition',
+                                  type: 'text',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Enter Statement of Composition')
+                                },
+                                {
+                                  key: 'total_batch_size',
+                                  name: 'total_batch_size',
+                                  label: 'Total Batch Size',
+                                  type: 'text',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Enter Total Batch Size')
+                                },
+                                {
+                                  key: 'batch_size_unit_of_measure',
+                                  name: 'batch_size_unit_of_measure',
+                                  label: 'Batch Size Unit of Measure',
+                                  type: 'radio',
+                                  colClass: 'col-sm-12',
+                                  radio: [
+                                    { value: 'Liters', name: 'Liters' },
+                                    { value: 'Gallons', name: 'Gallons' }
+                                  ],
+                                  isRequired: false,
+                                  isDisabled: false
+                                },
+                                {
+                                  key: 'notes',
+                                  name: 'notes',
+                                  label: 'Notes',
+                                  type: 'text',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Enter Notes')
+                                },
+                                {
+                                  key: 'sample_received',
+                                  name: 'sample_received',
+                                  label: 'Sample Received',
+                                  type: 'single-select',
+                                  colClass: 'col-sm-12',
+                                  filters: { entity: [] },
+                                  options: filtersList.sample_received || [],
+                                  isRequired: true,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.getDropdownConfig('Select Sample Received')
+                                },
+                                {
+                                  key: 'date_submitted',
+                                  name: 'date_submitted',
+                                  label: 'Date Submitted',
+                                  type: 'datepicker',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
+                                }
+                              ],
+                              
                         rightSection: [
                                 {
-                                        key: 'description',
-                                        name: 'description',
-                                        label: 'Description',
-                                        type: 'textarea',
-                                        colClass: 'col-sm-12',
-                                        placeholder: 'Enter Description',
-                                        isRequired: false,
-                                        isDisabled: false
+                                  key: 'lisd_doc',
+                                  name: 'lisd_doc',
+                                  label: 'List of Ingredients Document',
+                                  type: 'attachment',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false
+                                },
+                                {
+                                  key: 'fids_doc',
+                                  name: 'fids_doc',
+                                  label: 'FIDS Document',
+                                  type: 'attachment',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false
+                                },
+                                {
+                                  key: 'mm_doc',
+                                  name: 'mm_doc',
+                                  label: 'Method of Manufacturing Document',
+                                  type: 'attachment',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false
+                                },
+                                {
+                                  key: 'approved_doc',
+                                  name: 'approved_doc',
+                                  label: 'Formula Approval Document',
+                                  type: 'attachment',
+                                  colClass: 'col-sm-12',
+                                  isRequired: false,
+                                  isDisabled: false
+                                },
+                                {
+                                  key: 'date_approved',
+                                  name: 'date_approved',
+                                  label: 'Date Approved',
+                                  type: 'datepicker',
+                                  colClass: 'col-sm-6',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
+                                },
+                                {
+                                  key: 'date_expired',
+                                  name: 'date_expired',
+                                  label: 'Expiration Date',
+                                  type: 'datepicker',
+                                  colClass: 'col-sm-6',
+                                  isRequired: false,
+                                  isDisabled: false,
+                                  inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
+                                },
+                                {
+                                  key: 'no_expiration_date',
+                                  name: 'no_expiration_date',
+                                  label: 'No Expiration Date',
+                                  type: 'checkbox',
+                                  colClass: 'col-sm-6 float-right',
+                                  isRequired: false,
+                                  isDisabled: false
                                 }
-                        ],
+                              ],
+                              
                         btnLabel: [
                                 { type: 'Btn', label: 'Cancel', class: 'secondary w-lg' },
                                 { type: 'Btn', label: 'Submit', class: 'primary w-lg' }
                         ]
+
                 };
         }
 
@@ -148,21 +359,5 @@ export class FormulaCrudService {
                         .post(environment.apiUrl + AppRoutes.FORMULA.SAVE, formulaData)
                         .pipe(map((response: any) => response));
         }
-
-        /**
-         * Fetches the list of ingredients for the formula.
-         * 
-         * @returns An Observable containing the list of ingredients.
-         */
-        // getIngredients() {
-        //         const token = localStorage.getItem('authToken');
-        //         const headers = new HttpHeaders({
-        //                 'Authorization': `Bearer ${token}`,
-        //                 'Content-Type': 'application/json'
-        //         });
-        //         return this.http
-        //                 .get(environment.apiUrl + AppRoutes.FORMULA.GET_INGREDIENTS, { headers })
-        //                 .pipe(map((response: any) => response.data));
-        // }
 
 }

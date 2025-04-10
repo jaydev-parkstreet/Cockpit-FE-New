@@ -25,7 +25,6 @@ export class FormulaCrudComponent implements OnInit {
     sellectedData: any = {};
     duplicate: boolean = false;
     formulaId: any;
-    // modelFormat: any = {};
     edit: boolean = false;
     formulaForm = this.formBuilder.group({});
     formSubmitted: boolean = false;
@@ -74,7 +73,6 @@ export class FormulaCrudComponent implements OnInit {
             this.getFormulaData(formulaId);
         }
         this.getFormControl();      
-        // this.modelFormat = this.FormulaCrudService.formatModelProductTool(this.formulaForm.value, this.filtersList, this.edit, this.duplicate,this.formulaId);
     }
 
     /**
@@ -126,11 +124,9 @@ export class FormulaCrudComponent implements OnInit {
 
     onClearAllClicked(): void {
         console.log('Clear All button clicked');
-        // Add any additional logic here if needed
     }
     onDropdownStateChange(field: any, event: any): void {
         console.log('Dropdown state changed:', field, event);
-        // Add any additional logic here if needed
     }
 
     onSubmit(event: string) {
