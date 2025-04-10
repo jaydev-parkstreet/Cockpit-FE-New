@@ -7,7 +7,7 @@ import { FormulaCrudService } from './formula-crud.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
-import { AuthService } from '../../authentication/auth.service'
+import { AuthService } from '../../authentication/auth.service';
 @Component({
     selector: 'app-formula-crud',
     templateUrl: './formula-crud.component.html',
@@ -52,8 +52,8 @@ export class FormulaCrudComponent implements OnInit {
           }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
           });
-        this.leftTitle = 'FORMULA DETAILS';
-        this.formulaTitle = 'Formula Configuration';
+        this.leftTitle = 'FORMULA CREATION';
+        this.formulaTitle = '';
         
         this.modalData = this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to exit?');
 
