@@ -367,7 +367,7 @@ export class ProductManagementService {
                     label: 'Product Code',
                     type: 'daterange',
                     divClass: 'col-4',
-                    setting: this.commonService.getDatepickerConfig('Select Product Date')
+                    setting: this.commonService.getDatepickerConfig({ placeholder: 'Select Product Date' })
                 },
                 {
                     label: 'Enhance',

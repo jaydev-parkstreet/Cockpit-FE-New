@@ -400,12 +400,16 @@ export class CommonService {
      * @author PSI-Enhancement
      * @returns object
      */
-    getDatepickerConfig(placeholder = 'mm/dd/yyyy', required = false, disabled = false) {
-        return {
-            placeholder,
-            required,
-            disabled
-        }
+    getDatepickerConfig(options = {}) {
+        const defaultConfig = {
+            placeholder: 'mm/dd/yyyy',
+            required: false,
+            disabled: false,
+            invalid: false,
+            errorMessage: 'Field is Required'
+        };
+    
+        return { ...defaultConfig, ...options };
     }
 
 }

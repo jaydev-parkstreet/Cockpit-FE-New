@@ -4,16 +4,22 @@
             <label class="typography-paragraph-black-regular u-pg-mb-0" for="">{{dateLabel}}</label>
         </div>
         <div class="datepicker-container u-flex u-align-center u-justify-between u-relative">
-            <input class="u-w-100" type="text" class="form-control" bsDatepicker #dp="bsDatepicker"
-                [placeholder]="setting?.placeholder" [bsValue]="selectedDate"
+            <input class="u-w-100" type="text" class="form-control" [ngClass]="{'invalid': setting?.invalid}"  bsDatepicker #dp="bsDatepicker"
+                [placeholder]="setting?.placeholder"
+                [bsValue]="selectedDate"
                 (bsValueChange)="onDateChange($event)"
-                [bsConfig]="{containerClass: 'theme-default custom-datepicker-theme'}" readonly [disabled]="setting?.disabled"/>
+                [bsConfig]="{containerClass: 'theme-default custom-datepicker-theme'}"
+                [disabled]="setting?.disabled"
+                readonly/>
             <span class="clear-date u-flex-center u-pg-s-2" *ngIf="selectedDate" (click)="clearDate()">
                 <i class="fal fa-times-circle"></i>
             </span>
             <button type="button" class="dropdownbtn u-flex-center u-absolute" (click)="toggleDropdown()" [disabled]="setting?.disabled">
                 <i [class]="selectedDate? 'fas fa-calendar-check' : 'fas fa-calendar-alt'"></i>
             </button>
+        </div>
+        <div class="Error-message-container" *ngIf="setting?.invalid">
+            <span class="error-message">{{ setting?.errorMessage }}</span>
         </div>
     </div>
 </div>
