@@ -9,9 +9,10 @@ export class CmpSummaryTopBoxComponent implements OnInit {
 	@Output() onValueClick = new EventEmitter<any>();
 	@Input() summaryBoxData: any;
 	@Input() cardToDisplay: number;
+	@Input() isEpandedCollapsedView: string;
 	summaryBoxDataLength: number;
 	curPage: number;
-	isExpanded: boolean;
+	isExpanded = false;
 	cardMinWidth: string;
 	SummaryData: any[] = [];
 
@@ -73,4 +74,9 @@ export class CmpSummaryTopBoxComponent implements OnInit {
 	// clickOnRowValue(row) {
 	// 	this.onValueClick.emit(row);
 	// }
+
+	showHideSummaryCard() {
+		this.isExpanded = !this.isExpanded; // Toggle between true and false
+	  }
+
 }

@@ -5,13 +5,11 @@
     display: flex;
     justify-content: space-between;
 
-
     .arrow-container {
         color: $colors-neutral-dark;
         height: auto;
         width: 16px;
         background: $colors-neutral-white;
-
 
         &.left {
             margin-right: 4px;
@@ -24,12 +22,79 @@
         }
     }
 
+    .summary-box-container {
+        display: flex;
+        flex: 1;
+        justify-content: flex-start;
+    }
+
     .summary-box {
         background: $colors-neutral-white;
         margin: 0 4px;
         width: 33%;
-        padding: 16px;
-        min-height: 185px;
+        padding: 16px;  
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+
+        // .summary-header {
+        //     position: relative;
+        //     border-bottom: 1px solid $colors-neutral-light;
+        //     padding-bottom: 5px;
+        //     display: flex;
+        //     align-items: center;
+        //     justify-content: space-between;
+
+        //     .info-tooltip {
+        //         position: relative;
+
+        //         .icon-class {
+        //             font-size: 12px;
+        //             top: 5px;
+        //             position: absolute;
+        //             margin-left: 8px;
+        //         }
+
+        //         .white-tooltip {
+        //             visibility: hidden;
+        //             position: absolute;
+        //             top: 24px;
+        //             background: $colors-neutral-white;
+        //             border-radius: 8px;
+        //             border: 1px solid $colors-neutral-light;
+        //             min-height: 31px;
+        //             width: 234px;
+        //             color: $colors-neutral-black;
+        //             font-family: $montserrat-regular;
+        //             font-size: 14px;
+        //             font-weight: 400;
+        //             display: flex;
+        //             align-items: center;
+        //             justify-content: center;
+        //             z-index: 1;
+        //             transform: translateX(calc(-50% + 6px));
+
+        //             &::before {
+        //                 content: '';
+        //                 height: 10px;
+        //                 width: 10px;
+        //                 border-top: 1px solid $colors-neutral-light;
+        //                 border-left: 1px solid $colors-neutral-light;
+        //                 position: absolute;
+        //                 transform: rotate(45deg);
+        //                 top: -6px;
+        //                 z-index: 2;
+        //                 left: 50%;
+        //                 background-color: $colors-neutral-white;
+        //             }
+        //         }
+
+        //         &:hover {
+        //             .white-tooltip {
+        //                 visibility: visible;
+        //             }
+        //         }
+        //     }
+        // }
 
         .summary-header {
             position: relative;
@@ -89,19 +154,82 @@
             }
         }
 
-    }
+        // .card-summary {
+        //     overflow: hidden;
+        //     transition: max-height 0.3s ease-out, padding 0.3s ease-out;
 
-    .card-summary {
+        //     &.collapsed {
+        //         max-height: 0;
+        //         padding: 0;
+        //         display: none;
+        //     }
 
-        .row-lable {
-            flex: 0 0 60%;
+        //     &.expanded {
+        //         max-height: 500px;  // Adjust this value as needed
+        //         padding: 10px;
+        //         display: block;
+        //         overflow: visible;
+        //     }
+
+        //     .row-lable {
+        //         flex: 0 0 60%;
+        //         overflow: hidden;
+        //     }
+
+        //     .txt-red:hover {
+        //         color: $colors-v2-base-primary;
+        //         text-decoration: underline;
+        //         cursor: pointer;
+        //     }
+        // }
+        .card-summary {
             overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        
+            &.collapsed {
+                max-height: 0;
+                padding: 0;
+                display: none;
+            }
+        
+            &.expanded {
+                max-height: 500px;  // Adjust this value as needed
+                padding: 10px;
+                display: block;
+                overflow: visible;
+            }
+        
+            &.default {
+                /* Add any styles you need for the default view when it's not expanded/collapsed */
+                display: block;
+            }
+        
+            .row-lable {
+                flex: 0 0 60%;
+                overflow: hidden;
+            }
+        
+            .txt-red {
+                color: $colors-v2-base-primary;
+        
+                &:hover {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
         }
+        
+    }
+}
 
-        .txt-red:hover {
-            color: $colors-v2-base-primary;
-            text-decoration: underline;
-            cursor: pointer;
-        }
+.expand-collapse {
+    background-color: $colors-neutral-white;
+    box-shadow: 0px 4px 8px $colors-neutral-light-t-15;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background: $colors-v2-base-primary-v-low-t-05;
     }
 }

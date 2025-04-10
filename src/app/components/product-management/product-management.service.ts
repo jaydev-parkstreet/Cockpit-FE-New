@@ -671,7 +671,7 @@ export class ProductManagementService {
     //     return [{
     //         title: 'Summary Account',
     //         headerToolTip:"aaa",
-    //         headerIconClass: 'fas fa-info-circle',
+    //         iconClass: 'fas fa-info-circle',
     //         data: [
     //             { label: 'Chargeback', value: '0 / $0.00', hideDolar: true, isString: true },
     //             { label: 'Non-PSI', value: '0 / $0.00', hideDolar: true, isString: true },
@@ -681,7 +681,7 @@ export class ProductManagementService {
     //     }, {
     //         title: 'Approval Status',
     //         headerToolTip:"bbb",
-    //         headerIconClass: 'fas fa-map-marker-alt',
+    //         iconClass: 'fas fa-map-marker-alt',
     //         data: [
     //             { label: 'Pending', value: '0 / $0.00', hideDolar: true, isString: true },
     //             { label: 'Approved', value: '0 / $0.00', hideDolar: true, isString: true },
@@ -692,7 +692,7 @@ export class ProductManagementService {
     //     {
     //         title: 'Credit Status',
     //         headerToolTip:"ccc",
-    //         headerIconClass: 'fas fa-warehouse',
+    //         iconClass: 'fas fa-warehouse',
     //         data: [
     //             { label: 'Open', value: '0 / $0.00', hideDolar: true, isString: true },
     //             { label: 'Applied', value: '0 / $0.00', hideDolar: true, isString: true }
@@ -700,7 +700,7 @@ export class ProductManagementService {
     //     },{
     //         title: 'Summary Account',
     //         headerToolTip:"aaa",
-    //         headerIconClass: 'fas fa-info-circle',
+    //         iconClass: 'fas fa-info-circle',
     //         data: [
     //             { label: 'Chargeback', value: '0 / $0.00', hideDolar: true, isString: true },
     //             { label: 'Non-PSI', value: '0 / $0.00', hideDolar: true, isString: true },
@@ -873,6 +873,165 @@ export class ProductManagementService {
     ]
 }
 
+// getSummaryBoxData () {
+//     return [
+//         {
+//           "title": "Prior to Departure",
+//           "iconClass": "fas fa-map-marker-alt",
+//           "data": [
+//             {
+//               "label": "Request Received",
+//               "value": "833",
+//               "isString": true
+//             },
+//             {
+//               "label": "Verified",
+//               "value": "0",
+//               "isString": true
+//             },
+//             {
+//               "label": "Pending Carrier Quote",
+//               "value": "83",
+//               "isString": true
+//             },
+//             {
+//               "label": "Pending Quote Approval",
+//               "value": "164",
+//               "isString": true
+//             },
+//             {
+//               "label": "Quote Approved / Scheduled",
+//               "value": "155 / 172",
+//               "isString": true
+//             }
+//           ]
+//         },
+//         {
+//           "title": "Post Departure & Arrivals",
+//           "iconClass": "fas fa-warehouse",
+//           "data": [
+//             {
+//               "label": "In Transit",
+//               "value": "368",
+//               "isString": true
+//             },
+//             {
+//               "label": "Arrived at Port",
+//               "value": "76",
+//               "isString": true
+//             },
+//             {
+//               "label": "Delivered",
+//               "value": "0",
+//               "isString": true
+//             },
+//             {
+//               "label": "Inbounded",
+//               "value": "0",
+//               "isString": true
+//             }
+//           ]
+//         },
+//         {
+//           "title": "Other",
+//           "iconClass": "fas fa-flag-alt",
+//           "data": [
+//             {
+//               "label": "Cancelled",
+//               "value": "0",
+//               "isString": true
+//             },
+//             {
+//               "label": "Hold",
+//               "value": "0",
+//               "isString": true
+//             },
+//             {
+//               "label": "Draft",
+//               "value": "1",
+//               "isString": true
+//             }
+//           ]
+//         }
+//       ]
+// }
+
+// getSummaryBoxData () {
+//     return [
+//         {
+//             "title": "My Orders Queue",
+//             "data": [
+//                 {
+//                     "label": "Approved Not Issued",
+//                     "value": "0",
+//                     "isString": true,
+//                     "className": "txt-red"
+//                 },
+//                 {
+//                     "label": "Shipped Not Fulfilled",
+//                     "value": "0",
+//                     "isString": true,
+//                     "className": "txt-red"
+//                 },
+//                 {
+//                     "label": "Fulfilled Not Received",
+//                     "value": "0",
+//                     "isString": true,
+//                     "className": "txt-red"
+//                 },
+//                 {
+//                     "label": "Total Orders to Execute",
+//                     "value": "0",
+//                     "isString": true,
+//                     "className": "total-order-txt-bold txt-red"
+//                 }
+//             ]
+//         },
+//         {
+//             "title": "Filtered Totals",
+//             "data": [
+//                 {
+//                     "label": "Open Orders",
+//                     "value": "11,430",
+//                     "isString": true,
+//                     "className": "txt-red"
+//                 },
+//                 {
+//                     "label": "Unassigned Orders",
+//                     "value": "2,843",
+//                     "isString": true,
+//                     "className": "txt-red"
+//                 },
+//                 {
+//                     "label": "Closed Orders",
+//                     "value": "0",
+//                     "isString": true,
+//                     "className": "txt-red"
+//                 }
+//             ]
+//         },
+//         {
+//             "title": "Global Totals",
+//             "data": [
+//                 {
+//                     "label": "All Open Orders",
+//                     "value": "18,463",
+//                     "isString": true
+//                 },
+//                 {
+//                     "label": "All Unassigned Orders",
+//                     "value": "144,935",
+//                     "isString": true
+//                 },
+//                 {
+//                     "label": "All Closed Orders",
+//                     "value": "272,980",
+//                     "isString": true
+//                 }
+//             ]
+//         }
+//     ]
+// }
 
 // getSummaryBoxData () {
 //     return [

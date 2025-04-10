@@ -1,34 +1,56 @@
 <div class="summary-top-box-container" id="summary-top-box-container">
+    <!-- Left Arrow -->
     <div class="arrow-container u-flex u-justify-between u-align-center left"
         [ngClass]="{ 'u-cursor-not-allowed': curPage <= 0 }" (click)="scrollCarousel('true', '');">
         <i class="fal fa-chevron-left"></i>
     </div>
-    <div class="summary-box" [ngStyle]="{'min-width': cardMinWidth}" *ngFor="let boxData of SummaryData; let i = index">
-        <div class="typography-body-dark-medium summary-header">
-            <span>{{ boxData.title }}</span>
-            <div class="info-tooltip" *ngIf="boxData.headerIconClass">
-                <i class="{{boxData.headerIconClass}} icon-class"></i>
-                <span class="typography-body-black-regular white-tooltip " *ngIf="boxData.headerToolTip">
-                    {{ boxData.headerToolTip }}
-                </span>
+
+    <!-- Container for the summary boxes -->
+    <div class="summary-box-container">
+        <div class="summary-box" [ngStyle]="{'min-width': cardMinWidth}"
+            *ngFor="let boxData of SummaryData; let i = index">
+            <div class="typography-body-black-medium summary-header">
+                <span>{{ boxData.title }}</span>
+                <div class="info-tooltip" *ngIf="boxData.iconClass">
+                    <i class="{{boxData.iconClass}} icon-class"></i>
+                    <span class="typography-body-black-regular white-tooltip" *ngIf="boxData.headerToolTip">
+                        {{ boxData.headerToolTip }}
+                    </span>
+                </div>
             </div>
+
+            <div class="card-summary" [ngClass]="{
+                    'expanded': isExpanded && isEpandedCollapsedView,
+                    'collapsed': !isExpanded && isEpandedCollapsedView,
+                    'default': !isEpandedCollapsedView
+                }">
+                <div class="u-flex u-justify-between u-pg-mt-2" *ngFor="let row of boxData.data;">
+                    <div class="typography-paragraph-black-medium u-truncate row-lable">
+                        <span [textContent]="row.label"></span>
+                    </div>
+                    <div class="typography-paragraph-dark-regular"
+                        [ngClass]="{ 'txt-red': row.className === 'txt-red' }"
+                        (click)="row.className === 'txt-red' ? clickOnRowValue(row) : ''" [textContent]="row.value">
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <div class="card-summary">
-            <div class="u-flex u-justify-between u-pg-mt-2" *ngFor="let row of boxData.data;">
-                <div class="typography-paragraph-black-medium u-truncate row-lable">
-                    <span [textContent]="row.label"></span>
-                </div>
-                <div class="typography-paragraph-dark-regular" [ngClass]="{ 'txt-red': row.className === 'txt-red' }"
-                    (click)="row.className === 'txt-red' ? clickOnRowValue(row) : ''"  [textContent]="row.value">
-                </div>
+        <div *ngIf="isEpandedCollapsedView">
+            <div class="typography-v2-mon-body-black-regular expand-collapse u-tc u-pg-mt-1 u-pg-py-1"
+                (click)="showHideSummaryCard()">
+                <span [textContent]="isExpanded ? 'Collapse' : 'Expand'"></span> <i
+                    [ngClass]="isExpanded ? 'fas fa-caret-up' : 'fas fa-caret-down'"></i>
             </div>
         </div>
     </div>
 
+    <!-- Right Arrow -->
     <div class="arrow-container u-flex u-justify-between u-align-center right"
         [ngClass]="{ 'u-cursor-not-allowed': curPage >= summaryBoxDataLength - cardToDisplay }"
         (click)="scrollCarousel('', 'true');">
         <i class="fal fa-chevron-right"></i>
     </div>
+
 </div>
