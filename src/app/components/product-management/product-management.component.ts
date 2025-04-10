@@ -700,4 +700,14 @@ export class ProductManagementComponent implements OnInit {
 			this.timerSubscriptions.delete(productID);
 		}
 	}
+
+
+
+	// summary top-box-code
+	onValueClick(row) {
+		debugger
+	}
+	onToggleSummaryBox(isCardExpanded) {
+		debugger
+	}
 }

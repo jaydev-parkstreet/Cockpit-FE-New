@@ -7,6 +7,7 @@ import { Component, Input, OnInit, ElementRef, ViewChild, EventEmitter, Output }
 export class CmpSummaryTopBoxComponent implements OnInit {
 	@ViewChild('summaryBoxContainer') summaryBoxContainer: ElementRef;
 	@Output() onValueClick = new EventEmitter<any>();
+	@Output() onToggleSummaryBox = new EventEmitter<{ isCardExpanded: boolean }>();
 	@Input() summaryBoxData: any;
 	@Input() cardToDisplay: number;
 	@Input() isEpandedCollapsedView: string;
@@ -43,6 +44,11 @@ export class CmpSummaryTopBoxComponent implements OnInit {
 	 * @param forward
 	 */
 	scrollCarousel(back: string, forward: string) {
+		debugger
+		if (this.isEpandedCollapsedView  && !this.isExpanded) {
+			return;
+		}
+	
 		if (back && this.curPage > 0) {
 			this.curPage = this.curPage - 1;
 		}
@@ -51,6 +57,7 @@ export class CmpSummaryTopBoxComponent implements OnInit {
 		}
 		this.getsummaryBoxData();
 	}
+	
 
 	/**
 	 * Function to calculate the width of card
@@ -62,21 +69,28 @@ export class CmpSummaryTopBoxComponent implements OnInit {
 			this.cardMinWidth = '100%';
 		} else {
 			let calculatedWidth = Math.floor(100 / this.cardToDisplay);
-			calculatedWidth -= 2;
+			calculatedWidth -= 0.5;
 			this.cardMinWidth = calculatedWidth > 0 ? calculatedWidth + '%' : '0%';
 		}
 	}
 
-	// /**
-	//  * Function to handle event on value click
-	//  * @author PSI-Enhancement
-	//  */
-	// clickOnRowValue(row) {
-	// 	this.onValueClick.emit(row);
-	// }
+	/**
+	 * Function to handle event on value click
+	 * @author PSI-Enhancement
+	 * @param row
+	 */
+	clickOnRowValue(row) {
+		this.onValueClick.emit(row);
+	}
 
-	showHideSummaryCard() {
-		this.isExpanded = !this.isExpanded; // Toggle between true and false
+	/**
+	 * Function to Expand and collapse summary card
+	 * @author PSI-Enhancement
+	 */
+	showHideSummaryCard(): void {
+		this.isExpanded = !this.isExpanded;
+		const isCardExpanded = this.isExpanded;
+		this.onToggleSummaryBox.emit({ isCardExpanded: isCardExpanded });
 	  }
 
 }

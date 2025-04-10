@@ -10,7 +10,9 @@
         <app-cmp-summary-top-box
           [summaryBoxData]="summaryBoxData"
           [cardToDisplay]="3"
-          [isEpandedCollapsedView]="true">
+          [isEpandedCollapsedView]="true"
+          (onValueClick)="onValueClick($event)"
+          (onToggleSummaryBox)="onToggleSummaryBox($event)">
         </app-cmp-summary-top-box>
     </div>
 
