@@ -62,7 +62,7 @@
             </div>
             <div class="filter-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'daterange'">
                 <app-cmp-input-datepicker
-                    [dateLabel]="filter.label"
+                    [fieldConfig]="filter"
                     [setting]="filter.setting"
                     [selectedDate] ="filter.initialSelectedDate"
                     (dateModelChange) ="OnChangeDateModel.emit({ type: 'from', value: $event})">
