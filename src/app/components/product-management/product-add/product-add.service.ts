@@ -32,7 +32,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.clients || [],
+                    options: crudFiltersList?.clients || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Supplier')
@@ -44,7 +44,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.brand || [],
+                    options: crudFiltersList?.brand || [],
                     isRequired: true,
                     isDisabled: true,
                     inputSetting: this.commonService.getDropdownConfig('Select Brand')
@@ -56,7 +56,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.sub_brand_product_id || [],
+                    options: crudFiltersList?.sub_brand_product_id || [],
                     isRequired: true,
                     isDisabled: true,
                     inputSetting: this.commonService.getDropdownConfig('Select Sub-Brand Product')
@@ -70,7 +70,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.groups || [],
+                    options: crudFiltersList?.groups || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Group')
@@ -82,7 +82,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.producers || [],
+                    options: crudFiltersList?.producers || [],
                     isRequired: false,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select producer')
@@ -94,7 +94,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.cases_uom || [],
+                    options: crudFiltersList?.cases_uom || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Type')
@@ -106,7 +106,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.container_types || [],
+                    options: crudFiltersList?.container_types || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Type')
@@ -121,7 +121,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.organic || [],
+                    options: crudFiltersList?.organic || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Organic')
@@ -133,7 +133,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.product_type || [],
+                    options: crudFiltersList?.product_type || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Type')

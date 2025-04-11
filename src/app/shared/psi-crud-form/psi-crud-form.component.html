@@ -18,7 +18,7 @@
     <div class="p-0 container-body">
         <!-- left section -->
         <div class="left-section">  
-            <div *ngFor="let field of crudFieldConfig.leftSection">
+            <div *ngFor="let field of crudFieldConfig?.leftSection">
                 <div class="typography-body-dark-regular col-sm-12" [ngClass]="field.colClass" *ngIf="field.isHeader">
                     {{field.label}}
                 </div>
@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
-                <div *ngFor="let field of crudFieldConfig.btnLabel">
+                <div *ngFor="let field of crudFieldConfig?.btnLabel">
                     <app-cmp-button
                     [buttonText]="field.label"
                     [buttonClass]="field.class"
@@ -80,7 +80,7 @@
 
         <!-- Right section -->
         <div class="right-section">
-            <div *ngFor="let field of crudFieldConfig.rightSection">
+            <div *ngFor="let field of crudFieldConfig?.rightSection">
                 <div class="typography-body-dark-regular col-sm-12" [ngClass]="field.colClass" *ngIf="field.isHeader">
                     {{field.label}}
                 </div>
