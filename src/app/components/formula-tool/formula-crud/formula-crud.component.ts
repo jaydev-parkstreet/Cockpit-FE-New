@@ -48,19 +48,15 @@ export class FormulaCrudComponent implements OnInit {
         this.FormulaService.getDropdown(token).then(result => {
             this.filtersList = result;
             this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
-          
-          }).catch(error => {
+        }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
-          });
+        });
         this.leftTitle = 'FORMULA CREATION';
         this.formulaTitle = '';
-        
         this.modalData = this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to exit?');
-
         if (!this.permissions.permissions.Create) {
             this.router.navigate(['formula']);
         }
-
         let formulaId = this.route.snapshot.paramMap.get('id');
         this.duplicate = this.route.snapshot.data.isDuplicate || false;
         if (formulaId) {
@@ -72,7 +68,7 @@ export class FormulaCrudComponent implements OnInit {
         if (formulaId) {
             this.getFormulaData(formulaId);
         }
-        this.getFormControl();      
+        this.getFormControl();    
     }
 
     /**
