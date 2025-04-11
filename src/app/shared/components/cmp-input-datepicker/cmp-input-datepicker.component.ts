@@ -7,12 +7,14 @@ import { Setting } from 'src/app/interfaces/setting';
     styleUrls: ['./cmp-input-datepicker.component.scss']
 })
 export class CmpInputDatepickerComponent implements OnInit {
-    @Input() dateLabel: string;
+    
+    @Input() fieldConfig: any;
     @Input() selectedDate: Date | null;
     @Input() setting: Setting;
     @Input() type: 'from' | 'to' | 'default';
     @Input() min: any;
     @Input() max: any;
+    @Input() validationClasses: any;
     @Output() dateModelChange = new EventEmitter<{ type: 'from' | 'to' | 'default', value: Date | null }>();
 
     calculatedPlaceholder: string;
