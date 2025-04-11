@@ -9,6 +9,8 @@
                 (bsValueChange)="onDateChange($event)"
                 [bsConfig]="{containerClass: 'theme-default custom-datepicker-theme'}"
                 [disabled]="setting?.disabled"
+                [minDate]="min"
+                [maxDate]="max"
                 readonly/>
             <span class="clear-date u-flex-center u-pg-s-2" *ngIf="selectedDate" (click)="clearDate()">
                 <i class="fal fa-times-circle"></i>

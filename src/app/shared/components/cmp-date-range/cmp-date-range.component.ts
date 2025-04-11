@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DateRangeOption } from 'src/app/interface/date-range';
-
+import { CommonService } from 'src/app/core/services/common.service';
 @Component({
   selector: 'app-cmp-date-range',
   templateUrl: './cmp-date-range.component.html',
@@ -19,8 +19,10 @@ export class CmpDateRangeComponent implements OnInit {
   @Input() required: boolean = false;
   @Input() datesArray: DateRangeOption | null;
   @Input() showToDate: boolean = false;
+  min: Date;
+  max: Date;
 
-  constructor(private datePipe: DatePipe) { }
+  constructor(private datePipe: DatePipe, private commonService : CommonService) { }
 
   ngOnInit(): void {
   }
@@ -58,7 +60,6 @@ export class CmpDateRangeComponent implements OnInit {
   }
 
   onDateSelected(event: { type: 'from' | 'to' | 'default', value: Date | null }) {
-    console.log(event);
     if (event.type === 'from' || event.type === 'default') {
       this.fromDate = this.datePipe.transform(event.value, 'MM/dd/yyyy');
     } else {
@@ -69,28 +70,23 @@ export class CmpDateRangeComponent implements OnInit {
   }
 
   formatDateRange(): any {
-    console.log(this.fromDate, this.toDate);
     const placeholder = 'mm/dd/yyyy';
   
     const fromStr = this.fromDate || placeholder;
     const toStr = this.toDate || placeholder;
-    console.log(fromStr, toStr);
     this.selectedDate = this.showToDate ? `${fromStr} - ${toStr}` : fromStr;
-
   }
 
   setDateValues(value:any) {
-    console.log(value,this.fromDate);
     if (!value) {
       this.defaultDateValues = this.datesArray ? this.datesArray[0] : null;
     }else{
       this.defaultDateValues = value;
     }
-    console.log(this.defaultDateValues);
-
     this.fromDate = this.datePipe.transform(this.defaultDateValues?.start, 'MM/dd/yyyy');
     this.toDate = this.datePipe.transform(this.defaultDateValues?.end, 'MM/dd/yyyy');
+    this.min = this.commonService.convertToDateObject(this.defaultDateValues?.start);
+    this.max = this.commonService.convertToDateObject(this.defaultDateValues?.end);
     this.formatDateRange();
   }
-
 }

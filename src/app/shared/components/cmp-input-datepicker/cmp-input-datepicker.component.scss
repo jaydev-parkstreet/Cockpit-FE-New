@@ -3,7 +3,6 @@
 @import '../../../scss/mixin/input';
 
 .input-datepicker {
-    margin-bottom: 12px;
     .c-label {
         @include psi-input-label; 
     }
@@ -171,6 +170,9 @@
 
                     &.is-highlighted:not(.disabled):not(.selected) span {
                         background: none;
+                    }
+                    .disabled{
+                        cursor: not-allowed;
                     }
                 }
                 

@@ -412,4 +412,15 @@ export class CommonService {
         return { ...defaultConfig, ...options };
     }
 
+    /**
+     * Converts a date string to a Date object.
+     * @param dateStr - The date string to convert.
+     * @returns The converted Date object or null if the input is invalid.
+     * @author PSI-Enhancement
+     */
+    convertToDateObject(dateStr: string): Date | null {
+      if (!dateStr) return null;
+      return new Date(dateStr);
+    }
+
 }

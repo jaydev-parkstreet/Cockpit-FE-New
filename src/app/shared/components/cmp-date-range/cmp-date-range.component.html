@@ -3,8 +3,14 @@
         <span class="d-block" [textContent]="label" *ngIf="label"></span>
     </div>
     <div class="u-flex u-align-center u-justify-between" (click)="toggleDropdown()">
-        <input type='text' class="typography-paragraph-black-regular dropdown-headers u-truncate u-w-100" [(ngModel)]="selectedDate"
-            placeholder="mm/dd/yyyy" tabindex="0" readonly>
+        <input 
+            type='text' 
+            class="typography-paragraph-black-regular dropdown-headers u-truncate u-w-100" 
+            [ngClass]="{'placeholder-grey-text': selectedDate === 'mm/dd/yyyy - mm/dd/yyyy'}"
+            [(ngModel)]="selectedDate"
+            placeholder="mm/dd/yyyy" 
+            tabindex="0" 
+            readonly>
         <i class="fal fa-times-circle position-absolute u-neutral-light u-csr-ptr clearSelectedItems"></i>
         <button class="dropdown-button">
             <i [ngClass]="isDropdownOpen() ? 'fal fa-chevron-up' : 'fal fa-chevron-down'" aria-hidden="true"></i>
@@ -21,15 +27,19 @@
                         [ngClass]="{'active-item': defaultDateValues.id === item.id}"
                         (click)="setDateValues(item)">
                         {{item.mobile_name}}
-                        </div>
+                    </div>
                 </div>
                 <app-cmp-input-datepicker 
                     type="from" 
+                    [min]="min"
+                    [max]="max"
                     [selectedDate]="fromDate" 
                     (dateModelChange)="onDateSelected($event)">
                 </app-cmp-input-datepicker>
                 <app-cmp-input-datepicker 
                     type="to" 
+                    [min]="min"
+                    [max]="max"
                     [selectedDate]="toDate" 
                     (dateModelChange)="onDateSelected($event)" 
                     *ngIf="showToDate">

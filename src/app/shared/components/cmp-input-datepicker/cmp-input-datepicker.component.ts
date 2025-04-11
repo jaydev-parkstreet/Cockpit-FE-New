@@ -11,6 +11,8 @@ export class CmpInputDatepickerComponent implements OnInit {
     @Input() selectedDate: Date | null;
     @Input() setting: Setting;
     @Input() type: 'from' | 'to' | 'default';
+    @Input() min: any;
+    @Input() max: any;
     @Output() dateModelChange = new EventEmitter<{ type: 'from' | 'to' | 'default', value: Date | null }>();
 
     calculatedPlaceholder: string;
