@@ -25,13 +25,13 @@
                 </div>
                 <app-cmp-input-datepicker 
                     type="from" 
-                    [value]="fromDate" 
-                    (valueChange)="onDateSelected($event)">
+                    [selectedDate]="fromDate" 
+                    (dateModelChange)="onDateSelected($event)">
                 </app-cmp-input-datepicker>
                 <app-cmp-input-datepicker 
                     type="to" 
-                    [value]="toDate" 
-                    (valueChange)="onDateSelected($event)" 
+                    [selectedDate]="toDate" 
+                    (dateModelChange)="onDateSelected($event)" 
                     *ngIf="showToDate">
                 </app-cmp-input-datepicker>
             </div>

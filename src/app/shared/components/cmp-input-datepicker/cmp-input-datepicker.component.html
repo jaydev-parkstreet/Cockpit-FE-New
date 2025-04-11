@@ -1,26 +1,18 @@
 <div class="input-datepicker">
     <div>
-        <div class="c-label" *ngIf="dateLabel">
+        <div class="c-label" [ngClass]="{'required': setting?.required}" *ngIf="dateLabel">
             <label class="typography-paragraph-black-regular u-pg-mb-0" for="">{{dateLabel}}</label>
         </div>
         <div class="datepicker-container u-flex u-align-center u-justify-between u-relative">
-            <input 
-                class="u-w-100 form-control" 
-                type="text" 
-                bsDatepicker 
-                #dp="bsDatepicker"
-                readonly 
-                [placeholder]="calculatedPlaceholder"
-                [(ngModel)]="value"
-                (bsValueChange)="onDateChange($event)"/>
-            <span class="clear-date u-flex-center u-pg-s-2" (click)="clearDate()">
+            <input class="u-w-100" type="text" class="form-control" bsDatepicker #dp="bsDatepicker"
+                [placeholder]="calculatedPlaceholder" [(ngModel)]="selectedDate"
+                (bsValueChange)="onDateChange($event)"
+                [bsConfig]="{containerClass: 'theme-default custom-datepicker-theme'}" readonly [disabled]="setting?.disabled"/>
+            <span class="clear-date u-flex-center u-pg-s-2" *ngIf="selectedDate" (click)="clearDate()">
                 <i class="fal fa-times-circle"></i>
             </span>
-            <button 
-                type="button" 
-                class="dropdownbtn u-flex-center u-absolute" 
-                (click)="toggleDropdown()">
-                <i class="fas fa-calendar-check"></i>
+            <button type="button" class="dropdownbtn u-flex-center u-absolute" (click)="toggleDropdown()" [disabled]="setting?.disabled">
+                <i [class]="selectedDate? 'fas fa-calendar-check' : 'fas fa-calendar-alt'"></i>
             </button>
         </div>
     </div>

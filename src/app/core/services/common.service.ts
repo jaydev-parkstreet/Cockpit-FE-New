@@ -395,4 +395,22 @@ export class CommonService {
     };
   }
 
+    /**
+     * function to get Datepicker Config
+     * @author PSI-Enhancement
+     * @returns object
+     */
+    getDatepickerConfig(options = {}) {
+      const defaultConfig = {
+          placeholder: 'mm/dd/yyyy',
+          required: false,
+          disabled: false,
+          invalid: false,
+          errorMessage: 'Field is Required'
+      };
+  
+      return { ...defaultConfig, ...options };
+  }
+
+
 }
