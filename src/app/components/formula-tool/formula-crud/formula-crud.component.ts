@@ -46,11 +46,11 @@ export class FormulaCrudComponent implements OnInit {
         this.permissions = this.route.snapshot.data['permissions'];
         const token = this.authService.getToken();
         this.FormulaService.getDropdown(token).then(result => {
-        this.filtersList = result;
-        this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);  
-          }).catch(error => {
+            this.filtersList = result;
+            this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
+        }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
-          });
+        });
         this.leftTitle = 'FORMULA CREATION';
         this.formulaTitle = '';
         this.modalData = this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to exit?');
