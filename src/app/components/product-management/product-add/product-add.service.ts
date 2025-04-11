@@ -41,7 +41,7 @@ export class ProductAddService {
                 {
                     label: 'Enhance',
                     name: 'Enhance',
-                    type: 'daterange',
+                    type: 'datepicker',
                     divClass: 'col-4',
                     isRequired: true,
                     isDisabled: false,

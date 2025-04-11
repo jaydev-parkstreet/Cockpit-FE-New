@@ -364,13 +364,24 @@ export class ProductManagementService {
                     setting: this.getMultiSelectConfig('Select Organic')
                 },
                 {
+                    key:'Product Code',
                     label: 'Product Code',
-                    type: 'daterange',
+                    type: 'datepicker',
                     divClass: 'col-4',
                     setting: this.commonService.getDatepickerConfig({ placeholder: 'Select Product Date' })
                 },
                 {
+                    key: "Enhance",
                     label: 'Enhance',
+                    type: 'datepicker',
+                    divClass: 'col-4',
+                    initialSelectedDate: '04/01/2025',
+                    setting: this.commonService.getDatepickerConfig()
+                },
+
+                {
+                    key: "test1",
+                    label: 'test1',
                     type: 'daterange',
                     divClass: 'col-4',
                     initialSelectedDate: '04/01/2025',
