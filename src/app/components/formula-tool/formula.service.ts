@@ -10,7 +10,7 @@ import AppConstant from 'src/app/app.constant';
 @Injectable({
     providedIn: 'root'
 })
-export class formulaService {
+export class FormulaService {
 
     constructor(
         private http: HttpClient, private commonService: CommonService,
@@ -59,16 +59,16 @@ export class formulaService {
             cellClass: 'select-all-header-cell pl0px header-check check'
         }, {
             headerName: 'Unique ID',
-            minWidth: 200,
-            width: 200,
+            minWidth: 75,
+            width: 115,
             field: 'unique_id',
             cellRenderer: 'idRender',
             cellClass: 'tooltip-cell'
         },
         { headerName: 'Supplier Name', minWidth: 75, width: 193, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Status', minWidth: 75, width: 115, field: 'formula_status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Status', minWidth: 200, width: 200, field: 'formula_status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Formula Description', minWidth: 75, width: 115, field: 'formula_description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Classification', minWidth: 120, width: 140, field: 'classification_name', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell prod_status' },
+        { headerName: 'Classification', minWidth: 120, width: 140, field: 'classification_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell prod_status' },
         { headerName: 'Submission ID', minWidth: 60, width: 108, field: 'submission_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Formula ID', minWidth: 60, width: 108, field: 'formula_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Date Requested', field: 'date_requested_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
@@ -240,18 +240,40 @@ export class formulaService {
      */
     renderStatus(params) {
         const statusLabels = {
-            Approved: 'u-bg-success',
-            Pending: 'u-bg-warning',
-            'Pre-Approved': 'u-bg-primary text-ellipsis',
-            'Needs Action-Waiting on Supplier': 'u-bg-warinig-medium text-ellipsis',
-            'Request Received': 'u-bg-neutral-light text-ellipsis',
+            'Approved': 'u-bg-success',
+            'Rejected': 'u-bg-error',
+            'Pre-Approved': 'u-bg-primary',
+            'Needs Action - Waiting on Supplier': 'u-bg-warning text-ellipsis',
+            'Request Received': 'u-bg-neutral-light',
+            'Pending Formula Approval': 'u-bg-warning text-ellipsis',
+            'Pending Samples - Waiting on Supplier': 'u-bg-warning text-ellipsis',
+            'Ready for Submission': 'yellow text-ellipsis',
+            'Cancelled': 'u-bg-neutral-light',
+            'Under Review': 'u-bg-error-medium',
+            'Filed': 'u-bg-neutral-light'
         };
-
-        if (statusLabels[params.value]) {
-            return `<span class="typography-caption-dark-medium ${statusLabels[params.value]} status-label">${params.value}</span>`;
-        }
-        return '--';
-    }
+    
+        const value = params.value || '--';
+        const labelClass = statusLabels[value] || '';
+        const isExpired = !!(params.data?.is_formula_expire && params.data?.date_expired_display);
+        const hasEllipsis = labelClass.includes('text-ellipsis');
+    
+        const iconHtml = isExpired
+            ? `<i class="fas fa-exclamation-circle text-danger" title="FORMULA will expire within 30 days" style="margin-left: 6px; font-size: 14px;"></i>`
+            : '';
+    
+        return `
+            <div class="status-label-wrapper" style="display: flex; align-items: center;">
+                <span
+                    class="typography-caption-dark-medium ${labelClass} status-label"
+                    style="padding: 2px 8px;"
+                    ${hasEllipsis ? `title="${value}"` : ''}>
+                    ${value}
+                </span>
+                ${iconHtml}
+            </div>
+        `;
+    }        
 
     /**
      * Function to get attachment list
@@ -322,44 +344,44 @@ export class formulaService {
             actions: [],
             filtersConfig: [
                 {
-                    key: 'clients',
+                    key: 'client_id',
                     label: 'Supplier Name',
                     type: 'multiselect-search',
                     divClass: 'col-4 noleftpadding',
                     setting: this.getMultiSelectConfig('Select Supplier Name')
                 }, {
-                    key: 'product_state',
+                    key: 'formula_status',
                     label: 'Status',
                     type: 'multiselect-search',
                     divClass: 'col-4',
                     setting: this.getMultiSelectConfig('Select Status')
                 }, {
-                    key: 'product_type',
+                    key: 'submission_id',
                     label: 'Submission ID',
                     type: 'multiselect-search',
                     divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Submission ID')
                 }, {
-                    key: 'product_sub_type',
+                    key: 'formula_id',
                     label: 'Formula ID',
                     type: 'multiselect-search',
                     divClass: 'col-4 noleftpadding',
                     setting: this.getMultiSelectConfig('Select Formula ID')
                 }, {
-                    key: 'source',
+                    key: 'date_requested',
                     label: 'Date Requested',
                     type: 'multiselect-search',
                     divClass: 'col-4',
                     setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 }, {
-                    key: 'crm',
+                    key: 'date_approved',
                     label: 'Date Approved',
                     type: 'multiselect-search',
                     divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 },
                 { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
-                { type: 'checkbox', name: 'is_rejected', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4' }
+                { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4' , id: 1}
             ],
         };
     }
@@ -382,11 +404,20 @@ export class formulaService {
                     tooltipText: 'Note',
                 })
             }
+            if (permission?.permissions?.Delete) {
+                actionIconsConfig.push({
+                    key: 'archive',
+                    type: 'icon',
+                    iconClass: 'fas fa-archive action-icon',
+                    showTooltip: true,
+                    tooltipText: 'Archive',
+                })
+            }
         }
         actionIconsConfig.push({
             type: 'export',
             tooltipText: 'Export to Excel',
-            apiUrl: environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT,
+            apiUrl: environment.apiUrl + AppRoutes.FORMULA.EXCEL_EXPORT,
             params: this.commonService.parseRequest(reqObj)
         });
         actionIconsConfig.push({
@@ -513,7 +544,7 @@ export class formulaService {
      */
     excelExport(obj) {
         return this.http
-            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT, obj)
+            .post(environment.apiUrl + AppRoutes.FORMULA.EXCEL_EXPORT, obj)
             .pipe(map((response: any) => response));
     }
 

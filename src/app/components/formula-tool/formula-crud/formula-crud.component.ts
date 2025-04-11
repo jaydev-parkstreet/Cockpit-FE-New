@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@ang
 import { CommonService } from 'src/app/core/services/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { formulaService } from '../summary.service';
+import { FormulaService } from '../formula.service';
 import { FormulaCrudService } from './formula-crud.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SimpleModalService } from 'ngx-simple-modal';
@@ -30,7 +30,7 @@ export class FormulaCrudComponent implements OnInit {
     formSubmitted: boolean = false;
 
     constructor(
-        private formulaService: formulaService,
+        private FormulaService: FormulaService,
         private FormulaCrudService: FormulaCrudService,
         private changeDetector: ChangeDetectorRef,
         public router: Router,
@@ -45,12 +45,13 @@ export class FormulaCrudComponent implements OnInit {
     ngOnInit(): void {
         this.permissions = this.route.snapshot.data['permissions'];
         const token = this.authService.getToken();
-        this.formulaService.getDropdown(token).then(result => {
-        this.filtersList = result;
-        this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
-        }).catch(error => {
-        console.error('Failed to fetch dropdown:', error);
-        });
+        this.FormulaService.getDropdown(token).then(result => {
+            this.filtersList = result;
+            this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
+          
+          }).catch(error => {
+            console.error('Failed to fetch dropdown:', error);
+          });
         this.leftTitle = 'FORMULA CREATION';
         this.formulaTitle = '';
         this.modalData = this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to exit?');
@@ -78,7 +79,7 @@ export class FormulaCrudComponent implements OnInit {
      */
     async getFormulaData(formulaId: string) {
         this.spinner.show();
-        this.formulaService.getDetails(formulaId).then((response: any) => {
+        this.FormulaService.getDetails(formulaId).then((response: any) => {
             this.spinner.hide();
             if (!response.hasError) {
                 this.formulaId = response.data.formula_id;
@@ -118,12 +119,12 @@ export class FormulaCrudComponent implements OnInit {
         return result.length === 0 ? null : result;
     }
 
-    // onClearAllClicked(): void {
-    //     console.log('Clear All button clicked');
-    // }
-    // onDropdownStateChange(field: any, event: any): void {
-    //     console.log('Dropdown state changed:', field, event);
-    // }
+    onClearAllClicked(): void {
+        console.log('Clear All button clicked');
+    }
+    onDropdownStateChange(field: any, event: any): void {
+        console.log('Dropdown state changed:', field, event);
+    }
 
     onSubmit(event: string) {
         if (event === "Submit") {

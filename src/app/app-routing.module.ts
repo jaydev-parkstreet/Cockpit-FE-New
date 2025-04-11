@@ -24,7 +24,7 @@ const routes: Routes = [
     },
     {
         path: 'formula',
-        loadChildren: () => import('./components/formula-tool/summary.module').then(m => m.FormulaSummaryModule)
+        loadChildren: () => import('./components/formula-tool/formula.module').then(m => m.FormulaSummaryModule)
     }
 ];
 @NgModule({

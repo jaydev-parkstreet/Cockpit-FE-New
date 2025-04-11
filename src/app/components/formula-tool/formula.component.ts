@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { formulaService } from './summary.service';
+import { FormulaService } from './formula.service';
 import { AuthService } from '../authentication/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -12,14 +12,14 @@ import { CmpNotesModalComponent } from 'src/app/shared/components/cmp-notes-moda
 import { ConfirmationModalComponent } from '../organism/confirmation-modal/confirmation-modal.component';
 import { interval, Subscription } from 'rxjs';
 import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
-
+import { FsArchiveModalComponent } from './fs-archive-modal/fs-archive-modal.component';
 @Component({
   selector: 'app-formula-tool',
-  templateUrl: './summary.html',
-  styleUrls: ['./summary.scss']
+  templateUrl: './formula.html',
+  styleUrls: ['./formula.scss']
 })
 
-export class formulaComponent implements OnInit {
+export class FormulaComponent implements OnInit {
   reportRequestObj: any = {};
   summaryResponse: any;
   dropdownData: any;
@@ -51,9 +51,13 @@ export class formulaComponent implements OnInit {
   downloading: boolean;
   filtermodal: any;
   private timerSubscriptions = new Map<number, Subscription>();
+  archiveData: any;
+  archiveWarningMessage: string = '';
+  archiveFailedMessage: string = '';
+  archiveStatus: any;
 
   constructor(
-    private formulaService: formulaService,
+    private FormulaService: FormulaService,
     private authService: AuthService,
     private router: Router,
     private spinner: NgxSpinnerService,
@@ -65,21 +69,27 @@ export class formulaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.filterList = this.route.snapshot.data['filterList'];
+    const token = this.authService.getToken();
+    this.FormulaService.getDropdown(token).then(result => {
+      this.filterList = result;
+    }).catch(error => {
+      console.error('Failed to fetch dropdown:', error);
+    });
     this.permissions = this.route.snapshot.data['permissions'];
-    this.topPanelConfig = this.formulaService.getTopPanelConfig(this.permissions);
+    this.topPanelConfig = this.FormulaService.getTopPanelConfig(this.permissions);
     this.updateTopPanelConfig();
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
       "pageSize": 25,
       "sort": "unique_id",
-      "order": "asc",
+      "order": "dsc",
       "universal_search": "",
       "submission_id": [],
       "formula_status": [],
       "formula_id": [],
       "date_requested_from": "",
       "date_requested_to": "",
+      "client_id": ""
     };
     this.selectedRowCount = 0;
     this.formulaCardSummary = [];
@@ -94,7 +104,7 @@ export class formulaComponent implements OnInit {
 
 
   initGridOptions() {
-    this.gridOptions = this.formulaService.getGridOption();
+    this.gridOptions = this.FormulaService.getGridOption();
     this.gridOptions.onSortChanged = (params) => {
       const allSortModels = params.columnApi.getAllColumns()
         .filter(col => col.getSort())
@@ -218,7 +228,7 @@ export class formulaComponent implements OnInit {
   openAttachmentListPopup(entity: any) {
     if (this.permissions.permissions.Update) {
       this.spinner.show();
-      this.formulaService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response: any) => {
+      this.FormulaService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response: any) => {
         if (!response.hasErrors) {
           this.showAttachment(false, [entity], response);
         } else {
@@ -285,7 +295,7 @@ export class formulaComponent implements OnInit {
     const token = localStorage.getItem('authToken');
     const summaryData = this.reportRequestObj;
     try {
-      const response: any = await this.formulaService.getSummary(summaryData, token);
+      const response: any = await this.FormulaService.getSummary(summaryData, token);
       if (!response.hasError) {
         this.hasMoreRecords = response.data.length === 25;
         this.summaryResponse = response.data;
@@ -309,6 +319,7 @@ export class formulaComponent implements OnInit {
     */
   setDataSourceAgGrid() {
     if (!this.isLoadingSummaryData) {
+      this.changeArchiveUnarchiveTooltipText();
       this.selectedAllRows = false;
       this.selectedRowCount = 0;
       this.selectedRows = [];
@@ -409,8 +420,8 @@ export class formulaComponent implements OnInit {
         acc['client'] = selectedFilters[key].map((item: any) => item.id);
       } else if (key == 'is_active') {
         acc['active_status'] = [selectedFilters[key] == 0 ? '1' : '0'];
-      } else if (key == 'is_rejected') {
-        acc[key] = selectedFilters[key];
+      } else if (key == 'is_archived') {
+        acc['is_archived'] = selectedFilters[key].length === 0 ? [0] : [1];
       } else {
         acc[key] = selectedFilters[key].map((item: any) => item.id);
       }
@@ -425,6 +436,7 @@ export class formulaComponent implements OnInit {
     this.formulaToolSummary = [];
     this.updateTopPanelConfig();
     this.setDataSourceAgGrid();
+    this.changeArchiveUnarchiveTooltipText();
   }
 
   /**
@@ -435,7 +447,7 @@ export class formulaComponent implements OnInit {
     this.reportRequestObj = {
       "page": 1,
       "pageSize": 25,
-      "sort": "",
+      "sort": "unique_id",
       "order": "asc",
       "universal_search": ""
     }
@@ -444,6 +456,7 @@ export class formulaComponent implements OnInit {
     this.selectedRowCount = 0;
     this.updateTopPanelConfig();
     this.setDataSourceAgGrid();
+    this.changeArchiveUnarchiveTooltipText();
   }
 
   universalSearch(text) {
@@ -454,6 +467,7 @@ export class formulaComponent implements OnInit {
 
   onSelectAllChanged(isChecked: boolean) {
     this.updateCheckboxState(isChecked);
+    this.changeArchiveUnarchiveTooltipText();
   }
 
   updateCheckboxState(checked: boolean) {
@@ -494,6 +508,7 @@ export class formulaComponent implements OnInit {
     }
     this.updateTopPanelConfig(params.data.is_active === 0);
     this.gridOptions.api.redrawRows();
+    this.changeArchiveUnarchiveTooltipText();
   }
 
   onClickAction(action): void {
@@ -510,6 +525,11 @@ export class formulaComponent implements OnInit {
           this.openAttachmentListPopup(this.selectedRows[0]);
         } else {
           this.showAttachment(true, this.selectedRows, {});
+        }
+        break;
+      case 'archive':
+        if(this.selectedRows && this.selectedRows.length > 0) {
+          this.updateMultipleArchives();
         }
         break;
       case 'edit':
@@ -549,7 +569,7 @@ export class formulaComponent implements OnInit {
   }
 
   updateTopPanelConfig(isActive?: boolean) {
-    this.topPanelConfig.actions = this.formulaService.getActionsIconsConfig(
+    this.topPanelConfig.actions = this.FormulaService.getActionsIconsConfig(
       this.selectedRowCount,
       this.permissions,
       this.reportRequestObj,
@@ -564,4 +584,72 @@ export class formulaComponent implements OnInit {
       this.timerSubscriptions.delete(formulaID);
     }
   }
+
+
+  /**
+   * The function `changeArchiveUnarchiveTooltipText` updates the tooltip text for an action based on
+   * the value of `is_archived` in a report request object.
+   * @author PSI-VIII
+   */
+  changeArchiveUnarchiveTooltipText() {
+    const isArchived = Array.isArray(this.reportRequestObj.is_archived)
+      ? this.reportRequestObj.is_archived[0]
+      : this.reportRequestObj.is_archived;
+    this.topPanelConfig.actions[2].tooltipText =
+      isArchived == 1 ? 'Unarchive' : 'Archive';
+  }
+  
+
+  /**
+   * The function `updateMultipleArchives` updates the archive status of selected rows based on user
+   * confirmation.
+   * @returns {void}
+   * @author PSI-VIII
+   */
+  updateMultipleArchives() {
+    this.archiveData = {
+      ids: this.selectedRows,
+      archive: 0
+    };
+  
+    const isArchivedVal = Array.isArray(this.reportRequestObj?.is_archived)
+      ? this.reportRequestObj.is_archived[0]
+      : this.reportRequestObj?.is_archived;
+  
+      this.archiveStatus = isArchivedVal == '1' || isArchivedVal == 1 ? 1 : 0;
+  
+    let modalTitle = '';
+    this.archiveFailedMessage = 'Failed';
+  
+    if (this.archiveStatus === 1) {
+      this.archiveData.archive = 'N';
+      this.archiveWarningMessage = 'Unarchived Successfully';
+      modalTitle = 'Are you sure you want to unarchive it?';
+    } else {
+      this.archiveData.archive = 'Y';
+      this.archiveWarningMessage = 'Archived Successfully';
+      modalTitle = 'Are you sure you want to archive it?';
+    }
+  
+    const modalData = {
+      title: modalTitle,
+      iconClass: 'fas fa-exclamation-circle fa-4x u-red',
+      btnLabel: [
+        { type: 'Btn', label: 'No', class: 'secondary' },
+        { type: 'Btn', label: 'Yes', class: 'primary' }
+      ],
+      archiveData: this.archiveData,
+      archiveWarningMessage: this.archiveWarningMessage,
+      archiveFailedMessage: this.archiveFailedMessage
+    };
+  
+    this.simpleModalService.addModal(FsArchiveModalComponent, { modalData })
+      .subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.setDataSourceAgGrid();
+        }
+      });
+  }
+  
+  
 }
