@@ -7,7 +7,7 @@
             <input class="u-w-100 form-control" type="text" [ngClass]="{'invalid': setting?.invalid}"  bsDatepicker #dp="bsDatepicker"
             [placeholder]="calculatedPlaceholder" [(ngModel)]="selectedDate"
                 (bsValueChange)="onDateChange($event)"
-                [bsConfig]="{containerClass: 'theme-default custom-datepicker-theme'}"
+                [bsConfig]="{containerClass: 'theme-default custom-datepicker-theme', adaptivePosition : true}"
                 [disabled]="setting?.disabled"
                 [minDate]="min"
                 [maxDate]="max"
