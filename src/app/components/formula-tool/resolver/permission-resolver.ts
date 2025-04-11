@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Resolve } from "@angular/router";
-import { formulaService } from "src/app/components/formula-tool/summary.service";
+import { FormulaService } from "src/app/components/formula-tool/formula.service";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -9,10 +9,10 @@ import { environment } from "src/environments/environment";
 
 export class PermissionResolver implements Resolve<any> {
 
-    constructor(private formulaService: formulaService) {};
+    constructor(private FormulaService: FormulaService) {};
 
     resolve() {
-        return this.formulaService.getPermission()
+        return this.FormulaService.getPermission()
         .then((response: any) => {
             if (response && response.data && !response.data.permissions.Read) {
                 window.location.href = environment.oldCockpit + '/router.php/dashboard';

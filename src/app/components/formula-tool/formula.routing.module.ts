@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { formulaComponent } from './summary.component';
+import { FormulaComponent } from './formula.component';
 import { FilterListResolver } from './resolver/filter-list.resolver';
 import { PermissionResolver } from 'src/app/components/formula-tool/resolver/permission-resolver';
 import { FormulaDetailsComponent } from './formula-details/formula-details.component';
@@ -16,7 +16,7 @@ const routes: Routes = [
         children: [
             {
                 path: '',
-                component: formulaComponent
+                component: FormulaComponent
             },
             {
                 path: 'add',
@@ -42,4 +42,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class SummaryRoutingModule { }
+export class FormulaRoutingModule { }
