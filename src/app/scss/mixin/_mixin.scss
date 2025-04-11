@@ -37,11 +37,11 @@
     border: 0;
     &:hover,
     &:focus{
-        outline: 2px solid $colors-v2-base-error!important;
-        border-color:$colors-v2-base-error!important
+        outline: 2px solid $colors-v2-base-error !important;
+        border-color:$colors-v2-base-error !important
     }
     &::placeholder {
-        color: $colors-v2-base-error!important;
+        color: $colors-v2-base-error !important;
     }
 }
 
