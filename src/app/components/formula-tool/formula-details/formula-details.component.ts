@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { formulaService } from '../summary.service';
+import { FormulaService } from '../formula.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -42,7 +42,7 @@ export class FormulaDetailsComponent implements OnInit {
     archiveFailedMessage: string = '';
 
     constructor(
-        private formulaService: formulaService,
+        private FormulaService: FormulaService,
         private formulaDetailService: formulaDetailService,
         private route: ActivatedRoute,
         private router: Router,
@@ -55,7 +55,7 @@ export class FormulaDetailsComponent implements OnInit {
 
     ngOnInit(): void {
         const token = this.authService.getToken();
-        this.formulaService.getDropdown(token).then(result => {
+        this.FormulaService.getDropdown(token).then(result => {
             this.filterList = result;
           }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
@@ -80,7 +80,7 @@ export class FormulaDetailsComponent implements OnInit {
     async getFormulaData(formulaId : string) {
         try {
             this.spinner.show();
-            await this.formulaService.getDetails(formulaId).then((res: any) => {
+            await this.FormulaService.getDetails(formulaId).then((res: any) => {
                 this.spinner.hide();
                 if (!res.hasError) {
                     this.updateFormulaData(res.data);
