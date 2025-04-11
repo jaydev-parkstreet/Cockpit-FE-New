@@ -23,46 +23,47 @@ export class FormulaCrudService {
          * @param duplicate whether the form is in duplicate mode
          * @param id the formula id
          * @returns the formatted model
+         * @author PSI-VIII
          */
         formatModelFormulaTool(model: any, filtersList: any, edit: boolean, duplicate: boolean, id: number): any {
-                if (!Object.keys(model).length) {
-                        return {};
-                }
+            if (!Object.keys(model).length) {
+          return {};
+            }
 
-                let modelFormat: any = {
-                        name: model.name || "",
-                        description: model.description || "",
-                        ingredient: Array.isArray(model.ingredient) && model.ingredient.length > 0
-                                ? model.ingredient.map((item: any) => ({
-                                        id: item.id || null,
-                                        name: item.name || null,
-                                        quantity: item.quantity || null,
-                                        unit: item.unit || null
-                                }))
-                                : [],
-                        compliance: model.compliance === "1" ? 1 : 0,
-                        is_organic: model.is_organic ? 1 : 0,
-                        use_up: model.use_up === "1" ? 1 : 0,
-                        abv: model.abv || "",
-                        cola_ttb_id: model.cola_ttb_id || "",
-                        nabca_code: model.nabca_code || "",
-                        bdn_code: model.bdn_code || "",
-                        unimerc_code: model.unimerc_code || "",
-                        client_id: model.client_id || "",
-                        system_id: model.system_id || "",
-                        scc_code: model.scc_code || "",
-                        upc_code: model.upc_code || ""
-                };
+            let modelFormat: any = {
+          name: model.name || "",
+          description: model.description || "",
+          ingredient: Array.isArray(model.ingredient) && model.ingredient.length > 0
+              ? model.ingredient.map((item: any) => ({
+            id: item.id || null,
+            name: item.name || null,
+            quantity: item.quantity || null,
+            unit: item.unit || null
+              }))
+              : [],
+          compliance: model.compliance === "1" ? 1 : 0,
+          is_organic: model.is_organic ? 1 : 0,
+          use_up: model.use_up === "1" ? 1 : 0,
+          abv: model.abv || "",
+          cola_ttb_id: model.cola_ttb_id || "",
+          nabca_code: model.nabca_code || "",
+          bdn_code: model.bdn_code || "",
+          unimerc_code: model.unimerc_code || "",
+          client_id: model.client_id || "",
+          system_id: model.system_id || "",
+          scc_code: model.scc_code || "",
+          upc_code: model.upc_code || ""
+            };
 
-                if (edit && !duplicate) {
-                        modelFormat.id = id;
-                }
+            if (edit && !duplicate) {
+          modelFormat.id = id;
+            }
 
-                if (duplicate) {
-                        modelFormat.id = null;
-                }
+            if (duplicate) {
+          modelFormat.id = null;
+            }
 
-                return modelFormat;
+            return modelFormat;
         }
 
         /**
@@ -70,6 +71,7 @@ export class FormulaCrudService {
          * 
          * @param filtersList
          * @returns The form field configuration.
+         * @author PSI-VIII
          */
         getFormulaFieldConfig(filtersList) {
                 return {
@@ -353,6 +355,7 @@ export class FormulaCrudService {
          * 
          * @param formulaData
          * @returns The response from the API.
+         * @author PSI-VIII
          */
         saveFormula(formulaData) {
                 return this.http
