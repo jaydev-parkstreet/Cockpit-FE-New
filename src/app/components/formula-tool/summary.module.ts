@@ -11,12 +11,15 @@ import { RouterModule } from '@angular/router';
 import { SummaryRoutingModule } from './summary.routing.module';
 import { FormulaDetailsComponent } from './formula-details/formula-details.component';
 import { FsArchiveModalComponent } from './fs-archive-modal/fs-archive-modal.component';
+import { FormulaCrudComponent } from './formula-crud/formula-crud.component';
 
 @NgModule({
     declarations: [
         formulaComponent,
         FormulaDetailsComponent,
-        FsArchiveModalComponent
+        FsArchiveModalComponent,
+        FormulaCrudComponent,
+        
     ],
     providers: [{
         provide: ErrorHandler,

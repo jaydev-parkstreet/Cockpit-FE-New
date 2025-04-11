@@ -1,0 +1,19 @@
+<div class="formula-management u-pg-pt-1 u-bg-neutral-light-v-low">
+    <app-header-tool
+        titleText="Formula"
+        titleIcon="fas fa-file-alt">
+    </app-header-tool>
+
+    <app-psi-crud-form
+        [leftHeaderTitle]="leftTitle"
+        [rightHeaderTitle]="formulaTitle"
+        [sellectedData]="sellectedData"
+        [crudFieldConfig]="crudFieldConfig"
+        [formSubmitted]="formSubmitted"
+        [shouldClearAllFields]="true"
+        (clearAllClicked)="onClearAllClicked()"
+        [form]="formulaForm"
+        (onDropDownChange)="onDropdownStateChange($event.field , $event.event)"
+        (formSubmit)="onSubmit($event)">
+    </app-psi-crud-form>
+</div>

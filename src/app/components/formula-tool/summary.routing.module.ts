@@ -4,6 +4,7 @@ import { formulaComponent } from './summary.component';
 import { FilterListResolver } from './resolver/filter-list.resolver';
 import { PermissionResolver } from 'src/app/components/formula-tool/resolver/permission-resolver';
 import { FormulaDetailsComponent } from './formula-details/formula-details.component';
+import { FormulaCrudComponent } from './formula-crud/formula-crud.component';
 
 const routes: Routes = [
     {
@@ -16,6 +17,13 @@ const routes: Routes = [
             {
                 path: '',
                 component: formulaComponent
+            },
+            {
+                path: 'add',
+                component: FormulaCrudComponent,
+                resolve: {
+                    filterList: FilterListResolver
+                }
             },
             {
                 path: ':id',
