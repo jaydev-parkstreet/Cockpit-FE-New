@@ -46,21 +46,17 @@ export class FormulaCrudComponent implements OnInit {
         this.permissions = this.route.snapshot.data['permissions'];
         const token = this.authService.getToken();
         this.formulaService.getDropdown(token).then(result => {
-            this.filtersList = result;
-            this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
-          
-          }).catch(error => {
-            console.error('Failed to fetch dropdown:', error);
-          });
+        this.filtersList = result;
+        this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
+        }).catch(error => {
+        console.error('Failed to fetch dropdown:', error);
+        });
         this.leftTitle = 'FORMULA CREATION';
         this.formulaTitle = '';
-        
         this.modalData = this.commonService.getModalData('All data will be lost.', 'Are you sure you wish to exit?');
-
         if (!this.permissions.permissions.Create) {
             this.router.navigate(['formula']);
         }
-
         let formulaId = this.route.snapshot.paramMap.get('id');
         this.duplicate = this.route.snapshot.data.isDuplicate || false;
         if (formulaId) {
@@ -72,7 +68,7 @@ export class FormulaCrudComponent implements OnInit {
         if (formulaId) {
             this.getFormulaData(formulaId);
         }
-        this.getFormControl();      
+        this.getFormControl();    
     }
 
     /**
@@ -122,12 +118,12 @@ export class FormulaCrudComponent implements OnInit {
         return result.length === 0 ? null : result;
     }
 
-    onClearAllClicked(): void {
-        console.log('Clear All button clicked');
-    }
-    onDropdownStateChange(field: any, event: any): void {
-        console.log('Dropdown state changed:', field, event);
-    }
+    // onClearAllClicked(): void {
+    //     console.log('Clear All button clicked');
+    // }
+    // onDropdownStateChange(field: any, event: any): void {
+    //     console.log('Dropdown state changed:', field, event);
+    // }
 
     onSubmit(event: string) {
         if (event === "Submit") {
