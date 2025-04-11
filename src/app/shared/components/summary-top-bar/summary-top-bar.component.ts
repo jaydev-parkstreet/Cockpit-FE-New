@@ -19,10 +19,9 @@ export class SummaryTopBarComponent implements OnInit {
   @Output() onEnter = new EventEmitter<any>();
   @Output() onClickAction: EventEmitter<{ action: any }> = new EventEmitter<{ action: any }>();
   @Output() excelExport = new EventEmitter<any>();
+  @Output() OnChangeDateModel = new EventEmitter<any>();
   topBarConfig: any;
   tooltipText: any;
-  // isExpandFilter = false;
-  dropdown1Label = 'Product Status';
   selectedFilters: { [key: string]: any } = {}
   isAllItemsSelected: boolean = false;
   isIndeterminate: boolean = false;
@@ -30,6 +29,7 @@ export class SummaryTopBarComponent implements OnInit {
   @ViewChildren(CmpCheckboxComponent) checkBoxes: QueryList<CmpCheckboxComponent>;
   checkedItems: any = {};
   datesArray: any = [];
+
   constructor(private router: Router) { }
 
   ngOnInit(): void {
@@ -66,9 +66,6 @@ export class SummaryTopBarComponent implements OnInit {
     ]
   }
 
-  // toggleFilter() {
-  //   this.isExpandFilter = !this.isExpandFilter;
-  // }
 
   onFilterChange(key: string, value: any) {
     this.selectedFilters[key] = value;

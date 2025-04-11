@@ -686,4 +686,9 @@ export class ProductManagementComponent implements OnInit {
 			this.timerSubscriptions.delete(productID);
 		}
 	}
+
+	onChangeDateModel(event: any) {
+		debugger
+	}
+
 }

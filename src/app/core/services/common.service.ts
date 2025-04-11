@@ -403,8 +403,6 @@ export class CommonService {
     getDatepickerConfig(options = {}) {
         const defaultConfig = {
             placeholder: 'mm/dd/yyyy',
-            required: false,
-            disabled: false,
             invalid: false,
             errorMessage: 'Field is Required'
         };
