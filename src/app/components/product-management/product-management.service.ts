@@ -363,30 +363,6 @@ export class ProductManagementService {
                     divClass: 'col-4 noleftpadding', 
                     setting: this.getMultiSelectConfig('Select Organic')
                 },
-                {
-                    key:'Product Code',
-                    label: 'Product Code',
-                    type: 'datepicker',
-                    divClass: 'col-4',
-                    setting: this.commonService.getDatepickerConfig({ placeholder: 'Select Product Date' })
-                },
-                {
-                    key: "Enhance",
-                    label: 'Enhance',
-                    type: 'datepicker',
-                    divClass: 'col-4',
-                    initialSelectedDate: '04/01/2025',
-                    setting: this.commonService.getDatepickerConfig()
-                },
-
-                {
-                    key: "test1",
-                    label: 'test1',
-                    type: 'daterange',
-                    divClass: 'col-4 noleftpadding',
-                    initialSelectedDate: '04/01/2025',
-                    setting: this.commonService.getDatepickerConfig()
-                },
                 { type: 'checkbox', name: 'is_active', label: 'Inactive Only', placeholder: 'Inactive Only', divClass: 'col-4' },
                 { type: 'checkbox', name: 'is_rejected', label: 'Rejected Only', placeholder: 'Rejected Only', divClass: 'col-4' }
             ],
