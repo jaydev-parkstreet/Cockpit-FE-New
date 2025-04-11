@@ -373,6 +373,7 @@ export class ProductManagementService {
                     label: 'Enhance',
                     type: 'daterange',
                     divClass: 'col-4',
+                    initialSelectedDate: '04/01/2025',
                     setting: this.commonService.getDatepickerConfig()
                 },
                 { type: 'checkbox', name: 'is_active', label: 'Inactive Only', placeholder: 'Inactive Only', divClass: 'col-4' },

@@ -161,6 +161,7 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
             this.selectedFiles = [];
             this.modalData.btnLabel[0].label = 'Cancel';
             this.modalData.btnLabel[1].label = 'Upload';
+            this.modalData.btnLabel[1].isDisable = true;
         } else {
             this.close();
         }

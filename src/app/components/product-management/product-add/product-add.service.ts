@@ -39,6 +39,17 @@ export class ProductAddService {
                     inputSetting: this.commonService.getDropdownConfig('Select Supplier')
                 },
                 {
+                    label: 'Enhance',
+                    name: 'Enhance',
+                    type: 'daterange',
+                    divClass: 'col-4',
+                    isRequired: true,
+                    isDisabled: false,
+                    //initialSelectedDate: '04/01/2025',
+                    setting: this.commonService.getDatepickerConfig(  )
+                    
+                },
+                {
                     key: 'brand',
                     name: 'brand',
                     label: 'Brand',

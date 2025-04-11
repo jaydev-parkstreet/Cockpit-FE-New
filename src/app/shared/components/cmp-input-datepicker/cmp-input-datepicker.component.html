@@ -1,26 +1,26 @@
 <div class="input-datepicker">
     <div>
-        <div class="c-label" [ngClass]="{'required': setting?.required}" *ngIf="dateLabel">
-            <label class="typography-paragraph-black-regular u-pg-mb-0" for="">{{dateLabel}}</label>
+        <div class="c-label" [ngClass]="{'required': fieldConfig?.isRequired}" *ngIf="fieldConfig?.label">
+            <label class="typography-paragraph-black-regular u-pg-mb-0" for="">{{fieldConfig?.label}}</label>
         </div>
         <div class="datepicker-container u-flex u-align-center u-justify-between u-relative">
-            <input class="u-w-100 form-control" type="text" [ngClass]="{'invalid': setting?.invalid}"  bsDatepicker #dp="bsDatepicker"
+            <input class="u-w-100 form-control" type="text" [ngClass]="validationClasses"  bsDatepicker #dp="bsDatepicker"
             [placeholder]="calculatedPlaceholder" [(ngModel)]="selectedDate"
                 (bsValueChange)="onDateChange($event)"
                 [bsConfig]="{containerClass: 'theme-default custom-datepicker-theme', adaptivePosition : true}"
-                [disabled]="setting?.disabled"
+                [disabled]="fieldConfig?.isDisabled"
                 [minDate]="min"
                 [maxDate]="max"
                 readonly/>
             <span class="clear-date u-flex-center u-pg-s-2" *ngIf="selectedDate" (click)="clearDate()">
                 <i class="fal fa-times-circle"></i>
             </span>
-            <button type="button" class="dropdownbtn u-flex-center u-absolute" (click)="toggleDropdown()" [disabled]="setting?.disabled">
+            <button type="button" class="dropdownbtn u-flex-center u-absolute" (click)="toggleDropdown()" [disabled]="fieldConfig?.isDisabled">
                 <i [class]="selectedDate? 'fas fa-calendar-check' : 'fas fa-calendar-alt'"></i>
             </button>
         </div>
-        <div class="Error-message-container" *ngIf="setting?.invalid">
-            <span class="error-message">{{ setting?.errorMessage }}</span>
+        <div class="Error-message-container" *ngIf="fieldConfig?.setting?.invalid">
+            <span class="error-message">{{ fieldConfig?.setting?.errorMessage }}</span>
         </div>
     </div>
 </div>
