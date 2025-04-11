@@ -39,7 +39,7 @@
     }
 
     &.invalid {
-        background: $colors-v2-base-error-t-10;
+        background: $colors-v2-base-error-t-10 !important;
         border: 1px solid $colors-v2-base-error;
        
         &::placeholder {
