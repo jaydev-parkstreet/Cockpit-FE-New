@@ -11,7 +11,7 @@
             placeholder="mm/dd/yyyy" 
             tabindex="0" 
             readonly>
-        <i class="fal fa-times-circle position-absolute u-neutral-light u-csr-ptr clearSelectedItems"></i>
+        <i class="fal fa-times-circle position-absolute u-neutral-light u-csr-ptr clearSelectedItems" *ngIf="selectedDate !== 'mm/dd/yyyy - mm/dd/yyyy'" (click)="clearDate()"></i>
         <button class="dropdown-button">
             <i [ngClass]="isDropdownOpen() ? 'fal fa-chevron-up' : 'fal fa-chevron-down'" aria-hidden="true"></i>
         </button>
@@ -41,8 +41,7 @@
                     [min]="min"
                     [max]="max"
                     [selectedDate]="toDate" 
-                    (dateModelChange)="onDateSelected($event)" 
-                    *ngIf="showToDate">
+                    (dateModelChange)="onDateSelected($event)">
                 </app-cmp-input-datepicker>
             </div>
         </div>

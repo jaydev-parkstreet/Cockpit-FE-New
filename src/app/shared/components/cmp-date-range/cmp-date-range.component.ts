@@ -18,7 +18,6 @@ export class CmpDateRangeComponent implements OnInit {
   @Input() label: string;
   @Input() required: boolean = false;
   @Input() datesArray: DateRangeOption | null;
-  @Input() showToDate: boolean = false;
   min: Date;
   max: Date;
 
@@ -59,6 +58,13 @@ export class CmpDateRangeComponent implements OnInit {
     return this.isOpen;
   }
 
+  /**
+   * Updates from/to date based on selection and refreshes the display string
+   *
+   * @param event - The emitted object containing the type of date ('from', 'to', or 'default') and the selected Date value.
+   * @author PSI-Enhancement
+   * @returns void
+   */
   onDateSelected(event: { type: 'from' | 'to' | 'default', value: Date | null }) {
     if (event.type === 'from' || event.type === 'default') {
       this.fromDate = this.datePipe.transform(event.value, 'MM/dd/yyyy');
@@ -69,14 +75,27 @@ export class CmpDateRangeComponent implements OnInit {
     this.formatDateRange();
   }
 
+  /**
+   * Builds formatted date range string for display.
+   *
+   * @author PSI-Enhancement
+   * @returns void
+   */
   formatDateRange(): any {
     const placeholder = 'mm/dd/yyyy';
   
     const fromStr = this.fromDate || placeholder;
     const toStr = this.toDate || placeholder;
-    this.selectedDate = this.showToDate ? `${fromStr} - ${toStr}` : fromStr;
+    this.selectedDate = `${fromStr} - ${toStr}`;
   }
 
+  /**
+   * Sets initial or provided date values and updates display.
+   *
+   * @param {any} value - Optional date range value to initialize; if not provided, defaults are used.
+   * @author PSI-Enhancement
+   * @returns void
+   */
   setDateValues(value:any) {
     if (!value) {
       this.defaultDateValues = this.datesArray ? this.datesArray[0] : null;
@@ -87,6 +106,16 @@ export class CmpDateRangeComponent implements OnInit {
     this.toDate = this.datePipe.transform(this.defaultDateValues?.end, 'MM/dd/yyyy');
     this.min = this.commonService.convertToDateObject(this.defaultDateValues?.start);
     this.max = this.commonService.convertToDateObject(this.defaultDateValues?.end);
+    this.formatDateRange();
+  }
+  
+  /**
+  * Clears the selected date range and resets default values to empty state.
+  */ 
+  clearDate() {
+    event.stopPropagation();
+    this.fromDate = this.toDate = this.selectedDate = null;
+    this.defaultDateValues = {id: 0,name: '',start: null,end: null,mobile_name: ''};
     this.formatDateRange();
   }
 }
