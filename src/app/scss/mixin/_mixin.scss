@@ -35,9 +35,13 @@
     background: $colors-v2-base-error-t-10;
     outline: 2px solid $colors-v2-base-error;
     border: 0;
-
+    &:hover,
+    &:focus{
+        outline: 2px solid $colors-v2-base-error!important;
+        border-color:$colors-v2-base-error!important
+    }
     &::placeholder {
-        color: $colors-v2-base-error;
+        color: $colors-v2-base-error!important;
     }
 }
 

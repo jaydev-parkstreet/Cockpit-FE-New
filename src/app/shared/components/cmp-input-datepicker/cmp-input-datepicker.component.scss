@@ -16,12 +16,12 @@
             cursor: pointer;
         }
 
-        &:hover:not(:has(input[disabled])):not(:focus-within) input {
+        &:hover:not(:has(input[disabled])):not(:has(input.invalid)):not(:focus-within) input {
             outline: 2px solid $colors-neutral-black;
             border: none;
         }
 
-        &:focus-within input {
+        &:focus-within:not(:has(input.invalid)) input {
             outline: 2px solid $colors-v2-base-secondary-v-medium;
             border: none;
         }
