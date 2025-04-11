@@ -3,6 +3,9 @@
         titleText="Product Management System"
         titleIcon="fas fa-wine-bottle">
     </app-header-tool>
+
+    <app-psi-switcher-tab
+    ></app-psi-switcher-tab>
     
     <div class="product-tool-container">
         <div class="check-container u-pg-pr-1">
@@ -15,8 +18,7 @@
                     (applyFilters)="applyFilters($event)"
                     (resetFilters)="resetFilters()"
                     (onEnter)="universalSearch($event)"
-                    (onClickAction)="onClickAction($event)"
-                    >
+                    (onClickAction)="onClickAction($event)">
                 </app-summary-top-bar>
             </div>
         </div>
