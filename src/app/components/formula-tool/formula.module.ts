@@ -8,7 +8,7 @@ import { ConfirmationModalComponent } from '../organism/confirmation-modal/confi
 import { StatelessModule } from 'src/app/stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { RouterModule } from '@angular/router';
-import { SummaryRoutingModule } from './formula.routing.module';
+import { FormulaRoutingModule } from './formula.routing.module';
 import { FormulaDetailsComponent } from './formula-details/formula-details.component';
 import { FsArchiveModalComponent } from './fs-archive-modal/fs-archive-modal.component';
 import { FormulaCrudComponent } from './formula-crud/formula-crud.component';
@@ -33,7 +33,7 @@ import { FormulaCrudComponent } from './formula-crud/formula-crud.component';
         StatelessModule,
         AgGridModule,
         RouterModule,
-        SummaryRoutingModule,
+        FormulaRoutingModule,
         SimpleModalModule.forRoot({ container: "modal-container" })
     ],
     entryComponents: [
