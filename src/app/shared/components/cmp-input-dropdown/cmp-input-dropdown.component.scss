@@ -32,13 +32,7 @@
         }
 
         &.ps-required-error {
-            background: $colors-v2-base-error-t-10;
-            outline: 2px solid $colors-v2-base-error;
-            border: 0;
-
-            .placeholder-text {
-                color: $colors-v2-base-error;
-            }
+            @include ps-required-error;
         }
     }
 

@@ -66,6 +66,16 @@
                         (valueChanged)="onCheckedInput(field.name, $event)">
                     </app-psi-checkbox>
                 </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
+                    <app-cmp-input-datepicker
+                        [fieldConfig]="field"
+                        [validationClasses] = "{'invalid': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                        (dateModelChange) ="OnChangeDateModel.emit({ type: 'from', value: $event})">
+                    </app-cmp-input-datepicker>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>  
+                </div>
             </div>
             <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
                 <div *ngFor="let field of crudFieldConfig.btnLabel">
@@ -119,6 +129,16 @@
                     <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
+                    <app-cmp-input-datepicker
+                        [fieldConfig]="field"
+                        [validationClasses] = "{'invalid': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                        (dateModelChange) ="OnChangeDateModel.emit({ type: 'from', value: $event})">
+                    </app-cmp-input-datepicker>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>  
                 </div>
             </div>
         </div>

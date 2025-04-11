@@ -271,9 +271,16 @@ input:-webkit-autofill:active {
     font-size: 12px;
     background-repeat: no-repeat !important;
     background-size: 12px;
-    padding: 0px 20px;
     background-position: left center;
     display: block;
+
+    &::before {
+        content: "\f06a";
+        font-family: "Font Awesome 5 Pro";
+        font-weight: 900;
+        padding-right: 4px;
+        padding-left: 2px;
+    }
 }
 
 /* Input Label */

@@ -19,26 +19,53 @@ export class SummaryTopBarComponent implements OnInit {
   @Output() onEnter = new EventEmitter<any>();
   @Output() onClickAction: EventEmitter<{ action: any }> = new EventEmitter<{ action: any }>();
   @Output() excelExport = new EventEmitter<any>();
+  @Output() OnChangeDateModel = new EventEmitter<any>();
   topBarConfig: any;
   tooltipText: any;
-  // isExpandFilter = false;
-  dropdown1Label = 'Product Status';
   selectedFilters: { [key: string]: any } = {}
   isAllItemsSelected: boolean = false;
   isIndeterminate: boolean = false;
   @ViewChildren(CmpInputDropdownComponent) dropdowns: QueryList<CmpInputDropdownComponent>;
   @ViewChildren(CmpCheckboxComponent) checkBoxes: QueryList<CmpCheckboxComponent>;
   checkedItems: any = {};
-  
+  datesArray: any = [];
+
   constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.tooltipText = 'Export To Excel';
+    this.datesArray= [
+      {
+          "id": 15,
+          "name": "Last 30 Days",
+          "start": "2025-03-11",
+          "end": "2025-04-11",
+          "mobile_name": "L30"
+      },
+      {
+          "id": 5,
+          "name": "This Month-to-Date",
+          "start": "2025-04-01",
+          "end": "2025-04-11",
+          "mobile_name": "MTD"
+      },
+      {
+          "id": 7,
+          "name": "This Quarter-to-Date",
+          "start": "2025-04-01",
+          "end": "2025-04-11",
+          "mobile_name": "QTD"
+      },
+      {
+          "id": 9,
+          "name": "This Year-to-Date",
+          "start": "2025-01-01",
+          "end": "2025-04-11",
+          "mobile_name": "YTD"
+      }
+    ]
   }
 
-  // toggleFilter() {
-  //   this.isExpandFilter = !this.isExpandFilter;
-  // }
 
   onFilterChange(key: string, value: any) {
     this.selectedFilters[key] = value;

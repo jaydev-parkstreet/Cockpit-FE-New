@@ -32,13 +32,11 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   @ViewChild('filerInput') filerInput!: ElementRef<HTMLInputElement>;
 
   @Input() modalData: any;
-  @Input() attachmentDetails: any;
   dropdownConfig: any;
-  filters: any = {};
   selectedFileCount: number = 0;
   showFooterMsg: boolean = true;
   defaultPermission: number = 0;
-  permission_id: any;
+  permission_id: number;
   filetype_dropdown: any;
   filesTypeName: string = '';
   defaultfileTypeDropdown: any;
@@ -52,7 +50,9 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
 
   ngOnInit(): void {
     this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);
+    console.log(this.dropdownConfig);
     this.filetype_dropdown = this.commonService.getSingleSelectDropdownConfig('Select file type', true);
+    console.log(this.filetype_dropdown);
     this.modelAttachmentPermission = [this.modalData?.attachmentPermission[0]];
   }
 
@@ -131,6 +131,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   * @param obj
   */
   getVisibilityDropdownValue(value: any) {
+    console.log(value);
     this.permission_id = value[0]?.id;
     this.modelAttachmentPermission = value;
   }
