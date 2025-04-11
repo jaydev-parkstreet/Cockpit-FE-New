@@ -688,7 +688,6 @@ export class ProductManagementComponent implements OnInit {
 	}
 
 	onChangeDateModel(event: any) {
-		debugger
 	}
 
 }
