@@ -27,10 +27,15 @@
         }
 
         &:has(input[disabled]) {
-            background-color: $colors-neutral-light-v-low;
             color: $colors-neutral-light;
+
+            input,
             button {
                 cursor: not-allowed;
+            }
+
+            input {
+                background-color: $colors-neutral-light-v-low !important;
             }
         }
 
