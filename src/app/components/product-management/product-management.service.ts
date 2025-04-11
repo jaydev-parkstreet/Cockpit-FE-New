@@ -383,7 +383,7 @@ export class ProductManagementService {
                     key: "test1",
                     label: 'test1',
                     type: 'daterange',
-                    divClass: 'col-4',
+                    divClass: 'col-4 noleftpadding',
                     initialSelectedDate: '04/01/2025',
                     setting: this.commonService.getDatepickerConfig()
                 },
