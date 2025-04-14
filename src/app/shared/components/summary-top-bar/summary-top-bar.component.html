@@ -60,7 +60,24 @@
                     (dropdownClosedWithServerFilteredItems)="handleDropdownCloseWithServerFiltering(filter.key, $event)">
                 </app-cmp-input-dropdown>
             </div>
+            <div class="filter-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'datepicker'">
+                <app-cmp-input-datepicker
+                    [fieldConfig]="filter"
+                    [setting]="filter.setting"
+                    [selectedDate] ="filter.initialSelectedDate"
+                    (dateModelChange) ="OnChangeDateModel.emit({ type: 'from', value: $event})">
+                </app-cmp-input-datepicker>       
+            </div>
+
+            <div class="filter-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'daterange'">
+                <app-cmp-date-range 
+                    [label]="filter.label"
+                    [datesArray]="datesArray">
+                </app-cmp-date-range>
+            </div>
+
         </ng-container>
+      
         <div class="col-12 u-flex">
             <ng-container *ngFor="let filter of config.filtersConfig">
                 <div class="filter-item checkbox-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'checkbox'">

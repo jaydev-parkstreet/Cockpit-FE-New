@@ -21,7 +21,11 @@ import { CmpAttachmentModalComponent } from './components/cmp-attachment-modal/c
 import { PsiCrudFormComponent } from './psi-crud-form/psi-crud-form.component';
 import { NoRecordComponent } from './components/no-record/no-record.component';
 import { CmpNotesModalComponent } from './components/cmp-notes-modal/cmp-notes-modal.component';
-import { QuillModule } from 'ngx-quill'
+import { CmpDateRangeComponent } from './components/cmp-date-range/cmp-date-range.component';
+import { QuillModule } from 'ngx-quill';
+import { CmpInputDatepickerComponent } from './components/cmp-input-datepicker/cmp-input-datepicker.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { CmpSummaryTopBoxComponent } from './components/cmp-summary-top-box/cmp-summary-top-box.component';
 
 @NgModule({
     declarations: [
@@ -42,7 +46,10 @@ import { QuillModule } from 'ngx-quill'
         CmpAttachmentModalComponent,
         PsiCrudFormComponent,
         NoRecordComponent,
-        CmpNotesModalComponent
+        CmpNotesModalComponent,
+        CmpDateRangeComponent,
+        CmpInputDatepickerComponent,
+        CmpSummaryTopBoxComponent
     ],
     imports: [
         CommonModule,
@@ -50,7 +57,8 @@ import { QuillModule } from 'ngx-quill'
         ReactiveFormsModule,
         StatelessModule,
         AgGridModule,
-        QuillModule.forRoot()
+        QuillModule.forRoot(),
+        BsDatepickerModule.forRoot()
     ],
 
     exports: [
@@ -70,7 +78,10 @@ import { QuillModule } from 'ngx-quill'
         CmpButtonComponent,
         PsiCrudFormComponent,
         NoRecordComponent,
-        CmpNotesModalComponent
+        CmpNotesModalComponent,
+        CmpDateRangeComponent,
+        CmpInputDatepickerComponent,
+        CmpSummaryTopBoxComponent
     ]
 })
 export class SharedModule { }
