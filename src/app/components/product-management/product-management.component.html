@@ -5,7 +5,10 @@
     </app-header-tool>
 
     <app-psi-switcher-tab
-    ></app-psi-switcher-tab>
+        [tabsConfig]="tabs"
+        [activeTab]="currentTab"
+        (tabSelected)="onTabChange($event)">
+    </app-psi-switcher-tab>
     
     <div class="product-tool-container">
         <div class="check-container u-pg-pr-1">

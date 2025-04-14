@@ -1,1 +1,11 @@
-<p>psi-switcher-tab works!</p>
+<div class="psi-switcher-tab u-flex-center">
+    <ul class="nav nav-pills">
+        <li class="u-flex-h-center u-justify-between u-pg-px-2 u-pg-py-1"
+            *ngFor="let tab of tabsConfig"
+            [class.active]="isTabActive(tab.key)"
+            [class.disabled]="tab.isDisable"
+            (click)="onTabClick(tab)">
+            <span>{{ tab.label }}</span>
+        </li>
+    </ul>
+</div>
