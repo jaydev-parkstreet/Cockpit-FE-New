@@ -39,14 +39,16 @@
                     <app-notes-tab
                         *ngIf = "activeTab === 'notes'"
                         [entity] = "formulaDetails.id"
-                        [permissions] = "permissions">
+                        [permissions] = "filterList"
+                        [filterList] = "filterList">
                     </app-notes-tab>
                     <app-attachment-tab
                         *ngIf = "activeTab === 'attachments'"
                         [entity] = "formulaDetails.id"
-                        [permissions] = "permissions"
+                        [permissions] = "filterList"
                         [showFileType] = true
-                        [showPrivacyIcon] = true>
+                        [showPrivacyIcon] = true
+                        [filterList] = "filterList">
                     </app-attachment-tab>
                     <app-audit-tab
                         *ngIf="activeTab === 'auditTrail'"
