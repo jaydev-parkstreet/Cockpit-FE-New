@@ -10,7 +10,7 @@ import AppConstant from 'src/app/app.constant';
 @Injectable({
     providedIn: 'root'
 })
-export class formulaService {
+export class FormulaService {
 
     constructor(
         private http: HttpClient, private commonService: CommonService,
@@ -417,7 +417,7 @@ export class formulaService {
         actionIconsConfig.push({
             type: 'export',
             tooltipText: 'Export to Excel',
-            apiUrl: environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT,
+            apiUrl: environment.apiUrl + AppRoutes.FORMULA.EXCEL_EXPORT,
             params: this.commonService.parseRequest(reqObj)
         });
         actionIconsConfig.push({
@@ -544,7 +544,7 @@ export class formulaService {
      */
     excelExport(obj) {
         return this.http
-            .post(environment.apiUrl + AppRoutes.PRODUCT_TOOL.EXCEL_EXPORT, obj)
+            .post(environment.apiUrl + AppRoutes.FORMULA.EXCEL_EXPORT, obj)
             .pipe(map((response: any) => response));
     }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
-import { formulaService } from './summary.service';
+import { FormulaService } from './formula.service';
 import { AuthService } from '../authentication/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -15,11 +15,11 @@ import { CommonBackendService } from 'src/app/core/services/common-backend-servi
 import { FsArchiveModalComponent } from './fs-archive-modal/fs-archive-modal.component';
 @Component({
   selector: 'app-formula-tool',
-  templateUrl: './summary.html',
-  styleUrls: ['./summary.scss']
+  templateUrl: './formula.html',
+  styleUrls: ['./formula.scss']
 })
 
-export class formulaComponent implements OnInit {
+export class FormulaComponent implements OnInit {
   reportRequestObj: any = {};
   summaryResponse: any;
   dropdownData: any;
@@ -57,7 +57,7 @@ export class formulaComponent implements OnInit {
   archiveStatus: any;
 
   constructor(
-    private formulaService: formulaService,
+    private FormulaService: FormulaService,
     private authService: AuthService,
     private router: Router,
     private spinner: NgxSpinnerService,
@@ -70,19 +70,19 @@ export class formulaComponent implements OnInit {
 
   ngOnInit(): void {
     const token = this.authService.getToken();
-    this.formulaService.getDropdown(token).then(result => {
+    this.FormulaService.getDropdown(token).then(result => {
       this.filterList = result;
     }).catch(error => {
       console.error('Failed to fetch dropdown:', error);
     });
     this.permissions = this.route.snapshot.data['permissions'];
-    this.topPanelConfig = this.formulaService.getTopPanelConfig(this.permissions);
+    this.topPanelConfig = this.FormulaService.getTopPanelConfig(this.permissions);
     this.updateTopPanelConfig();
     this.reportRequestObj = {
       "page": this.reportRequestObj.page,
       "pageSize": 25,
       "sort": "unique_id",
-      "order": "asc",
+      "order": "dsc",
       "universal_search": "",
       "submission_id": [],
       "formula_status": [],
@@ -104,7 +104,7 @@ export class formulaComponent implements OnInit {
 
 
   initGridOptions() {
-    this.gridOptions = this.formulaService.getGridOption();
+    this.gridOptions = this.FormulaService.getGridOption();
     this.gridOptions.onSortChanged = (params) => {
       const allSortModels = params.columnApi.getAllColumns()
         .filter(col => col.getSort())
@@ -228,7 +228,7 @@ export class formulaComponent implements OnInit {
   openAttachmentListPopup(entity: any) {
     if (this.permissions.permissions.Update) {
       this.spinner.show();
-      this.formulaService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response: any) => {
+      this.FormulaService.getAttachmentList({ tool: this.filterList.tool_id, entity: entity }).subscribe((response: any) => {
         if (!response.hasErrors) {
           this.showAttachment(false, [entity], response);
         } else {
@@ -295,7 +295,7 @@ export class formulaComponent implements OnInit {
     const token = localStorage.getItem('authToken');
     const summaryData = this.reportRequestObj;
     try {
-      const response: any = await this.formulaService.getSummary(summaryData, token);
+      const response: any = await this.FormulaService.getSummary(summaryData, token);
       if (!response.hasError) {
         this.hasMoreRecords = response.data.length === 25;
         this.summaryResponse = response.data;
@@ -569,7 +569,7 @@ export class formulaComponent implements OnInit {
   }
 
   updateTopPanelConfig(isActive?: boolean) {
-    this.topPanelConfig.actions = this.formulaService.getActionsIconsConfig(
+    this.topPanelConfig.actions = this.FormulaService.getActionsIconsConfig(
       this.selectedRowCount,
       this.permissions,
       this.reportRequestObj,

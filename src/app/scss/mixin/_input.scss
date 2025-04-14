@@ -15,11 +15,11 @@
     font-family: $montserrat-regular;
     caret-color: $colors-v2-base-secondary-v-medium;
 
-    &:hover {
+    &:not([disabled]):not(.invalid):hover {
         outline: 2px solid $colors-neutral-black;
         border: none;
     }
-    &:focus {
+    &:not([disabled]):not(.invalid):focus {
         outline: 2px solid $colors-v2-base-secondary-v-medium;
         border: none;
     }
@@ -39,8 +39,8 @@
     }
 
     &.invalid {
-        background: $colors-v2-base-error-t-10;
-        border: 1px solid $colors-v2-base-error;
+        background: $colors-v2-base-error-t-10 !important;
+        border: 2px solid $colors-v2-base-error;
        
         &::placeholder {
             color: $colors-v2-base-error;
@@ -52,7 +52,7 @@
     margin-left: 16px;
     font-size: 12px;
     margin-bottom: 6px !important;
-    line-height: 12px;
+    line-height: 16px;
     color: $colors-neutral-black;
     position: relative;
 

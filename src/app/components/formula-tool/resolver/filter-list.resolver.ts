@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Resolve } from "@angular/router";
-import { formulaService } from "src/app/components/formula-tool/summary.service";
+import { FormulaService } from "src/app/components/formula-tool/formula.service";
 
 @Injectable({
     providedIn: 'root'
@@ -9,12 +9,12 @@ import { formulaService } from "src/app/components/formula-tool/summary.service"
 export class FilterListResolver implements Resolve<any> {
     
     constructor(
-        private formulaService: formulaService
+        private FormulaService: FormulaService
     ) {};
 
     resolve() {
         const token = localStorage.getItem('authToken');
-        return this.formulaService.getDropdown(token)
+        return this.FormulaService.getDropdown(token)
         .then((response: any) => response.data)
         .catch(() => null);
     }
