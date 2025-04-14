@@ -25,6 +25,10 @@ import { CmpDateRangeComponent } from './components/cmp-date-range/cmp-date-rang
 import { QuillModule } from 'ngx-quill';
 import { CmpInputDatepickerComponent } from './components/cmp-input-datepicker/cmp-input-datepicker.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { CmpSummaryTopBoxComponent } from './components/cmp-summary-top-box/cmp-summary-top-box.component';
+import { AttachmentTabComponent } from '../components/organism/attachment-tab/attachment-tab.component';
+import { AuditTabComponent } from '../components/organism/audit-tab/audit-tab.component';
+import { NotesTabComponent } from '../components/organism/notes-tab/notes-tab.component';
 
 @NgModule({
     declarations: [
@@ -47,7 +51,12 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
         NoRecordComponent,
         CmpNotesModalComponent,
         CmpDateRangeComponent,
-        CmpInputDatepickerComponent
+        CmpInputDatepickerComponent,
+        CmpSummaryTopBoxComponent,
+        AttachmentTabComponent,
+        AuditTabComponent,
+        NotesTabComponent
+
     ],
     imports: [
         CommonModule,
@@ -78,7 +87,11 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
         NoRecordComponent,
         CmpNotesModalComponent,
         CmpDateRangeComponent,
-        CmpInputDatepickerComponent
+        CmpInputDatepickerComponent,
+        CmpSummaryTopBoxComponent,
+        AttachmentTabComponent,
+        AuditTabComponent,
+        NotesTabComponent
     ]
 })
 export class SharedModule { }

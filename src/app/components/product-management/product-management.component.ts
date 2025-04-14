@@ -18,6 +18,7 @@ import { CommonBackendService } from 'src/app/core/services/common-backend-servi
 })
 
 export class ProductManagementComponent implements OnInit {
+	
 	reportRequestObj: any = {};
 	summaryResponse: any;
 	dropdownData: any;
@@ -686,8 +687,4 @@ export class ProductManagementComponent implements OnInit {
 			this.timerSubscriptions.delete(productID);
 		}
 	}
-
-	onChangeDateModel(event: any) {
-	}
-
 }

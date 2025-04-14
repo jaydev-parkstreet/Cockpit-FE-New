@@ -18,11 +18,12 @@ export class AttachmentTabComponent implements OnInit {
     @Input() permissions: any;
     @Input() showFileType: boolean;
     @Input() showPrivacyIcon: boolean;
+    @Input() filterList: any = {};
+
 
     isLoadingAttachments: boolean = false;
     updateFilePermissionLoading: boolean = false;
     attachments: any;
-    filterList: any = {};
 
     constructor(
         private commonBackendService: CommonBackendService,
@@ -33,7 +34,6 @@ export class AttachmentTabComponent implements OnInit {
 
     ngOnInit(): void {
         this.getAttachments();
-        this.getDropdown();
     }
 
     /**
@@ -63,20 +63,6 @@ export class AttachmentTabComponent implements OnInit {
         );
     }
 
-    /**
-     * Function to get Dropdown
-     * @author PSI-Enhancement
-     */
-    async getDropdown() {
-        const token = localStorage.getItem('authToken');
-        try {
-            const response: any = await this.productManagementService.getDropdown(token);
-            this.filterList = response.data;
-        }
-        catch (error) {
-            console.error("Error fetching summary:", error);
-        }
-    }
 
     /**
      * Function to show Attachment

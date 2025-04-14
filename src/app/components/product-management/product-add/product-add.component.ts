@@ -563,11 +563,22 @@ export class ProductAddComponent implements OnInit {
             });
     }
 
+    /**
+     * Function to update config.
+     * @param config
+     * @param isDisplayed
+     * @author PSI-Enhancement
+     */
     updateConfig = (config, isDisplayed) => {
         config.display = isDisplayed;
         config.isRequired = isDisplayed;
     };
 
+    /**
+     * Function to update sub brand client.
+     * @param selectedValue
+     * @author PSI-Enhancement
+     */
     updateSubBrandClient(selectedValue) {
         this.ProductAddService.getSubBrandClients(selectedValue[0]?.client_id, selectedValue[0]?.id).subscribe(subBrands => {
             this.sub_brand = [...subBrands, { id: '', name: 'Create New', isNew: true }];
