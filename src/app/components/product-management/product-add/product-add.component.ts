@@ -97,7 +97,7 @@ export class ProductAddComponent implements OnInit {
         this.productManagementService.getDetails(productId).then((response : any) => {
             this.commonService.hideSpinner();
             if (!response.hasError) {
-                this.renderConditionalFields(response.data.prod_type, this.crudFiltersList, this.productForm);
+                this.ProductAddService.renderConditionalFields(response.data.prod_type, this.crudFiltersList, this.productForm , this.crudFieldConfig);
                 this.productId = response.data.product_id;
                 setTimeout(() => {
                     if (this.duplicate) {
@@ -258,96 +258,169 @@ export class ProductAddComponent implements OnInit {
      */
     onDropdownStateChange(fieldName: any, selectedValue: any) {
         this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
-        if (fieldName == 'container_type' || fieldName == "client_id" || fieldName == "group"
-            || fieldName == "is_organic" || fieldName == "producer" || fieldName == "case_unit_of_measure" || fieldName == "brand"
-            || fieldName == "varietal" || fieldName == "vintage" || fieldName == "sub_type" || fieldName == "category" || fieldName == "source"
-            || fieldName == "country") {
+        const idFields = [
+            'container_type', 'client_id', 'group', 'is_organic', 'producer',
+            'case_unit_of_measure', 'brand', 'varietal', 'vintage', 'sub_type',
+            'category', 'source', 'country'
+        ];  
+        if (idFields.includes(fieldName)) {
             this.productForm.get(fieldName)?.setValue(selectedValue[0]?.id);
-        }
-        else {
-            this.productForm.get(fieldName)?.setValue(selectedValue[0].name);
+        } else {
+            this.productForm.get(fieldName)?.setValue(selectedValue[0]?.name);
         }
 
+        switch (fieldName) {
+            case 'client_id':
+                this.handleClientIdChange(selectedValue);
+                break;
+            case 'brand':
+                this.handleBrandChange(selectedValue);
+                break;
+            case 'sub_brand_product_id':
+                this.handleSubBrandProductIdChange(selectedValue);
+                break;
+            case 'prod_type':
+                this.handleProdTypeChange(selectedValue);
+                break;
+        }
+    }
+
+    /**
+     * Handles the change in client ID selection.
+     * @param selectedValue
+     * @author PSI-Enhancement
+     */
+    private handleClientIdChange(selectedValue: any) {
         const brandControl = this.productForm.get('brand');
         const subBrandControl = this.productForm.get('sub_brand_product_id');
-        if (selectedValue[0]?.class_id) {
-            this.clientId = selectedValue[0]?.class_id;
-        } else if (selectedValue[0]?.client_id) {
-            this.clientId = selectedValue[0]?.client_id;
-        }
-        if (fieldName === 'client_id' && selectedValue.length === 0) {
+    
+        this.clientId = selectedValue[0]?.class_id || selectedValue[0]?.client_id || null;
+    
+        if (selectedValue.length === 0) {
             this.updateSelectedData(['brand', 'sub_brand_product_id'], true);
-        }
-        if (fieldName === 'brand' && selectedValue.length === 0) {
-            this.updateSelectedData(['sub_brand_product_id'], true);
-        }
-        if (fieldName === 'client_id' && selectedValue.length > 0) {
+        } else {
             this.isBrandDisabled = !selectedValue;
-            brandControl.setValue('');
-            subBrandControl.setValue('');
-            subBrandControl.disable();
+            brandControl?.setValue('');
+            subBrandControl?.setValue('');
+            subBrandControl?.disable();
             this.isSubBrandDisabled = true;
-            if (selectedValue && brandControl) {
+    
+            if (brandControl) {
                 brandControl.enable();
                 this.getBrand(this.clientId);
             }
-            this.updateSelectedData(['brand', 'sub_brand_product_id'],true);
-            this.changeDetector.detectChanges();
-        }
-
-        if (fieldName === 'brand' && selectedValue.length > 0) {
-            this.isSubBrandDisabled = !selectedValue;
-            this.updateSelectedData(['sub_brand_product_id']);
-            subBrandControl.setValue('');
-            if (selectedValue[0]?.isNew) {
-                this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
-                this.updateConfig(this.brandModalConfig.brand, false);
-                this.updateConfig(this.brandModalConfig.new_brands, true);
-                this.updateConfig(this.brandModalConfig.sub_brand_product_id, false);
-                this.updateConfig(this.brandModalConfig.new_sub_brand, false);
-                this.updateConfig(this.brandModalConfig.net_contents, false);
-                this.updateConfig(this.brandModalConfig.units_cases, false);
-                this.brandModalData = this.ProductAddService.getBrandModalData(this.brandModalConfig, true, this.clientId)
-                this.openCreateBrandPopup(this.clientId);
-            }
-            if (!this.isSubBrandDisabled && subBrandControl) {
-                subBrandControl.enable();
-                this.productManagementService.getSubBrandProducts(selectedValue[0]?.client_id, selectedValue[0]?.id).subscribe(subBrands => {
-                    this.sub_brand_product_id = [...subBrands, { id: '', name: 'Create New', isNew: true }];
-                    this.updateSubBrandFilter();
-                    this.isSubBrandDisabled = false;
-                });
-                this.updateSubBrandClient(selectedValue);
-            } else {
-                this.sub_brand_product_id = [{id: '', name: 'Create New', isNew: true }];
-                this.updateSubBrandFilter();
-                subBrandControl.setValue('');
-            }
-            this.changeDetector.detectChanges();
-        }
-
-        if (fieldName == 'sub_brand_product_id') {
-            if (selectedValue[0]?.isNew) {
-                this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
-                this.updateConfig(this.brandModalConfig.brand, true);
-                this.updateConfig(this.brandModalConfig.new_brands, false);
-                this.updateConfig(this.brandModalConfig.sub_brand_product_id, true);
-                this.updateConfig(this.brandModalConfig.new_sub_brand,  false);
-                this.updateConfig(this.brandModalConfig.net_contents, true);
-                this.updateConfig(this.brandModalConfig.units_cases, true);
-                this.brandModalData = this.ProductAddService.getBrandModalData(this.brandModalConfig, false, this.clientId)
-                this.openCreateBrandPopup(this.clientId);
-            }
-            this.productForm.get('sub_brand_product_name')?.setValue(selectedValue[0].name);
-        }
-        if (fieldName === 'prod_type') {
-            this.renderConditionalFields(selectedValue[0].name, this.crudFiltersList, this.productForm);
-            this.crudFieldConfig = { ...this.crudFieldConfig };
-            this.productForm = new FormGroup(this.productForm.controls);
+            this.updateSelectedData(['brand', 'sub_brand_product_id'], true);
             this.changeDetector.detectChanges();
         }
     }
 
+    /**
+     * Handles the change in brand selection.
+     * @param selectedValue
+     * @author PSI-Enhancement
+     */
+    private handleBrandChange(selectedValue: any) {
+        const subBrandControl = this.productForm.get('sub_brand_product_id');
+        this.isSubBrandDisabled = !selectedValue;
+        this.updateSelectedData(['sub_brand_product_id']);
+        subBrandControl?.setValue('');
+
+        if (selectedValue[0]?.isNew) {
+            this.openBrandModalForNewBrand();
+        } else if (!this.isSubBrandDisabled && subBrandControl) {
+            subBrandControl.enable();
+            this.loadSubBrandProducts(selectedValue);
+        } else {
+            this.sub_brand_product_id = [{ id: '', name: 'Create New', isNew: true }];
+            this.updateSubBrandFilter();
+            subBrandControl?.setValue('');
+        }
+
+        this.changeDetector.detectChanges();
+    }
+
+    /**
+     * Loads the sub-brand products based on the selected brand.
+     * @param selectedValue
+     * @author PSI-Enhancement
+     */
+    private loadSubBrandProducts(selectedValue: any) {
+        this.productManagementService
+            .getSubBrandProducts(selectedValue[0]?.client_id, selectedValue[0]?.id)
+            .subscribe(subBrands => {
+                this.sub_brand_product_id = [...subBrands, { id: '', name: 'Create New', isNew: true }];
+                this.updateSubBrandFilter();
+                this.isSubBrandDisabled = false;
+            });
+        this.updateSubBrandClient(selectedValue);
+    }
+
+    /**
+     * Handles the change in product type selection.
+     * @param selectedValue
+     * @author PSI-Enhancement
+     */
+    private handleProdTypeChange(selectedValue: any) {
+        this.ProductAddService.renderConditionalFields(
+            selectedValue[0]?.name,
+            this.crudFiltersList,
+            this.productForm,
+            this.crudFieldConfig
+        );
+        this.crudFieldConfig = { ...this.crudFieldConfig };
+        this.productForm = new FormGroup(this.productForm.controls);
+        this.changeDetector.detectChanges();
+    }
+
+    /**
+     * Handles the change in sub-brand product ID selection.
+     * @param selectedValue
+     * @author PSI-Enhancement
+     */
+    private handleSubBrandProductIdChange(selectedValue: any) {
+        if (selectedValue[0]?.isNew) {
+            this.openBrandModalForNewSubBrand();
+        }
+        this.productForm.get('sub_brand_product_name')?.setValue(selectedValue[0]?.name || '');
+    }
+
+    /**
+     * Opens the brand modal for creating a new brand.
+     * @author PSI-Enhancement
+     */
+    private openBrandModalForNewBrand() {
+        this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
+        this.updateConfig(this.brandModalConfig.brand, false);
+        this.updateConfig(this.brandModalConfig.new_brands, true);
+        this.updateConfig(this.brandModalConfig.sub_brand_product_id, false);
+        this.updateConfig(this.brandModalConfig.new_sub_brand, false);
+        this.updateConfig(this.brandModalConfig.net_contents, false);
+        this.updateConfig(this.brandModalConfig.units_cases, false);
+        this.brandModalData = this.ProductAddService.getBrandModalData(this.brandModalConfig, true, this.clientId)
+        this.openCreateBrandPopup(this.clientId);
+    }
+
+    /**
+     * Opens the brand modal for creating a new sub-brand.
+     * @author PSI-Enhancement
+     */
+    private openBrandModalForNewSubBrand() {
+        this.brandModalConfig = this.ProductAddService.getBrandSubBrandList(this.crudFiltersList);
+        this.updateConfig(this.brandModalConfig.brand, true);
+        this.updateConfig(this.brandModalConfig.new_brands, false);
+        this.updateConfig(this.brandModalConfig.sub_brand_product_id, true);
+        this.updateConfig(this.brandModalConfig.new_sub_brand,  false);
+        this.updateConfig(this.brandModalConfig.net_contents, true);
+        this.updateConfig(this.brandModalConfig.units_cases, true);
+        this.brandModalData = this.ProductAddService.getBrandModalData(this.brandModalConfig, false, this.clientId)
+        this.openCreateBrandPopup(this.clientId);
+    }
+
+    /**
+     * Fetches the brand list based on the client ID.
+     * @param clientId
+     * @author PSI-Enhancement
+     */
     getBrand(clientId) {
         this.ProductAddService.getBrands(clientId).subscribe(brands => {
             if (Array.isArray(brands) && brands.length > 0) {
@@ -461,151 +534,6 @@ export class ProductAddComponent implements OnInit {
 
 
     /**
-     * Configures and renders form fields based on the selected product type.
-     *
-     * @param selectedValue
-     * @param crudFiltersList
-     * @param productForm
-     * @author PSI-Enhancement
-     */
-    renderConditionalFields(selectedValue: any, crudFiltersList, productForm) {
-        const baseFields = this.ProductAddService.getCrudBaseFields(crudFiltersList);
-        const conditionalFields = this.ProductAddService.getCrudConditionalFields(crudFiltersList);
-        const subTypeField = this.ProductAddService.getSubTypeField(crudFiltersList);
-        const manufacturedLocationField = this.ProductAddService.getManufacturedLocationField();
-
-        const fieldExists = (fieldName: string) => {
-            const allFields = [
-                ...this.crudFieldConfig.rightSection,
-                ...this.crudFieldConfig.leftSection
-            ];
-            return allFields.some(field => field.name === fieldName);
-        };
-
-        const removeFields = (fieldsToRemove: string[]) => {
-            fieldsToRemove.forEach(fieldName => {
-                const allSections = [
-                    this.crudFieldConfig.rightSection,
-                    this.crudFieldConfig.leftSection
-                ];
-                allSections.forEach(section => {
-                    const fieldIndex = section.findIndex(field => field.name === fieldName);
-                    if (fieldIndex !== -1) {
-                        section.splice(fieldIndex, 1);
-                    }
-                });
-                const control = productForm.get(fieldName);
-                if (control) {
-                    control.setValue('');
-                    control.clearValidators();
-                    control.updateValueAndValidity();
-                }
-            });
-        };
-
-        const addFieldControl = (field) => {
-            if (field.required || field.isRequired) {
-                productForm.addControl(field.name, new FormControl('', Validators.required));
-            } else {
-                productForm.addControl(field.name, new FormControl(''));
-            }
-            const control = productForm.get(field.name);
-            if (control) {
-                control.markAsTouched();
-            }
-        };
-
-        const addValidators = (controlName: string) => {
-            const control = productForm.get(controlName);
-            if (control) {
-                control.setValidators([Validators.required]);
-                control.updateValueAndValidity(); // Re-validate the control
-            }
-        };
-
-        const addCommonValidators = () => {
-            ['sub_type', 'category', 'source', 'country', 'vintage'].forEach(addValidators);
-        };
-
-        switch (selectedValue) {
-            case 'Wine':
-                baseFields.forEach(field => {
-                    if (!fieldExists(field.name)) {
-                        if (field.isCode) {
-                            this.crudFieldConfig.rightSection.push(field);
-                        } else {
-                            this.crudFieldConfig.leftSection.push(field);
-                        }
-                        addFieldControl(field);
-                        addCommonValidators();
-                    }
-                });
-                conditionalFields.wine.forEach(field => {
-                    if (!fieldExists(field.name)) {
-                        this.crudFieldConfig.leftSection.push(field);
-                        addFieldControl(field);
-                    }
-                });
-                break;
-            case 'Malt':
-                baseFields.forEach(field => {
-                    if (!fieldExists(field.name)) {
-                        if (field.isCode) {
-                            this.crudFieldConfig.rightSection.push(field);
-                        } else {
-                            this.crudFieldConfig.leftSection.push(field);
-                        }
-                        addFieldControl(field);
-                    }
-                });
-                conditionalFields.malt.forEach(field => {
-                    if (!fieldExists(field.name)) {
-                        this.crudFieldConfig.leftSection.push(field);
-                        addFieldControl(field);
-                    }
-                });
-                removeFields(['varietal']);
-                break;
-            case 'Spirits':
-                baseFields.forEach(field => {
-                    if (!fieldExists(field.name)) {
-                        if (field.isCode) {
-                            this.crudFieldConfig.rightSection.push(field);
-                        } else {
-                            this.crudFieldConfig.leftSection.push(field);
-                        }
-                        addFieldControl(field);
-                    }
-                });
-                conditionalFields.spirits.forEach(field => {
-                    if (!fieldExists(field.name)) {
-                        this.crudFieldConfig.leftSection.push(field);
-                        addFieldControl(field);
-                    }
-                });
-                break;
-            case 'Bulk':
-            case 'Other':
-                if (!fieldExists('sub_type')) {
-                    this.crudFieldConfig.leftSection.push(subTypeField);
-                    addFieldControl(subTypeField);
-                }
-                if (!fieldExists('manufactured_location_address')) {
-                    this.crudFieldConfig.leftSection.push(manufacturedLocationField);
-                }
-                addFieldControl(manufacturedLocationField);
-                removeFields(['vintage', 'varietal', 'category', 'source', 'country', 'abv', 'cola_ttb_id', 'nabca_code', 'unimerc_code', 'bdn_code']);
-                break;
-            default:
-                if (!fieldExists('manufactured_location_address')) {
-                    this.crudFieldConfig.leftSection.push(manufacturedLocationField);
-                }
-                addFieldControl(manufacturedLocationField);
-                break;
-        }
-    }
-
-    /**
      * Function to open Brand and SubBrand Popup.
      * @param clientId
      * @author PSI-Enhancement
@@ -628,11 +556,22 @@ export class ProductAddComponent implements OnInit {
             });
     }
 
+    /**
+     * Function to update config.
+     * @param config
+     * @param isDisplayed
+     * @author PSI-Enhancement
+     */
     updateConfig = (config, isDisplayed) => {
         config.display = isDisplayed;
         config.isRequired = isDisplayed;
     };
 
+    /**
+     * Function to update sub brand client.
+     * @param selectedValue
+     * @author PSI-Enhancement
+     */
     updateSubBrandClient(selectedValue) {
         this.ProductAddService.getSubBrandClients(selectedValue[0]?.client_id, selectedValue[0]?.id).subscribe(subBrands => {
             this.sub_brand = [...subBrands, { id: '', name: 'Create New', isNew: true }];
