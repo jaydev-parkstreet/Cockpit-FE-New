@@ -4,6 +4,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -81,7 +82,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Enter Unique ID')
+                    placeholder: 'Enter Unique ID'
                 },
                 {
                     key: 'client_name',
@@ -91,7 +92,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Enter Supplier Name')
+                    placeholder: 'Enter Supplier Name'
                 },
                 {
                     key: 'client_id',
@@ -113,7 +114,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: true,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Enter Formula Description')
+                    placeholder: 'Enter Formula Description'
                 },
                 {
                     key: 'formula_status',
@@ -172,7 +173,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Enter Submission ID')
+                    placeholder: 'Enter Submission ID'
                 },
                 {
                     key: 'formula_id',
@@ -182,7 +183,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Enter Formula ID')
+                    placeholder: 'Enter Formula ID'
                 },
                 {
                     key: 'date_requested',
@@ -202,7 +203,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Enter Commodity Statement')
+                    placeholder: 'Enter Commodity Statement'
                 },
                 {
                     key: 'composition',
@@ -212,7 +213,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Enter Statement of Composition')
+                    placeholder: 'Enter Statement of Composition'
                 },
                 {
                     key: 'total_batch_size',
@@ -222,7 +223,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Enter Total Batch Size')
+                    placeholder: 'Enter Total Batch Size'
                 },
                 {
                     key: 'batch_size_unit_of_measure',
@@ -245,7 +246,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false,
-                    inputSetting: this.commonService.getDropdownConfig('Enter Notes')
+                    placeholder: 'Enter Notes'
                 },
                 {
                     key: 'sample_received',
@@ -276,7 +277,7 @@ export class FormulaCrudService {
                     key: 'lisd_doc',
                     name: 'lisd_doc',
                     label: 'List of Ingredients Document',
-                    type: 'attachment',
+                    type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false
@@ -285,7 +286,7 @@ export class FormulaCrudService {
                     key: 'fids_doc',
                     name: 'fids_doc',
                     label: 'FIDS Document',
-                    type: 'attachment',
+                    type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false
@@ -294,7 +295,7 @@ export class FormulaCrudService {
                     key: 'mm_doc',
                     name: 'mm_doc',
                     label: 'Method of Manufacturing Document',
-                    type: 'attachment',
+                    type: '',
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false
@@ -303,7 +304,7 @@ export class FormulaCrudService {
                     key: 'approved_doc',
                     name: 'approved_doc',
                     label: 'Formula Approval Document',
-                    type: 'attachment',
+                    type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false
@@ -358,5 +359,17 @@ export class FormulaCrudService {
             .post(environment.apiUrl + AppRoutes.FORMULA.SAVE, formulaData)
             .pipe(map((response: any) => response));
     }
+    /**
+     * Calls the API to fetch the formula details.
+     * @author PSI-VIII
+     * @param id
+     * @returns The response from the API.
+     */
+    saveFormulaWithAttachments(formData: FormData, edit: boolean): Observable<any> {
+        const endpoint = edit ?
+            `/formula/update` :
+            `/formula/create`;
 
+        return this.http.post<any>(endpoint, formData);
+    }
 }

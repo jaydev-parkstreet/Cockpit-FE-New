@@ -16,10 +16,13 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     @Input() sellectedData: any;
     @Input() formSubmitted: boolean;
     @Input() form: any;
+    @Input() @Input() selectedFiles: any;
     @Output() onDropDownChange = new EventEmitter<any>();
     @Output() formSubmit = new EventEmitter<any>();
     @Output() clearAllClicked: EventEmitter<void> = new EventEmitter<void>();
     @Output() OnChangeDateModel = new EventEmitter<any>();
+    @Output() onFileChange = new EventEmitter<any>();
+    @Output() onFileDeleted = new EventEmitter<any>();
     @Input() set shouldClearAllFields(value: boolean) {
         if (value) {
             this.clearAllFields();
