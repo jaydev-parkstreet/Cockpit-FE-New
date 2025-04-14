@@ -370,13 +370,13 @@ export class FormulaService {
                 }, {
                     key: 'date_requested',
                     label: 'Date Requested',
-                    type: 'multiselect-search',
+                    type: 'daterange',
                     divClass: 'col-4',
                     setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 }, {
                     key: 'date_approved',
                     label: 'Date Approved',
-                    type: 'multiselect-search',
+                    type: 'daterange',
                     divClass: 'col-4 norightpadding',
                     setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 },

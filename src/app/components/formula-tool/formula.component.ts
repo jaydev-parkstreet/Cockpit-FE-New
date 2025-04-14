@@ -448,7 +448,7 @@ export class FormulaComponent implements OnInit {
       "page": 1,
       "pageSize": 25,
       "sort": "unique_id",
-      "order": "asc",
+      "order": "dsc",
       "universal_search": ""
     }
     this.topPanelConfig.searchText = '';
