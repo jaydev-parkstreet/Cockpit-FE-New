@@ -39,7 +39,7 @@
                     <app-notes-tab
                         *ngIf = "activeTab === 'notes'"
                         [entity] = "formulaDetails.id"
-                        [permissions] = "filterList"
+                        [permissions] = "permissions"
                         [filterList] = "filterList">
                     </app-notes-tab>
                     <app-attachment-tab
