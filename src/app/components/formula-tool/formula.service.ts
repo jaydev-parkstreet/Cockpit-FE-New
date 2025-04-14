@@ -533,7 +533,7 @@ export class FormulaService {
      */
     getPermission() {
         return this.http
-            .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.PERMISSION).toPromise();
+            .get(environment.apiUrl + AppRoutes.FORMULA.PERMISSION).toPromise();
     }
 
     /**
