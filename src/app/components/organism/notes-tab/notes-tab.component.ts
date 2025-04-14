@@ -28,12 +28,12 @@ export class NotesTabComponent implements OnInit {
     @Input() entity: any;
     @Input() permissions: any;
     @Input() allowChangePrivacy: boolean;
+    @Input() filterList: any = {};
 
     notes: [];
     isLoadingNotes: boolean;
     fileServer: string;
     updateNotePermissionLoading: boolean = false;
-    filterList: any = {};
     edit_note:boolean = false;
 
     constructor(
@@ -46,7 +46,6 @@ export class NotesTabComponent implements OnInit {
     ngOnInit(): void {
         this.fileServer = environment.fileServer;
         this.loadNotes();
-        this.getDropdown();
     }
 
     /**
@@ -78,22 +77,6 @@ export class NotesTabComponent implements OnInit {
         );
     }
 
-    /**
-    * Retrieves the list of dropdown items associated with the given client ID.
-    * 
-    * @returns An Observable containing the data of dropdown items.
-    * @author psi-enhancement
-    */
-    async getDropdown() {
-        const token = localStorage.getItem('authToken');
-        try {
-            const response: any = await this.productManagementService.getDropdown(token);
-            this.filterList = response.data;
-        }
-        catch (error) {
-            console.error("Error fetching summary:", error);
-        }
-    }
 
     /**
     * @createdDate 24-03-2025

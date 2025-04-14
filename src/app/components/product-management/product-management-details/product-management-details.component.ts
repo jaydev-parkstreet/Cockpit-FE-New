@@ -34,6 +34,7 @@ export class ProductManagementDetailsComponent implements OnInit {
     isAuditDataIsLoading: boolean = false;
     auditList: any = [];
     rowAuditTrailConfigApiRequest: any = [];
+    filterList: any = {};
 
     constructor(
         private productManagementService: ProductManagementService,
@@ -46,6 +47,7 @@ export class ProductManagementDetailsComponent implements OnInit {
 
     ngOnInit(): void {
         this.permissions = this.route.snapshot.data['permissions'];
+        this.filterList = this.route.snapshot.data['filterList'];
         this.IconHeaderStatus = 'Inactive';
         this.codesTitle = 'CODES';
         this.dimensionTitle = 'DIMENSIONS';
