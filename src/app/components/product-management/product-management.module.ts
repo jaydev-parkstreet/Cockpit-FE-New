@@ -9,23 +9,16 @@ import { ConfirmationModalComponent } from '../organism/confirmation-modal/confi
 import { StatelessModule } from 'src/app/stateless/stateless.module';
 import { AgGridModule } from 'ag-grid-angular';
 import { ProductManagementDetailsComponent } from './product-management-details/product-management-details.component';
-import { NotesTabComponent } from '../organism/notes-tab/notes-tab.component';
 import { RouterModule } from '@angular/router';
 import { ProductManagementRoutingModule } from './product-management-routing.module';
-import { AttachmentTabComponent } from '../organism/attachment-tab/attachment-tab.component';
 import { MassUploadExcelModalComponent } from './mass-upload-excel-modal/mass-upload-excel-modal.component';
-import { AuditTabComponent } from '../organism/audit-tab/audit-tab.component';
-
 
 @NgModule({
     declarations: [
         ProductManagementComponent,
         ProductAddComponent,
         ProductManagementDetailsComponent,
-        NotesTabComponent,
-        AttachmentTabComponent,
         MassUploadExcelModalComponent,
-        AuditTabComponent
     ],
     providers: [{
         provide: ErrorHandler,
