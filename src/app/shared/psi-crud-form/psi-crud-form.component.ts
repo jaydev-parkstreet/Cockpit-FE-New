@@ -20,6 +20,8 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     @Output() formSubmit = new EventEmitter<any>();
     @Output() clearAllClicked: EventEmitter<void> = new EventEmitter<void>();
     @Output() OnChangeDateModel = new EventEmitter<any>();
+   
+    // @Output() onFileDeleted = new EventEmitter<any>();
     @Input() set shouldClearAllFields(value: boolean) {
         if (value) {
             this.clearAllFields();
@@ -27,6 +29,8 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     }
 
     showError: any;
+    selectedFiles:any;
+    selectedFileCount: number = 0;
 
     constructor(
         public router: Router,
@@ -132,4 +136,65 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     onCheckedInput(field, isChecked) {
         this.form.get(field)?.setValue(isChecked ? '1' : '0');
     }
+
+
+    onFileChange(event: any) {
+        const files: FileList = event.target.files;
+        const allowedExtensions = ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'];
+        const maxSize = 10 * 1024 * 1024;
+        const validFiles: File[] = [];
+        if (files.length > 5) {
+          alert('Only 5 files are allowed to be uploaded.');
+          return;
+        }
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const fileName = file.name;
+          const fileSize = file.size;
+          const fileExtension = fileName.split('.').pop()?.toLowerCase();
+    
+          if (fileSize > maxSize) {
+            alert(`${fileName} is too large! Please upload file up to 10 MB.`)
+            return;
+          }
+    
+          if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+            alert(`Only ${allowedExtensions.join(', ')} are allowed to be uploaded.`)
+            return;
+          }
+          validFiles.push(file);
+        }
+        this.selectedFiles = validFiles;
+        this.selectedFileCount = this.selectedFiles.length;
+        event.target.value = '';
+      }
+
+      onFileDeleted(): void {
+        if (this.selectedFiles.length === 0) {
+          this.selectedFileCount = this.selectedFiles.length;
+        }
+      }
+
+        /**
+  *Function to change the file size format.
+  * @author PSI-Enhancements
+  * @param number
+  */
+  convertFileSizes(size: any) {
+    if (size >= 1024 * 1024) {
+      return ((size / (1024 * 1024)).toFixed(2) + ' MB');
+    } else {
+      return ((size / 1024).toFixed(2) + ' KB');
+    }
+  }
+
+   /**
+  *Function to change the file name format.
+  * @author PSI-Enhancements
+  * @param string
+  */
+  convertFileType(fileType: any) {
+    const parts = fileType.split('/');
+    return parts[1];
+  }
 }

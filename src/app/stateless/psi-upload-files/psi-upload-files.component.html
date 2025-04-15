@@ -1,5 +1,6 @@
 <div class="u-mb2 u-mt3">
     <div [ngClass]="isFromAttachment ? 'file-uploader' : 'mass-uploader'">
+        <label >{{field.label}}</label>
         <label for="file_upload" class="file-upload-label" tabindex="0">
             <span [innerHTML]="fileSizeMessage"></span>
         </label>
