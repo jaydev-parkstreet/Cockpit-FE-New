@@ -82,9 +82,10 @@ export class ProductManagementComponent implements OnInit {
 		this.isSorting = false;
 		this.scrollDisabled = false;
 		this.initGridOptions();
-		this.productToolSummary = [];
+		this.productToolSummary = [];  
 	}
 
+	
 
 	/**
 	 * Function to initialize grid options
