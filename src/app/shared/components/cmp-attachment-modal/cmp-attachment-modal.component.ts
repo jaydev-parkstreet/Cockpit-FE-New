@@ -1,24 +1,21 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { SimpleModalComponent, SimpleModalService } from 'ngx-simple-modal';
 import { CommonService } from 'src/app/core/services/common.service';
-import { environment } from 'src/environments/environment';
 import { ProductManagementService } from 'src/app/components/product-management/product-management.service';
 import AppConstant from 'src/app/app.constant';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
 import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
-
+import { DropdownConfig } from 'src/app/interfaces/attachment-modal';
+import { AttachmentPermission } from 'src/app/interfaces/attachment-modal';
 export interface ConfirmModel {
   modalData: any;
 }
-
-
 @Component({
   selector: 'app-cmp-attachment-modal',
   templateUrl: './cmp-attachment-modal.component.html',
   styleUrls: ['./cmp-attachment-modal.component.scss']
 })
 export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmModel, any> implements ConfirmModel {
-
 
   constructor(
     private simpleModalService: SimpleModalService,
@@ -32,21 +29,18 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
   @ViewChild('filerInput') filerInput!: ElementRef<HTMLInputElement>;
 
   @Input() modalData: any;
-  dropdownConfig: any;
+  dropdownConfig: DropdownConfig;
   selectedFileCount: number = 0;
   showFooterMsg: boolean = true;
   defaultPermission: number = 0;
   permission_id: number;
-  filetype_dropdown: any;
+  filetype_dropdown: DropdownConfig;
   filesTypeName: string = '';
-  defaultfileTypeDropdown: any;
-  fileUploader: any;
-  entityId: any;
-  kindid: any;
-  selectedFiles: any = [];
+  kindid: string;
+  selectedFiles: File[] = [];
   CONSTANTS: any = AppConstant;
   fileSizeMessage:string;
-  modelAttachmentPermission: any = [];
+  modelAttachmentPermission: AttachmentPermission[] = [];
 
   ngOnInit(): void {
     this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);
