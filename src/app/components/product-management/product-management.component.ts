@@ -85,8 +85,6 @@ export class ProductManagementComponent implements OnInit {
 		this.productToolSummary = [];
 	}
 
-	
-
 	/**
 	 * Function to initialize grid options
 	 * @author PSI-Enhancement
