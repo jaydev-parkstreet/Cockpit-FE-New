@@ -77,22 +77,21 @@ export class FormulaCrudComponent implements OnInit {
 
     onBrowserBack(event: PopStateEvent): void {
         history.pushState(null, '', location.href);
-        const disposable = this.simpleModalService.addModal(ConfirmationModalComponent, {
+        const modalData = {
             title: this.modalData?.title || 'Confirm Navigation',
             message: this.modalData?.message || 'Are you sure you want to exit? All changes will be lost.',
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
-        }).subscribe((confirmed: boolean) => {
-            if (confirmed) {
-                window.removeEventListener('popstate', this.onBrowserBack.bind(this));
-                history.back();
-            }
-        });
+        };
+        const disposable = this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+            .subscribe((confirmed: boolean) => {
+                if (confirmed) {
+                    window.removeEventListener('popstate', this.onBrowserBack.bind(this));
+                    this.router.navigate(['/formula']);
+                }
+            });
     }
 
-    ngOnDestroy(): void {
-        window.removeEventListener('popstate', this.onBrowserBack.bind(this));
-    }
     handleBackNavigation = (): void => {
         history.pushState(null, '', location.href);
         this.openConfirmationPopup(true);
@@ -100,8 +99,8 @@ export class FormulaCrudComponent implements OnInit {
 
     /**
     * Load dropdown data and initialize form configuration
+    * @author PSI-VIII
     */
-
     loadDropdownData() {
         this.spinner.show();
         const token = this.authService.getToken();
@@ -119,8 +118,8 @@ export class FormulaCrudComponent implements OnInit {
 
     /**
      * Initialize the form with proper controls
+     * @author PSI-VIII
      */
-
     initializeForm() {
         if (!this.crudFieldConfig ||
             !this.crudFieldConfig.rightSection ||
@@ -197,6 +196,7 @@ export class FormulaCrudComponent implements OnInit {
 
     /**
     * Handles file uploads for document fields
+    * @author PSI-VIII
     * @param event The file change event containing the selected files
     */
     onFileChange(event: any): void {
@@ -216,6 +216,7 @@ export class FormulaCrudComponent implements OnInit {
 
     /**
      * Set the currently active file upload field
+     * @author PSI-VIII
      * @param fieldName The name of the field being uploaded to
      */
     setActiveUploadField(fieldName: string): void {
@@ -278,6 +279,7 @@ export class FormulaCrudComponent implements OnInit {
                         fileType === 'XLSX' || fileType === 'XLS' ? 'Excel' :
                             fileType;
     }
+
     /**
      * Prefill the form with existing formula data
      * @author PSI-VIII
@@ -500,12 +502,24 @@ export class FormulaCrudComponent implements OnInit {
             this.changeDetector.detectChanges();
         }
     }
+
+    /**
+     * Track by function for ngFor to optimize rendering
+     * @author PSI-VIII
+     * @param index Index of the item
+     * @param field The item being tracked
+     * @returns Unique identifier for the item
+     */
     trackByField(index: number, field: any): string {
         return field?.name || index.toString();
     }
-    onAttachmentUpload(event: any) {
-        debugger
 
+    /**
+     * Function to handle file upload for attachments
+     * @author PSI-VIII
+     * @param event The file change event containing the selected files
+     */
+    onAttachmentUpload(event: any) {
         const files: FileList = event.target.files;
         const allowedExtensions = ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'];
         const maxSize = 10 * 1024 * 1024;
@@ -536,4 +550,3 @@ export class FormulaCrudComponent implements OnInit {
         event.target.value = '';
     }
 }
-

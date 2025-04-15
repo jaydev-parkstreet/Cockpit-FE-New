@@ -65,6 +65,7 @@ export class FormulaCrudService {
         }
         return modelFormat;
     }
+
     /**
      * Fetches the configuration for formula CRUD fields.
      * @author PSI-VIII
@@ -359,6 +360,7 @@ export class FormulaCrudService {
             .post(environment.apiUrl + AppRoutes.FORMULA.SAVE, formulaData)
             .pipe(map((response: any) => response));
     }
+
     /**
      * Calls the API to fetch the formula details.
      * @author PSI-VIII
