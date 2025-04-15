@@ -10,20 +10,15 @@
         @include psi-input-label;
     }
 
-    .dropdown-header {
+    .dropdown-headers {
         height: 40px;
         padding: 0 16px;
         cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        color: $colors-neutral-black;
-        font-family: $montserrat-regular;
-        font-size: 12px;
         border: 1px solid $colors-neutral-light;
         border-radius: 8px;
         transition: none;
-        .placeholder-text {
+        
+        &::placeholder {
             color: $colors-neutral-light;
         }
         &:hover {
@@ -37,20 +32,20 @@
         }
 
         &.ps-required-error {
-            background: $colors-v2-base-error-t-10;
-            outline: 2px solid $colors-v2-base-error;
-            border: 0;
+            @include ps-required-error;
+        }
+    }
 
-            .placeholder-text {
-                color: $colors-v2-base-error;
-            }
+    .clearSelectedItems {
+        right: 52px;
+        font-size: 16px;
+
+        &:hover {
+            color: $colors-neutral-black;
         }
     }
 
     .dropdown-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
         font-size: 16px;
         height: 40px;
         width: 40px;
@@ -67,17 +62,17 @@
         }
     }
 
-    .text-overflow {
-        font-family: $montserrat-regular;
-        font-size: 12px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    // .text-overflow {
+    //     font-family: $montserrat-regular;
+    //     font-size: 12px;
+    //     overflow: hidden;
+    //     text-overflow: ellipsis;
+    //     white-space: nowrap;
 
-        &.default-text {
-            color: $colors-neutral-light;
-        }
-    }
+    //     &.default-text {
+    //         color: $colors-neutral-light;
+    //     }
+    // }
 
     .dropdown-list {
         margin-top: 4px;
@@ -107,21 +102,9 @@
             scroll-snap-type: y mandatory;
             margin-right: 5px !important;
             font-size: 14px !important;
+            font-family: $montserrat-regular;
 
-            &::-webkit-scrollbar {
-                width: 8px;
-                border-radius: 4px;
-            }
-
-            &::-webkit-scrollbar-thumb {
-                background: $colors-neutral-light-t-50;
-                border-radius: 10px;
-                height: 50px;
-            }
-
-            &::-webkit-scrollbar-thumb:hover {
-                background: $colors-neutral-light;
-            }
+            @include scrollbar;
 
             .loader {
                 font-family: $montserrat-regular;
@@ -177,8 +160,8 @@
             }
 
             .checkbox.unchecked {
-                background: #e74536;
-                color: white;
+                background: $colors-v2-base-primary;
+                color: $colors-neutral-white;
                 font-weight: bold;
             }
 
@@ -213,7 +196,7 @@
                 margin-top: 0px;
                 border: 1px solid $colors-neutral-dark;
                 border-radius: 4px;
-                background-color: #fff;
+                background-color: $colors-neutral-white;
                 appearance: none;
                 position: relative;
                 cursor: pointer;
@@ -255,7 +238,7 @@
     }
 }
 
-.input-dropdown .dropdown-header.disabled {
+.input-dropdown .dropdown-headers.disabled {
     border-radius: 8px;
     background-color: $colors-neutral-light-v-low;
     color: $colors-neutral-dark-v-medium;

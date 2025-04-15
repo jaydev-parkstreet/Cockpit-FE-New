@@ -18,11 +18,12 @@ export class AttachmentTabComponent implements OnInit {
     @Input() permissions: any;
     @Input() showFileType: boolean;
     @Input() showPrivacyIcon: boolean;
+    @Input() filterList: any = {};
+
 
     isLoadingAttachments: boolean = false;
     updateFilePermissionLoading: boolean = false;
     attachments: any;
-    filterList: any = {};
 
     constructor(
         private commonBackendService: CommonBackendService,
@@ -33,7 +34,6 @@ export class AttachmentTabComponent implements OnInit {
 
     ngOnInit(): void {
         this.getAttachments();
-        this.getDropdown();
     }
 
     /**
@@ -63,17 +63,15 @@ export class AttachmentTabComponent implements OnInit {
         );
     }
 
-    async getDropdown() {
-        const token = localStorage.getItem('authToken');
-        try {
-            const response: any = await this.productManagementService.getDropdown(token);
-            this.filterList = response.data;
-        }
-        catch (error) {
-            console.error("Error fetching summary:", error);
-        }
-    }
 
+    /**
+     * Function to show Attachment
+     * @param multiple
+     * @param entityIds
+     * @param attachments
+     * @returns void
+     * @author PSI-Enhancement 
+     */
     showAttachment(multiple: any, entityIds: any, attachments: any) {
         let modalData: any;
 
@@ -123,15 +121,7 @@ export class AttachmentTabComponent implements OnInit {
      * @author PSI-Enhancement 
      */
     deleteAttachment(upload_id: number) {
-        let modalData = {
-            iconClass: 'fas fa-exclamation-circle',
-            title: 'Are you sure you want to delete the attachment?',
-            showLine: true,
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-        };
+        let modalData = this.commonService.getModalData('Are you sure you want to delete the attachment?', '');
 
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
@@ -186,6 +176,12 @@ export class AttachmentTabComponent implements OnInit {
             )
     }
 
+    /**
+     * Function to add attachments
+     * @param file 
+     * @returns void
+     * @author PSI-Enhancement
+     */
     addAttachments() {
         this.showAttachment(false, [this.entity], this.attachments);
     }

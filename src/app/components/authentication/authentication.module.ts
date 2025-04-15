@@ -6,18 +6,18 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  declarations: [
-    LoginPageComponent,
-    PsiCustomFormComponent
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    SharedModule
-  ],
-  exports: [
-    LoginPageComponent,
-    PsiCustomFormComponent
-  ]
+	declarations: [
+		LoginPageComponent,
+		PsiCustomFormComponent
+	],
+	imports: [
+		CommonModule,
+		ReactiveFormsModule,
+		SharedModule
+	],
+	exports: [
+		LoginPageComponent,
+		PsiCustomFormComponent
+	]
 })
 export class AuthenticationModule { }

@@ -4,7 +4,7 @@
         <div class=" col-sm-6 lt-c">
             <app-psi-page-column-header
                 [headerTitle]="leftHeaderTitle"
-                [clearAll]="clearAll"
+                [headerIconConfig]="headerIconConfig"
                 (clearAllClicked)="clearAllSelections()">
             </app-psi-page-column-header>
         </div>
@@ -18,7 +18,7 @@
     <div class="p-0 container-body">
         <!-- left section -->
         <div class="left-section">  
-            <div *ngFor="let field of crudFieldConfig.leftSection">
+            <div *ngFor="let field of crudFieldConfig?.leftSection">
                 <div class="typography-body-dark-regular col-sm-12" [ngClass]="field.colClass" *ngIf="field.isHeader">
                     {{field.label}}
                 </div>
@@ -47,6 +47,18 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
+                    <app-psi-upload-files 
+                    [selectedFiles]="selectedFiles" 
+                    (changeFileUpload)="onFileChange($event)"
+                    [convertFileSizes]="convertFileSizes.bind(this)" 
+                    [convertFileType]="convertFileType.bind(this)"
+                    [isFromAttachment]="true"
+                    [fileSizeMessage]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"
+                    (fileDeleted)="onFileDeleted()"
+                    >
+                </app-psi-upload-files>
+                    </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
@@ -60,19 +72,29 @@
                 </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass"  *ngIf="field?.type == 'checkbox'">
                     <app-psi-checkbox
-                    [field]="field"
-                    [checkedValue]="form?.value[field.name]"
-                    [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
-                    (valueChanged)="onCheckedInput(field.name, $event)">
+                        [field]="field"
+                        [checkedValue]="form?.value[field.name]"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                        (valueChanged)="onCheckedInput(field.name, $event)">
                     </app-psi-checkbox>
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
+                    <app-cmp-input-datepicker
+                        [fieldConfig]="field"
+                        [validationClasses] = "{'invalid': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                        (dateModelChange) ="OnChangeDateModel.emit({ type: 'from', value: $event})">
+                    </app-cmp-input-datepicker>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>  
                 </div>
             </div>
             <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
-                <div *ngFor="let field of crudFieldConfig.btnLabel">
+                <div *ngFor="let field of crudFieldConfig?.btnLabel">
                     <app-cmp-button
-                    [buttonText]="field.label"
-                    [buttonClass]="field.class"
-                    (onClick)="formSubmit.emit($event)">
+                        [buttonText]="field.label"
+                        [buttonClass]="field.class"
+                        (onClick)="formSubmit.emit($event)">
                     </app-cmp-button>
                 </div>
             </div>
@@ -80,7 +102,7 @@
 
         <!-- Right section -->
         <div class="right-section">
-            <div *ngFor="let field of crudFieldConfig.rightSection">
+            <div *ngFor="let field of crudFieldConfig?.rightSection">
                 <div class="typography-body-dark-regular col-sm-12" [ngClass]="field.colClass" *ngIf="field.isHeader">
                     {{field.label}}
                 </div>
@@ -109,6 +131,18 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
+                <!-- For each upload field in rightSection -->
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
+                    <label class="field-label" *ngIf="field.label">{{field.label}}</label>
+                    <app-psi-upload-files 
+                        [selectedFiles]="selectedFiles"
+                        (changeFileUpload) ="onFileChange.emit($event)"
+                        [isFromAttachment]="true"
+                        [fileSizeMessage]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"
+                        (fileDeleted)="onFileDeleted.emit()"
+                    >
+                    </app-psi-upload-files>
+                </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
@@ -119,6 +153,16 @@
                     <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
+                    <app-cmp-input-datepicker
+                        [fieldConfig]="field"
+                        [validationClasses] = "{'invalid': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                        (dateModelChange) ="OnChangeDateModel.emit({ type: 'from', value: $event})">
+                    </app-cmp-input-datepicker>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>  
                 </div>
             </div>
         </div>

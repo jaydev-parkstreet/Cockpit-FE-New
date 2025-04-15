@@ -4,6 +4,7 @@ import { CommonService } from 'src/app/core/services/common.service';
 import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
+import { FormControl, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.clients || [],
+                    options: crudFiltersList?.clients || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Supplier')
@@ -44,7 +45,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.brand || [],
+                    options: crudFiltersList?.brand || [],
                     isRequired: true,
                     isDisabled: true,
                     inputSetting: this.commonService.getDropdownConfig('Select Brand')
@@ -56,7 +57,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.sub_brand_product_id || [],
+                    options: crudFiltersList?.sub_brand_product_id || [],
                     isRequired: true,
                     isDisabled: true,
                     inputSetting: this.commonService.getDropdownConfig('Select Sub-Brand Product')
@@ -70,7 +71,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.groups || [],
+                    options: crudFiltersList?.groups || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Group')
@@ -82,7 +83,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.producers || [],
+                    options: crudFiltersList?.producers || [],
                     isRequired: false,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select producer')
@@ -94,7 +95,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.cases_uom || [],
+                    options: crudFiltersList?.cases_uom || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Type')
@@ -106,7 +107,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.container_types || [],
+                    options: crudFiltersList?.container_types || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Type')
@@ -121,7 +122,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.organic || [],
+                    options: crudFiltersList?.organic || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Organic')
@@ -133,7 +134,7 @@ export class ProductAddService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: crudFiltersList.product_type || [],
+                    options: crudFiltersList?.product_type || [],
                     isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Type')
@@ -378,23 +379,6 @@ export class ProductAddService {
     }
 
     /**
-     * function to get modal data
-     * @author PSI-Enhancement
-     */
-    getModalData() {
-        return {
-            title: 'All data will be lost.',
-            body: 'Are you sure you wish to exit?',
-            iconClass: 'fas fa-exclamation-circle error',
-            showLine: true,
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-        };
-    }
- 
-    /**
      * Calls the API to save the product details.
      * 
      * @param obj
@@ -516,122 +500,126 @@ export class ProductAddService {
         if (!Object.keys(model).length) {
             return {};  
         }
-        const getSubBrandDetails = (subBrandProducts, sub_brand_product_id) => {
-            const subBrand = subBrandProducts.find(product => product.name === sub_brand_product_id);
-          
-            return subBrand ? { id: subBrand.id, name: subBrand.name } : null; // Return null if not found
-        };
-        const subBrandId = Array.isArray(model.sub_brand_product_id) ? model.sub_brand_product_id[0].name : model.sub_brand_product_id;
-        const result = getSubBrandDetails(subBrandProducts, subBrandId);
-        let modelFormat: any = {
-            compliance: model.compliance === "1" ? 1 : 0,
-            use_up: model.use_up === "1" ? 1 : 0,  
-            is_organic: model.is_organic ? 1 : 0, 
-            abv: model.abv || "", 
-            cola_ttb_id: model.cola_ttb_id || "",
-            nabca_code: model.nabca_code || "",
-            bdn_code: model.bdn_code || "",
-            unimerc_code: model?.unimerc_code || "",
-            description: model.description || "", 
-            product_id: model.product_id || "",
-    
-            // Dimensions 
-            unit_height: edit ? model.unit_height || null : model.unit_height || "",
-            unit_length: edit ? model.unit_length || null : model.unit_length || "",
-            unit_width: edit ? model.unit_width || null : model.unit_width || "",
-            unit_weight: edit ? model.unit_weight || null : model.unit_weight || "",    
-            case_width: model.case_width || "",
-            case_length: model.case_length || "",
-            case_height: model.case_height || "",
-            case_weight: model.case_weight || "",   
-            pallet_length: model.pallet_length || "",
-            pallet_width: model.pallet_width || "",
-            pallet_height: model.pallet_height || "",
-            pallet_weight: model.pallet_weight || "",          
-            layers_per_pallet: model.layers_per_pallet || "",
-            cases_per_layer: model.cases_per_layer || "",
-            cases_per_pallet: model.cases_per_pallet || "",        
-            system_id: model.system_id || "",
-            scc_code: model.scc_code || "",
-            upc_code: model.upc_code || "",
-            client_id: model.client_id || "",             
-            sub_brand_product_name: result ? result.name : subBrandProducts[0]?.name || "",
-            sub_brand_product_id: result ? result.id : subBrandProducts[0]?.id || null,                   
-            name: model.name || "",
-            group: Array.isArray(model.group) && model.group.length > 0  ? (model.group[0]?.id || null) 
-            : model.group  || null,       
-            producer: Array.isArray(model.producer) && model.producer.length > 0  ? (model.producer[0]?.id || null) 
-            : (model.producer ? model.producer.id || model.producer : null),       
-            case_unit_of_measure: Array.isArray(model.case_unit_of_measure) && model.case_unit_of_measure.length > 0 
-            ? (model.case_unit_of_measure[0].id || null) 
-            : model.case_unit_of_measure || null,
-            container_type: Array.isArray(model.container_type) && model.container_type.length > 0 
-            ? (model.container_type[0]?.id || null) 
-            : model.container_type || null,
-            ex_works_cost: model.ex_works_cost || "",      
-            prod_type: Array.isArray(model.prod_type) && model.prod_type.length > 0  ? (model.prod_type[0]?.id || null) 
-            : model.prod_type  || null,      
-            manufactured_location_address: model.manufactured_location_address || null,
-            manufactured_location_address_obj: model.manufactured_location_address_obj || null
-        };
+        const modelFormat = this.buildModelFormat(model, subBrandProducts, null, edit);
         
         if (model.unit_length && model.unit_width && model.unit_height && model.unit_weight) {
             modelFormat.bottle_dimensions = 
                 `Length: ${model.unit_length} inches | Width: ${model.unit_width} inches | Height: ${model.unit_height} inches | Weight: ${model.unit_weight} lbs`;
         }
-        
         if (model.case_length && model.case_width && model.case_height && model.case_weight) {
             modelFormat.case_dimensions =
                 `Length: ${model.case_length} inches | Width: ${model.case_width} inches | Height: ${model.case_height} inches | Weight: ${model.case_weight} lbs`;
         }
-        
         if (model.pallet_length && model.pallet_width && model.pallet_height && model.pallet_weight) {
             modelFormat.pallet_dimensions =
                 `Length: ${model.pallet_length} inches | Width: ${model.pallet_width} inches | Height: ${model.pallet_height} inches | Weight: ${model.pallet_weight} lbs`;
-        }       
-    
-            if (model.bottle_dimensions == null) {
-                delete modelFormat.bottle_dimensions;
-            }
-            if (model.case_dimensions == null) {
-                delete modelFormat.case_dimensions;
-            }
-            if (model.pallet_dimensions == null) {
-                delete modelFormat.pallet_dimensions;
-            }
-            if(modelFormat.prod_type){
+        }
+        if (model.bottle_dimensions == null) {
+            delete modelFormat.bottle_dimensions;
+        }
+        if (model.case_dimensions == null) {
+            delete modelFormat.case_dimensions;
+        }
+        if (model.pallet_dimensions == null) {
+            delete modelFormat.pallet_dimensions;
+        }
+        if(modelFormat.prod_type){
             modelFormat.vintage =   Array.isArray(model.vintage) && model.vintage.length > 0  ? (model.vintage[0]?.id || null) 
-            : model.vintage  || null,
+                : model.vintage  || null,
             modelFormat.varietal =  Array.isArray(model.varietal) && model.varietal.length > 0  ? (model.varietal[0]?.id || null) 
-            : model.varietal  || null,
+                : model.varietal  || null,
             modelFormat.sub_type =   Array.isArray(model.sub_type) && model.sub_type.length > 0  ? (model.sub_type[0]?.id || null) 
-            : model.sub_type  || null,
+                : model.sub_type  || null,
             modelFormat.category =  Array.isArray(model.category) && model.category.length > 0  ? (model.category[0]?.id || null) 
-            : model.category  || null,
-            
+                : model.category  || null,
             modelFormat.source =  Array.isArray(model.source) && model.source.length > 0  ? (model.source[0]?.id || null) 
-            : model.source  || null,
+                : model.source  || null,
             modelFormat.country = Array.isArray(model.country) && model.country.length > 0  ? (model.country[0]?.id || null) 
-            : model.country  || null,
+                : model.country  || null,
             modelFormat.manufactured_location_address = model.manufactured_location_address || null,
             modelFormat.manufactured_location_address_obj = model.manufactured_location_address_obj ? model.manufactured_location_address_obj : null;
-            }
-            if(edit && !duplicate){
+        }
+        if(edit && !duplicate){
             modelFormat.id = id;
             modelFormat.temp_product_id = productId;
             modelFormat.product_id = productId;
-            }
-            if(duplicate){
-                modelFormat.product_id = null
-                modelFormat.temp_product_id = productId;  
-            }
-        
+        }
+        if(duplicate){
+            modelFormat.product_id = null
+            modelFormat.temp_product_id = productId;  
+        }
+
         return modelFormat;
     }
 
+    /**
+     * Build the model format for the product tool API.
+     * @param model the model data
+     * @param subBrandProducts the sub brand products list
+     * @param result the result object
+     * @param edit whether the form is in edit mode
+     * @returns the formatted model
+     * @author PSI-Enhancement
+     */
+    private buildModelFormat(model: any, subBrandProducts: any[], result: any, edit: boolean): any {
+        const getSubBrandDetails = (subBrandProducts, sub_brand_product_id) => {
+            const subBrand = subBrandProducts.find(product => product.name === sub_brand_product_id);
+            return subBrand ? { id: subBrand.id, name: subBrand.name } : null;
+        };
+    
+        const subBrandId = Array.isArray(model.sub_brand_product_id) ? model.sub_brand_product_id[0].name : model.sub_brand_product_id;
+        const subBrandResult = getSubBrandDetails(subBrandProducts, subBrandId);
+    
+        return {
+            compliance: model.compliance === "1" ? 1 : 0,
+            use_up: model.use_up === "1" ? 1 : 0,
+            is_organic: model.is_organic ? 1 : 0,
+            abv: model.abv || "",
+            cola_ttb_id: model.cola_ttb_id || "",
+            nabca_code: model.nabca_code || "",
+            bdn_code: model.bdn_code || "",
+            unimerc_code: model?.unimerc_code || "",
+            description: model.description || "",
+            product_id: model.product_id || "",
+            unit_height: edit ? model.unit_height || null : model.unit_height || "",
+            unit_length: edit ? model.unit_length || null : model.unit_length || "",
+            unit_width: edit ? model.unit_width || null : model.unit_width || "",
+            unit_weight: edit ? model.unit_weight || null : model.unit_weight || "",
+            case_width: model.case_width || "",
+            case_length: model.case_length || "",
+            case_height: model.case_height || "",
+            case_weight: model.case_weight || "",
+            pallet_length: model.pallet_length || "",
+            pallet_width: model.pallet_width || "",
+            pallet_height: model.pallet_height || "",
+            pallet_weight: model.pallet_weight || "",
+            layers_per_pallet: model.layers_per_pallet || "",
+            cases_per_layer: model.cases_per_layer || "",
+            cases_per_pallet: model.cases_per_pallet || "",
+            system_id: model.system_id || "",
+            scc_code: model.scc_code || "",
+            upc_code: model.upc_code || "",
+            client_id: model.client_id || "",
+            sub_brand_product_name: subBrandResult ? subBrandResult.name : subBrandProducts[0]?.name || "",
+            sub_brand_product_id: subBrandResult ? subBrandResult.id : subBrandProducts[0]?.id || null,
+            name: model.name || "",
+            group: Array.isArray(model.group) && model.group.length > 0 ? (model.group[0]?.id || null) : model.group || null,
+            producer: Array.isArray(model.producer) && model.producer.length > 0 ? (model.producer[0]?.id || null) : (model.producer ? model.producer.id || model.producer : null),
+            case_unit_of_measure: Array.isArray(model.case_unit_of_measure) && model.case_unit_of_measure.length > 0
+                ? (model.case_unit_of_measure[0].id || null)
+                : model.case_unit_of_measure || null,
+            container_type: Array.isArray(model.container_type) && model.container_type.length > 0
+                ? (model.container_type[0]?.id || null)
+                : model.container_type || null,
+            ex_works_cost: model.ex_works_cost || "",
+            prod_type: Array.isArray(model.prod_type) && model.prod_type.length > 0 ? (model.prod_type[0]?.id || null) : model.prod_type || null,
+            manufactured_location_address: model.manufactured_location_address || null,
+            manufactured_location_address_obj: model.manufactured_location_address_obj || null
+        };
+    }
    
 
-     /**
+    /**
      * Retrieves the list of brands associated with the given client ID.
      * 
      * @param clientId The client ID for which to retrieve the associated brands.
@@ -715,6 +703,151 @@ export class ProductAddService {
         return this.http
             .get( environment.apiUrl + AppRoutes.PRODUCT_TOOL.GET_SUB_BRAND_WITH_CLIENT_ID , { headers, params })
             .pipe(map((response :any) => response.data));
+    }
+
+    /**
+     * Configures and renders form fields based on the selected product type.
+     *
+     * @param selectedValue
+     * @param crudFiltersList
+     * @param productForm
+     * @author PSI-Enhancement
+     */
+    renderConditionalFields(selectedValue: any, crudFiltersList, productForm , crudFieldConfig) {
+        const baseFields = this.getCrudBaseFields(crudFiltersList);
+        const conditionalFields = this.getCrudConditionalFields(crudFiltersList);
+        const subTypeField = this.getSubTypeField(crudFiltersList);
+        const manufacturedLocationField = this.getManufacturedLocationField();
+
+        const fieldExists = (fieldName: string) => {
+            const allFields = [
+                ...crudFieldConfig.rightSection,
+                ...crudFieldConfig.leftSection
+            ];
+            return allFields.some(field => field.name === fieldName);
+        };
+
+        const removeFields = (fieldsToRemove: string[]) => {
+            fieldsToRemove.forEach(fieldName => {
+                const allSections = [
+                    crudFieldConfig.rightSection,
+                    crudFieldConfig.leftSection
+                ];
+                allSections.forEach(section => {
+                    const fieldIndex = section.findIndex(field => field.name === fieldName);
+                    if (fieldIndex !== -1) {
+                        section.splice(fieldIndex, 1);
+                    }
+                });
+                const control = productForm.get(fieldName);
+                if (control) {
+                    control.setValue('');
+                    control.clearValidators();
+                    control.updateValueAndValidity();
+                }
+            });
+        };
+
+        const addFieldControl = (field) => {
+            if (field.required || field.isRequired) {
+                productForm.addControl(field.name, new FormControl('', Validators.required));
+            } else {
+                productForm.addControl(field.name, new FormControl(''));
+            }
+            const control = productForm.get(field.name);
+            if (control) {
+                control.markAsTouched();
+            }
+        };
+
+        const addValidators = (controlName: string) => {
+            const control = productForm.get(controlName);
+            if (control) {
+                control.setValidators([Validators.required]);
+                control.updateValueAndValidity();
+            }
+        };
+
+        const addCommonValidators = () => {
+            ['sub_type', 'category', 'source', 'country', 'vintage'].forEach(addValidators);
+        };
+
+        switch (selectedValue) {
+            case 'Wine':
+                baseFields.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        if (field.isCode) {
+                            crudFieldConfig.rightSection.push(field);
+                        } else {
+                            crudFieldConfig.leftSection.push(field);
+                        }
+                        addFieldControl(field);
+                        addCommonValidators();
+                    }
+                });
+                conditionalFields.wine.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        crudFieldConfig.leftSection.push(field);
+                        addFieldControl(field);
+                    }
+                });
+                break;
+            case 'Malt':
+                baseFields.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        if (field.isCode) {
+                            crudFieldConfig.rightSection.push(field);
+                        } else {
+                            crudFieldConfig.leftSection.push(field);
+                        }
+                        addFieldControl(field);
+                    }
+                });
+                conditionalFields.malt.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        crudFieldConfig.leftSection.push(field);
+                        addFieldControl(field);
+                    }
+                });
+                removeFields(['varietal']);
+                break;
+            case 'Spirits':
+                baseFields.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        if (field.isCode) {
+                            crudFieldConfig.rightSection.push(field);
+                        } else {
+                            crudFieldConfig.leftSection.push(field);
+                        }
+                        addFieldControl(field);
+                    }
+                });
+                conditionalFields.spirits.forEach(field => {
+                    if (!fieldExists(field.name)) {
+                        crudFieldConfig.leftSection.push(field);
+                        addFieldControl(field);
+                    }
+                });
+                break;
+            case 'Bulk':
+            case 'Other':
+                if (!fieldExists('sub_type')) {
+                    crudFieldConfig.leftSection.push(subTypeField);
+                    addFieldControl(subTypeField);
+                }
+                if (!fieldExists('manufactured_location_address')) {
+                    crudFieldConfig.leftSection.push(manufacturedLocationField);
+                }
+                addFieldControl(manufacturedLocationField);
+                removeFields(['vintage', 'varietal', 'category', 'source', 'country', 'abv', 'cola_ttb_id', 'nabca_code', 'unimerc_code', 'bdn_code']);
+                break;
+            default:
+                if (!fieldExists('manufactured_location_address')) {
+                    crudFieldConfig.leftSection.push(manufacturedLocationField);
+                }
+                addFieldControl(manufacturedLocationField);
+                break;
+        }
     }
 
 }

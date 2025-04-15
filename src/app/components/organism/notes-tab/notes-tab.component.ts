@@ -28,12 +28,13 @@ export class NotesTabComponent implements OnInit {
     @Input() entity: any;
     @Input() permissions: any;
     @Input() allowChangePrivacy: boolean;
+    @Input() filterList: any = {};
 
     notes: [];
     isLoadingNotes: boolean;
     fileServer: string;
     updateNotePermissionLoading: boolean = false;
-    filterList: any = {};
+    edit_note:boolean = false;
 
     constructor(
         private commonService: CommonService,
@@ -45,7 +46,6 @@ export class NotesTabComponent implements OnInit {
     ngOnInit(): void {
         this.fileServer = environment.fileServer;
         this.loadNotes();
-        this.getDropdown();
     }
 
     /**
@@ -77,22 +77,6 @@ export class NotesTabComponent implements OnInit {
         );
     }
 
-    /**
-    * Retrieves the list of dropdown items associated with the given client ID.
-    * 
-    * @returns An Observable containing the data of dropdown items.
-    * @author psi-enhancement
-    */
-    async getDropdown() {
-        const token = localStorage.getItem('authToken');
-        try {
-            const response: any = await this.productManagementService.getDropdown(token);
-            this.filterList = response.data;
-        }
-        catch (error) {
-            console.error("Error fetching summary:", error);
-        }
-    }
 
     /**
     * @createdDate 24-03-2025
@@ -100,6 +84,10 @@ export class NotesTabComponent implements OnInit {
     */
     addNote() {
         this.showNotesModal([this.entity], this.notes, false);
+    }
+
+    editNote(note:any) {
+        this.showNotesModal([this.entity], note, false);
     }
 
     /**
@@ -131,6 +119,7 @@ export class NotesTabComponent implements OnInit {
             noteDetails,
             showLine: true,
             noDataMessage: 'No Notes Found',
+            defaultPermission : notes.permission_id,
         }
         this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
             .subscribe((result) => {
@@ -182,14 +171,7 @@ export class NotesTabComponent implements OnInit {
      * @author PSI-Enhancement
      */
     deleteNote(id) {
-        let modalData = {
-            title: 'Are you sure you want to delete the note?',
-            showLine: true,
-            btnLabel: [
-                { type: 'Btn', label: 'No', class: 'secondary' },
-                { type: 'Btn', label: 'Yes', class: 'primary' }
-            ]
-        };
+        let modalData = this.commonService.getModalData('Are you sure you want to delete the note?', '');
 
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {

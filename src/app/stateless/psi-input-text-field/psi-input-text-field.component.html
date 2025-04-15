@@ -8,4 +8,5 @@
     [type]="field.type" [id]="field.name" [placeholder]="field.placeholder"
     [required]="field.required" (blur)="onValueChange($event)"
     (input)="onInputValueChange($event)"/>
+    <i *ngIf="valueEntered" class="far fa-times-circle u-absolute clear-icon" (click)="clearInput()"></i>
 </div>

@@ -5,6 +5,7 @@ import AppConstant from 'src/app/app.constant';
 import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
 import { saveAs } from 'file-saver';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class CommonService {
   
   constructor(
     private http: HttpClient,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private spinner: NgxSpinnerService
   ) { }
 
   getDropdownConfig(
@@ -346,6 +348,77 @@ export class CommonService {
      */
     isEmptyObj(obj) {
       return Object.keys(obj).length === 0;
+    }
+
+    /**
+     * Function to show spinner
+     * @author PSI-Enhancement
+     */
+    showSpinner() {
+        this.spinner.show();
+    }
+
+    /**
+     * Function to hide spinner
+     * @author PSI-Enhancement
+     */
+    hideSpinner() {
+        this.spinner.hide();
+    }
+
+      /**
+  *Function to file upload.
+  * @author PSI-Enhancements
+  */
+  uploadMultipleAttachments(reqObj: FormData) {
+    return this.http.post(environment.apiRouteUrl + environment.version.v1 + AppRoutes.COMMON.MULTIPLE_FILES_API, reqObj);
+  }
+
+
+  /**
+   * function to get modal data
+   * @author PSI-Enhancement
+   * @param title
+   * @param body
+   * @returns object
+   */
+  getModalData(title, body) {
+    return {
+      title: title,
+      body: body,
+      iconClass: 'fas fa-exclamation-circle error',
+      showLine: true,
+      btnLabel: [
+        { type: 'Btn', label: 'No', class: 'secondary' },
+        { type: 'Btn', label: 'Yes', class: 'primary' }
+      ]
+    };
+  }
+
+    /**
+     * function to get Datepicker Config
+     * @author PSI-Enhancement
+     * @returns object
+     */
+    getDatepickerConfig(options = {}) {
+        const defaultConfig = {
+            placeholder: 'mm/dd/yyyy',
+            invalid: false,
+            errorMessage: 'Field is Required'
+        };
+    
+        return { ...defaultConfig, ...options };
+    }
+
+    /**
+     * Converts a date string to a Date object.
+     * @param dateStr - The date string to convert.
+     * @returns The converted Date object or null if the input is invalid.
+     * @author PSI-Enhancement
+     */
+    convertToDateObject(dateStr: string): Date | null {
+      if (!dateStr) return null;
+      return new Date(dateStr);
     }
 
 }
