@@ -14,6 +14,8 @@
         (clearAllClicked)="onClearAllClicked()"
         [form]="formulaForm"
         (onDropDownChange)="onDropdownStateChange($event.field , $event.event)"
-        (formSubmit)="onSubmit($event)">
+        (formSubmit)="onSubmit($event)"
+        (onFileChange)=onAttachmentUpload($event)
+        [selectedFiles]="selectedFiles">
     </app-psi-crud-form>
 </div>
