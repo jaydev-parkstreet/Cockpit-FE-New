@@ -283,11 +283,13 @@ export class FormulaCrudComponent implements OnInit {
                         fileType === 'XLSX' || fileType === 'XLS' ? 'Excel' :
                             fileType;
     }
+
     /**
      * Prefill the form with existing formula data
      * @author PSI-VIII
      * @param formulaData The formula data to prefill
      */
+
     prefillForm(formulaData: any): void {
         if (!this.formulaForm || Object.keys(this.formulaForm.controls).length === 0) {
             console.warn('Form not ready for prefilling, will retry');
@@ -505,9 +507,25 @@ export class FormulaCrudComponent implements OnInit {
             this.changeDetector.detectChanges();
         }
     }
+
+    /**
+     * Track by function for ngFor to optimize rendering
+     * @author PSI-VIII
+     * @param index Index of the item
+     * @param field The field object
+     * @returns Unique identifier for the item
+     */
+
     trackByField(index: number, field: any): string {
         return field?.name || index.toString();
     }
+
+    /**
+     * Function to handle file upload for attachments
+     * @author PSI-VIII
+     * @param event The file change event containing the selected files
+     */
+
     onAttachmentUpload(event: any) {
         const files: FileList = event.target.files;
         const allowedExtensions = ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'];
@@ -539,4 +557,3 @@ export class FormulaCrudComponent implements OnInit {
         event.target.value = '';
     }
 }
-

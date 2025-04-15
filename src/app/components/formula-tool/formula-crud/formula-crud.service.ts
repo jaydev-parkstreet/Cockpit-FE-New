@@ -26,6 +26,7 @@ export class FormulaCrudService {
      * @param id the formula id
      * @returns the formatted model
      */
+
     formatModelFormulaTool(model: any, filtersList: any, edit: boolean, duplicate: boolean, id: number): any {
         if (!Object.keys(model).length) {
             return {};
@@ -65,12 +66,14 @@ export class FormulaCrudService {
         }
         return modelFormat;
     }
+
     /**
      * Fetches the configuration for formula CRUD fields.
      * @author PSI-VIII
      * @param filtersList
      * @returns The form field configuration.
      */
+
     getFormulaFieldConfig(filtersList) {
         return {
             leftSection: [
@@ -359,12 +362,14 @@ export class FormulaCrudService {
             .post(environment.apiUrl + AppRoutes.FORMULA.SAVE, formulaData)
             .pipe(map((response: any) => response));
     }
+
     /**
      * Calls the API to fetch the formula details.
      * @author PSI-VIII
      * @param id
      * @returns The response from the API.
      */
+
     saveFormulaWithAttachments(formData: FormData, edit: boolean): Observable<any> {
         const endpoint = edit ?
             `/formula/update` :
