@@ -77,22 +77,21 @@ export class FormulaCrudComponent implements OnInit {
 
     onBrowserBack(event: PopStateEvent): void {
         history.pushState(null, '', location.href);
-        const disposable = this.simpleModalService.addModal(ConfirmationModalComponent, {
+        const modalData = {
             title: this.modalData?.title || 'Confirm Navigation',
             message: this.modalData?.message || 'Are you sure you want to exit? All changes will be lost.',
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
-        }).subscribe((confirmed: boolean) => {
-            if (confirmed) {
-                window.removeEventListener('popstate', this.onBrowserBack.bind(this));
-                history.back();
-            }
-        });
+        };
+        const disposable = this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+            .subscribe((confirmed: boolean) => {
+                if (confirmed) {
+                    window.removeEventListener('popstate', this.onBrowserBack.bind(this));
+                    this.router.navigate(['/formula']);
+                }
+            });
     }
 
-    ngOnDestroy(): void {
-        window.removeEventListener('popstate', this.onBrowserBack.bind(this));
-    }
     handleBackNavigation = (): void => {
         history.pushState(null, '', location.href);
         this.openConfirmationPopup(true);
@@ -100,6 +99,8 @@ export class FormulaCrudComponent implements OnInit {
 
     /**
     * Load dropdown data and initialize form configuration
+    * @author PSI-VIII
+    * @param event
     */
 
     loadDropdownData() {
@@ -119,6 +120,8 @@ export class FormulaCrudComponent implements OnInit {
 
     /**
      * Initialize the form with proper controls
+     * @author PSI-VIII
+     * @param event
      */
 
     initializeForm() {
@@ -197,6 +200,7 @@ export class FormulaCrudComponent implements OnInit {
 
     /**
     * Handles file uploads for document fields
+    * @author PSI-VIII
     * @param event The file change event containing the selected files
     */
     onFileChange(event: any): void {
@@ -216,6 +220,7 @@ export class FormulaCrudComponent implements OnInit {
 
     /**
      * Set the currently active file upload field
+     * @author PSI-VIII
      * @param fieldName The name of the field being uploaded to
      */
     setActiveUploadField(fieldName: string): void {
@@ -504,8 +509,6 @@ export class FormulaCrudComponent implements OnInit {
         return field?.name || index.toString();
     }
     onAttachmentUpload(event: any) {
-        debugger
-
         const files: FileList = event.target.files;
         const allowedExtensions = ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'];
         const maxSize = 10 * 1024 * 1024;
