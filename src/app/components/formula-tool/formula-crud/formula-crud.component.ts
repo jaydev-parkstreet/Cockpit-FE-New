@@ -100,7 +100,6 @@ export class FormulaCrudComponent implements OnInit {
     /**
     * Load dropdown data and initialize form configuration
     * @author PSI-VIII
-    * @param event
     */
     loadDropdownData() {
         this.spinner.show();
@@ -508,6 +507,7 @@ export class FormulaCrudComponent implements OnInit {
      * Track by function for ngFor to optimize rendering
      * @author PSI-VIII
      * @param index Index of the item
+     * @param field The item being tracked
      * @returns Unique identifier for the item
      */
     trackByField(index: number, field: any): string {
