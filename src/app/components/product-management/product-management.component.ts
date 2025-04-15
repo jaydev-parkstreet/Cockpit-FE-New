@@ -50,9 +50,6 @@ export class ProductManagementComponent implements OnInit {
 	downloading: boolean;
 	filtermodal: any;
 	private timerSubscriptions = new Map<number, Subscription>();
-	
-	tabs
-	currentTab
 
 	constructor(
 		private productManagementService: ProductManagementService,
@@ -85,10 +82,7 @@ export class ProductManagementComponent implements OnInit {
 		this.isSorting = false;
 		this.scrollDisabled = false;
 		this.initGridOptions();
-		this.productToolSummary = [];
-
-		this.tabs = this.productManagementService.getGridSwitcherConfig();
-		this.currentTab = 'customers';  
+		this.productToolSummary = [];  
 	}
 
 	
@@ -694,14 +688,4 @@ export class ProductManagementComponent implements OnInit {
 			this.timerSubscriptions.delete(productID);
 		}
 	}
-
-
-	onTabChange(newTabKey: string): void {
-		debugger
-		this.currentTab = newTabKey;
-		console.log('Tab changed to:', newTabKey);
-		if (this.currentTab=== 'pricing-grid' ) {
-			this.getSummaryData();
-		}
-	  }
 }

@@ -642,24 +642,4 @@ export class ProductManagementService {
           .get(environment.apiUrl + AppRoutes.PRODUCT_TOOL.NS_SYNC_STATUS + id);
     }
 
-
-    /**
-     * Function to get switcher tab config
-     * @author PSI-Enhancement
-     */
-    getGridSwitcherConfig () {
-        return [{
-            key: 'customers',
-            label: 'Customers'
-        }, {
-            key: 'pricing-grid',
-            label: 'Pricing Grid'
-        },
-        {
-            key: 'switch',
-            label: 'Switch',
-            isDisable: true
-        }];
-    }
-
 }
