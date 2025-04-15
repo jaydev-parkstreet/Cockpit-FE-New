@@ -26,7 +26,6 @@ export class FormulaCrudService {
      * @param id the formula id
      * @returns the formatted model
      */
-
     formatModelFormulaTool(model: any, filtersList: any, edit: boolean, duplicate: boolean, id: number): any {
         if (!Object.keys(model).length) {
             return {};
@@ -73,7 +72,6 @@ export class FormulaCrudService {
      * @param filtersList
      * @returns The form field configuration.
      */
-
     getFormulaFieldConfig(filtersList) {
         return {
             leftSection: [
@@ -369,7 +367,6 @@ export class FormulaCrudService {
      * @param id
      * @returns The response from the API.
      */
-
     saveFormulaWithAttachments(formData: FormData, edit: boolean): Observable<any> {
         const endpoint = edit ?
             `/formula/update` :

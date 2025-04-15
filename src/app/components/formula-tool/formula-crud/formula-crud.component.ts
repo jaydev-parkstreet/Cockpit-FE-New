@@ -102,7 +102,6 @@ export class FormulaCrudComponent implements OnInit {
     * @author PSI-VIII
     * @param event
     */
-
     loadDropdownData() {
         this.spinner.show();
         const token = this.authService.getToken();
@@ -121,9 +120,7 @@ export class FormulaCrudComponent implements OnInit {
     /**
      * Initialize the form with proper controls
      * @author PSI-VIII
-     * @param event
      */
-
     initializeForm() {
         if (!this.crudFieldConfig ||
             !this.crudFieldConfig.rightSection ||
@@ -289,7 +286,6 @@ export class FormulaCrudComponent implements OnInit {
      * @author PSI-VIII
      * @param formulaData The formula data to prefill
      */
-
     prefillForm(formulaData: any): void {
         if (!this.formulaForm || Object.keys(this.formulaForm.controls).length === 0) {
             console.warn('Form not ready for prefilling, will retry');
@@ -512,10 +508,8 @@ export class FormulaCrudComponent implements OnInit {
      * Track by function for ngFor to optimize rendering
      * @author PSI-VIII
      * @param index Index of the item
-     * @param field The field object
      * @returns Unique identifier for the item
      */
-
     trackByField(index: number, field: any): string {
         return field?.name || index.toString();
     }
@@ -525,7 +519,6 @@ export class FormulaCrudComponent implements OnInit {
      * @author PSI-VIII
      * @param event The file change event containing the selected files
      */
-
     onAttachmentUpload(event: any) {
         const files: FileList = event.target.files;
         const allowedExtensions = ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'];
