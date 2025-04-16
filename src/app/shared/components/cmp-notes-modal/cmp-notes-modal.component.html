@@ -35,6 +35,10 @@
                         </div>
                     </div>
                     <div class="right-section">
+                        <i *ngIf="modalData?.showPrivacyIcon" [ngClass]="{ 'fa-user-lock': note.permission_id === 2 || note.permission_id === 3, 
+                            'fa-user-unlock': note.permission_id === 1}"
+                            class="on-hover u-csr-ptr fas" (click)="updateNotePermission(note)"
+                            [title]="note.permission_id === 1 ? 'Switch to “Private (Only PS Users)“' : 'Switch to “Public (Everyone)“' "></i>
                         <i class="fas fa-pen" *ngIf="note.has_edit_permission" (click)="onEditClick(note)"></i>
                         <i class="fas fa-trash" *ngIf="note.has_edit_permission" (click)="onDeleteClick(note.id)"></i>
                         <span>{{note.en_created_at | date: 'MM/dd/yy'}}</span>
