@@ -32,28 +32,31 @@ export class FormulaCrudService {
         }
 
         let modelFormat: any = {
-            name: model.name || "",
-            description: model.description || "",
-            ingredient: Array.isArray(model.ingredient) && model.ingredient.length > 0
-                ? model.ingredient.map((item: any) => ({
-                    id: item.id || null,
-                    name: item.name || null,
-                    quantity: item.quantity || null,
-                    unit: item.unit || null
-                }))
-                : [],
-            compliance: model.compliance === "1" ? 1 : 0,
-            is_organic: model.is_organic ? 1 : 0,
-            use_up: model.use_up === "1" ? 1 : 0,
-            abv: model.abv || "",
-            cola_ttb_id: model.cola_ttb_id || "",
-            nabca_code: model.nabca_code || "",
-            bdn_code: model.bdn_code || "",
-            unimerc_code: model.unimerc_code || "",
-            client_id: model.client_id || "",
-            system_id: model.system_id || "",
-            scc_code: model.scc_code || "",
-            upc_code: model.upc_code || ""
+            formula_description: model.formula_description || "",
+            id: model.id || "",
+            client_name: model.client_name || "",
+            client_id: model.client_id || null,
+            formula_status: model.formula_status || "",
+            product_origin: model.product_origin || "",
+            product_type: model.product_type || "",
+            classification: model.classification || "",
+            submission_id: model.submission_id || "",
+            formula_id: model.formula_id || "",
+            date_requested: model.date_requested || null,
+            commodity_statement: model.commodity_statement || "",
+            composition: model.composition || "",
+            total_batch_size: model.total_batch_size || "",
+            batch_size_unit_of_measure: model.batch_size_unit_of_measure || "",
+            notes: model.notes || "",
+            sample_received: model.sample_received || "",
+            date_submitted: model.date_submitted || null,
+            lisd_doc: model.lisd_doc || null,
+            fids_doc: model.fids_doc || null,
+            mm_doc: model.mm_doc || null,
+            approved_doc: model.approved_doc || null,
+            date_approved: model.date_approved || null,
+            date_expired: model.date_expired || null,
+            no_expiration_date: model.no_expiration_date || false
         };
 
         if (edit && !duplicate) {
@@ -125,7 +128,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.formula_status || [],
-                    isRequired: true,
+                    isRequired: false,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Status')
                 },
@@ -139,7 +142,7 @@ export class FormulaCrudService {
                         { value: 'D', name: 'Domestic' },
                         { value: 'I', name: 'Imported' }
                     ],
-                    isRequired: true,
+                    isRequired: false,
                     isDisabled: false
                 },
                 {
@@ -150,7 +153,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.product_type || [],
-                    isRequired: true,
+                    isRequired: false,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Product Type')
                 },
@@ -257,7 +260,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.sample_received || [],
-                    isRequired: true,
+                    isRequired: false,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Sample Received')
                 },
