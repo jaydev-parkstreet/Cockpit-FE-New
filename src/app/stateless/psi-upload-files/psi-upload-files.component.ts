@@ -9,20 +9,18 @@ export class PsiUploadFilesComponent implements OnInit {
     @Input() configUpload: any
     @Input() isShowUploader: boolean;
     @Input() iconClass: string;
-    @Input() errorMessage: string = '';
     @Input() fileSizeMessage: any;
     @Input() field: any;
     @Output() changeFileUpload = new EventEmitter<any>();
     @Output() fileDeleted = new EventEmitter<void>();
     selectedFileCount: number;
     selectedFiles: File[] = [];
+    errorMessage: string = '';
 
     constructor() { }
 
     ngOnInit(): void {
     }
-
-
 
     /**
      * Function to call on file upload.
@@ -34,32 +32,113 @@ export class PsiUploadFilesComponent implements OnInit {
         const allowedExtensions = this.configUpload?.allowedExtensions || ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'];
         const maxSize = 10 * 1024 * 1024;
         const validFiles: File[] = [];
+
+        if (this.isShowUploader) {
+            this.handleFileUpload(files, allowedExtensions, maxSize, event, validFiles);
+        } else {
+            this.handleMassExcelFileUpload(files, allowedExtensions, maxSize, event, validFiles);
+        }
+
+        event.target.value = '';
+        this.changeFileUpload.emit(this.selectedFiles);
+    }
+
+    /**
+     *Function to check file valid or not.
+     * @author PSI-Enhancements
+     * @param files
+     * @param allowedExtensions
+     * @param maxSize
+     * @param event
+     * @param validFiles 
+     */
+    handleMassExcelFileUpload(files: FileList, allowedExtensions: string[], maxSize: number, event: any, validFiles: File[]): void {
+        this.errorMessage = '';
+        if (this.selectedFiles.length >= 1) {
+            this.showErrorMessage('You can upload only one file at a time.');
+            return;
+        }
+        for (const file of Array.from(files)) {
+            if (!this.isValidFile(file, allowedExtensions, maxSize)) {
+                event.target.value = '';
+                return;
+            }
+            validFiles.push(file);
+        }
+        if (validFiles.length > 0) {
+            this.selectedFiles = validFiles;
+        }
+    }
+
+    /**
+     *Function to check file valid or not.
+     * @author PSI-Enhancements
+     * @param files
+     * @param allowedExtensions
+     * @param maxSize
+     * @param event
+     * @param validFiles 
+     */
+    handleFileUpload(files: FileList, allowedExtensions: string[], maxSize: number, event: any, validFiles: File[]): void {
         if (files.length > 5) {
             alert('Only 5 files are allowed to be uploaded.');
             return;
         }
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const fileName = file.name;
-            const fileSize = file.size;
-            const fileExtension = fileName.split('.').pop()?.toLowerCase();
 
-            if (fileSize > maxSize) {
-                alert(`${fileName} is too large! Please upload file up to 10 MB.`)
+        for (const file of Array.from(files)) {
+            const fileExtension = file.name.split('.').pop()?.toLowerCase();
+            if (file.size > maxSize) {
+                alert(`${file.name} is too large! Please upload a file up to 10 MB.`);
                 return;
             }
-
             if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-                alert(`Only ${allowedExtensions.join(', ')} are allowed to be uploaded.`)
+                alert(`Only ${allowedExtensions.join(', ')} files are allowed to be uploaded.`);
                 return;
             }
             validFiles.push(file);
         }
         this.selectedFiles = validFiles;
-        this.selectedFileCount = this.selectedFiles.length;
-        event.target.value = '';
-        this.changeFileUpload.emit(this.selectedFiles);
+        this.selectedFileCount = validFiles.length;
+    }
 
+    /**
+     *Function to check file valid or not.
+     * @author PSI-Enhancements
+     * @param file
+     * @param allowedExtensions
+     * @param maxSize
+     * @returns boolean
+     * 
+     */
+    isValidFile(file: File, allowedExtensions: string[], maxSize: number): boolean {
+        const fileExtension = file.name.split('.').pop()?.toLowerCase();
+
+        if (file.size > maxSize) {
+            this.showErrorMessage(`${file.name} is too large! Please upload a file up to 10 MB.`);
+            return false;
+        }
+
+        if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+            this.showErrorMessage(`Only ${allowedExtensions.join(', ')} files are allowed to be uploaded.`);
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     *Function to show error message.
+     * @author PSI-Enhancements
+     * @param message
+     * @param clear
+     * @param duration
+     */
+    showErrorMessage(message: string, clear = true, duration = 3000): void {
+        this.errorMessage = message;
+        if (clear) {
+            setTimeout(() => (this.errorMessage = ''), duration);
+        }
     }
 
     /**

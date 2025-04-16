@@ -44,7 +44,6 @@ export class CmpSummaryTopBoxComponent implements OnInit {
 	 * @param forward
 	 */
 	scrollCarousel(back: string, forward: string) {
-		debugger
 		if (this.isEpandedCollapsedView  && !this.isExpanded) {
 			return;
 		}
