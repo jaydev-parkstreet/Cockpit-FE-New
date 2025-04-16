@@ -15,7 +15,6 @@ export class CmpDateRangeComponent implements OnInit {
     selectedDate: string;
     fromDate: string;
     toDate: string;
-    @Input() label: string;
     @Input() filter: any;
     @Input() required: boolean = false;
     @Input() datesArray: DateRangeOption | null;
