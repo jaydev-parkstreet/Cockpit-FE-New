@@ -208,6 +208,7 @@ export class FormulaComponent implements OnInit {
       noteDetails,
       showLine: true,
       noDataMessage: 'No Notes Found',
+      showPrivacyIcon: true
     }
     this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
       .subscribe((result) => {
