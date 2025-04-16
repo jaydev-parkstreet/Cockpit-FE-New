@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../authentication/auth.service';
 import { Router } from '@angular/router';
@@ -23,7 +23,8 @@ export class SidebarMenuComponent implements OnInit {
         private authService: AuthService,
         private renderer: Renderer2,
         private router: Router,
-        private sidebarMenuService: SidebarMenuService
+        private sidebarMenuService: SidebarMenuService,
+        private elementRef: ElementRef
     ) { }
 
     ngOnInit(): void {
@@ -67,10 +68,10 @@ export class SidebarMenuComponent implements OnInit {
             this.renderer.setStyle(submenuElement, 'bottom', '16px');
         } else {
             this.renderer.removeStyle(submenuElement, 'bottom');
-            this.renderer.setStyle(submenuElement, 'top', this.isSidebarExpanded ? `${parentRect.top - 16}px` : '-16px');
+            this.renderer.setStyle(submenuElement, 'top', `${parentRect.top - 16}px`);
         }
 
-        this.renderer.setStyle(submenuElement, 'left', `calc(100% ${this.isSidebarExpanded ? '- 16px' : '+ 16px'})`);
+        this.renderer.setStyle(submenuElement, 'left', `${parentRect.right + (this.isSidebarExpanded ? 8 : 16)}px`);
         this.renderer.setStyle(submenuElement, 'display', 'block');
         submenuElement.addEventListener('mouseenter', () => {
             this.renderer.setStyle(submenuElement, 'display', 'block');
@@ -107,10 +108,12 @@ export class SidebarMenuComponent implements OnInit {
         const parentRect = menuItem.getBoundingClientRect();
         const submenuHeight = this.calculateOffsetHeight(submenuItem);
         const isOverflowing = parentRect.top + submenuHeight > window.innerHeight;
-
+        
+        
         this.renderer.setStyle(submenuItem, isOverflowing ? 'bottom' : 'top', isOverflowing ? '16px' : `${parentRect.top}px`);
         this.renderer.setStyle(submenuItem, 'left', `calc(100% - 8px)`);
         this.renderer.setStyle(submenuItem, 'display', 'block');
+        this.setTooltipPosition(submenuItem);
         submenuItem.addEventListener('mouseenter', () => {
             this.renderer.setStyle(submenuItem, 'display', 'block');
         });
@@ -133,6 +136,17 @@ export class SidebarMenuComponent implements OnInit {
                 this.renderer.setStyle(submenuItem, 'display', 'none');
             }
         }, 150);
+    }
+
+    /**
+     * Function to to set position of tooltip in collpased mode
+     */
+    setTooltipPosition(submenuItem){
+        const rect = submenuItem.getBoundingClientRect();
+        const tooltipEl = submenuItem.querySelector('.tooltip-collapsed');
+        if (!tooltipEl) return;
+        this.renderer.setStyle(tooltipEl, 'left', `${rect.left }px`);
+        this.renderer.setStyle(tooltipEl, 'top', `${rect.top - 40}px`); 
     }
 
     /**

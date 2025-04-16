@@ -1,5 +1,6 @@
 @import '../../../scss/variables/colors';
 @import '../../../scss/variables/typography';
+@import '../../../scss/mixin/mixin';
 
 .sidebar {
     background-color: $colors-neutral-black;
@@ -27,8 +28,22 @@
         font-size: 16px;
 
         #mainMenu-items {
+
+            &.main-items-collapse {
+                max-height: 400px;
+                overflow-y: auto;
+            }
+            @include scrollbar;
+
             li.sidebar-submenu-item:first-of-type {
                 padding-top: 8px;
+            }
+
+            &.main-items-expand {
+                .tooltip-collapsed {
+                    display: none;
+                }
+
             }
         }
 
@@ -164,7 +179,7 @@
 
                     ul {
                         display: none;
-                        position: absolute;
+                        position: fixed;
                         background-color: $colors-neutral-dark;
                         box-shadow: 0px 4px 8px 0px $colors-neutral-gray-alpha;
                         z-index: 1000;
@@ -225,6 +240,10 @@
                     font-size: 12px;
                     border-radius: 8px;
                     box-shadow: 0px 4px 8px 0px $colors-neutral-gray-alpha;
+                }
+
+                .tooltip-collapsed {
+                    position: fixed;
                 }
 
                 .das,

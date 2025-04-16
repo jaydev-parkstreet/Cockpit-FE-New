@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { DateRangeOption } from 'src/app/interface/date-range';
+import { DateRangeOption } from 'src/app/interfaces/date-range';
 import { CommonService } from 'src/app/core/services/common.service';
 @Component({
     selector: 'app-cmp-date-range',
