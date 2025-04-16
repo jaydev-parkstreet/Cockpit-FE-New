@@ -90,6 +90,18 @@ export class ProductAddService {
                     
                 },
                 {
+                    key: 'aaa',
+                    name: 'aaa',
+                    label: 'aaa',
+                    type: 'upload-attachment',
+                    colClass: 'col-sm-12',
+                    isRequired: true,
+                    isDisabled: false,
+                    Placeholder: 'upload test',
+                    isShowUploader: true
+                    
+                },
+                {
                     key: 'producer',
                     name: 'producer',
                     label: 'Producer',

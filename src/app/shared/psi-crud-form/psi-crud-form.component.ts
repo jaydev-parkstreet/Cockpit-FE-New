@@ -31,6 +31,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     showError: any;
     selectedFiles:any;
     selectedFileCount: number = 0;
+    selectedFilesMap: { [key: string]: File[] } = {};
 
     constructor(
         public router: Router,
@@ -136,4 +137,10 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     onCheckedInput(field, isChecked) {
         this.form.get(field)?.setValue(isChecked ? '1' : '0');
     }
+
+    onSelectedFilesChange(files: File[], key: string): void {
+        debugger
+      this.selectedFilesMap[key] = files;
+  }
+  
 }
