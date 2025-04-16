@@ -140,7 +140,7 @@ export class NotesTabComponent implements OnInit {
 
         const newPermission = note.permission_id === 1 ? 2 : 1;
         const reqObj = {
-            note_id: note.id,
+            entity_note_id: note.id,
             permission_id: newPermission
         };
 
