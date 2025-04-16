@@ -1,10 +1,10 @@
 <div class="u-mb2 u-mt3">
     <div [ngClass]="configUpload?.isShowUploader ? 'file-uploader' : 'mass-uploader'">
         <label >{{configUpload.label}}</label>
-        <label for="file_upload" class="file-upload-label" tabindex="0">
+        <label for="file_upload + {{configUpload?.key}}" class="file-upload-label" tabindex="0">
             <span [innerHTML]="placeholder"></span>
         </label>
-        <input type="file" name="files" id="file_upload" (change)="onFileChange($event)" #file_upload multiple hidden />
+        <input type="file" name="files" id="file_upload + {{configUpload?.key}}" (change)="onFileChange($event)" #file_upload multiple hidden />
         <div class="error-msg" *ngIf="errorMessage">
             {{ errorMessage }}
         </div>
