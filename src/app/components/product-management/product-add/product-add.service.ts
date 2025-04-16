@@ -85,7 +85,8 @@ export class ProductAddService {
                     colClass: 'col-sm-12',
                     isRequired: true,
                     isDisabled: false,
-                    Placeholder: 'upload test'
+                    Placeholder: 'upload test',
+                    isShowUploader: true
                     
                 },
                 {
