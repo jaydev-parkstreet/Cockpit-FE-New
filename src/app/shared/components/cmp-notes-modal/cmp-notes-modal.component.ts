@@ -18,6 +18,7 @@ export interface notesModal {
 })
 export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any> implements notesModal {
     entity_kind: any;
+    updateNotePermissionLoading: any;
 
     constructor(
         private simpleModalService: SimpleModalService,
@@ -91,6 +92,41 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
     */
     getVisibilityDropdownValue(value: any) {
         this.permission_id = value[0]?.id;
+    }
+
+    /**
+     * Updates the privacy permission of a note.
+     * 
+     * @param {Object} note - The note object containing `id` and `permission_id`.
+     * @author PSI-VIII
+     */
+    updateNotePermission(note) {
+        if (this.updateNotePermissionLoading) return;
+
+        const newPermission = note.permission_id === 1 ? 2 : 1;
+        const reqObj = {
+            entity_note_id: note.id,
+            permission_id: newPermission
+        };
+
+        this.updateNotePermissionLoading = true;
+
+        this.commonBackendService.changeNotePrivacy(reqObj).subscribe(
+            (response: any) => {
+                if (response.hasError) {
+                    this.commonService.showToastV2Message(false, 'Failed to update privacy', 'fas fa-exclamation-circle');
+                } else {
+                    this.commonService.showToastV2Message(true, 'Privacy Updated', 'fas fa-check-circle', 'success');
+                    note.permission_id = newPermission;
+                }
+            },
+            (error) => {
+                this.commonService.showToastV2Message(false, 'Failed to update privacy', 'fas fa-exclamation-circle');
+            },
+            () => {
+                this.updateNotePermissionLoading = false;
+            }
+        );
     }
 
     /**
