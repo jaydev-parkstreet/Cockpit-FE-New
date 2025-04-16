@@ -6,13 +6,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
     styleUrls: ['./psi-upload-files.component.scss']
 })
 export class PsiUploadFilesComponent implements OnInit {
-    @Input() configUpload: any
-    @Input() isShowUploader: boolean;
-    @Input() iconClass: string;
-    @Input() fileSizeMessage: any;
+    @Input() configUpload: any;
+    @Input() placeholder: string;
     @Input() field: any;
     @Output() changeFileUpload = new EventEmitter<any>();
-    @Output() fileDeleted = new EventEmitter<void>();
     selectedFileCount: number;
     selectedFiles: File[] = [];
     errorMessage: string = '';
@@ -33,7 +30,7 @@ export class PsiUploadFilesComponent implements OnInit {
         const maxSize = 10 * 1024 * 1024;
         const validFiles: File[] = [];
 
-        if (this.isShowUploader) {
+        if (this.configUpload?.isShowUploader) {
             this.handleFileUpload(files, allowedExtensions, maxSize, event, validFiles);
         } else {
             this.handleMassExcelFileUpload(files, allowedExtensions, maxSize, event, validFiles);

@@ -47,11 +47,15 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     CONSTANTS: any = AppConstant;
     fileSizeMessage: string;
     modelAttachmentPermission: any = [];
+    configUpload: any;
 
     ngOnInit(): void {
         this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);
         this.filetype_dropdown = this.commonService.getSingleSelectDropdownConfig('Select file type', true);
         this.modelAttachmentPermission = [this.modalData?.attachmentPermission[0]];
+        this.configUpload = {
+            isShowUploader: true,
+        };
     }
 
     /**

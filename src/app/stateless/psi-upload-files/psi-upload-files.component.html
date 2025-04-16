@@ -1,8 +1,8 @@
 <div class="u-mb2 u-mt3">
-    <div [ngClass]="isShowUploader ? 'file-uploader' : 'mass-uploader'">
+    <div [ngClass]="configUpload?.isShowUploader ? 'file-uploader' : 'mass-uploader'">
         <!-- <label >{{field.label}}</label> -->
         <label for="file_upload" class="file-upload-label" tabindex="0">
-            <span [innerHTML]="fileSizeMessage"></span>
+            <span [innerHTML]="placeholder"></span>
         </label>
         <input type="file" name="files" id="file_upload" (change)="onFileChange($event)" #file_upload multiple hidden />
         <div class="error-msg" *ngIf="errorMessage">

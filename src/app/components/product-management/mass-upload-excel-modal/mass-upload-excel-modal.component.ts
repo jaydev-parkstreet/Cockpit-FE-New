@@ -42,7 +42,8 @@ export class MassUploadExcelModalComponent extends SimpleModalComponent<massUplo
 
     ngOnInit(): void {
         this.configUpload = {
-            allowedExtensions: ['xlsx']
+            allowedExtensions: ['xlsx'],
+            isShowUploader: false
         }
     }
     

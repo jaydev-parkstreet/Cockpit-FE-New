@@ -54,9 +54,9 @@
         </div>
         <hr *ngIf="modalData?.attachmentDetails?.data?.length > 4" />
         <app-psi-upload-files
-            (changeFileUpload)="onFileChange($event)"
-            [isShowUploader]="true"
-            [fileSizeMessage]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'">
+            (changeFileUpload) = "onFileChange($event)"
+            [configUpload] = "configUpload"
+            [placeholder] = "selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'">
         </app-psi-upload-files>
         <div class="attachment-permission">
             <div *ngIf="!modalData.latestDesign" class="custom-select-wrapper">

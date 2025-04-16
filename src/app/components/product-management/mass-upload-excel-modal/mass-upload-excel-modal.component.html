@@ -12,8 +12,7 @@
                 *ngIf='!isLoadingUploads'
                 (changeFileUpload)="onFileChange($event)"
                 [configUpload]="configUpload"
-                [fileSizeMessage]="massTemplate"            
-                [isShowUploader]="false">
+                [placeholder]="massTemplate">
             </app-psi-upload-files>
         </div>
     </div>
