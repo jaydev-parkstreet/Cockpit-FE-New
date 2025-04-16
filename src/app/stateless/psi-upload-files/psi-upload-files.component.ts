@@ -28,7 +28,7 @@ export class PsiUploadFilesComponent implements OnInit {
         const files: FileList = event.target.files;
         const allowedExtensions = this.configUpload?.allowedExtensions || ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'];
         const maxSize = 10 * 1024 * 1024;
-        const validFiles: File[] = [];
+        const validFiles: File[] = this.selectedFiles;
 
         if (this.configUpload?.isShowUploader) {
             this.handleFileUpload(files, allowedExtensions, maxSize, event, validFiles);

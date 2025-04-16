@@ -1,6 +1,6 @@
 <div class="u-mb2 u-mt3">
     <div [ngClass]="configUpload?.isShowUploader ? 'file-uploader' : 'mass-uploader'">
-        <label >{{configUpload.label}}</label>
+        <label *ngIf="configUpload?.label">{{configUpload?.label}}</label>
         <label for="file_upload + {{configUpload?.key}}" class="file-upload-label" tabindex="0">
             <span [innerHTML]="placeholder"></span>
         </label>

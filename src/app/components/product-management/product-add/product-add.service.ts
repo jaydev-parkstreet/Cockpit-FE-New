@@ -98,7 +98,8 @@ export class ProductAddService {
                     isRequired: true,
                     isDisabled: false,
                     Placeholder: 'upload',
-                    isShowUploader: true
+                    isShowUploader: true,
+                    allowedExtensions: ['pdf']
                     
                 },
                 {

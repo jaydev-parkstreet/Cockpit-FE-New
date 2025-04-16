@@ -79,7 +79,6 @@
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
                     <app-psi-upload-files 
                         [configUpload] ='field'
-                        (changeFileUpload)="onSelectedFilesChange($event, key)"
                         [placeholder]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : field.Placeholder">
                     </app-psi-upload-files>
                 </div>
