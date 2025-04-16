@@ -74,7 +74,7 @@ export class ProductAddService {
                     filters: { entity: [] },
                     options: crudFiltersList.groups || [],
                     isRequired: true,
-                    isDisabled: false,
+                    isDisabled: true,
                     inputSetting: this.commonService.getDropdownConfig('Select Group')
                 },
                 {
@@ -84,7 +84,7 @@ export class ProductAddService {
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: true,
-                    isDisabled: false,
+                    isDisabled: true,
                     Placeholder: 'upload test',
                     isShowUploader: true
                     

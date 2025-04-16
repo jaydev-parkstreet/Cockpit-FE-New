@@ -1,8 +1,18 @@
 @import '../../scss/variables/colors';
 @import '../../scss/variables/typography';
 @import '../../scss/mixin/mixin';
+@import '../../scss/mixin/_input';
 
+.upload-container {
+    .upload-label {
+        @include psi-input-label;
+    }
 
+    input {
+        @include psi-input;
+
+    }
+}
 .file-uploader {
     .file-upload-label {
         width: 100%;

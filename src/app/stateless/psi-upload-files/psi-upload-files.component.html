@@ -1,10 +1,11 @@
-<div class="u-mb2 u-mt3">
+<div class="upload-container">
     <div [ngClass]="configUpload?.isShowUploader ? 'file-uploader' : 'mass-uploader'">
-        <label *ngIf="configUpload?.label">{{configUpload?.label}}</label>
-        <label for="file_upload + {{configUpload?.key}}" class="file-upload-label" tabindex="0">
+        <label class="typography-body-dark-regular upload-label" [ngClass]="{'required': configUpload?.isRequired}"
+         *ngIf="configUpload?.label">{{configUpload?.label}}</label>
+        <label for="file_upload{{configUpload?.key}}" class="file-upload-label" tabindex="0">
             <span [innerHTML]="placeholder"></span>
         </label>
-        <input type="file" name="files" id="file_upload + {{configUpload?.key}}" (change)="onFileChange($event)" #file_upload multiple hidden />
+        <input type="file" name="files" id="file_upload{{configUpload?.key}}" [disabled]="configUpload?.isDisabled" (change)="onFileChange($event)"  #file_upload multiple hidden />
         <div class="error-msg" *ngIf="errorMessage">
             {{ errorMessage }}
         </div>
