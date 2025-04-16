@@ -1,6 +1,6 @@
 <div class="input-dropdown">
     <div class="dropdown-label" [ngClass]="{'required': required}">
-        <span class="d-block" [textContent]="label" *ngIf="label"></span>
+        <span class="d-block" [textContent]="filter.label" *ngIf="filter.label"></span>
     </div>
     <div class="u-flex u-align-center u-justify-between" (click)="toggleDropdown()">
         <input 
@@ -29,15 +29,16 @@
                         {{item.mobile_name}}
                     </div>
                 </div>
+                {{filter.key}}_from
                 <app-cmp-input-datepicker 
-                    type="from" 
+                    type="{{filter.key}}_from"
                     [min]="min"
                     [max]="max"
                     [selectedDate]="fromDate" 
                     (dateModelChange)="onDateSelected($event)">
                 </app-cmp-input-datepicker>
                 <app-cmp-input-datepicker 
-                    type="to" 
+                    type="{{filter.key}}_to"
                     [min]="min"
                     [max]="max"
                     [selectedDate]="toDate" 
