@@ -1,6 +1,6 @@
 <div class="u-mb2 u-mt3">
-    <div [ngClass]="isFromAttachment ? 'file-uploader' : 'mass-uploader'">
-        <label >{{field.label}}</label>
+    <div [ngClass]="isShowUploader ? 'file-uploader' : 'mass-uploader'">
+        <!-- <label >{{field.label}}</label> -->
         <label for="file_upload" class="file-upload-label" tabindex="0">
             <span [innerHTML]="fileSizeMessage"></span>
         </label>
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </div>
-            <i class="fas fa-trash" (click)="deleteFile(i)"></i>
+            <i class="fas fa-trash" (click)="onFileDeleted(i)"></i>
         </div>
     </div>
 </div>
