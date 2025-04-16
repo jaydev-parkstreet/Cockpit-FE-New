@@ -133,7 +133,7 @@
                 </div>
                 <!-- For each upload field in rightSection -->
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
-                    <label class="field-label" *ngIf="field.label">{{field.label}}</label>
+                    <label class="attachment-label" *ngIf="field.label">{{field.label}}</label>
                     <app-psi-upload-files 
                         [selectedFiles]="selectedFiles"
                         (changeFileUpload) ="onFileChange.emit($event)"
