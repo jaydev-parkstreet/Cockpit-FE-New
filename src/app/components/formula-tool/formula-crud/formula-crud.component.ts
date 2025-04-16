@@ -36,6 +36,7 @@ export class FormulaCrudComponent implements OnInit {
     selectedFiles: any[] = [];
     fileFieldMap: { [key: string]: any[] } = {};
     selectedFileCount: number = 0;
+    initialFormData: any;
 
     constructor(
         private FormulaService: FormulaService,
@@ -75,26 +76,30 @@ export class FormulaCrudComponent implements OnInit {
         window.addEventListener('popstate', this.handleBackNavigation);
     }
 
-    onBrowserBack(event: PopStateEvent): void {
-        history.pushState(null, '', location.href);
-        const modalData = {
-            title: this.modalData?.title || 'Confirm Navigation',
-            message: this.modalData?.message || 'Are you sure you want to exit? All changes will be lost.',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
-        };
-        const disposable = this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
-            .subscribe((confirmed: boolean) => {
-                if (confirmed) {
-                    window.removeEventListener('popstate', this.onBrowserBack.bind(this));
-                    this.router.navigate(['/formula']);
-                }
-            });
-    }
-
+    /**
+     * Handle back navigation
+     * @author PSI-VIII
+     */
     handleBackNavigation = (): void => {
-        history.pushState(null, '', location.href);
-        this.openConfirmationPopup(true);
+        const currentFormData = this.getCurrentFormDataSnapshot();
+        if (JSON.stringify(this.initialFormData) !== JSON.stringify(currentFormData)) {
+            history.pushState(null, '', location.href);
+
+            const modalData = this.commonService.getModalData(
+                'All data will be lost.',
+                'Are you sure you wish to exit?'
+            );
+            this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+                .subscribe((result) => {
+                    if (result && result.btn && result.btn.label === 'Yes') {
+                        window.removeEventListener('popstate', this.handleBackNavigation);
+                        this.router.navigate(['/formula']);
+                    }
+                });
+        } else {
+            window.removeEventListener('popstate', this.handleBackNavigation);
+            window.history.back();
+        }
     };
 
     /**
@@ -108,12 +113,31 @@ export class FormulaCrudComponent implements OnInit {
             this.filtersList = result;
             this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
             this.initializeForm();
+            this.initialFormData = this.getCurrentFormDataSnapshot();
             this.spinner.hide();
         }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
             this.spinner.hide();
             this.commonService.showToastV2Message(true, 'Failed to load dropdown data', 'fas fa-exclamation-circle');
         });
+    }
+
+    /**
+     * Get the current form data snapshot
+     * @author PSI-VIII
+     * @returns The current form data
+     */
+    getCurrentFormDataSnapshot(): any {
+        const currentRawForm = this.formulaForm.getRawValue();
+        const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
+            currentRawForm,
+            this.filtersList,
+            this.edit,
+            this.duplicate,
+            this.formulaId
+        );
+
+        return formattedModel;
     }
 
     /**
@@ -255,7 +279,6 @@ export class FormulaCrudComponent implements OnInit {
      * @param size File size in bytes
      * @returns Formatted string representing file size
      */
-
     convertFileSizes(size: number): string {
         if (!size) return '0 B';
         if (size < 1024) return size + ' B';
@@ -458,7 +481,18 @@ export class FormulaCrudComponent implements OnInit {
                 this.commonService.showToastV2Message(true, "Please fill all required fields", 'fas fa-exclamation-circle');
             }
         } else {
-            this.openConfirmationPopup();
+            const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
+                this.formulaForm.value,
+                this.filtersList,
+                this.edit,
+                this.duplicate,
+                this.formulaId
+            );
+            if (JSON.stringify(this.initialFormData) !== JSON.stringify(formattedModel)) {
+                this.openConfirmationPopup();
+            } else {
+                this.router.navigate(['/formula']);
+            }
         }
     }
     /**
@@ -466,7 +500,7 @@ export class FormulaCrudComponent implements OnInit {
      * @author PSI-VIII
      * @param triggeredByBrowserBack Indicates if the navigation was triggered by the browser back button
      */
-    openConfirmationPopup(triggeredByBrowserBack = false): void {
+    openConfirmationPopup(): void {
         const modalData = this.commonService.getModalData(
             'All data will be lost.',
             'Are you sure you wish to exit?'
@@ -475,12 +509,8 @@ export class FormulaCrudComponent implements OnInit {
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
                 if (result && result.btn && result.btn.label === 'Yes') {
-                    if (triggeredByBrowserBack) {
-                        window.removeEventListener('popstate', this.handleBackNavigation);
-                        this.router.navigate(['/formula']);
-                    } else {
-                        this.router.navigate(['/formula']);
-                    }
+                    window.removeEventListener('popstate', this.handleBackNavigation);
+                    this.router.navigate(['/formula']);
                 }
             });
     }

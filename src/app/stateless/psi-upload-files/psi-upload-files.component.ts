@@ -7,11 +7,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class PsiUploadFilesComponent implements OnInit {
 
-    @Input() selectedFiles: any;
+    @Input() selectedFiles: File[] = [];
     @Input() isFromAttachment: boolean;
     @Input() iconClass: string;
     @Input() errorMessage: string = '';
-    @Input() fileSizeMessage: any;
+    @Input() fileSizeMessage: string;
     @Input() convertFileSizes: (size: number) => string;
     @Input() convertFileType: (type: string) => string;
     @Output() changeFileUpload = new EventEmitter<any>();

@@ -381,7 +381,7 @@ export class FormulaService {
                     setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 },
                 { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
-                { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4' , id: 1}
+                { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4'}
             ],
         };
     }
