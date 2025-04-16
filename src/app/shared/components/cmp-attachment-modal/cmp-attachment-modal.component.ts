@@ -168,7 +168,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
       }
     }, (error) => {
       this.commonService.hideSpinner();
-      this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+      this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
     }
     );
   }
