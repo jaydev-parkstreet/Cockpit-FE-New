@@ -72,6 +72,7 @@ export class FormulaCrudComponent implements OnInit {
         } else {
             this.edit = false;
         }
+        window.removeEventListener('popstate', this.handleBackNavigation);
         history.pushState(null, '', location.href);
         window.addEventListener('popstate', this.handleBackNavigation);
     }
@@ -80,11 +81,23 @@ export class FormulaCrudComponent implements OnInit {
      * Handle back navigation
      * @author PSI-VIII
      */
-    handleBackNavigation = (): void => {
-        const currentFormData = this.getCurrentFormDataSnapshot();
-        if (JSON.stringify(this.initialFormData) !== JSON.stringify(currentFormData)) {
-            history.pushState(null, '', location.href);
+    handleBackNavigation = (event: PopStateEvent): void => {
+        event.preventDefault();
+        history.pushState(null, '', location.href);
 
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
+
+        const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
+            this.formulaForm.value,
+            this.filtersList,
+            this.edit,
+            this.duplicate,
+            this.formulaId
+        );
+
+        if (JSON.stringify(this.initialFormData) !== JSON.stringify(formattedModel)) {
             const modalData = this.commonService.getModalData(
                 'All data will be lost.',
                 'Are you sure you wish to exit?'
@@ -98,7 +111,7 @@ export class FormulaCrudComponent implements OnInit {
                 });
         } else {
             window.removeEventListener('popstate', this.handleBackNavigation);
-            window.history.back();
+            this.router.navigate(['/formula']);
         }
     };
 
