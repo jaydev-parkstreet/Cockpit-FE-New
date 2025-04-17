@@ -16,6 +16,10 @@
         @include ps-required-error;
     }
 
+    .placeholder-color {
+        color: $colors-neutral-black !important;
+    }
+
     .file-uploader {
         .file-upload-label {
             width: 100%;
