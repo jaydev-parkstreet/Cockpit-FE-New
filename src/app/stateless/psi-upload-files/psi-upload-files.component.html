@@ -1,7 +1,9 @@
 <div class="upload-container">
     <div [ngClass]="configUpload?.isShowUploader ? 'file-uploader' : 'mass-uploader'">
-        <label class="typography-body-dark-regular upload-label" [ngClass]="{'required': configUpload?.isRequired}"
-         *ngIf="configUpload?.label">{{configUpload?.label}}</label>
+        <label class="typography-body-dark-regular upload-label"
+            [ngClass]="{'required': configUpload?.isRequired}" *ngIf="configUpload?.label">
+            {{configUpload?.label}}
+        </label>
         <label for="file_upload{{configUpload?.key}}" class="file-upload-label" tabindex="0">
             <span [innerHTML]="placeholder"></span>
         </label>
