@@ -22,6 +22,11 @@
             margin: 20px;
         }
 
+        ::ng-deep .upload-container {
+            margin-bottom: 8px;
+            margin-top: 16px;
+        }
+
         .attachment-padding {
             min-height: 110px;
             max-height: 164px;
