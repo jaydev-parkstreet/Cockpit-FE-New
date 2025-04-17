@@ -21,8 +21,8 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     @Output() formSubmit = new EventEmitter<any>();
     @Output() clearAllClicked: EventEmitter<void> = new EventEmitter<void>();
     @Output() OnChangeDateModel = new EventEmitter<any>();
-    @Output() onFileChange = new EventEmitter<any>();
-    @Output() onFileDeleted = new EventEmitter<any>();
+   
+    // @Output() onFileDeleted = new EventEmitter<any>();
     @Input() set shouldClearAllFields(value: boolean) {
         if (value) {
             this.clearAllFields();
@@ -30,6 +30,9 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     }
 
     showError: any;
+    selectedFilesMap: { [key: string]: File[] } = {};
+
+
 
     constructor(
         public router: Router,
@@ -134,5 +137,15 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      */
     onCheckedInput(field, isChecked) {
         this.form.get(field)?.setValue(isChecked ? '1' : '0');
+    }
+  
+    /**
+     * Function to call on file upload.
+     * @param event
+     * @author PSI-Enhancements
+     */
+    changeFileUpload(value: File[], key: string) {
+        this.selectedFilesMap[key] = value;
+        this.form.get(key)?.setValue(value);
     }
 }
