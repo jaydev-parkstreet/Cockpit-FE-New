@@ -1,6 +1,6 @@
 <div class="input-dropdown">
     <div class="dropdown-label" [ngClass]="{'required': required}">
-        <span class="d-block" [textContent]="filter.label" *ngIf="filter.label"></span>
+        <span class="d-block" [textContent]="filter.label" *ngIf="filter?.label"></span>
     </div>
     <div class="u-flex u-align-center u-justify-between" (click)="toggleDropdown()">
         <input 
@@ -13,32 +13,31 @@
             readonly>
         <i class="fal fa-times-circle position-absolute u-neutral-light u-csr-ptr clearSelectedItems" *ngIf="selectedDate !== 'mm/dd/yyyy - mm/dd/yyyy'" (click)="clearDate()"></i>
         <button class="dropdown-button">
-            <i [ngClass]="isDropdownOpen() ? 'fal fa-chevron-up' : 'fal fa-chevron-down'" aria-hidden="true"></i>
+            <i class="fa-calendar-alt fas" aria-hidden="true"></i>
         </button>
     </div>
 
     <div class="dropdown-list" *ngIf="isOpen">
         <div class="dropdown-content">
             <div>
-                <div class="date-filters" *ngIf="datesArray && datesArray.length > 0">
+                <div class="date-filters" *ngIf="datesArray && datesArray?.length > 0">
                     <div 
                         class="date-filter-item" 
                         *ngFor="let item of datesArray" 
-                        [ngClass]="{'active-item': defaultDateValues.id === item.id}"
+                        [ngClass]="{'active-item': defaultDateValues?.id === item?.id}"
                         (click)="setDateValues(item)">
                         {{item.mobile_name}}
                     </div>
                 </div>
-                {{filter.key}}_from
                 <app-cmp-input-datepicker 
-                    type="{{filter.key}}_from"
+                    type="{{filter?.key}}_from"
                     [min]="min"
                     [max]="max"
                     [selectedDate]="fromDate" 
                     (dateModelChange)="onDateSelected($event)">
                 </app-cmp-input-datepicker>
                 <app-cmp-input-datepicker 
-                    type="{{filter.key}}_to"
+                    type="{{filter?.key}}_to"
                     [min]="min"
                     [max]="max"
                     [selectedDate]="toDate" 

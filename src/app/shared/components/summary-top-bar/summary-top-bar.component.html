@@ -71,6 +71,7 @@
             <div class="filter-item" [ngClass]="filter.divClass" *ngIf="filter.type === 'daterange'">
                 <app-cmp-date-range 
                     [filter]="filter"
+                    [selectedDateRange]="filterList[filter.key][2]"
                     [datesArray]="filterList[filter.key]"
                     (dateRangeModelChange)="onDateRangeSelected($event)">
                 </app-cmp-date-range>
