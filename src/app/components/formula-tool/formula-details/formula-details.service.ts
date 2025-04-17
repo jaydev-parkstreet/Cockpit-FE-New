@@ -97,7 +97,7 @@ export class formulaDetailService {
     
         if (key === 'product_origin') {
           switch (value) {
-            case 'D': value = 'Domestic'; break;
+            case 'D': value = 'Domestic (U.S.)'; break;
             case 'I': value = 'Imported (Non-U.S.)'; break;
           }
         }
@@ -157,7 +157,7 @@ export class formulaDetailService {
     }
 
     /**
-     * Function to prepare data for product management system CRUD form.
+     * Function to prepare data for formula audi trail.
      * 
      * @param none
      * @returns Array of Object of Mappings
@@ -166,6 +166,7 @@ export class formulaDetailService {
     getDetailsAuditTrailConfigApiRequest () {
       return [
             { data: 'id', label: 'UNIQUE ID', typeOfFilter: null },
+            { data: 'client_name',label: 'Supplier', typeOfFilter: null},
             { data: 'formula_fids_file', label: 'Formula FIDS File:', typeOfFilter: null },
             { data: 'formula_document_approval_file', label: 'Formula Document Approval File:', typeOfFilter: null },
             { data: 'date_requested', label: 'Requested Date:', typeOfFilter: null },

@@ -294,27 +294,37 @@ export class FormulaDetailsComponent implements OnInit {
             tool: this.permissions.tool_id
         }
         this.isAuditDataIsLoading = true;
-        this.commonBackendService.getAuditTrailData(req_obj).subscribe( (response: any) => {
-            if(!response.hasError) {
-                response.data.map(row => {
-                    row.date = moment(row.date).format('MM/DD/YY hh:mm');
-                    if(row.current_data) {
-                        row = this.getAuditTrailFormattedData(row);
+    
+        this.commonBackendService.getAuditTrailData(req_obj).subscribe(
+            (response: any) => {
+                if (!response.hasError) {
+                    const filteredData = response.data
+                        .filter(row => row.type !== 'attachment created' && row.type !== 'attachment deleted') // Exclude specific types
+                        .map(row => {
+                            row.date = moment(row.date).format('MM/DD/YY hh:mm');
+                            if (row.current_data) {
+                                row = this.getAuditTrailFormattedData(row);
+                            }
+                            return row;
+                        });
+    
+                    this.auditList = filteredData;
+    
+                    if (this.auditList && this.auditList[0]) {
+                        this.filterAuditData();
                     }
-                });
-                this.auditList = response.data;
-                if(this.auditList && this.auditList[0]) {
-                    this.filterAuditData();
+                } else {
+                    this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
                 }
-            } else {
-                this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+            },
+            (error) => {
+                this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+            },
+            () => {
+                this.isAuditDataIsLoading = false;
             }
-        }, (error) => {
-            this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
-        }, () => {
-            this.isAuditDataIsLoading = false;
-        });
-    }
+        );
+    }    
 
     /**
      * Formats the audit trail data for the given row, processing the `current_data` and `previous_data` 
