@@ -12,6 +12,10 @@
         @include psi-input;
     }
 
+    .ps-required-error {
+        @include ps-required-error;
+    }
+
     .file-uploader {
         .file-upload-label {
             width: 100%;
@@ -23,7 +27,7 @@
             padding-left: 16px;
             cursor: pointer;
             position: relative;
-            margin-bottom: 8px;
+            margin-bottom: 0px;
 
             span {
                 font-size: 12px;
@@ -70,6 +74,17 @@
             &:hover,
             &:focus {
                 border: 1px solid $colors-neutral-light !important;
+            }
+        }
+    }
+
+    &:has(input.ps-required-error) {
+        .file-upload-label {
+            border: 2px solid $colors-v2-base-error !important;
+            
+            background-color: $colors-v2-base-error-t-10;
+            span {
+                color: $colors-v2-base-error !important;
             }
         }
     }

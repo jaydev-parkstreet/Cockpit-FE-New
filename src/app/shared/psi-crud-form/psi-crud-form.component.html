@@ -79,8 +79,12 @@
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
                     <app-psi-upload-files 
                         [configUpload] ='field'
-                        [placeholder]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : field.Placeholder">
+                        [placeholder]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : field.Placeholder"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}">
                     </app-psi-upload-files>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>
                 </div>
             </div>
             <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
@@ -145,6 +149,16 @@
                     <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>  
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
+                    <app-psi-upload-files 
+                        [configUpload] ='field'
+                        [placeholder]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : field.Placeholder"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}">
+                    </app-psi-upload-files>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>
                 </div>
             </div>
         </div>

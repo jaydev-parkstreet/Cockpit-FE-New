@@ -74,7 +74,7 @@ export class ProductAddService {
                     filters: { entity: [] },
                     options: crudFiltersList.groups || [],
                     isRequired: true,
-                    isDisabled: true,
+                    isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Group')
                 },
                 {
