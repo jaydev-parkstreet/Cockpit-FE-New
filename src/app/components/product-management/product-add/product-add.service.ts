@@ -5,7 +5,6 @@ import AppRoutes from 'src/app/app.routes';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { FormControl, Validators } from '@angular/forms';
-import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Injectable({
   providedIn: 'root'
