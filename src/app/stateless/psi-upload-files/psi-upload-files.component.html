@@ -5,7 +5,12 @@
         <label for="file_upload{{configUpload?.key}}" class="file-upload-label" tabindex="0">
             <span [innerHTML]="placeholder"></span>
         </label>
-        <input type="file" name="files" id="file_upload{{configUpload?.key}}" [disabled]="configUpload?.isDisabled" (change)="onFileChange($event)"  #file_upload multiple hidden />
+        <input
+            type="file" name="files"
+            id="file_upload{{configUpload?.key}}"  
+            [ngClass]="validationClasses"
+            [disabled]="configUpload?.isDisabled"
+            (change)="onFileChange($event)"  #file_upload multiple  hidden/>
         <div class="error-msg" *ngIf="errorMessage">
             {{ errorMessage }}
         </div>

@@ -10,8 +10,12 @@
 
     input {
         @include psi-input;
-
     }
+
+    .ps-required-error {
+        @include ps-required-error;
+    }
+    
 }
 .file-uploader {
     .file-upload-label {
