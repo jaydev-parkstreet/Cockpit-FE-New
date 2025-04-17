@@ -29,6 +29,9 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     }
 
     showError: any;
+    selectedFilesMap: { [key: string]: File[] } = {};
+
+
 
     constructor(
         public router: Router,
@@ -135,4 +138,13 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         this.form.get(field)?.setValue(isChecked ? '1' : '0');
     }
   
+    /**
+     * Function to call on file upload.
+     * @param event
+     * @author PSI-Enhancements
+     */
+    changeFileUpload(value: File[], key: string) {
+        this.selectedFilesMap[key] = value;
+        this.form.get(key)?.setValue(value);
+    }
 }

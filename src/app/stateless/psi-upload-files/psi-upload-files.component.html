@@ -9,7 +9,7 @@
         </label>
         <input
             type="file" name="files"
-            id="file_upload{{configUpload?.key}}"  
+            id="file_upload{{configUpload?.key}}"
             [ngClass]="validationClasses"
             [disabled]="configUpload?.isDisabled"
             (change)="onFileChange($event)"  #file_upload multiple  hidden/>
