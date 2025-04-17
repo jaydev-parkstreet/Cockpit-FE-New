@@ -11,11 +11,11 @@ export class CmpInputDatepickerComponent implements OnInit {
     @Input() fieldConfig: any;
     @Input() selectedDate: Date | null;
     @Input() setting: Setting;
-    @Input() type: 'from' | 'to' | 'default';
+    @Input() type: string;
     @Input() min: any;
     @Input() max: any;
     @Input() validationClasses: any;
-    @Output() dateModelChange = new EventEmitter<{ type: 'from' | 'to' | 'default', value: Date | null }>();
+    @Output() dateModelChange = new EventEmitter<{ type: string, value: Date | null }>();
 
     calculatedPlaceholder: string;
     

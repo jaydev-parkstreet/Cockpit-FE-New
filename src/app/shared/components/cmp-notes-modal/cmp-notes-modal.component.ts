@@ -2,40 +2,37 @@ import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild }
 import { SimpleModalComponent, SimpleModalService } from 'ngx-simple-modal';
 import { CommonService } from 'src/app/core/services/common.service';
 import { environment } from 'src/environments/environment';
-import { ProductManagementService } from 'src/app/components/product-management/product-management.service';
-import AppConstant from 'src/app/app.constant';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
 import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
-
+import { DropdownConfig } from 'src/app/interfaces/attachment-modal';
 export interface notesModal {
     modalData: any;
 }
-
 @Component({
     selector: 'app-cmp-notes-modal',
     templateUrl: './cmp-notes-modal.component.html',
     styleUrls: ['./cmp-notes-modal.component.scss']
 })
 export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any> implements notesModal {
-    entity_kind: any;
+    updateNotePermissionLoading: any;
 
     constructor(
         private simpleModalService: SimpleModalService,
         private commonService: CommonService,
-        private commonBackendService: CommonBackendService,
-        private productmanagementService: ProductManagementService,
+        private commonBackendService: CommonBackendService
     ) { super(); }
 
     @Input() modalData: any;
-    dropdownConfig: any;
-    permission_id: any;
-    editorContent: any;
-    selectedNoteId: any;
-    fileServer: any = environment.fileServer;
+    entity_kind: number;
+    dropdownConfig: DropdownConfig;
+    permission_id: number | { id: number; name: string };
+    editorContent: string;
+    selectedNoteId: number;
+    fileServer: string = environment.fileServer;
     isNotesListVisible: boolean;
     filters: {};
     defaultPermission: number;
-    notes_permission: any;
+    notes_permission: number;
 
     /**
     * Text editor configuration 
@@ -74,12 +71,12 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
             if (this.modalData.defaultPermission) {
                 this.onEditClick(this.modalData.noteDetails.notes);
                 this.defaultPermission = this.modalData.notesPermission.findIndex((item: any) => item.id === this.modalData.defaultPermission);
-            }else{
+            } else {
                 this.defaultPermission = 0;
             }
             this.notes_permission = this.modalData.notesPermission[this.defaultPermission].id;
             this.filters = this.modalData.notesPermission[this.defaultPermission];
-            this.permission_id= this.modalData.notesPermission[this.defaultPermission];
+            this.permission_id = this.modalData.notesPermission[this.defaultPermission];
         }
         this.dropdownConfig = this.commonService.getSingleSelectDropdownConfig('Select permission', true);
     }
@@ -91,6 +88,41 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
     */
     getVisibilityDropdownValue(value: any) {
         this.permission_id = value[0]?.id;
+    }
+
+    /**
+     * Updates the privacy permission of a note.
+     * 
+     * @param {Object} note - The note object containing `id` and `permission_id`.
+     * @author PSI-VIII
+     */
+    updateNotePermission(note) {
+        if (this.updateNotePermissionLoading) return;
+
+        const newPermission = note.permission_id === 1 ? 2 : 1;
+        const reqObj = {
+            entity_note_id: note.id,
+            permission_id: newPermission
+        };
+
+        this.updateNotePermissionLoading = true;
+
+        this.commonBackendService.changeNotePrivacy(reqObj).subscribe(
+            (response: any) => {
+                if (response.hasError) {
+                    this.commonService.showToastV2Message(false, 'Failed to update privacy', 'fas fa-exclamation-circle');
+                } else {
+                    this.commonService.showToastV2Message(true, 'Privacy Updated', 'fas fa-check-circle', 'success');
+                    note.permission_id = newPermission;
+                }
+            },
+            (error) => {
+                this.commonService.showToastV2Message(false, 'Failed to update privacy', 'fas fa-exclamation-circle');
+            },
+            () => {
+                this.updateNotePermissionLoading = false;
+            }
+        );
     }
 
     /**
@@ -144,23 +176,23 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
     * @param Number value
     * @author PSI-Enhancements
     */
-    onDeleteClick(id: any) {
-       let modalData = this.commonService.getModalData('Are you sure you want to delete the note?', '');
+    onDeleteClick(id: number) {
+        let modalData = this.commonService.getModalData('Are you sure you want to delete the note?', '');
 
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
                 if (result.btn.label === 'Yes') {
                     this.commonBackendService.deleteNote(id, this.modalData.permissions.menu_item_id)
-                        .subscribe((response: any) => {
-                            if (response.hasError) {
-                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
-                            } else {
-                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
-                                this.modalData.noteDetails.notes = this.modalData.noteDetails.notes.filter((item: any) => item.id !== id);
-                            }
-                        }, (error) => {
-                            this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
-                        });
+                    .subscribe((response: any) => {
+                        if (response.hasError) {
+                            this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                        } else {
+                            this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
+                            this.modalData.noteDetails.notes = this.modalData.noteDetails.notes.filter((item: any) => item.id !== id);
+                        }
+                    }, (error) => {
+                        this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+                    });
                 }
             });
 
@@ -219,6 +251,6 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
      * @author PSI-Enhancements
      */
     get isButtonDisabled(): boolean {
-        return !this.editorContent || !this.permission_id; 
+        return !this.editorContent || !this.permission_id;
     }
 }

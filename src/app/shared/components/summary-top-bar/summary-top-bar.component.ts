@@ -33,9 +33,13 @@ export class SummaryTopBarComponent implements OnInit {
     constructor(private router: Router) { }
 
     ngOnInit(): void {
+        console.log('config', this.config);
         this.tooltipText = 'Export To Excel';
     }
 
+    ngOnChanges() {
+      console.log('filterList', this.filterList);
+    }
     /**
      * function to filter change
      * @param key - filter key
@@ -46,6 +50,12 @@ export class SummaryTopBarComponent implements OnInit {
         this.selectedFilters[key] = value;
         this.isAllItemsSelected = value.length === this.filterList[key]?.length;
         this.isIndeterminate = value.length > 0 && value.length < this.filterList[key]?.length;
+    }
+
+    onDateRangeSelected(selectedDateRange: any) {
+        selectedDateRange.map((item: any) => {
+            this.selectedFilters[item.type] = item.value;
+        })
     }
 
     /**
@@ -63,6 +73,7 @@ export class SummaryTopBarComponent implements OnInit {
      * @author PSI-Enhancement
     */
     applyFilterChanges() {
+        console.log('selectedFilters', this.selectedFilters);
         this.applyFilters.emit(this.selectedFilters);
     }
 

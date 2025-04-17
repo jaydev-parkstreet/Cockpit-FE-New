@@ -39,6 +39,7 @@
                     <app-notes-tab
                         *ngIf = "activeTab === 'notes'"
                         [entity] = "formulaDetails.id"
+                        [allowChangePrivacy] = true
                         [permissions] = "permissions"
                         [filterList] = "filterList">
                     </app-notes-tab>

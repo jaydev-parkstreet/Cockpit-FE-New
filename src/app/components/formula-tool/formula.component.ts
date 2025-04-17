@@ -208,6 +208,7 @@ export class FormulaComponent implements OnInit {
       noteDetails,
       showLine: true,
       noDataMessage: 'No Notes Found',
+      showPrivacyIcon: true
     }
     this.simpleModalService.addModal(CmpNotesModalComponent, { modalData })
       .subscribe((result) => {
@@ -421,7 +422,7 @@ export class FormulaComponent implements OnInit {
       } else if (key == 'is_active') {
         acc['active_status'] = [selectedFilters[key] == 0 ? '1' : '0'];
       } else if (key == 'is_archived') {
-        acc['is_archived'] = selectedFilters[key].length === 0 ? [0] : [1];
+        acc['is_archived'] = selectedFilters[key] ? [1] : [];
       } else {
         acc[key] = selectedFilters[key].map((item: any) => item.id);
       }
