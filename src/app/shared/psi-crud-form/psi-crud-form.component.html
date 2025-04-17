@@ -81,6 +81,9 @@
                         [configUpload] ='field'
                         [placeholder]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : field.Placeholder">
                     </app-psi-upload-files>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>
                 </div>
             </div>
             <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
