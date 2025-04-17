@@ -359,18 +359,40 @@ export class FormulaCrudComponent implements OnInit {
             date_expired: formulaData.date_expired || '',
             no_expiration_date: formulaData.no_expiration_date || false
         };
+    
+        // Set dropdown values using the helper function
+        const setDropdownValue = (fieldName, value) => {
+            if (!value) return;
+            
+            // Find the matching option in the dropdown
+            const options = this.filtersList[fieldName] || [];
+            const selectedOption = options.find(opt => opt.id === value);
+            
+            if (selectedOption) {
+                this.sellectedData[fieldName] = [selectedOption];
+                this.formulaForm.get(fieldName)?.setValue(value);
+            }
+        };
+        
+        // Apply dropdown values for specific fields
+        setDropdownValue('client_id', formulaData.client_id);
+        setDropdownValue('formula_status', formulaData.formula_status);
+        setDropdownValue('product_type', formulaData.product_type);
+        setDropdownValue('classification', formulaData.classification);
+        setDropdownValue('sample_received', formulaData.sample_received);
+        
+        // Process attachment fields
         const attachmentFields = ['lisd_doc', 'fids_doc', 'mm_doc', 'approved_doc'];
-
         attachmentFields.forEach(field => {
             if (formulaData[field]) {
                 const attachments = Array.isArray(formulaData[field]) ? formulaData[field] : [formulaData[field]];
-
                 if (attachments.length > 0) {
                     this.fileFieldMap[field] = attachments;
                     this.formulaForm.get(field)?.setValue(attachments);
                 }
             }
         });
+
         this.formulaForm.patchValue(formData);
         this.formulaForm.updateValueAndValidity();
         this.changeDetector.detectChanges();
@@ -397,14 +419,42 @@ export class FormulaCrudComponent implements OnInit {
     }
 
     onDropdownStateChange(field: any, event: any): void {
-        if (field && event) {
+        if (field && field.name && event) {
+            // Store the selected data
             this.sellectedData[field.name] = event;
+            
+            // Update the form value based on field type
+            const control = this.formulaForm.get(field.name);
+            if (control) {
+                if (field.type === 'multiselect-dropdown') {
+                    // For multiselect dropdowns, extract the ID or appropriate value
+                    if (Array.isArray(event) && event.length > 0) {
+                        // If multiple selection is allowed
+                        const ids = event.map(item => item.id);
+                        control.setValue(ids.length === 1 ? ids[0] : ids);
+                    } else if (event && event.id) {
+                        // If single object is returned
+                        control.setValue(event.id);
+                    } else {
+                        control.setValue(null);
+                    }
+                } else {
+                    // For other fields, use the event directly
+                    control.setValue(event);
+                }
+                control.markAsDirty();
+            }
+            
             this.changeDetector.detectChanges();
+        } else {
+            console.error('Missing field name or event in onDropdownStateChange', { field, event });
         }
     }
 
     onSubmit(event: string) {
         if (event === "Submit") {
+            console.log('Raw form values:', this.formulaForm.getRawValue());
+            console.log('Selected data:', this.sellectedData);
             this.formSubmitted = true;
             if (this.formulaForm.valid) {
                 const formData = new FormData();
@@ -415,6 +465,7 @@ export class FormulaCrudComponent implements OnInit {
                     this.duplicate,
                     this.formulaId
                 );
+                console.log('Formatted model:', formattedModel);
                 formData.append('formulaData', JSON.stringify(formattedModel));
                 Object.keys(this.fileFieldMap || {}).forEach(fieldName => {
                     const files = this.fileFieldMap[fieldName];
