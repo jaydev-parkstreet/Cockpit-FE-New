@@ -17,6 +17,7 @@ export class CmpDateRangeComponent implements OnInit {
     toDate: string;
     @Input() filter: any;
     @Input() required: boolean = false;
+    @Input() selectedDateRange: any ;
     @Input() datesArray: DateRangeOption | null;
     @Output() dateRangeModelChange = new EventEmitter<any>();
 
@@ -29,7 +30,7 @@ export class CmpDateRangeComponent implements OnInit {
     }
 
     ngOnChanges() {
-        this.setDateValues('');
+        this.setDateValues(this.selectedDateRange);
     }
 
     toggleDropdown(): void {
@@ -108,16 +109,16 @@ export class CmpDateRangeComponent implements OnInit {
      */
     setDateValues(value: any) {
         if (!value) {
-            this.defaultDateValues = this.datesArray ? this.datesArray[0] : null;
+            this.formatDateRange();
         } else {
             this.defaultDateValues = value;
+            this.fromDate = this.datePipe.transform(this.defaultDateValues?.start, 'MM/dd/yyyy');
+            this.toDate = this.datePipe.transform(this.defaultDateValues?.end, 'MM/dd/yyyy');
+            this.min = this.commonService.convertToDateObject(this.defaultDateValues?.start);
+            this.max = this.commonService.convertToDateObject(this.defaultDateValues?.end);
+            this.emitDateRangeValue();
+            this.formatDateRange();
         }
-        this.fromDate = this.datePipe.transform(this.defaultDateValues?.start, 'MM/dd/yyyy');
-        this.toDate = this.datePipe.transform(this.defaultDateValues?.end, 'MM/dd/yyyy');
-        this.min = this.commonService.convertToDateObject(this.defaultDateValues?.start);
-        this.max = this.commonService.convertToDateObject(this.defaultDateValues?.end);
-        this.emitDateRangeValue();
-        this.formatDateRange();
     }
 
     /**
