@@ -299,17 +299,15 @@ export class FormulaDetailsComponent implements OnInit {
             (response: any) => {
                 if (!response.hasError) {
                     const filteredData = response.data
-                        .filter(row => row.type !== 'attachment created' && row.type !== 'attachment deleted') // Exclude specific types
+                        .filter(row => row.type !== 'attachment created' && row.type !== 'attachment deleted')
                         .map(row => {
                             row.date = moment(row.date).format('MM/DD/YY hh:mm');
-                            if (row.current_data) {
-                                row = this.getAuditTrailFormattedData(row);
-                            }
+                            this.getAuditTrailFormattedData(row);
                             return row;
                         });
     
                     this.auditList = filteredData;
-    
+
                     if (this.auditList && this.auditList[0]) {
                         this.filterAuditData();
                     }

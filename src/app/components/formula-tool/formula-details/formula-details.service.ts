@@ -181,7 +181,7 @@ export class formulaDetailService {
             { data: 'product_origin', label: 'Product Origin:', typeOfFilter: null },
             { data: 'product_type', label: 'Product Type:', typeOfFilter: null },
             { data: 'total_batch_size', label: 'Total Batch Size:', typeOfFilter: null },
-            { data: 'classification', label: 'Classification:', typeOfFilter: null },
+            { data: 'classification_name', label: 'Classification:', typeOfFilter: null },
             { data: 'sample_received', label: 'Sample Received:', typeOfFilter: null },
             { data: 'submission_id', label: 'Submission ID:', typeOfFilter: null },
             { data: 'is_archived', label: 'Is Archived:', typeOfFilter: null },
