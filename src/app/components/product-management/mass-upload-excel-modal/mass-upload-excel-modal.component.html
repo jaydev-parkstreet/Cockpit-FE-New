@@ -7,20 +7,13 @@
     <div class="typography-body-black-regular modal-body-container u-pg-pt-3 u-pg-px-2" *ngIf="!showCard">
         <div class="upload-container">
             <div class="typography-h6-black-bold u-pg-mt-2" [innerHTML]="modalData.modalBodyTitle"></div>
-            <div class="typography-body-black-regular u-pg-mt-2" [innerHTML]="modalData.modalBodyText"></div>
-            
+            <div class="typography-body-black-regular u-pg-mt-2" [innerHTML]="modalData.modalBodyText"></div>         
             <app-psi-upload-files
                 *ngIf='!isLoadingUploads'
-                [selectedFiles]="selectedFiles"
                 (changeFileUpload)="onFileChange($event)"
-                [fileSizeMessage]="massTemplate"
-                [convertFileSizes]="convertFileSizes.bind(this)" 
-                [convertFileType]="convertFileType.bind(this)"
-                [isFromAttachment]="false"
-                [errorMessage]="errorMessage"
-                (fileDeleted)="onFileDeleted()">
+                [configUpload]="configUpload"
+                [placeholder]="massTemplate">
             </app-psi-upload-files>
-
         </div>
     </div>
     <div *ngIf='isLoadingUploads' class="upload-spinner u-pg-py-3 u-pg-mx-2 text-center u-flex-center u-flex-column">
