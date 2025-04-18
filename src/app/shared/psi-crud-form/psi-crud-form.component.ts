@@ -147,4 +147,13 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         this.selectedFilesMap[key] = value;
         this.form.get(key)?.setValue(value);
     }
+
+    /**
+     * Function to call on radio change.
+     * @param event
+     * @author PSI-Enhancements
+     */
+    changeRadioButton(event,field) {
+        //form set value for radio logic goes here
+    }
 }

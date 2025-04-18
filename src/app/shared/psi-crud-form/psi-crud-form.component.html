@@ -87,6 +87,13 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field?.type == 'radio'">
+                    <app-psi-radio-button
+                        [field]="field"
+                        (modelChange)="changeRadioButton($event, field)"
+                        [model]="selectedOption">
+                    </app-psi-radio-button>
+                </div>
             </div>
             <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
                 <div *ngFor="let field of crudFieldConfig.btnLabel">

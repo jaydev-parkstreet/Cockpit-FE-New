@@ -115,6 +115,8 @@ export class ProductAddService {
                 { type: 'text', name: 'ex_works_cost', label: 'Announced Price', placeholder: 'Enter Announced Price', required: false, colClass: 'col-sm-12' },
                 { type: 'checkbox', name: 'compliance', label: 'Compliance', placeholder: 'Compliance', colClass: 'col-sm-3' },
                 { type: 'checkbox', name: 'use_up', label: 'Use up', placeholder: 'Use up', colClass: 'col-sm-3' },
+                { type: 'radio', name: 'use', label: 'Use ee', placeholder: 'Use ee', colClass: 'col-sm-3',value: '12' },
+                { type: 'radio', name: 'use', label: 'Use ee', placeholder: 'Use ee', colClass: 'col-sm-3',value: '15' },
                 {
                     key: 'is_organic',
                     name: 'is_organic',
