@@ -439,8 +439,9 @@ export class ProductAddComponent implements OnInit {
         if (this.sub_brand_product_id && this.sub_brand_product_id.length > 0) {
             this.crudFiltersList['sub_brand_product_id'] = this.sub_brand_product_id;
             this.subBrandProducts = this.sub_brand_product_id;
-            this.crudFieldConfig.leftSection[2].options = this.sub_brand_product_id;
-            this.crudFieldConfig.leftSection[2].isDisabled = false;
+            const index = this.crudFieldConfig.leftSection.findIndex((item: any) => item.key === 'sub_brand_product_id');
+            this.crudFieldConfig.leftSection[index].options = this.sub_brand_product_id;
+            this.setFieldDisabled(['sub_brand_product_id'], false);
             this.crudFieldConfig = { ...this.crudFieldConfig };
             this.changeDetector.detectChanges();
         }
@@ -453,8 +454,9 @@ export class ProductAddComponent implements OnInit {
     updateBrandFilter() {
         if (this.brand && this.brand.length > 0) {
             this.crudFiltersList['brand'] = this.brand;
-            this.crudFieldConfig.leftSection[1].options = this.brand
-            this.crudFieldConfig.leftSection[1].isDisabled = false
+            const index = this.crudFieldConfig.leftSection.findIndex((item: any) => item.key === 'brand');
+            this.crudFieldConfig.leftSection[index].options = this.brand;
+            this.setFieldDisabled(['brand'], false);
             this.crudFieldConfig = { ...this.crudFieldConfig };
             this.changeDetector.detectChanges();
         }

@@ -8,6 +8,7 @@ import { PsiUploadFilesComponent } from './psi-upload-files/psi-upload-files.com
 import { PsDetailsComponent } from './ps-details/ps-details.component';
 import { PsiStepProgressBarComponent } from './psi-step-progress-bar/psi-step-progress-bar.component';
 import { PsiSwitcherTabComponent } from './psi-switcher-tab/psi-switcher-tab.component';
+import { PsiRadioButtonComponent } from './psi-radio-button/psi-radio-button.component';
 
 
 
@@ -20,7 +21,8 @@ import { PsiSwitcherTabComponent } from './psi-switcher-tab/psi-switcher-tab.com
         PsiUploadFilesComponent,
         PsDetailsComponent,
         PsiStepProgressBarComponent,
-        PsiSwitcherTabComponent
+        PsiSwitcherTabComponent,
+        PsiRadioButtonComponent
     ],
     imports: [
         CommonModule
@@ -33,7 +35,8 @@ import { PsiSwitcherTabComponent } from './psi-switcher-tab/psi-switcher-tab.com
         PsiUploadFilesComponent,
         PsDetailsComponent,
         PsiStepProgressBarComponent,
-        PsiSwitcherTabComponent
+        PsiSwitcherTabComponent,
+        PsiRadioButtonComponent
     ]
 })
 export class StatelessModule { }
