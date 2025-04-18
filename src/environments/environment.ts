@@ -26,7 +26,6 @@ export const environment = {
   //  oldNavigator: 'https://stgnavigator.parkstreet.com',
   oldCockpit: 'http://cockpit.parkstreet.local',
   satismeterKey: '1KnYa8ePvL1A1wE6',
-  appRoute: 'localhost:4200',
   segmentKey: 'ho1DjJ5yr2ta8PuArLRAgaxqkEd5ARzA',
   host: (window.location.hostname === 'localhost') ? window.location.hostname + '/Navigator-FE' : window.location.hostname,
   stonlyId: '9455c200-b51b-11ec-9fb8-0ae9fa2a18a2',
