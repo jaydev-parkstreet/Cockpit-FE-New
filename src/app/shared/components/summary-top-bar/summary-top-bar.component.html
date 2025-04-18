@@ -73,6 +73,7 @@
                     [filter]="filter"
                     [selectedDateRange]="filterList[filter.key][2]"
                     [datesArray]="filterList[filter.key]"
+                    [resetTrigger]="dateResetFlag"
                     (dateRangeModelChange)="onDateRangeSelected($event)">
                 </app-cmp-date-range>
             </div>

@@ -370,15 +370,13 @@ export class FormulaService {
                 }, {
                     key: 'date_requested',
                     label: 'Date Requested',
-                    type: 'multiselect-search',
+                    type: 'daterange',
                     divClass: 'col-4',
-                    setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 }, {
                     key: 'date_approved',
                     label: 'Date Approved',
-                    type: 'multiselect-search',
+                    type: 'daterange',
                     divClass: 'col-4 norightpadding',
-                    setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 },
                 { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
                 { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4'}
