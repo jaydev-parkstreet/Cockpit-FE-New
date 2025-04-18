@@ -6,6 +6,7 @@
         </label>
         <label for="file_upload{{configUpload?.key}}" class="file-upload-label" tabindex="0">
             <span [ngClass]="{'placeholder-color': selectedFiles?.length > 0}" [innerHTML]="placeholder"></span>
+            <i *ngIf="selectedFiles.length > 0" class="far fa-times-circle u-absolute clear-icon" (click)="clearAttachment(); $event.preventDefault();"></i>
         </label>
         <input
             type="file" name="files"
@@ -13,7 +14,6 @@
             [ngClass]="validationClasses"
             [disabled]="configUpload?.isDisabled"
             (change)="onFileChange($event)"  #file_upload multiple  hidden/>
-        <i *ngIf="selectedFiles.length > 0" class="far fa-times-circle u-absolute clear-icon" (click)="clearAttachment()"></i>
         <div class="error-msg" *ngIf="errorMessage">
             {{ errorMessage }}
         </div>
