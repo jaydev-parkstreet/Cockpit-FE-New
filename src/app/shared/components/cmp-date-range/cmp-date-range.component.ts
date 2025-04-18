@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, HostListener } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, HostListener, SimpleChanges } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { DateRangeOption } from 'src/app/interfaces/date-range';
 import { CommonService } from 'src/app/core/services/common.service';
@@ -13,13 +13,14 @@ export class CmpDateRangeComponent implements OnInit {
     isOpen: boolean = false;
     defaultDateValues: DateRangeOption | null;
     selectedDate: string;
-    fromDate: string;
-    toDate: string;
+    fromDate: any;
+    toDate: any;
     @Input() filter: any;
     @Input() required: boolean = false;
     @Input() selectedDateRange: any ;
     @Input() datesArray: DateRangeOption | null;
     @Output() dateRangeModelChange = new EventEmitter<any>();
+    @Input() resetTrigger: boolean;
 
     min: Date;
     max: Date;
@@ -29,8 +30,11 @@ export class CmpDateRangeComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    ngOnChanges() {
-        this.setDateValues(this.selectedDateRange);
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['resetTrigger'] && changes['resetTrigger'].currentValue === true) {
+            this.clearDate();
+        }
+        this.setDateValues('');
     }
 
     toggleDropdown(): void {
@@ -70,20 +74,27 @@ export class CmpDateRangeComponent implements OnInit {
      */
     onDateSelected(event: { type: string, value: Date | null }) {
         if (event.type === (this.filter?.key+"_from") || event.type === 'default') {
-            this.fromDate = this.datePipe.transform(event.value, 'MM/dd/yyyy');
+            this.fromDate = event.value;
         } else {
-            this.toDate = this.datePipe.transform(event.value, 'MM/dd/yyyy');
+            this.toDate = event.value;
         }
         this.emitDateRangeValue();
         this.formatDateRange();
     }
 
     emitDateRangeValue() {
-        let dateObj:any = [
-            { type: this.filter?.key+"_from", value: this.fromDate },
-            { type: this.filter?.key+"_to", value: this.toDate }
-        ]
-       this.dateRangeModelChange.emit(dateObj);
+        const payloadFormat = 'yyyy-MM-dd';
+        let dateObj = [
+            {
+                type: this.filter?.key + "_from",
+                value: this.fromDate ? this.datePipe.transform(this.fromDate, payloadFormat) : null
+            },
+            {
+                type: this.filter?.key + "_to",
+                value: this.toDate ? this.datePipe.transform(this.toDate, payloadFormat) : null
+            }
+        ];
+        this.dateRangeModelChange.emit(dateObj);
     }
 
     /**
@@ -94,9 +105,8 @@ export class CmpDateRangeComponent implements OnInit {
      */
     formatDateRange(): any {
         const placeholder = 'mm/dd/yyyy';
-
-        const fromStr = this.fromDate || placeholder;
-        const toStr = this.toDate || placeholder;
+        const fromStr = this.fromDate ? this.datePipe.transform(this.fromDate, 'MM/dd/yyyy') : placeholder;
+        const toStr = this.toDate ? this.datePipe.transform(this.toDate, 'MM/dd/yyyy') : placeholder;
         this.selectedDate = `${fromStr} - ${toStr}`;
     }
 
@@ -112,8 +122,8 @@ export class CmpDateRangeComponent implements OnInit {
             this.formatDateRange();
         } else {
             this.defaultDateValues = value;
-            this.fromDate = this.datePipe.transform(this.defaultDateValues?.start, 'MM/dd/yyyy');
-            this.toDate = this.datePipe.transform(this.defaultDateValues?.end, 'MM/dd/yyyy');
+            this.fromDate = this.commonService.convertToDateObject(this.defaultDateValues?.start);
+            this.toDate = this.commonService.convertToDateObject(this.defaultDateValues?.end);
             this.min = this.commonService.convertToDateObject(this.defaultDateValues?.start);
             this.max = this.commonService.convertToDateObject(this.defaultDateValues?.end);
             this.emitDateRangeValue();
@@ -126,8 +136,10 @@ export class CmpDateRangeComponent implements OnInit {
     */
     clearDate() {
         event.stopPropagation();
-        this.fromDate = this.toDate = this.selectedDate = null;
+        this.fromDate = this.toDate = null;
+        this.selectedDate = null;
         this.defaultDateValues = { id: 0, name: '', start: null, end: null, mobile_name: '' };
+        this.emitDateRangeValue();
         this.formatDateRange();
     }
 }

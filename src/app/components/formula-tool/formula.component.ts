@@ -87,8 +87,6 @@ export class FormulaComponent implements OnInit {
       "submission_id": [],
       "formula_status": [],
       "formula_id": [],
-      "date_requested_from": "",
-      "date_requested_to": "",
       "client_id": ""
     };
     this.selectedRowCount = 0;
@@ -424,7 +422,12 @@ export class FormulaComponent implements OnInit {
       } else if (key == 'is_archived') {
         acc['is_archived'] = selectedFilters[key] ? [1] : [];
       } else {
-        acc[key] = selectedFilters[key].map((item: any) => item.id);
+        const value = selectedFilters[key];
+        if (Array.isArray(value)) {
+          acc[key] = value.map((item: any) => item.id);
+        } else {
+          acc[key] = value;
+        }
       }
       return acc;
     }, {});
