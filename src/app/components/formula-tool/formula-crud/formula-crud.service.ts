@@ -30,24 +30,20 @@ export class FormulaCrudService {
         if (!Object.keys(model).length) {
             return {};
         }
-    
-        // Process dropdown fields that might be objects or arrays
+
         const processDropdownValue = (value) => {
             if (Array.isArray(value) && value.length > 0) {
-                // If it's an array of objects with id
                 if (typeof value[0] === 'object' && value[0].hasOwnProperty('id')) {
                     return value[0].id;
                 }
-                // If it's an array of simple values
                 return value.length === 1 ? value[0] : value;
             }
-            // If it's an object with id
             if (value && typeof value === 'object' && value.hasOwnProperty('id')) {
                 return value.id;
             }
             return value || null;
         };
-    
+
         let modelFormat: any = {
             formula_description: model.formula_description || "",
             id: model.id || "",
@@ -75,11 +71,11 @@ export class FormulaCrudService {
             date_expired: model.date_expired || null,
             no_expiration_date: model.no_expiration_date || false
         };
-    
+
         if (edit && !duplicate) {
             modelFormat.id = id;
         }
-    
+
         if (duplicate) {
             modelFormat.id = null;
         }
@@ -95,28 +91,6 @@ export class FormulaCrudService {
     getFormulaFieldConfig(filtersList) {
         return {
             leftSection: [
-                // {
-                //     key: 'id',
-                //     name: 'id',
-                //     label: 'UNIQUE ID',
-                //     type: 'text',
-                //     colClass: 'col-sm-12',
-                //     isRequired: false,
-                //     isDisabled: false,
-                //     placeholder: 'Enter Unique ID'
-                // },
-                // {
-                //     key: 'client_name',
-                //     name: 'client_name',
-                //     label: 'Supplier Name',
-                //     type: 'multiselect-dropdown',
-                //     colClass: 'col-sm-12',
-                //     filters: { entity: [] },
-                //     options: filtersList.client_name || [],
-                //     isRequired: true,
-                //     isDisabled: false,
-                //     inputSetting: this.commonService.getDropdownConfig('Enter Supplier Name')
-                // },
                 {
                     key: 'client_id',
                     name: 'client_id',
@@ -153,16 +127,17 @@ export class FormulaCrudService {
                 },
                 {
                     key: 'product_origin',
+                    type: 'radio',
                     name: 'product_origin',
                     label: 'Product Origin',
-                    type: 'radio',
+                    placeholder: 'Product Origin',
                     colClass: 'col-sm-12',
+                    value: '',
                     radio: [
                         { value: 'D', name: 'Domestic' },
                         { value: 'I', name: 'Imported' }
                     ],
-                    isRequired: false,
-                    isDisabled: false
+                    isRequired: true,
                 },
                 {
                     key: 'product_type',
@@ -250,16 +225,16 @@ export class FormulaCrudService {
                 },
                 {
                     key: 'batch_size_unit_of_measure',
+                    type: 'radio',
                     name: 'batch_size_unit_of_measure',
                     label: 'Batch Size Unit of Measure',
-                    type: 'radio',
+                    placeholder: 'Batch Size Unit of Measure',
                     colClass: 'col-sm-12',
+                    value: '',
                     radio: [
                         { value: 'Liters', name: 'Liters' },
                         { value: 'Gallons', name: 'Gallons' }
                     ],
-                    isRequired: false,
-                    isDisabled: false
                 },
                 {
                     key: 'notes',
@@ -405,14 +380,14 @@ export class FormulaCrudService {
         return this.http.post<any>(endpoint, formData);
     }
 
- /**
- * Gets classification data based on product origin and type
- * @param payload Object containing product_origin and product_type
- * @returns Observable with classification data
- */
-getClassification(payload: { product_origin: string, product_type: string }) {
-    return this.http
-      .post<any>(environment.apiUrl + AppRoutes.FORMULA.CLASSIFICATION, payload)
-      .pipe(map((response: any) => response));
-  }
+    /**
+    * Gets classification data based on product origin and type
+    * @param payload Object containing product_origin and product_type
+    * @returns Observable with classification data
+    */
+    getClassification(payload: { product_origin: string, product_type: string }) {
+        return this.http
+            .post<any>(environment.apiUrl + AppRoutes.FORMULA.CLASSIFICATION, payload)
+            .pipe(map((response: any) => response));
+    }
 }

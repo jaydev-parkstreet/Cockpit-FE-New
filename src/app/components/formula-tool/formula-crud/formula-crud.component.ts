@@ -362,30 +362,26 @@ export class FormulaCrudComponent implements OnInit {
             date_expired: formulaData.date_expired || '',
             no_expiration_date: formulaData.no_expiration_date || false
         };
-    
-        // Set dropdown values using the helper function
+
         const setDropdownValue = (fieldName, value) => {
             if (!value) return;
-            
-            // Find the matching option in the dropdown
+
             const options = this.filtersList[fieldName] || [];
             const selectedOption = options.find(opt => opt.id === value);
-            
+
             if (selectedOption) {
                 this.sellectedData[fieldName] = [selectedOption];
                 this.formulaForm.get(fieldName)?.setValue(value);
             }
         };
-        
-        // Apply dropdown values for specific fields
+
         setDropdownValue('client_id', formulaData.client_id);
         setDropdownValue('formula_status', formulaData.formula_status);
         setDropdownValue('product_type', formulaData.product_type);
         setDropdownValue('classification', formulaData.classification);
         setDropdownValue('sample_received', formulaData.sample_received);
-        this.product_type_data=formulaData.product_type;
-        
-        // Process attachment fields
+        this.product_type_data = formulaData.product_type;
+
         const attachmentFields = ['lisd_doc', 'fids_doc', 'mm_doc', 'approved_doc'];
         attachmentFields.forEach(field => {
             if (formulaData[field]) {
@@ -426,7 +422,7 @@ export class FormulaCrudComponent implements OnInit {
         this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
         const idFields = [
             'client_id', 'product_type', 'classification', 'formula_status'
-        ];  
+        ];
         if (idFields.includes(fieldName)) {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.id);
         } else {
@@ -435,7 +431,7 @@ export class FormulaCrudComponent implements OnInit {
 
         switch (fieldName) {
             case 'product_type':
-                this.product_type_data=selectedValue[0].name;
+                this.product_type_data = selectedValue[0].name;
                 this.fetchClassification();
                 break;
         }
@@ -651,8 +647,8 @@ export class FormulaCrudComponent implements OnInit {
             this.duplicate,
             this.formulaId
         );
-        let payload={
-            product_origin: formattedModel.submission_id,
+        let payload = {
+            product_origin: formattedModel.product_origin,
             product_type: this.product_type_data
         }
 

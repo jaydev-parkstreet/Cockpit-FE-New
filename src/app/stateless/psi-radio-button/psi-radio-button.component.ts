@@ -21,8 +21,8 @@ export class PsiRadioButtonComponent implements OnInit {
     * @param event
     * @author psi-enhancement
     */
-    onRadioChange(event: Event): void {
-        this.model = this.field?.value;
+    onRadioChange(value: any): void {
+        this.model = value;
         this.modelChange.emit(this.model);
     }
 
