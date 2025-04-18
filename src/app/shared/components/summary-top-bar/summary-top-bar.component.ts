@@ -29,6 +29,7 @@ export class SummaryTopBarComponent implements OnInit {
     @ViewChildren(CmpInputDropdownComponent) dropdowns: QueryList<CmpInputDropdownComponent>;
     @ViewChildren(CmpCheckboxComponent) checkBoxes: QueryList<CmpCheckboxComponent>;
     checkedItems: any = {};
+    dateResetFlag: boolean;
 
     constructor(private router: Router) { }
 
@@ -85,6 +86,7 @@ export class SummaryTopBarComponent implements OnInit {
         this.selectedFilters = {};
         this.isAllItemsSelected = false;
         this.isIndeterminate = false;
+        this.dateResetFlag = true;
         if (this.config.allowSingleSelect) {
             this.selectedFilters = {};
         }
