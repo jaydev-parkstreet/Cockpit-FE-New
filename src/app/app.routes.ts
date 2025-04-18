@@ -36,7 +36,8 @@ const AppRoutes = {
         DROPDOWN: 'formula/dropdowns',
         ARCHIVE: 'formula/archive_action',
         SAVE: 'formula/save',
-        EXCEL_EXPORT: 'formula/excel-export'
+        EXCEL_EXPORT: 'formula/excel-export',
+        CLASSIFICATION: 'formula/classifications',
     },
     COMMON: {
         NOTES: 'notes',

@@ -31,15 +31,28 @@ export class FormulaCrudService {
             return {};
         }
 
+        const processDropdownValue = (value) => {
+            if (Array.isArray(value) && value.length > 0) {
+                if (typeof value[0] === 'object' && value[0].hasOwnProperty('id')) {
+                    return value[0].id;
+                }
+                return value.length === 1 ? value[0] : value;
+            }
+            if (value && typeof value === 'object' && value.hasOwnProperty('id')) {
+                return value.id;
+            }
+            return value || null;
+        };
+
         let modelFormat: any = {
             formula_description: model.formula_description || "",
             id: model.id || "",
             client_name: model.client_name || "",
-            client_id: model.client_id || null,
-            formula_status: model.formula_status || "",
+            client_id: processDropdownValue(model.client_id),
+            formula_status: processDropdownValue(model.formula_status),
             product_origin: model.product_origin || "",
-            product_type: model.product_type || "",
-            classification: model.classification || "",
+            product_type: processDropdownValue(model.product_type),
+            classification: processDropdownValue(model.classification),
             submission_id: model.submission_id || "",
             formula_id: model.formula_id || "",
             date_requested: model.date_requested || null,
@@ -48,7 +61,7 @@ export class FormulaCrudService {
             total_batch_size: model.total_batch_size || "",
             batch_size_unit_of_measure: model.batch_size_unit_of_measure || "",
             notes: model.notes || "",
-            sample_received: model.sample_received || "",
+            sample_received: processDropdownValue(model.sample_received),
             date_submitted: model.date_submitted || null,
             lisd_doc: model.lisd_doc || null,
             fids_doc: model.fids_doc || null,
@@ -79,34 +92,14 @@ export class FormulaCrudService {
         return {
             leftSection: [
                 {
-                    key: 'id',
-                    name: 'id',
-                    label: 'UNIQUE ID',
-                    type: 'text',
-                    colClass: 'col-sm-12',
-                    isRequired: false,
-                    isDisabled: false,
-                    placeholder: 'Enter Unique ID'
-                },
-                {
-                    key: 'client_name',
-                    name: 'client_name',
-                    label: 'Supplier Name',
-                    type: 'text',
-                    colClass: 'col-sm-12',
-                    isRequired: false,
-                    isDisabled: false,
-                    placeholder: 'Enter Supplier Name'
-                },
-                {
                     key: 'client_id',
                     name: 'client_id',
-                    label: 'Supplier',
+                    label: 'Supplier Name',
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.client_id || [],
-                    isRequired: true,
+                    isRequired: false,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Supplier')
                 },
@@ -124,7 +117,7 @@ export class FormulaCrudService {
                     key: 'formula_status',
                     name: 'formula_status',
                     label: 'Status',
-                    type: 'single-select',
+                    type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.formula_status || [],
@@ -134,22 +127,23 @@ export class FormulaCrudService {
                 },
                 {
                     key: 'product_origin',
+                    type: 'radio',
                     name: 'product_origin',
                     label: 'Product Origin',
-                    type: 'radio',
+                    placeholder: 'Product Origin',
                     colClass: 'col-sm-12',
+                    value: '',
                     radio: [
                         { value: 'D', name: 'Domestic' },
                         { value: 'I', name: 'Imported' }
                     ],
-                    isRequired: false,
-                    isDisabled: false
+                    isRequired: true,
                 },
                 {
                     key: 'product_type',
                     name: 'product_type',
                     label: 'Product Type',
-                    type: 'single-select',
+                    type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.product_type || [],
@@ -161,10 +155,10 @@ export class FormulaCrudService {
                     key: 'classification',
                     name: 'classification',
                     label: 'Classification',
-                    type: 'single-select',
+                    type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: filtersList.classification || [],
+                    options: filtersList?.classification || [],
                     isRequired: false,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Classification')
@@ -231,16 +225,16 @@ export class FormulaCrudService {
                 },
                 {
                     key: 'batch_size_unit_of_measure',
+                    type: 'radio',
                     name: 'batch_size_unit_of_measure',
                     label: 'Batch Size Unit of Measure',
-                    type: 'radio',
+                    placeholder: 'Batch Size Unit of Measure',
                     colClass: 'col-sm-12',
+                    value: '',
                     radio: [
                         { value: 'Liters', name: 'Liters' },
                         { value: 'Gallons', name: 'Gallons' }
                     ],
-                    isRequired: false,
-                    isDisabled: false
                 },
                 {
                     key: 'notes',
@@ -256,7 +250,7 @@ export class FormulaCrudService {
                     key: 'sample_received',
                     name: 'sample_received',
                     label: 'Sample Received',
-                    type: 'single-select',
+                    type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.sample_received || [],
@@ -284,7 +278,9 @@ export class FormulaCrudService {
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
-                    isDisabled: false
+                    isDisabled: false,
+                    Placeholder: 'Select List of ingredients Document(s)',
+                    isShowUploader: true
                 },
                 {
                     key: 'fids_doc',
@@ -293,16 +289,20 @@ export class FormulaCrudService {
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
-                    isDisabled: false
+                    isDisabled: false,
+                    Placeholder: 'Select List of ingredients Document(s)',
+                    isShowUploader: true
                 },
                 {
                     key: 'mm_doc',
                     name: 'mm_doc',
                     label: 'Method of Manufacturing Document',
-                    type: '',
+                    type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
-                    isDisabled: false
+                    isDisabled: false,
+                    Placeholder: 'Select List of ingredients Document(s)',
+                    isShowUploader: true
                 },
                 {
                     key: 'approved_doc',
@@ -311,7 +311,9 @@ export class FormulaCrudService {
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
-                    isDisabled: false
+                    isDisabled: false,
+                    Placeholder: 'Select List of ingredients Document(s)',
+                    isShowUploader: true
                 },
                 {
                     key: 'date_approved',
@@ -341,7 +343,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-6 float-right',
                     isRequired: false,
                     isDisabled: false
-                }
+                },
             ],
 
             btnLabel: [
@@ -376,5 +378,16 @@ export class FormulaCrudService {
             `/formula/create`;
 
         return this.http.post<any>(endpoint, formData);
+    }
+
+    /**
+    * Gets classification data based on product origin and type
+    * @param payload Object containing product_origin and product_type
+    * @returns Observable with classification data
+    */
+    getClassification(payload: { product_origin: string, product_type: string }) {
+        return this.http
+            .post<any>(environment.apiUrl + AppRoutes.FORMULA.CLASSIFICATION, payload)
+            .pipe(map((response: any) => response));
     }
 }
