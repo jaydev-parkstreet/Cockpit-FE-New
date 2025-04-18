@@ -27,12 +27,13 @@
                                 </a>
                                 <span class="private-file"
                                     *ngIf="attachment.permission_id == 2 || attachment.permission_id == 3">(Private)</span>
-                                <span *ngIf="attachment.entity_kind_name && modalData.showFileType"
-                                    class="middle-section">
-                                    <span class="typography-v2-mon-medium">File Type:</span>&nbsp;
-                                    <span class="typography-v2-mon-regular"
-                                        [innerText]="attachment.entity_kind_name"></span>
-                                </span>
+                            </div>
+
+                            <div *ngIf="attachment.entity_kind_name && modalData.showFileType"
+                                class="middle-section">
+                                <span class="typography-v2-mon-medium">File Type:</span> 
+                                <span class="typography-v2-mon-regular"
+                                    [innerText]="attachment.entity_kind_name"></span>
                             </div>
 
                             <div class="right-section">
