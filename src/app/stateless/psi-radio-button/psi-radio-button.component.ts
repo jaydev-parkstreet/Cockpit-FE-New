@@ -6,24 +6,24 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   styleUrls: ['./psi-radio-button.component.scss']
 })
 export class PsiRadioButtonComponent implements OnInit {
-    @Input() model: any;
-    @Input() field: any;
+  @Input() model: any;
+  @Input() field: any;
 
-    @Output() modelChange = new EventEmitter<any>();
+  @Output() modelChange = new EventEmitter<any>();
 
-    constructor() { }
+  constructor() { }
 
-    ngOnInit(): void {
-    }
+  ngOnInit(): void {
+  }
 
-    /**
-    * Handles the change event from the radio button Emits the value to the parent
-    * @param event
-    * @author psi-enhancement
-    */
-    onRadioChange(event: Event): void {
-        this.model = this.field?.value;
-        this.modelChange.emit(this.model);
-    }
+  /**
+  * Handles the change event from the radio button Emits the value to the parent
+  * @param event
+  * @author psi-enhancement
+  */
+  onRadioChange(value: any): void {
+    this.model = value;
+    this.modelChange.emit(this.model);
+  }
 
 }

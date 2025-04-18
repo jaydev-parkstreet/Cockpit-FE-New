@@ -8,9 +8,9 @@ describe('PsiRadioButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PsiRadioButtonComponent ]
+      declarations: [PsiRadioButtonComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
