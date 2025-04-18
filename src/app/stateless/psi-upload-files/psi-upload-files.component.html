@@ -13,6 +13,7 @@
             [ngClass]="validationClasses"
             [disabled]="configUpload?.isDisabled"
             (change)="onFileChange($event)"  #file_upload multiple  hidden/>
+        <i *ngIf="selectedFiles.length > 0" class="far fa-times-circle u-absolute clear-icon" (click)="clearAttachment()"></i>
         <div class="error-msg" *ngIf="errorMessage">
             {{ errorMessage }}
         </div>
