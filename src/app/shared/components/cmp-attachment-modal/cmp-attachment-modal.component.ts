@@ -160,11 +160,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     * @param obj
     */
     updateFilePermission(file: any) {
-        if (file.isInternalUser === 0) {
-            var permission_id = file.permission_id === this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_ME ? this.CONSTANTS.ENTITY_PERMISSIONS.PUBLIC_EVERYONE_ID : this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_ME;
-        } else if (file.isInternalUser === 1) {
-            var permission_id = file.permission_id === this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID ? this.CONSTANTS.ENTITY_PERMISSIONS.PUBLIC_EVERYONE_ID : this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID;
-        }
+        var permission_id = file.permission_id === 1 ? 2 : 1;
         this.commonBackendService.changeFilePermission(file.upload_id, permission_id)
             .subscribe((response: any) => {
                 if (response.hasError) {
