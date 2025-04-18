@@ -132,7 +132,7 @@ export class FormulaCrudService {
                     label: 'Product Origin',
                     placeholder: 'Product Origin',
                     colClass: 'col-sm-12',
-                    value: '',
+                    value: 'I',
                     radio: [
                         { value: 'D', name: 'Domestic' },
                         { value: 'I', name: 'Imported' }
