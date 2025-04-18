@@ -37,6 +37,9 @@ export class FormulaCrudComponent implements OnInit {
     fileFieldMap: { [key: string]: any[] } = {};
     selectedFileCount: number = 0;
     initialFormData: any;
+    classification: any[];
+    product_type_data: any;
+    activeDropdownId: any;
 
     constructor(
         private FormulaService: FormulaService,
@@ -380,6 +383,7 @@ export class FormulaCrudComponent implements OnInit {
         setDropdownValue('product_type', formulaData.product_type);
         setDropdownValue('classification', formulaData.classification);
         setDropdownValue('sample_received', formulaData.sample_received);
+        this.product_type_data=formulaData.product_type;
         
         // Process attachment fields
         const attachmentFields = ['lisd_doc', 'fids_doc', 'mm_doc', 'approved_doc'];
@@ -418,36 +422,22 @@ export class FormulaCrudComponent implements OnInit {
         this.changeDetector.detectChanges();
     }
 
-    onDropdownStateChange(field: any, event: any): void {
-        if (field && field.name && event) {
-            // Store the selected data
-            this.sellectedData[field.name] = event;
-            
-            // Update the form value based on field type
-            const control = this.formulaForm.get(field.name);
-            if (control) {
-                if (field.type === 'multiselect-dropdown') {
-                    // For multiselect dropdowns, extract the ID or appropriate value
-                    if (Array.isArray(event) && event.length > 0) {
-                        // If multiple selection is allowed
-                        const ids = event.map(item => item.id);
-                        control.setValue(ids.length === 1 ? ids[0] : ids);
-                    } else if (event && event.id) {
-                        // If single object is returned
-                        control.setValue(event.id);
-                    } else {
-                        control.setValue(null);
-                    }
-                } else {
-                    // For other fields, use the event directly
-                    control.setValue(event);
-                }
-                control.markAsDirty();
-            }
-            
-            this.changeDetector.detectChanges();
+    onDropdownStateChange(fieldName: any, selectedValue: any) {
+        this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
+        const idFields = [
+            'client_id', 'product_type', 'classification', 'formula_status'
+        ];  
+        if (idFields.includes(fieldName)) {
+            this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.id);
         } else {
-            console.error('Missing field name or event in onDropdownStateChange', { field, event });
+            this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.name);
+        }
+
+        switch (fieldName) {
+            case 'product_type':
+                this.product_type_data=selectedValue[0].name;
+                this.fetchClassification();
+                break;
         }
     }
 
@@ -642,5 +632,37 @@ export class FormulaCrudComponent implements OnInit {
         this.selectedFiles = validFiles;
         this.selectedFileCount = this.selectedFiles.length;
         event.target.value = '';
+    }
+
+    updateClassificationFilter() {
+        if (this.classification && this.classification.length > 0) {
+            this.filtersList['classification'] = this.classification;
+            this.crudFieldConfig.leftSection[5].options = this.classification
+            this.crudFieldConfig = { ...this.crudFieldConfig };
+            this.changeDetector.detectChanges();
+        }
+    }
+
+    fetchClassification() {
+        const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
+            this.formulaForm.value,
+            this.filtersList,
+            this.edit,
+            this.duplicate,
+            this.formulaId
+        );
+        let payload={
+            product_origin: formattedModel.submission_id,
+            product_type: this.product_type_data
+        }
+
+        this.FormulaCrudService.getClassification(payload).subscribe(response => {
+            this.classification = response.data;
+            if (this.classification && this.classification.length > 0) {
+                this.filtersList['classification'] = this.classification;
+                this.changeDetector.detectChanges();
+            }
+            this.updateClassificationFilter();
+        });
     }
 }
