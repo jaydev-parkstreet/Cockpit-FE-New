@@ -439,8 +439,6 @@ export class FormulaCrudComponent implements OnInit {
 
     onSubmit(event: string) {
         if (event === "Submit") {
-            console.log('Raw form values:', this.formulaForm.getRawValue());
-            console.log('Selected data:', this.sellectedData);
             this.formSubmitted = true;
             if (this.formulaForm.valid) {
                 const formData = new FormData();
@@ -451,7 +449,6 @@ export class FormulaCrudComponent implements OnInit {
                     this.duplicate,
                     this.formulaId
                 );
-                console.log('Formatted model:', formattedModel);
                 formData.append('formulaData', JSON.stringify(formattedModel));
                 Object.keys(this.fileFieldMap || {}).forEach(fieldName => {
                     const files = this.fileFieldMap[fieldName];

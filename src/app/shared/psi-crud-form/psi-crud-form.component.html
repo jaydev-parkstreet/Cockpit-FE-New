@@ -47,18 +47,6 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
-                <!-- <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
-                    <app-psi-upload-files 
-                    [selectedFiles]="selectedFiles" 
-                    (changeFileUpload)="onFileChange($event)"
-                    [convertFileSizes]="convertFileSizes.bind(this)" 
-                    [convertFileType]="convertFileType.bind(this)"
-                    [isFromAttachment]="true"
-                    [fileSizeMessage]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"
-                    (fileDeleted)="onFileDeleted()"
-                    >
-                </app-psi-upload-files>
-                    </div> -->
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
