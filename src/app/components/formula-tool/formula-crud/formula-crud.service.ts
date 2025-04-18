@@ -183,7 +183,7 @@ export class FormulaCrudService {
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: filtersList.classification || [],
+                    options: filtersList?.classification || [],
                     isRequired: false,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Classification')
