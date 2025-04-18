@@ -170,4 +170,14 @@ export class PsiUploadFilesComponent implements OnInit {
         this.selectedFiles.splice(deletedIndex, 1);
         this.changeFileUpload.emit(this.selectedFiles);
     }
+
+    /**
+     *Function to delete all Attachment.
+     * @author PSI-Enhancements
+     * @param deletedIndex
+     */
+    clearAttachment() {
+      this.selectedFiles  = [];
+      this.changeFileUpload.emit(this.selectedFiles);
+    }
 }

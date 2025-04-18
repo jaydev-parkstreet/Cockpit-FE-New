@@ -104,14 +104,14 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
         this.commonService.uploadMultipleAttachments(uploadParams).subscribe((response: any) => {
             this.commonService.hideSpinner();
             if (!response.hasError) {
-                this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
+                this.commonService.showToastV2Message(true, 'Attachment Added', 'fas fa-check-circle', 'success');
                 this.closeModal(1);
             } else {
                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
             }
         }, (error) => {
             this.commonService.hideSpinner();
-            this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+            this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
         });
     }
 
@@ -147,7 +147,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
                                 this.modalData.attachmentDetails.data = this.modalData.attachmentDetails.data.filter((item: any) => item.upload_id !== file.upload_id);
                             }
                         }, (error) => {
-                            this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+                            this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
                         }
                         );
                 }
@@ -160,11 +160,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
     * @param obj
     */
     updateFilePermission(file: any) {
-        if (file.isInternalUser === 0) {
-            var permission_id = file.permission_id === this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_ME ? this.CONSTANTS.ENTITY_PERMISSIONS.PUBLIC_EVERYONE_ID : this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_ME;
-        } else if (file.isInternalUser === 1) {
-            var permission_id = file.permission_id === this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID ? this.CONSTANTS.ENTITY_PERMISSIONS.PUBLIC_EVERYONE_ID : this.CONSTANTS.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID;
-        }
+        var permission_id = file.permission_id === 1 ? 2 : 1;
         this.commonBackendService.changeFilePermission(file.upload_id, permission_id)
             .subscribe((response: any) => {
                 if (response.hasError) {
@@ -174,7 +170,7 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
                     this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                 }
             }, (error) => {
-                this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+                this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
             }
             );
     }

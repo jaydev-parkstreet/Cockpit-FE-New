@@ -20,6 +20,18 @@
         color: $colors-neutral-black !important;
     }
 
+    i.clear-icon {
+        right: 96px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $colors-neutral-light;
+    
+        &:hover {
+            color: $colors-neutral-dark;
+            cursor: pointer;
+        }
+    }
+
     .file-uploader {
         .file-upload-label {
             width: 100%;

@@ -1,0 +1,12 @@
+<label class="radio-label">
+    <input
+      type="radio"
+      [name]="field?.name"
+      [value]="field?.value"
+      [disabled]="field?.disabled"
+      [checked]="model === field?.value"
+      (change)="onRadioChange($event)"
+      />
+      <span class="custom-radio-icon"></span>
+    <span class="label-text">{{ field?.placeholder }}</span>
+</label>
