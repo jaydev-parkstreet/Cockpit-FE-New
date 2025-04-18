@@ -418,7 +418,7 @@ export class FormulaComponent implements OnInit {
       if (key == 'clients') {
         acc['client'] = selectedFilters[key].map((item: any) => item.id);
       } else if (key == 'is_active') {
-        acc['active_status'] = [selectedFilters[key] == 0 ? '1' : '0'];
+        acc['active_status'] = selectedFilters[key] ? [1] : [];;
       } else if (key == 'is_archived') {
         acc['is_archived'] = selectedFilters[key] ? [1] : [];
       } else {
