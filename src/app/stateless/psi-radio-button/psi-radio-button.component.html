@@ -1,18 +1,12 @@
 <div class="radio-button-container">
 
-<label class="input-label" [ngClass]="{'required': field?.isRequired}" *ngIf ="field?.label">{{ field?.label }}</label>
-<div class="radio-button-group">
-<label class="radio-label" *ngFor="let option of field?.radio">
-    <input
-      type="radio"
-      [name]="field?.name"
-      [value]="option?.value"
-      [disabled]="field?.disabled"
-      [checked]="model === option?.value"
-      (change)="onRadioChange(option.value)"
-      />
+  <label class="input-label" [ngClass]="{'required': field?.isRequired}" *ngIf="field?.label">{{ field?.label }}</label>
+  <div class="radio-button-group">
+    <label class="radio-label" *ngFor="let option of field?.radio">
+      <input type="radio" [name]="field?.name" [value]="option?.value" [disabled]="field?.disabled"
+        [checked]="model === option?.value" (change)="onRadioChange(option.value)" />
       <span class="custom-radio-icon"></span>
-    <span class="label-text">{{ option.name }}</span>
-</label>
-</div>
+      <span class="label-text">{{ option.name }}</span>
+    </label>
+  </div>
 </div>
