@@ -120,6 +120,49 @@
     }
 }
 
+@mixin radio-button {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+
+    input[type='radio'] {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .custom-radio-icon {
+        width: 16px;
+        height: 16px;
+        border: 1px solid $colors-neutral-black;
+        border-radius: 50%;
+        margin-right: 8px;
+        position: relative;
+    }
+
+    input[type='radio']:checked+.custom-radio-icon::after {
+        content: '';
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        top: 0px;
+        left: 0px;
+        position: absolute;
+        background-color: $colors-v2-base-primary;
+        border: 3px solid $colors-neutral-white;
+        outline: 1px solid $colors-v2-base-primary;
+    }
+
+    input[type='radio']:checked+.custom-radio-icon {
+        border: none;
+    }
+
+    input[type='radio']:disabled+.custom-radio-icon {
+        opacity: 0.5;
+    }
+}
+
 @mixin new-scrollbar {
     & {
         margin-top: 8px;
