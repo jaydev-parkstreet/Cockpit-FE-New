@@ -40,6 +40,7 @@ export class FormulaDetailsComponent implements OnInit {
     archiveData: any;
     archiveWarningMessage: string = '';
     archiveFailedMessage: string = '';
+    configUpload: any;
 
     constructor(
         private FormulaService: FormulaService,
@@ -68,6 +69,10 @@ export class FormulaDetailsComponent implements OnInit {
         this.activeTab = this.tabGroupConfig[2].key;
         this.getFormulaData(formulaId);
         this.headerTitle = "UNIQUE ID";
+        this.configUpload = {
+            allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt'],
+            isShowUploader: true
+        };
     }
 
     /**

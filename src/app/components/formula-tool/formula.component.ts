@@ -419,8 +419,8 @@ export class FormulaComponent implements OnInit {
 
   applyFilters(selectedFilters: any) {
     this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
-      if (key == 'clients') {
-        acc['client'] = selectedFilters[key].map((item: any) => item.id);
+      if (key == 'client_id') {
+        acc['client_id'] = selectedFilters[key].map((item: any) => item.quickbooks_id);
       } else if (key == 'is_active') {
         acc['active_status'] = selectedFilters[key] ? [1] : [];;
       } else if (key == 'is_archived') {

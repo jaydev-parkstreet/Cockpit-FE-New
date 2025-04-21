@@ -19,6 +19,7 @@ export class AttachmentTabComponent implements OnInit {
     @Input() showFileType: boolean;
     @Input() showPrivacyIcon: boolean;
     @Input() filterList: any = {};
+    @Input() configUpload: any;
 
 
     isLoadingAttachments: boolean = false;
@@ -103,7 +104,8 @@ export class AttachmentTabComponent implements OnInit {
                 style: 'custom-attachment-delete-sa'
             },
             attachmentDetails: JSON.parse(JSON.stringify(attachments)),
-            showLine: true, showScroll: true
+            showLine: true, showScroll: true,
+            configUpload: this.configUpload
         };
         this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
             .subscribe((result) => {
