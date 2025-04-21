@@ -52,8 +52,10 @@ export class CmpAttachmentModalComponent extends SimpleModalComponent<ConfirmMod
         this.filetype_dropdown = this.commonService.getSingleSelectDropdownConfig('Select file type', true);
         this.modelAttachmentPermission = [this.modalData?.attachmentPermission[0]];
         this.configUpload = {
-            isShowUploader: true,
+            isShowUploader: this.modalData?.configUpload?.isShowUploader ?? true,
+            allowedExtensions: this.modalData?.configUpload?.allowedExtensions ?? ['gif', 'jpeg', 'jpg', 'tiff', 'tif', 'zip', 'pdf', 'msi', 'png'],
         };
+        
     }
 
     /**
