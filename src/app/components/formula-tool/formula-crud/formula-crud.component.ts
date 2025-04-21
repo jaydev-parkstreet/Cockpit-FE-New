@@ -8,10 +8,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { SimpleModalService } from 'ngx-simple-modal';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
 import { AuthService } from '../../authentication/auth.service';
+import { DatePipe } from '@angular/common';
 @Component({
     selector: 'app-formula-crud',
     templateUrl: './formula-crud.component.html',
     styleUrls: ['./formula-crud.component.scss'],
+    providers: [DatePipe],
 })
 export class FormulaCrudComponent implements OnInit {
     @Output() updateFilters = new EventEmitter<any>();
@@ -52,6 +54,7 @@ export class FormulaCrudComponent implements OnInit {
         private commonService: CommonService,
         private simpleModalService: SimpleModalService,
         private authService: AuthService,
+        private datePipe: DatePipe,
     ) { }
 
     ngOnInit(): void {
@@ -192,6 +195,11 @@ export class FormulaCrudComponent implements OnInit {
 
         this.formulaForm = this.formBuilder.group(formControls);
         this.formInitialized = true;
+        this.formulaForm = this.formBuilder.group(formControls);
+        this.formInitialized = true;
+        this.formulaForm.statusChanges.subscribe(() => {
+            this.updateSubmitButtonState();
+        });
         this.changeDetector.detectChanges();
     }
 
@@ -395,6 +403,7 @@ export class FormulaCrudComponent implements OnInit {
 
         this.formulaForm.patchValue(formData);
         this.formulaForm.updateValueAndValidity();
+        this.updateSubmitButtonState();
         this.changeDetector.detectChanges();
     }
 
@@ -415,21 +424,37 @@ export class FormulaCrudComponent implements OnInit {
     onClearAllClicked(): void {
         this.formulaForm.reset();
         this.sellectedData = {};
+        this.updateSubmitButtonState();
         this.changeDetector.detectChanges();
+    }
+    /**
+     * Update the state of the submit button based on form validity
+     * @author PSI-VIII
+     */
+    updateSubmitButtonState(): void {
+        const formValid = this.formulaForm.valid;
+        const submitButton = this.crudFieldConfig?.btnLabel?.find(btn => btn.label === 'Submit');
+        if (submitButton) {
+            submitButton.isDisable = !formValid;
+            this.changeDetector.detectChanges();
+        }
+    }
+    onDateModelChange(event: any) {
+        this.formulaForm.get(event.type)?.setValue(this.datePipe.transform(event.value, 'yyyy/MM/dd'));
     }
 
     onDropdownStateChange(fieldName: any, selectedValue: any) {
         this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
         const idFields = [
-             'product_type', 'classification', 'formula_status'
+            'product_type', 'classification', 'formula_status'
         ];
         const clients = ['client_id']
         if (idFields.includes(fieldName)) {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.id);
-        } 
-        else if(clients.includes(fieldName)){
+        }
+        else if (clients.includes(fieldName)) {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.quickbooks_id);
-        }else {
+        } else {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.name);
         }
 
@@ -489,7 +514,8 @@ export class FormulaCrudComponent implements OnInit {
                                 );
                                 this.router.navigateByUrl(`/formula/${formulaId}`);
                             } else {
-                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                                this.router.navigateByUrl(`/formula`);
                             }
                         },
                         error => {
@@ -511,7 +537,8 @@ export class FormulaCrudComponent implements OnInit {
                                 );
                                 this.router.navigateByUrl(`/formula/${formulaId}`);
                             } else {
-                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                                this.router.navigateByUrl(`/formula`);
                             }
                         },
                         error => {

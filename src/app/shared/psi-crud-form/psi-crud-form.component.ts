@@ -21,6 +21,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     @Output() formSubmit = new EventEmitter<any>();
     @Output() clearAllClicked: EventEmitter<void> = new EventEmitter<void>();
     @Output() OnChangeDateModel = new EventEmitter<any>();
+    isDisable: boolean;
    
     // @Output() onFileDeleted = new EventEmitter<any>();
     @Input() set shouldClearAllFields(value: boolean) {

@@ -99,7 +99,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.client_id || [],
-                    isRequired: false,
+                    isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Supplier')
                 },
@@ -121,7 +121,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.formula_status || [],
-                    isRequired: false,
+                    isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Status')
                 },
@@ -147,7 +147,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.product_type || [],
-                    isRequired: false,
+                    isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Product Type')
                 },
@@ -159,7 +159,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList?.classification || [],
-                    isRequired: false,
+                    isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Classification')
                 },
@@ -342,13 +342,13 @@ export class FormulaCrudService {
                     type: 'checkbox',
                     colClass: 'col-sm-6 float-right',
                     isRequired: false,
-                    isDisabled: false
+                    isDisabled: false,
                 },
             ],
 
             btnLabel: [
                 { type: 'Btn', label: 'Cancel', class: 'secondary w-lg' },
-                { type: 'Btn', label: 'Submit', class: 'primary w-lg' }
+                { type: 'Btn', label: 'Submit', class: 'primary w-lg' ,  isDisable: true}
             ]
 
         };
