@@ -336,7 +336,7 @@ export class FormulaCrudComponent implements OnInit {
             description: formulaData.description || '',
             formula_description: formulaData.formula_description || '',
             formula_status: formulaData.formula_status || '',
-            product_origin: formulaData.product_origin || '',
+            product_origin: formulaData.product_origin || 'I',
             product_type: formulaData.product_type || '',
             classification: formulaData.classification || '',
             submission_id: formulaData.submission_id || '',
@@ -421,11 +421,15 @@ export class FormulaCrudComponent implements OnInit {
     onDropdownStateChange(fieldName: any, selectedValue: any) {
         this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
         const idFields = [
-            'client_id', 'product_type', 'classification', 'formula_status'
+             'product_type', 'classification', 'formula_status'
         ];
+        const clients = ['client_id']
         if (idFields.includes(fieldName)) {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.id);
-        } else {
+        } 
+        else if(clients.includes(fieldName)){
+            this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.quickbooks_id);
+        }else {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.name);
         }
 
@@ -476,7 +480,7 @@ export class FormulaCrudComponent implements OnInit {
                         response => {
                             this.spinner.hide();
                             if (!response.hasError) {
-                                const formulaId = response.formula_id;
+                                const formulaId = response.id;
                                 this.commonService.showToastV2Message(
                                     true,
                                     this.edit ? 'Formula edited successfully!' : response.msg,
@@ -498,7 +502,7 @@ export class FormulaCrudComponent implements OnInit {
                         response => {
                             this.spinner.hide();
                             if (!response.hasError) {
-                                const formulaId = response.formula_id;
+                                const formulaId = response.id;
                                 this.commonService.showToastV2Message(
                                     true,
                                     this.edit ? 'Formula edited successfully!' : response.msg,

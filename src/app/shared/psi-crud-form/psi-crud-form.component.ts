@@ -154,7 +154,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      * @param event
      * @author PSI-Enhancements
      */
-    changeRadioButton(event,field) {
-        //form set value for radio logic goes here
+    changeRadioButton(value,field) {
+        this.form.get(field.key)?.setValue(value);
     }
 }
