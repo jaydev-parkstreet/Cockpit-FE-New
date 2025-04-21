@@ -259,6 +259,10 @@ export class FormulaComponent implements OnInit {
       fileTypeDropdown: this.filterList.entity_kinds,
       showPrivacyIcon: true,
       attachmentDetails: JSON.parse(JSON.stringify(attachments)),
+      configUpload: {
+        allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt'],
+        isShowUploader: true
+      }
     };
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
       .subscribe((result) => {
