@@ -101,3 +101,9 @@ COLORS
 .u-bg-success-t-10 {
   background: $colors-v2-base-success-t-10;
 }
+
+.u-bg-error-medium {
+  background: $colors-neutral-white;
+  color: $colors-v2-base-error !important;
+  border: 1px solid rgba(197, 0, 0, 1);
+}
