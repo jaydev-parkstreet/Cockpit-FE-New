@@ -63,13 +63,13 @@ export class FormulaCrudService {
             notes: model.notes || "",
             sample_received: processDropdownValue(model.sample_received),
             date_submitted: model.date_submitted || null,
-            lisd_doc: model.lisd_doc || null,
-            fids_doc: model.fids_doc || null,
-            mm_doc: model.mm_doc || null,
-            approved_doc: model.approved_doc || null,
+            formula_loi_id: model.formula_loi_id || null,
+            formula_fids_id: model.formula_fids_id || null,
+            formula_mom_id: model.formula_mom_id || null,
+            formula_approval_id: model.formula_approval_id || null,
             date_approved: model.date_approved || null,
             date_expired: model.date_expired || null,
-            no_expiration_date: model.no_expiration_date || false
+            no_expiration_date: model.no_expiration_date || false,
         };
 
         if (edit && !duplicate) {
@@ -272,8 +272,8 @@ export class FormulaCrudService {
 
             rightSection: [
                 {
-                    key: 'lisd_doc',
-                    name: 'lisd_doc',
+                    key: 'formula_loi_id',
+                    name: 'formula_loi_id',
                     label: 'List of Ingredients Document',
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
@@ -283,8 +283,8 @@ export class FormulaCrudService {
                     isShowUploader: true
                 },
                 {
-                    key: 'fids_doc',
-                    name: 'fids_doc',
+                    key: 'formula_fids_id',
+                    name: 'formula_fids_id',
                     label: 'FIDS Document',
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
@@ -294,8 +294,8 @@ export class FormulaCrudService {
                     isShowUploader: true
                 },
                 {
-                    key: 'mm_doc',
-                    name: 'mm_doc',
+                    key: 'formula_mom_id',
+                    name: 'formula_mom_id',
                     label: 'Method of Manufacturing Document',
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
@@ -305,8 +305,8 @@ export class FormulaCrudService {
                     isShowUploader: true
                 },
                 {
-                    key: 'approved_doc',
-                    name: 'approved_doc',
+                    key: 'formula_approval_id',
+                    name: 'formula_approval_id',
                     label: 'Formula Approval Document',
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',

@@ -9,6 +9,7 @@ import { SimpleModalService } from 'ngx-simple-modal';
 import { ConfirmationModalComponent } from 'src/app/components/organism/confirmation-modal/confirmation-modal.component';
 import { AuthService } from '../../authentication/auth.service';
 import { DatePipe } from '@angular/common';
+import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
 @Component({
     selector: 'app-formula-crud',
     templateUrl: './formula-crud.component.html',
@@ -42,6 +43,8 @@ export class FormulaCrudComponent implements OnInit {
     classification: any[];
     product_type_data: any;
     activeDropdownId: any;
+    selectedFilesMap: { [key: string]: File[] } = {};
+    entities: string[] = [];
 
     constructor(
         private FormulaService: FormulaService,
@@ -55,6 +58,7 @@ export class FormulaCrudComponent implements OnInit {
         private simpleModalService: SimpleModalService,
         private authService: AuthService,
         private datePipe: DatePipe,
+        private commonBackendService: CommonBackendService,
     ) { }
 
     ngOnInit(): void {
@@ -80,7 +84,7 @@ export class FormulaCrudComponent implements OnInit {
         }
         window.removeEventListener('popstate', this.handleBackNavigation);
         history.pushState(null, '', location.href);
-        window.addEventListener('popstate', this.handleBackNavigation);
+        window.addEventListener('popstate', this.handleBackNavigation);         
     }
 
     /**
@@ -363,13 +367,13 @@ export class FormulaCrudComponent implements OnInit {
             notes: formulaData.notes || '',
             sample_received: formulaData.sample_received || '',
             date_submitted: formulaData.date_submitted || '',
-            lisd_doc: formulaData?.lisd_doc || [],
-            fids_doc: formulaData?.fids_doc || [],
-            mm_doc: formulaData?.mm_doc || [],
-            approved_doc: formulaData?.approved_doc || [],
+            formula_loi_id: formulaData?.formula_loi_id || [],
+            formula_fids_id: formulaData?.formula_fids_id || [],
+            formula_mom_id: formulaData?.formula_mom_id || [],
+            formula_approval_id: formulaData?.formula_approval_id || [],
             date_approved: formulaData.date_approved || '',
             date_expired: formulaData.date_expired || '',
-            no_expiration_date: formulaData.no_expiration_date || false
+            no_expiration_date: formulaData.no_expiration_date || false,
         };
 
         const setDropdownValue = (fieldName, value) => {
@@ -391,16 +395,6 @@ export class FormulaCrudComponent implements OnInit {
         setDropdownValue('sample_received', formulaData.sample_received);
         this.product_type_data = formulaData.product_type;
 
-        const attachmentFields = ['lisd_doc', 'fids_doc', 'mm_doc', 'approved_doc'];
-        attachmentFields.forEach(field => {
-            if (formulaData[field]) {
-                const attachments = Array.isArray(formulaData[field]) ? formulaData[field] : [formulaData[field]];
-                if (attachments.length > 0) {
-                    this.fileFieldMap[field] = attachments;
-                    this.formulaForm.get(field)?.setValue(attachments);
-                }
-            }
-        });
 
         this.formulaForm.patchValue(formData);
         this.formulaForm.updateValueAndValidity();
@@ -716,4 +710,106 @@ export class FormulaCrudComponent implements OnInit {
             this.updateClassificationFilter();
         });
     }
+
+    /**
+     * The function `uploadFiles` uploads multiple files with specified type and field name using
+     * FormData in TypeScript.
+     * @author PSI-VIII
+     * @param {File[]} files - The `uploadFiles` function you provided is responsible for uploading
+     * multiple files to a server using FormData. Here's a breakdown of the parameters used in the
+     * function:
+     * @param {string} type - The `type` parameter in the `uploadFiles` function is used to specify the
+     * type of document being uploaded. It is a string that indicates the category or kind of document
+     * being uploaded, such as 'Fidsdoc', 'Lisddoc', 'Mmdoc', or 'Appdoc
+     * @param {string} fieldName - The `fieldName` parameter in the `uploadFiles` function is a string
+     * that represents the name of the field in the form data where the files will be appended. In this
+     * case, the files are appended to the form data using the field name `file[i]`, where `i` is the
+     */
+    uploadFiles(files: File[], type: string, fieldName: string): void {
+        this.entities = ['temp' + Date.now()];
+        const formData = new FormData();
+   
+        files.forEach((file, i) => {
+          formData.append(`file[${i}]`, file);
+        });
+      
+        const kindMap = {
+          'Fidsdoc': this.filtersList.entity_kinds[1].id,
+          'Lisddoc': this.filtersList.entity_kinds[3].id,
+          'Mmdoc': this.filtersList.entity_kinds[2].id,
+          'Appdoc': this.filtersList.entity_kinds[0]?.id || null,
+        };
+      
+        formData.append('tool', this.filtersList.tool_id);
+        formData.append('kind', kindMap[type]);
+        formData.append('permission_id', this.filtersList.entity_permissions[0].id);
+        formData.append('entities', JSON.stringify(this.entities));
+        formData.append('menu_item_id', this.filtersList.menu_item_id);
+      
+        this.spinner.show();
+      
+        this.commonService.uploadMultipleAttachments(formData).subscribe(
+          (response: any) => {
+            this.spinner.hide();
+            if (!response.hasError) {
+                this.getUploadsList(type as 'Fidsdoc' | 'Lisddoc' | 'Mmdoc' | 'Appdoc');
+                this.commonService.showToastV2Message(true, 'Uploaded Successfully', 'fas fa-exclamation-circle', 'success');
+            } else {
+              this.commonService.showToastV2Message(true, 'Failed', 'saved-footer');
+            }
+          },
+          () => {
+            this.spinner.hide();
+            this.commonService.showToastV2Message(true, 'Failed', 'saved-footer');
+          }
+        );
+      }
+
+    /**
+     * The function `getUploadsList` retrieves uploaded documents based on the specified type and
+     * updates the formula form accordingly.
+     * @author PSI-VIII
+     * @param {'Fidsdoc' | 'Lisddoc' | 'Mmdoc' | 'Appdoc'} type - The `getUploadsList` function takes a
+     * parameter `type` which can have one of the following values: 'Fidsdoc', 'Lisddoc', 'Mmdoc', or
+     * 'Appdoc'.
+     */
+    getUploadsList(type: 'Fidsdoc' | 'Lisddoc' | 'Mmdoc' | 'Appdoc') {
+        const tool_id = this.filtersList.tool_id;
+        const entity = this.entities[0];      
+        let kindId: string | null = null;
+        if (type === 'Fidsdoc') {
+            kindId = this.filtersList.entity_kinds[1].id;
+        } else if (type === 'Lisddoc') {
+            kindId = this.filtersList.entity_kinds[3].id;
+        } else if (type === 'Mmdoc') {
+            kindId = this.filtersList.entity_kinds[2].id;
+        }
+
+        this.commonBackendService.getAttachments(entity, tool_id).subscribe((response  : any) => {
+            const uploadedDocs = response.data;
+            uploadedDocs[0].entity_id = this.entities[0];
+        
+            const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
+            this.formulaForm.value,
+            this.filtersList,
+            this.edit,
+            this.duplicate,
+            this.formulaId
+            );
+        
+            if (type === 'Fidsdoc') {
+                formattedModel.formula_fids_id = this.entities[0];
+            } else if (type === 'Lisddoc') {
+                formattedModel.formula_loi_id= this.entities[0];
+            } else if (type === 'Mmdoc') {
+                formattedModel.formula_mom_id = this.entities[0];
+            }else if (type === 'Appdoc') {
+                formattedModel.formula_approval_id = this.entities[0];
+            }
+            this.formulaForm.patchValue(formattedModel);
+        }, () => {
+            this.commonService.showToastV2Message(true, 'Failed to fetch uploaded files', 'saved-footer');
+        });
+    }
+        
 }
