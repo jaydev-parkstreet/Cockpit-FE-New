@@ -84,7 +84,7 @@ export class FormulaCrudComponent implements OnInit {
         }
         window.removeEventListener('popstate', this.handleBackNavigation);
         history.pushState(null, '', location.href);
-        window.addEventListener('popstate', this.handleBackNavigation);         
+        window.addEventListener('popstate', this.handleBackNavigation);    
     }
 
     /**
