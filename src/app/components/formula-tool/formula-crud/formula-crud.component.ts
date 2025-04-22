@@ -133,6 +133,7 @@ export class FormulaCrudComponent implements OnInit {
             this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
             this.initializeForm();
             this.initialFormData = this.getCurrentFormDataSnapshot();
+            this.initialFormData.product_origin="I";
             this.spinner.hide();
         }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
@@ -601,6 +602,7 @@ export class FormulaCrudComponent implements OnInit {
     /**
      * The function `openClassificationPopup` displays a modal popup with a specific message for classification
      * @author PSI-VIII
+     * @return void
      */
     openClassificationPopup(): void {
         const modalData = {
@@ -697,8 +699,11 @@ export class FormulaCrudComponent implements OnInit {
             this.duplicate,
             this.formulaId
         );
+        const product_origin = formattedModel.product_origin?.trim()
+                                ? formattedModel.product_origin
+                                : this.initialFormData.product_origin;
         let payload = {
-            product_origin: formattedModel.product_origin,
+            product_origin,
             product_type: this.product_type_data
         }
 
