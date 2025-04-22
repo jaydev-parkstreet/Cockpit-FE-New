@@ -16,6 +16,7 @@
         (onDropDownChange)="onDropdownStateChange($event.field , $event.event)"
         (formSubmit)="onSubmit($event)"
         (onFileChange)=onAttachmentUpload($event)
-        [selectedFiles]="selectedFiles">
+        [selectedFiles]="selectedFiles"
+        (OnChangeDateModel)="onDateModelChange($event)">
     </app-psi-crud-form>
 </div>

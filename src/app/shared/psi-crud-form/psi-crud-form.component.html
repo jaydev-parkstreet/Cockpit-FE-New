@@ -68,9 +68,10 @@
                 </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
                     <app-cmp-input-datepicker
+                        type="{{field?.key}}"
                         [fieldConfig]="field"
                         [validationClasses] = "{'invalid': isFieldInvalid(field.name), 'disabled': field.disabled}"
-                        (dateModelChange) ="OnChangeDateModel.emit({ type: 'from', value: $event})">
+                        (dateModelChange) ="OnChangeDateModel.emit($event)">
                     </app-cmp-input-datepicker>
                     <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
@@ -91,7 +92,7 @@
                     <app-psi-radio-button
                         [field]="field"
                         (modelChange)="changeRadioButton($event, field)"
-                        [model]="selectedOption">
+                        [model]="field.value">
                     </app-psi-radio-button>
                 </div>
             </div>
@@ -100,7 +101,8 @@
                     <app-cmp-button
                         [buttonText]="field.label"
                         [buttonClass]="field.class"
-                        (onClick)="formSubmit.emit($event)">
+                        (onClick)="formSubmit.emit($event)"
+                        [isDisable]="field.isDisable">
                     </app-cmp-button>
                 </div>
             </div>
@@ -150,9 +152,10 @@
                 </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
                     <app-cmp-input-datepicker
+                        type="{{field?.key}}"
                         [fieldConfig]="field"
                         [validationClasses] = "{'invalid': isFieldInvalid(field.name), 'disabled': field.disabled}"
-                        (dateModelChange) ="OnChangeDateModel.emit({ type: 'from', value: $event})">
+                        (dateModelChange) ="OnChangeDateModel.emit($event)">
                     </app-cmp-input-datepicker>
                     <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
