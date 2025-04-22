@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { SimpleModalService } from 'ngx-simple-modal';
+import { FormulaCrudComponent } from '../../components/formula-tool/formula-crud/formula-crud.component'
 @Component({
     selector: 'app-psi-crud-form',
     templateUrl: './psi-crud-form.component.html',
@@ -38,6 +39,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     constructor(
         public router: Router,
             private simpleModalService: SimpleModalService,
+            private FormulaCrudComponent: FormulaCrudComponent
     ) { }
 
     ngOnInit(): void {
@@ -145,11 +147,25 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      * @param event
      * @author PSI-Enhancements
      */
-    changeFileUpload(value: File[], key: string) {
-        this.selectedFilesMap[key] = value;
-        this.form.get(key)?.setValue(value);
-    }
-
+    changeFileUpload(files: File[], fieldName: string): void {
+        if (!files || files.length === 0) {
+          return;
+        }
+      
+        this.selectedFilesMap[fieldName] = files;
+        const typeMap = {
+          'formula_fids_id': 'Fidsdoc',
+          'formula_loi_id': 'Lisddoc',
+          'formula_mom_id': 'Mmdoc',
+          'formula_approval_id': 'Appdoc',
+        };
+      
+        const uploadType = typeMap[fieldName];
+        if (uploadType) {
+          this.FormulaCrudComponent.uploadFiles(files, uploadType, fieldName);
+        }
+      }
+      
     /**
      * Function to call on radio change.
      * @param event
