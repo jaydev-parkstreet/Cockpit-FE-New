@@ -165,7 +165,7 @@ export class CmpNotesModalComponent extends SimpleModalComponent<notesModal, any
             }
             this.commonService.hideSpinner();
         }, (error) => {
-            this.commonService.showToastV2Message(true, 'Failed to save note', 'fas fa-exclamation-circle');
+            this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
             this.commonService.hideSpinner();
         });
     }

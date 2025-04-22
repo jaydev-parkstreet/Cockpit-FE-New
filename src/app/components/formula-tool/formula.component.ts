@@ -87,8 +87,6 @@ export class FormulaComponent implements OnInit {
       "submission_id": [],
       "formula_status": [],
       "formula_id": [],
-      "date_requested_from": "",
-      "date_requested_to": "",
       "client_id": ""
     };
     this.selectedRowCount = 0;
@@ -261,6 +259,10 @@ export class FormulaComponent implements OnInit {
       fileTypeDropdown: this.filterList.entity_kinds,
       showPrivacyIcon: true,
       attachmentDetails: JSON.parse(JSON.stringify(attachments)),
+      configUpload: {
+        allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt'],
+        isShowUploader: true
+      }
     };
     this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
       .subscribe((result) => {
@@ -417,14 +419,19 @@ export class FormulaComponent implements OnInit {
 
   applyFilters(selectedFilters: any) {
     this.filtermodal = Object.keys(selectedFilters).reduce((acc, key) => {
-      if (key == 'clients') {
-        acc['client'] = selectedFilters[key].map((item: any) => item.id);
+      if (key == 'client_id') {
+        acc['client_id'] = selectedFilters[key].map((item: any) => item.quickbooks_id);
       } else if (key == 'is_active') {
-        acc['active_status'] = [selectedFilters[key] == 0 ? '1' : '0'];
+        acc['active_status'] = selectedFilters[key] ? [1] : [];;
       } else if (key == 'is_archived') {
         acc['is_archived'] = selectedFilters[key] ? [1] : [];
       } else {
-        acc[key] = selectedFilters[key].map((item: any) => item.id);
+        const value = selectedFilters[key];
+        if (Array.isArray(value)) {
+          acc[key] = value.map((item: any) => item.id);
+        } else {
+          acc[key] = value;
+        }
       }
       return acc;
     }, {});
@@ -449,7 +456,7 @@ export class FormulaComponent implements OnInit {
       "page": 1,
       "pageSize": 25,
       "sort": "unique_id",
-      "order": "asc",
+      "order": "dsc",
       "universal_search": ""
     }
     this.topPanelConfig.searchText = '';

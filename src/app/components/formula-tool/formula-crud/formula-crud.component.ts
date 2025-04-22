@@ -133,6 +133,7 @@ export class FormulaCrudComponent implements OnInit {
             this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
             this.initializeForm();
             this.initialFormData = this.getCurrentFormDataSnapshot();
+            this.initialFormData.product_origin="I";
             this.spinner.hide();
         }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
@@ -445,14 +446,14 @@ export class FormulaCrudComponent implements OnInit {
 
     onDropdownStateChange(fieldName: any, selectedValue: any) {
         this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
+        const selectedItem = selectedValue[0];
         const idFields = [
             'product_type', 'classification', 'formula_status'
         ];
         const clients = ['client_id']
         if (idFields.includes(fieldName)) {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.id);
-        }
-        else if (clients.includes(fieldName)) {
+        }else if (clients.includes(fieldName)) {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.quickbooks_id);
         } else {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.name);
@@ -462,6 +463,11 @@ export class FormulaCrudComponent implements OnInit {
             case 'product_type':
                 this.product_type_data = selectedValue[0].name;
                 this.fetchClassification();
+                break;
+            case 'classification':
+                if (selectedValue[0].formula_required === 'N') {
+                    this.openClassificationPopup();
+                }
                 break;
         }
     }
@@ -593,6 +599,24 @@ export class FormulaCrudComponent implements OnInit {
             });
     }
 
+    /**
+     * The function `openClassificationPopup` displays a modal popup with a specific message for classification
+     * @author PSI-VIII
+     * @return void
+     */
+    openClassificationPopup(): void {
+        const modalData = {
+            title: 'Please note this Classification (Product Type) does not require a formula.',
+            body: 'Please select another classification or go back to the Summary page.',
+            iconClass: 'fas fa-exclamation-circle error',
+            showLine: true,
+            btnLabel: [
+              { type: 'Btn', label: 'Ok', class: 'secondary' },
+            ],
+          };
+          this.simpleModalService.addModal(ConfirmationModalComponent, { modalData });
+    }
+
     ngOnDestroy(): void {
         window.removeEventListener('popstate', this.handleBackNavigation);
     }
@@ -675,8 +699,11 @@ export class FormulaCrudComponent implements OnInit {
             this.duplicate,
             this.formulaId
         );
+        const product_origin = formattedModel.product_origin?.trim()
+                                ? formattedModel.product_origin
+                                : this.initialFormData.product_origin;
         let payload = {
-            product_origin: formattedModel.product_origin,
+            product_origin,
             product_type: this.product_type_data
         }
 
