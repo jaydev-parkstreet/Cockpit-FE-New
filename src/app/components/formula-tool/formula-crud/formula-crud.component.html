@@ -17,6 +17,8 @@
         (formSubmit)="onSubmit($event)"
         (onFileChange)=onAttachmentUpload($event)
         [selectedFiles]="selectedFiles"
+        (checkboxToggled)="onCheckedInput($event)"
+        (fileUploadTriggered)="uploadFiles($event.files, $event.uploadType, $event.fieldName)"
         (OnChangeDateModel)="onDateModelChange($event)">
     </app-psi-crud-form>
 </div>

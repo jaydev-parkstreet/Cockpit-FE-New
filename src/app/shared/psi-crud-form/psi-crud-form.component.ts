@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { SimpleModalService } from 'ngx-simple-modal';
-import { FormulaCrudComponent } from '../../components/formula-tool/formula-crud/formula-crud.component'
 @Component({
     selector: 'app-psi-crud-form',
     templateUrl: './psi-crud-form.component.html',
@@ -23,6 +22,8 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     @Output() clearAllClicked: EventEmitter<void> = new EventEmitter<void>();
     @Output() OnChangeDateModel = new EventEmitter<any>();
     isDisable: boolean;
+    @Output() checkboxToggled = new EventEmitter<{ field: string, isChecked: boolean }>();
+    @Output() fileUploadTriggered = new EventEmitter<{ files: File[], fieldName: string, uploadType: string }>();
    
     // @Output() onFileDeleted = new EventEmitter<any>();
     @Input() set shouldClearAllFields(value: boolean) {
@@ -39,7 +40,6 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     constructor(
         public router: Router,
             private simpleModalService: SimpleModalService,
-            private FormulaCrudComponent: FormulaCrudComponent
     ) { }
 
     ngOnInit(): void {
@@ -140,6 +140,9 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      */
     onCheckedInput(field, isChecked) {
         this.form.get(field)?.setValue(isChecked ? '1' : '0');
+        if (field?.isExpiration !== false) {
+            this.checkboxToggled.emit({ field, isChecked });
+          }
     }
   
     /**
@@ -151,19 +154,23 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         if (!files || files.length === 0) {
           return;
         }
-      
+     
         this.selectedFilesMap[fieldName] = files;
-        const typeMap = {
-          'formula_fids_id': 'Fidsdoc',
-          'formula_loi_id': 'Lisddoc',
-          'formula_mom_id': 'Mmdoc',
-          'formula_approval_id': 'Appdoc',
-        };
-      
-        const uploadType = typeMap[fieldName];
-        if (uploadType) {
-          this.FormulaCrudComponent.uploadFiles(files, uploadType, fieldName);
-        }
+        const allFields = [...(this.crudFieldConfig?.leftSection || []), ...(this.crudFieldConfig?.rightSection || [])];
+        const fieldConfig = allFields.find(f => f.key === fieldName);
+        const isFileUpload = fieldConfig?.isFileUpload ?? false;
+        if (isFileUpload) {
+            const typeMap = {
+              'formula_fids_id': 'Fidsdoc',
+              'formula_loi_id': 'Lisddoc',
+              'formula_mom_id': 'Mmdoc',
+              'formula_approval_id': 'Appdoc',
+            };     
+            const uploadType = typeMap[fieldName];
+            if (uploadType) {
+              this.fileUploadTriggered.emit({ files, fieldName, uploadType });
+            }
+          }
       }
       
     /**
