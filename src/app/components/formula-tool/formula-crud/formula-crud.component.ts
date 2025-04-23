@@ -45,6 +45,7 @@ export class FormulaCrudComponent implements OnInit {
     activeDropdownId: any;
     selectedFilesMap: { [key: string]: File[] } = {};
     entities: string[] = [];
+    form: FormGroup;
 
     constructor(
         private FormulaService: FormulaService,
@@ -85,6 +86,10 @@ export class FormulaCrudComponent implements OnInit {
         window.removeEventListener('popstate', this.handleBackNavigation);
         history.pushState(null, '', location.href);
         window.addEventListener('popstate', this.handleBackNavigation);
+        this.form = this.formBuilder.group({
+            no_expiration_date: ['0'],
+            date_expired: null,
+          });
     }
 
     /**
@@ -452,7 +457,7 @@ export class FormulaCrudComponent implements OnInit {
         } else {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.name);
         }
-
+        this.validateRequiredFields();
         switch (fieldName) {
             case 'product_type':
                 this.product_type_data = selectedValue[0].name;
@@ -461,6 +466,19 @@ export class FormulaCrudComponent implements OnInit {
             case 'classification':
                 if (selectedValue[0].formula_required === 'N') {
                     this.openClassificationPopup();
+                }
+                break;
+            case 'formula_status':
+                if (selectedValue[0].id === 2) {
+                    if (Array.isArray(this.crudFieldConfig.rightSection)) {
+                        const fieldsToUpdate = ['date_expired', 'date_approved', 'formula_approval_id'];
+                        fieldsToUpdate.forEach(fieldKey => {
+                        const field = this.crudFieldConfig.rightSection.find(f => f.key === fieldKey);
+                            if (field) {
+                            field.isRequired = true;
+                            }
+                        });
+                    }
                 }
                 break;
         }
@@ -715,15 +733,7 @@ export class FormulaCrudComponent implements OnInit {
      * The function `uploadFiles` uploads multiple files with specified type and field name using
      * FormData in TypeScript.
      * @author PSI-VIII
-     * @param {File[]} files - The `uploadFiles` function you provided is responsible for uploading
-     * multiple files to a server using FormData. Here's a breakdown of the parameters used in the
-     * function:
-     * @param {string} type - The `type` parameter in the `uploadFiles` function is used to specify the
-     * type of document being uploaded. It is a string that indicates the category or kind of document
-     * being uploaded, such as 'Fidsdoc', 'Lisddoc', 'Mmdoc', or 'Appdoc
-     * @param {string} fieldName - The `fieldName` parameter in the `uploadFiles` function is a string
-     * that represents the name of the field in the form data where the files will be appended. In this
-     * case, the files are appended to the form data using the field name `file[i]`, where `i` is the
+     * @param {File[]} files fieldName type 
      */
     uploadFiles(files: File[], type: string, fieldName: string): void {
         this.entities = ['temp' + Date.now()];
@@ -811,5 +821,54 @@ export class FormulaCrudComponent implements OnInit {
             this.commonService.showToastV2Message(true, 'Failed to fetch uploaded files', 'saved-footer');
         });
     }
+
+    /**
+     * The function `onCheckedInput` updates form controls based on the checked status of a field, with
+     * special handling for a field related to expiration dates.
+     * @author PSI-VIII
+     * @param data 
+     */
+    onCheckedInput(data: { field: string, isChecked: boolean }): void {     
+        const { field, isChecked } = data;
+        const control = this.form.get(field);
+        if (control) {
+          control.setValue(isChecked ? '1' : '0');
+        }
+
+        if (field === 'no_expiration_date') {
+          const dateExpiredControl = this.form.get('date_expired');
+          if (dateExpiredControl) {
+            this.formulaForm.get('date_expired')?.setValue(null);
+            dateExpiredControl.setValue(null);         
+            isChecked ? dateExpiredControl.disable() : dateExpiredControl.enable();  
+          }
+
+          if (Array.isArray(this.crudFieldConfig.rightSection)) {
+            const dateExpiredField = this.crudFieldConfig.rightSection.find(f => f.key === 'date_expired');
+            if (dateExpiredField) {
+                this.formulaForm.value.date_expired = '';
+              dateExpiredField.isDisabled = isChecked;
+            }
+          }
+        }
+      }
+
+      /**
+       * The function `validateRequiredFields` checks if certain fields are filled in and
+       * enables/disables a submit button accordingly.
+       * @author PSI-VIII
+       * @return void
+       */
+      validateRequiredFields() {
+        const requiredKeys = ['date_approved', 'date_expired'];
+        const isValid = requiredKeys.every(key => {
+          const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
+          return field && field.value;
+        });
+        const submitBtn = this.crudFieldConfig.btnLabel.find(btn => btn.label === 'Submit');
+        if (submitBtn) {
+          submitBtn.isDisable = !isValid;
+        }
+      }
         
 }
