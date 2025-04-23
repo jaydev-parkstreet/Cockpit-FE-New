@@ -89,7 +89,7 @@ export class FormulaCrudComponent implements OnInit {
         this.form = this.formBuilder.group({
             no_expiration_date: ['0'],
             date_expired: null,
-          });
+        });
     }
 
     /**
@@ -475,7 +475,7 @@ export class FormulaCrudComponent implements OnInit {
                         fieldsToUpdate.forEach(fieldKey => {
                         const field = this.crudFieldConfig.rightSection.find(f => f.key === fieldKey);
                             if (field) {
-                            field.isRequired = true;
+                                field.isRequired = true;
                             }
                         });
                     }
@@ -733,7 +733,9 @@ export class FormulaCrudComponent implements OnInit {
      * The function `uploadFiles` uploads multiple files with specified type and field name using
      * FormData in TypeScript.
      * @author PSI-VIII
-     * @param {File[]} files fieldName type 
+     * @param {File[]} files
+     * @param type: string
+     * @param fieldName: string 
      */
     uploadFiles(files: File[], type: string, fieldName: string): void {
         this.entities = ['temp' + Date.now()];
@@ -826,7 +828,7 @@ export class FormulaCrudComponent implements OnInit {
      * The function `onCheckedInput` updates form controls based on the checked status of a field, with
      * special handling for a field related to expiration dates.
      * @author PSI-VIII
-     * @param data 
+     * @param data { field: string, isChecked: boolean }
      */
     onCheckedInput(data: { field: string, isChecked: boolean }): void {     
         const { field, isChecked } = data;
