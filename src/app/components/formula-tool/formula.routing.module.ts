@@ -31,7 +31,11 @@ const routes: Routes = [
                     {
                         path: '',
                         component: FormulaDetailsComponent,
-                    }
+                    },
+                    {
+                        path: 'edit',
+                        component: FormulaCrudComponent,
+                    },
                 ]
             }
         ]
