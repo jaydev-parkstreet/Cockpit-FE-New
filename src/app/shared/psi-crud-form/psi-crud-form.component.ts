@@ -24,7 +24,8 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
     isDisable: boolean;
     @Output() checkboxToggled = new EventEmitter<{ field: string, isChecked: boolean }>();
     @Output() fileUploadTriggered = new EventEmitter<{ files: File[], fieldName: string, uploadType: string }>();
-   
+    selectedOption: any;
+
     // @Output() onFileDeleted = new EventEmitter<any>();
     @Input() set shouldClearAllFields(value: boolean) {
         if (value) {
@@ -39,7 +40,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
 
     constructor(
         public router: Router,
-            private simpleModalService: SimpleModalService,
+        private simpleModalService: SimpleModalService,
     ) { }
 
     ngOnInit(): void {
@@ -51,8 +52,8 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         const hasValues = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].some((field) => {
             switch (field.type) {
                 case 'multiselect-dropdown':
-                case 'text':                
-                return (this.form?.get(field.name)?.value ?? '').trim() !== '';
+                case 'text':
+                    return (this.form?.get(field.name)?.value ?? '').trim() !== '';
                 case 'checkbox':
                     return this.form?.get(field.name)?.value === '1';
                 default:
@@ -73,7 +74,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
                 control.markAsUntouched();
             }
         };
-    
+
         [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection].forEach((field) => {
             switch (field.type) {
                 case 'multiselect-dropdown':
@@ -142,9 +143,9 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         this.form.get(field)?.setValue(isChecked ? '1' : '0');
         if (field?.isExpiration !== false) {
             this.checkboxToggled.emit({ field, isChecked });
-          }
+        }
     }
-  
+
     /**
      * Function to call on file upload.
      * @param event
@@ -152,33 +153,43 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      */
     changeFileUpload(files: File[], fieldName: string): void {
         if (!files || files.length === 0) {
-          return;
+            return;
         }
-     
+
         this.selectedFilesMap[fieldName] = files;
         const allFields = [...(this.crudFieldConfig?.leftSection || []), ...(this.crudFieldConfig?.rightSection || [])];
         const fieldConfig = allFields.find(f => f.key === fieldName);
         const isFileUpload = fieldConfig?.isFileUpload ?? false;
         if (isFileUpload) {
             const typeMap = {
-              'formula_fids_id': 'Fidsdoc',
-              'formula_loi_id': 'Lisddoc',
-              'formula_mom_id': 'Mmdoc',
-              'formula_approval_id': 'Appdoc',
-            };     
+                'formula_fids_id': 'Fidsdoc',
+                'formula_loi_id': 'Lisddoc',
+                'formula_mom_id': 'Mmdoc',
+                'formula_approval_id': 'Appdoc',
+            };
             const uploadType = typeMap[fieldName];
             if (uploadType) {
-              this.fileUploadTriggered.emit({ files, fieldName, uploadType });
+                this.fileUploadTriggered.emit({ files, fieldName, uploadType });
             }
-          }
-      }
-      
+        }
+    }
+
     /**
      * Function to call on radio change.
      * @param event
      * @author PSI-Enhancements
      */
-    changeRadioButton(value,field) {
+    changeRadioButton(value: any, field: any): void {
         this.form.get(field.key)?.setValue(value);
+
+        if (field?.isProductOrigin !== false) {
+            this.selectedOption = value;
+            if (field.name === 'product_origin' || field.name === 'classification') {
+                this.form.get('product_type')?.setValue(null);
+                this.sellectedData['product_type'] = [];
+                this.form.get('classification')?.setValue(null);
+                this.sellectedData['classification'] = [];
+            }
+        }
     }
 }

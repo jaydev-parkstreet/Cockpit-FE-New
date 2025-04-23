@@ -135,18 +135,18 @@ export class FormulaCrudComponent implements OnInit {
     * @author PSI-VIII
     */
     loadDropdownData() {
-        this.spinner.show();
+        this.commonService.showSpinner();
         const token = this.authService.getToken();
         this.FormulaService.getDropdown(token).then(result => {
             this.filtersList = result;
             this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
             this.initializeForm();
             this.initialFormData = this.getCurrentFormDataSnapshot();
-            this.initialFormData.product_origin="I";
-            this.spinner.hide();
+            this.initialFormData.product_origin = "I";
+            this.commonService.hideSpinner();
         }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             this.commonService.showToastV2Message(true, 'Failed to load dropdown data', 'fas fa-exclamation-circle');
         });
     }
@@ -219,9 +219,9 @@ export class FormulaCrudComponent implements OnInit {
      * @author PSI-VIII
      */
     async getFormulaData(formulaId: string) {
-        this.spinner.show();
+        this.commonService.showSpinner();
         this.FormulaService.getDetails(formulaId).then((response: any) => {
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             if (!response.hasError) {
                 this.formulaId = response.data.formula_id;
 
@@ -247,7 +247,7 @@ export class FormulaCrudComponent implements OnInit {
                 this.router.navigate(['formula']);
             }
         }).catch(error => {
-            this.spinner.hide();
+            this.commonService.hideSpinner();
             this.commonService.showToastV2Message(true, 'Failed to fetch formula details', 'fas fa-exclamation-circle');
         });
     }
@@ -366,7 +366,7 @@ export class FormulaCrudComponent implements OnInit {
             status: formulaData.status || '',
             date_requested: formulaData.date_requested || '',
             commodity_statement: formulaData.commodity_statement || '',
-            composition: formulaData.composition || '',
+            commodity_statement_request: formulaData.commodity_statement_request || '',
             total_batch_size: formulaData.total_batch_size || '',
             batch_size_unit_of_measure: formulaData.batch_size_unit_of_measure || '',
             notes: formulaData.notes || '',
@@ -452,7 +452,7 @@ export class FormulaCrudComponent implements OnInit {
         const clients = ['client_id']
         if (idFields.includes(fieldName)) {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.id);
-        }else if (clients.includes(fieldName)) {
+        } else if (clients.includes(fieldName)) {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.quickbooks_id);
         } else {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.name);
@@ -473,7 +473,7 @@ export class FormulaCrudComponent implements OnInit {
                     if (Array.isArray(this.crudFieldConfig.rightSection)) {
                         const fieldsToUpdate = ['date_expired', 'date_approved', 'formula_approval_id'];
                         fieldsToUpdate.forEach(fieldKey => {
-                        const field = this.crudFieldConfig.rightSection.find(f => f.key === fieldKey);
+                            const field = this.crudFieldConfig.rightSection.find(f => f.key === fieldKey);
                             if (field) {
                                 field.isRequired = true;
                             }
@@ -515,13 +515,13 @@ export class FormulaCrudComponent implements OnInit {
                 formData.delete('formulaData');
                 formData.append('formulaData', JSON.stringify(formattedModel));
 
-                this.spinner.show();
+                this.commonService.showSpinner();
                 const hasFiles = Object.values(this.fileFieldMap || {}).some(files => files && files.length > 0);
 
                 if (hasFiles) {
                     this.FormulaCrudService.saveFormulaWithAttachments(formData, this.edit).subscribe(
                         response => {
-                            this.spinner.hide();
+                            this.commonService.hideSpinner();
                             if (!response.hasError) {
                                 const formulaId = response.id;
                                 this.commonService.showToastV2Message(
@@ -537,14 +537,14 @@ export class FormulaCrudComponent implements OnInit {
                             }
                         },
                         error => {
-                            this.spinner.hide();
+                            this.commonService.hideSpinner();
                             this.commonService.showToastV2Message(true, "Error saving formula", 'fas fa-exclamation-circle');
                         }
                     );
                 } else {
                     this.FormulaCrudService.saveFormula(formattedModel).subscribe(
                         response => {
-                            this.spinner.hide();
+                            this.commonService.hideSpinner();
                             if (!response.hasError) {
                                 const formulaId = response.id;
                                 this.commonService.showToastV2Message(
@@ -560,7 +560,7 @@ export class FormulaCrudComponent implements OnInit {
                             }
                         },
                         error => {
-                            this.spinner.hide();
+                            this.commonService.hideSpinner();
                             this.commonService.showToastV2Message(true, "Error saving formula", 'fas fa-exclamation-circle');
                         }
                     );
@@ -623,10 +623,10 @@ export class FormulaCrudComponent implements OnInit {
             iconClass: 'fas fa-exclamation-circle error',
             showLine: true,
             btnLabel: [
-              { type: 'Btn', label: 'Ok', class: 'secondary' },
+                { type: 'Btn', label: 'Ok', class: 'secondary' },
             ],
-          };
-          this.simpleModalService.addModal(ConfirmationModalComponent, { modalData });
+        };
+        this.simpleModalService.addModal(ConfirmationModalComponent, { modalData });
     }
 
     ngOnDestroy(): void {
@@ -712,8 +712,8 @@ export class FormulaCrudComponent implements OnInit {
             this.formulaId
         );
         const product_origin = formattedModel.product_origin?.trim()
-                                ? formattedModel.product_origin
-                                : this.initialFormData.product_origin;
+            ? formattedModel.product_origin
+            : this.initialFormData.product_origin;
         let payload = {
             product_origin,
             product_type: this.product_type_data
@@ -740,42 +740,42 @@ export class FormulaCrudComponent implements OnInit {
     uploadFiles(files: File[], type: string, fieldName: string): void {
         this.entities = ['temp' + Date.now()];
         const formData = new FormData();
-   
+
         files.forEach((file, i) => {
-          formData.append(`file[${i}]`, file);
+            formData.append(`file[${i}]`, file);
         });
-      
+
         const kindMap = {
-          'Fidsdoc': this.filtersList.entity_kinds[1].id,
-          'Lisddoc': this.filtersList.entity_kinds[3].id,
-          'Mmdoc': this.filtersList.entity_kinds[2].id,
-          'Appdoc': this.filtersList.entity_kinds[0]?.id || null,
+            'Fidsdoc': this.filtersList.entity_kinds[1].id,
+            'Lisddoc': this.filtersList.entity_kinds[3].id,
+            'Mmdoc': this.filtersList.entity_kinds[2].id,
+            'Appdoc': this.filtersList.entity_kinds[0]?.id || null,
         };
-      
+
         formData.append('tool', this.filtersList.tool_id);
         formData.append('kind', kindMap[type]);
         formData.append('permission_id', this.filtersList.entity_permissions[0].id);
         formData.append('entities', JSON.stringify(this.entities));
         formData.append('menu_item_id', this.filtersList.menu_item_id);
-      
-        this.spinner.show();
-      
+
+        this.commonService.showSpinner();
+
         this.commonService.uploadMultipleAttachments(formData).subscribe(
-          (response: any) => {
-            this.spinner.hide();
-            if (!response.hasError) {
-                this.getUploadsList(type as 'Fidsdoc' | 'Lisddoc' | 'Mmdoc' | 'Appdoc');
-                this.commonService.showToastV2Message(true, 'Uploaded Successfully', 'fas fa-exclamation-circle', 'success');
-            } else {
-              this.commonService.showToastV2Message(true, 'Failed', 'saved-footer');
+            (response: any) => {
+                this.commonService.hideSpinner();
+                if (!response.hasError) {
+                    this.getUploadsList(type as 'Fidsdoc' | 'Lisddoc' | 'Mmdoc' | 'Appdoc');
+                    this.commonService.showToastV2Message(true, 'Uploaded Successfully', 'fas fa-exclamation-circle', 'success');
+                } else {
+                    this.commonService.showToastV2Message(true, 'Failed', 'saved-footer');
+                }
+            },
+            () => {
+                this.commonService.hideSpinner();
+                this.commonService.showToastV2Message(true, 'Failed', 'saved-footer');
             }
-          },
-          () => {
-            this.spinner.hide();
-            this.commonService.showToastV2Message(true, 'Failed', 'saved-footer');
-          }
         );
-      }
+    }
 
     /**
      * The function `getUploadsList` retrieves uploaded documents based on the specified type and
@@ -787,7 +787,7 @@ export class FormulaCrudComponent implements OnInit {
      */
     getUploadsList(type: 'Fidsdoc' | 'Lisddoc' | 'Mmdoc' | 'Appdoc') {
         const tool_id = this.filtersList.tool_id;
-        const entity = this.entities[0];      
+        const entity = this.entities[0];
         let kindId: string | null = null;
         if (type === 'Fidsdoc') {
             kindId = this.filtersList.entity_kinds[1].id;
@@ -797,25 +797,25 @@ export class FormulaCrudComponent implements OnInit {
             kindId = this.filtersList.entity_kinds[2].id;
         }
 
-        this.commonBackendService.getAttachments(entity, tool_id).subscribe((response  : any) => {
+        this.commonBackendService.getAttachments(entity, tool_id).subscribe((response: any) => {
             const uploadedDocs = response.data;
             uploadedDocs[0].entity_id = this.entities[0];
-        
+
             const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
-            this.formulaForm.value,
-            this.filtersList,
-            this.edit,
-            this.duplicate,
-            this.formulaId
+                this.formulaForm.value,
+                this.filtersList,
+                this.edit,
+                this.duplicate,
+                this.formulaId
             );
-        
+
             if (type === 'Fidsdoc') {
                 formattedModel.formula_fids_id = this.entities[0];
             } else if (type === 'Lisddoc') {
-                formattedModel.formula_loi_id= this.entities[0];
+                formattedModel.formula_loi_id = this.entities[0];
             } else if (type === 'Mmdoc') {
                 formattedModel.formula_mom_id = this.entities[0];
-            }else if (type === 'Appdoc') {
+            } else if (type === 'Appdoc') {
                 formattedModel.formula_approval_id = this.entities[0];
             }
             this.formulaForm.patchValue(formattedModel);
@@ -830,47 +830,47 @@ export class FormulaCrudComponent implements OnInit {
      * @author PSI-VIII
      * @param data { field: string, isChecked: boolean }
      */
-    onCheckedInput(data: { field: string, isChecked: boolean }): void {     
+    onCheckedInput(data: { field: string, isChecked: boolean }): void {
         const { field, isChecked } = data;
         const control = this.form.get(field);
         if (control) {
-          control.setValue(isChecked ? '1' : '0');
+            control.setValue(isChecked ? '1' : '0');
         }
 
         if (field === 'no_expiration_date') {
-          const dateExpiredControl = this.form.get('date_expired');
-          if (dateExpiredControl) {
-            this.formulaForm.get('date_expired')?.setValue(null);
-            dateExpiredControl.setValue(null);         
-            isChecked ? dateExpiredControl.disable() : dateExpiredControl.enable();  
-          }
-
-          if (Array.isArray(this.crudFieldConfig.rightSection)) {
-            const dateExpiredField = this.crudFieldConfig.rightSection.find(f => f.key === 'date_expired');
-            if (dateExpiredField) {
-                this.formulaForm.value.date_expired = '';
-              dateExpiredField.isDisabled = isChecked;
+            const dateExpiredControl = this.form.get('date_expired');
+            if (dateExpiredControl) {
+                this.formulaForm.get('date_expired')?.setValue(null);
+                dateExpiredControl.setValue(null);
+                isChecked ? dateExpiredControl.disable() : dateExpiredControl.enable();
             }
-          }
-        }
-      }
 
-      /**
-       * The function `validateRequiredFields` checks if certain fields are filled in and
-       * enables/disables a submit button accordingly.
-       * @author PSI-VIII
-       * @return void
-       */
-      validateRequiredFields() {
+            if (Array.isArray(this.crudFieldConfig.rightSection)) {
+                const dateExpiredField = this.crudFieldConfig.rightSection.find(f => f.key === 'date_expired');
+                if (dateExpiredField) {
+                    this.formulaForm.value.date_expired = '';
+                    dateExpiredField.isDisabled = isChecked;
+                }
+            }
+        }
+    }
+
+    /**
+     * The function `validateRequiredFields` checks if certain fields are filled in and
+     * enables/disables a submit button accordingly.
+     * @author PSI-VIII
+     * @return void
+     */
+    validateRequiredFields() {
         const requiredKeys = ['date_approved', 'date_expired'];
         const isValid = requiredKeys.every(key => {
-          const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
-          return field && field.value;
+            const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
+            return field && field.value;
         });
         const submitBtn = this.crudFieldConfig.btnLabel.find(btn => btn.label === 'Submit');
         if (submitBtn) {
-          submitBtn.isDisable = !isValid;
+            submitBtn.isDisable = !isValid;
         }
-      }
-        
+    }
+
 }

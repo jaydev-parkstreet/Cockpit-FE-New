@@ -57,7 +57,7 @@ export class FormulaCrudService {
             formula_id: model.formula_id || "",
             date_requested: model.date_requested || null,
             commodity_statement: model.commodity_statement || "",
-            composition: model.composition || "",
+            commodity_statement_request: model.commodity_statement_request || "",
             total_batch_size: model.total_batch_size || "",
             batch_size_unit_of_measure: model.batch_size_unit_of_measure || "",
             notes: model.notes || "",
@@ -138,6 +138,7 @@ export class FormulaCrudService {
                         { value: 'I', name: 'Imported' }
                     ],
                     isRequired: true,
+                    isProductOrigin: true,
                 },
                 {
                     key: 'product_type',
@@ -204,8 +205,8 @@ export class FormulaCrudService {
                     placeholder: 'Enter Commodity Statement'
                 },
                 {
-                    key: 'composition',
-                    name: 'composition',
+                    key: 'commodity_statement_request',
+                    name: 'commodity_statement_request',
                     label: 'Statement of Composition',
                     type: 'text',
                     colClass: 'col-sm-12',
