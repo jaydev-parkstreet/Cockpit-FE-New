@@ -130,7 +130,7 @@ export class FormulaCrudComponent implements OnInit {
     * @author PSI-VIII
     */
     loadDropdownData() {
-        this.spinner.show();
+        this.commonService.showSpinner();
         const token = this.authService.getToken();
         this.FormulaService.getDropdown(token).then(result => {
             this.filtersList = result;
@@ -138,10 +138,10 @@ export class FormulaCrudComponent implements OnInit {
             this.initializeForm();
             this.initialFormData = this.getCurrentFormDataSnapshot();
             this.initialFormData.product_origin="I";
-            this.spinner.hide();
+             this.commonService.hideSpinner();
         }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
-            this.spinner.hide();
+             this.commonService.hideSpinner();
             this.commonService.showToastV2Message(true, 'Failed to load dropdown data', 'fas fa-exclamation-circle');
         });
     }
@@ -214,9 +214,9 @@ export class FormulaCrudComponent implements OnInit {
      * @author PSI-VIII
      */
     async getFormulaData(formulaId: string) {
-        this.spinner.show();
+        this.commonService.showSpinner();
         this.FormulaService.getDetails(formulaId).then((response: any) => {
-            this.spinner.hide();
+             this.commonService.hideSpinner();
             if (!response.hasError) {
                 this.formulaId = response.data.formula_id;
 
@@ -242,7 +242,7 @@ export class FormulaCrudComponent implements OnInit {
                 this.router.navigate(['formula']);
             }
         }).catch(error => {
-            this.spinner.hide();
+             this.commonService.hideSpinner();
             this.commonService.showToastV2Message(true, 'Failed to fetch formula details', 'fas fa-exclamation-circle');
         });
     }
@@ -361,7 +361,7 @@ export class FormulaCrudComponent implements OnInit {
             status: formulaData.status || '',
             date_requested: formulaData.date_requested || '',
             commodity_statement: formulaData.commodity_statement || '',
-            composition: formulaData.composition || '',
+            commodity_statement_request: formulaData.commodity_statement_request || '',
             total_batch_size: formulaData.total_batch_size || '',
             batch_size_unit_of_measure: formulaData.batch_size_unit_of_measure || '',
             notes: formulaData.notes || '',
@@ -497,13 +497,13 @@ export class FormulaCrudComponent implements OnInit {
                 formData.delete('formulaData');
                 formData.append('formulaData', JSON.stringify(formattedModel));
 
-                this.spinner.show();
+                this.commonService.showSpinner();
                 const hasFiles = Object.values(this.fileFieldMap || {}).some(files => files && files.length > 0);
 
                 if (hasFiles) {
                     this.FormulaCrudService.saveFormulaWithAttachments(formData, this.edit).subscribe(
                         response => {
-                            this.spinner.hide();
+                             this.commonService.hideSpinner();
                             if (!response.hasError) {
                                 const formulaId = response.id;
                                 this.commonService.showToastV2Message(
@@ -519,14 +519,14 @@ export class FormulaCrudComponent implements OnInit {
                             }
                         },
                         error => {
-                            this.spinner.hide();
+                             this.commonService.hideSpinner();
                             this.commonService.showToastV2Message(true, "Error saving formula", 'fas fa-exclamation-circle');
                         }
                     );
                 } else {
                     this.FormulaCrudService.saveFormula(formattedModel).subscribe(
                         response => {
-                            this.spinner.hide();
+                             this.commonService.hideSpinner();
                             if (!response.hasError) {
                                 const formulaId = response.id;
                                 this.commonService.showToastV2Message(
@@ -542,7 +542,7 @@ export class FormulaCrudComponent implements OnInit {
                             }
                         },
                         error => {
-                            this.spinner.hide();
+                             this.commonService.hideSpinner();
                             this.commonService.showToastV2Message(true, "Error saving formula", 'fas fa-exclamation-circle');
                         }
                     );
@@ -746,11 +746,11 @@ export class FormulaCrudComponent implements OnInit {
         formData.append('entities', JSON.stringify(this.entities));
         formData.append('menu_item_id', this.filtersList.menu_item_id);
       
-        this.spinner.show();
+        this.commonService.showSpinner();
       
         this.commonService.uploadMultipleAttachments(formData).subscribe(
           (response: any) => {
-            this.spinner.hide();
+             this.commonService.hideSpinner();
             if (!response.hasError) {
                 this.getUploadsList(type as 'Fidsdoc' | 'Lisddoc' | 'Mmdoc' | 'Appdoc');
                 this.commonService.showToastV2Message(true, 'Uploaded Successfully', 'fas fa-exclamation-circle', 'success');
@@ -759,7 +759,7 @@ export class FormulaCrudComponent implements OnInit {
             }
           },
           () => {
-            this.spinner.hide();
+             this.commonService.hideSpinner();
             this.commonService.showToastV2Message(true, 'Failed', 'saved-footer');
           }
         );
