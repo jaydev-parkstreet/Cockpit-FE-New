@@ -138,6 +138,7 @@ export class FormulaCrudService {
                         { value: 'I', name: 'Imported' }
                     ],
                     isRequired: true,
+                    isProductOrigin: true,
                 },
                 {
                     key: 'product_type',
