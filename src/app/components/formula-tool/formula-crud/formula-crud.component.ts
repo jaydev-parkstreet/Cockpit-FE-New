@@ -355,12 +355,13 @@ export class FormulaCrudComponent implements OnInit {
             formula_description: formulaData.formula_description || '',
             formula_status: formulaData.formula_status || '',
             product_origin: formulaData.product_origin || 'I',
-            product_type: formulaData.product_type || '',
-            classification: formulaData.classification || '',
             submission_id: formulaData.submission_id || '',
             formula_id: formulaData.formula_id || '',
             client_name: formulaData.client_name || '',
             client_id: this.getDropDownArrayByIds(this.filtersList?.client_id, formulaData.client_id, 'client_id'),
+            product_type: this.getDropDownArrayByIds(this.filtersList?.product_type, formulaData.product_type, 'product_type'),
+            classification: this.getDropDownArrayByIds(this.filtersList?.classification, formulaData.classification, 'classification'),
+            sample_received: this.getDropDownArrayByIds(this.filtersList?.sample_received, formulaData.sample_received, 'sample_received'),
             type: this.getDropDownArrayByIds(this.filtersList?.types, formulaData.type, 'type'),
             category: this.getDropDownArrayByIds(this.filtersList?.categories, formulaData.category, 'category'),
             status: formulaData.status || '',
@@ -370,7 +371,6 @@ export class FormulaCrudComponent implements OnInit {
             total_batch_size: formulaData.total_batch_size || '',
             batch_size_unit_of_measure: formulaData.batch_size_unit_of_measure || '',
             notes: formulaData.notes || '',
-            sample_received: formulaData.sample_received || '',
             date_submitted: formulaData.date_submitted || '',
             formula_loi_id: formulaData?.formula_loi_id || [],
             formula_fids_id: formulaData?.formula_fids_id || [],
@@ -380,7 +380,19 @@ export class FormulaCrudComponent implements OnInit {
             date_expired: formulaData.date_expired || '',
             no_expiration_date: formulaData.no_expiration_date || false,
         };
+        const setClientValue=(fieldName, value) => {
+            if (!value) return;
 
+            const options = this.filtersList[fieldName] || [];
+            const selectedOption = options.find(opt => opt.quickbooks_id === value);
+
+            if (selectedOption) {
+                this.sellectedData[fieldName] = [selectedOption];
+                this.formulaForm.get(fieldName)?.setValue(value);
+            }
+        };
+
+        setClientValue('client_id', formulaData.client_id);
         const setDropdownValue = (fieldName, value) => {
             if (!value) return;
 
@@ -394,7 +406,7 @@ export class FormulaCrudComponent implements OnInit {
         };
 
         setDropdownValue('client_id', formulaData.client_id);
-        setDropdownValue('formula_status', formulaData.formula_status);
+        setDropdownValue('formula_status', formulaData.formula_status_id);
         setDropdownValue('product_type', formulaData.product_type);
         setDropdownValue('classification', formulaData.classification);
         setDropdownValue('sample_received', formulaData.sample_received);
@@ -526,11 +538,11 @@ export class FormulaCrudComponent implements OnInit {
                                 const formulaId = response.id;
                                 this.commonService.showToastV2Message(
                                     true,
-                                    this.edit ? 'Formula edited successfully!' : response.msg,
+                                    this.edit ? 'Saved Successfully' : 'Saved Successfully',
                                     'fas fa-check-circle',
                                     'success'
                                 );
-                                this.router.navigateByUrl(`/formula/${formulaId}`);
+                                this.router.navigateByUrl(`/formula`);
                             } else {
                                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
                                 this.router.navigateByUrl(`/formula`);
@@ -549,11 +561,11 @@ export class FormulaCrudComponent implements OnInit {
                                 const formulaId = response.id;
                                 this.commonService.showToastV2Message(
                                     true,
-                                    this.edit ? 'Formula edited successfully!' : response.msg,
+                                    this.edit ? 'Saved Successfully' : 'Saved Successfully',
                                     'fas fa-check-circle',
                                     'success'
                                 );
-                                this.router.navigateByUrl(`/formula/${formulaId}`);
+                                this.router.navigateByUrl(`/formula`);
                             } else {
                                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
                                 this.router.navigateByUrl(`/formula`);
