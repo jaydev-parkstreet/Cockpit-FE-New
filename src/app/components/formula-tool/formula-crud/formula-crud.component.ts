@@ -144,6 +144,9 @@ export class FormulaCrudComponent implements OnInit {
             this.initialFormData = this.getCurrentFormDataSnapshot();
             this.initialFormData.product_origin = "I";
             this.commonService.hideSpinner();
+            this.formulaForm.patchValue({
+                product_origin: 'I'
+            });              
         }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
             this.commonService.hideSpinner();
@@ -408,15 +411,13 @@ export class FormulaCrudComponent implements OnInit {
         setDropdownValue('client_id', formulaData.client_id);
         setDropdownValue('formula_status', formulaData.formula_status_id);
         setDropdownValue('product_type', formulaData.product_type);
-        setDropdownValue('classification', formulaData.classification);
         setDropdownValue('sample_received', formulaData.sample_received);
         this.product_type_data = formulaData.product_type;
-
-
         this.formulaForm.patchValue(formData);
         this.formulaForm.updateValueAndValidity();
         this.updateSubmitButtonState();
         this.changeDetector.detectChanges();
+        this.fetchClassification(formulaData.classification);
     }
 
     getDropDownArrayByIds(list: any[], value: any, name: string) {
@@ -444,13 +445,29 @@ export class FormulaCrudComponent implements OnInit {
      * @author PSI-VIII
      */
     updateSubmitButtonState(): void {
-        const formValid = this.formulaForm.valid;
+        const formValid = this.formulaForm.valid;     
+        const requiredFieldKeysRightSection = ['date_approved', 'date_expired'];
+        const requiredFieldsValidRightSection = requiredFieldKeysRightSection.every(key => {
+            const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
+            const control = this.formulaForm.get(key);
+            if (!field?.isRequired) return true;
+            return !!control?.value;
+        });
+        const requiredFieldKeysLeftSection = ['formula_description', 'product_origin'];
+        const requiredFieldsValidLeftSection = requiredFieldKeysLeftSection.every(key => {
+            const field = this.crudFieldConfig.leftSection.find(f => f.key === key);
+            const control = this.formulaForm.get(key);
+            if (!field?.isRequired) return true;
+            return !!control?.value;
+        });
+      
         const submitButton = this.crudFieldConfig?.btnLabel?.find(btn => btn.label === 'Submit');
         if (submitButton) {
-            submitButton.isDisable = !formValid;
-            this.changeDetector.detectChanges();
+          submitButton.isDisable = !(formValid && requiredFieldsValidRightSection && requiredFieldsValidLeftSection);
+          this.changeDetector.detectChanges();
         }
-    }
+      }    
+      
     onDateModelChange(event: any) {
         this.formulaForm.get(event.type)?.setValue(this.datePipe.transform(event.value, 'yyyy/MM/dd'));
     }
@@ -469,7 +486,6 @@ export class FormulaCrudComponent implements OnInit {
         } else {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.name);
         }
-        this.validateRequiredFields();
         switch (fieldName) {
             case 'product_type':
                 this.product_type_data = selectedValue[0].name;
@@ -481,17 +497,16 @@ export class FormulaCrudComponent implements OnInit {
                 }
                 break;
             case 'formula_status':
-                if (selectedValue[0].id === 2) {
-                    if (Array.isArray(this.crudFieldConfig.rightSection)) {
-                        const fieldsToUpdate = ['date_expired', 'date_approved', 'formula_approval_id'];
-                        fieldsToUpdate.forEach(fieldKey => {
-                            const field = this.crudFieldConfig.rightSection.find(f => f.key === fieldKey);
-                            if (field) {
-                                field.isRequired = true;
-                            }
-                        });
-                    }
+                const fieldsToUpdate = ['date_expired', 'date_approved', 'formula_approval_id'];
+                if (Array.isArray(this.crudFieldConfig.rightSection)) {
+                    fieldsToUpdate.forEach(fieldKey => {
+                        const field = this.crudFieldConfig.rightSection.find(f => f.key === fieldKey);
+                        if (field) {
+                            field.isRequired = selectedValue[0].id === 2;
+                        }
+                    });
                 }
+                this.updateSubmitButtonState();
                 break;
         }
     }
@@ -715,7 +730,13 @@ export class FormulaCrudComponent implements OnInit {
         }
     }
 
-    fetchClassification() {
+    /**
+     * The `fetchClassification` function in TypeScript fetches classification data based on a payload
+     * and updates the classification filter.
+     * @author PSI-VIII
+     * @param {any} [selectedClassification] 
+     */
+    fetchClassification(selectedClassification?: any) {
         const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
             this.formulaForm.value,
             this.filtersList,
@@ -730,7 +751,6 @@ export class FormulaCrudComponent implements OnInit {
             product_origin,
             product_type: this.product_type_data
         }
-
         this.FormulaCrudService.getClassification(payload).subscribe(response => {
             this.classification = response.data;
             if (this.classification && this.classification.length > 0) {
@@ -738,6 +758,13 @@ export class FormulaCrudComponent implements OnInit {
                 this.changeDetector.detectChanges();
             }
             this.updateClassificationFilter();
+            if (selectedClassification) {
+                const selectedOption = this.classification.find(opt => opt.id === selectedClassification);
+                if (selectedOption) {
+                    this.sellectedData['classification'] = [selectedOption];
+                    this.formulaForm.get('classification')?.setValue(selectedClassification);
+                }
+            }
         });
     }
 
@@ -866,23 +893,4 @@ export class FormulaCrudComponent implements OnInit {
             }
         }
     }
-
-    /**
-     * The function `validateRequiredFields` checks if certain fields are filled in and
-     * enables/disables a submit button accordingly.
-     * @author PSI-VIII
-     * @return void
-     */
-    validateRequiredFields() {
-        const requiredKeys = ['date_approved', 'date_expired'];
-        const isValid = requiredKeys.every(key => {
-            const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
-            return field && field.value;
-        });
-        const submitBtn = this.crudFieldConfig.btnLabel.find(btn => btn.label === 'Submit');
-        if (submitBtn) {
-            submitBtn.isDisable = !isValid;
-        }
-    }
-
 }
