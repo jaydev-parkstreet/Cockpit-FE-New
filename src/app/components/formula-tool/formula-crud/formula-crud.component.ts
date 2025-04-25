@@ -342,6 +342,106 @@ export class FormulaCrudComponent implements OnInit {
      * @author PSI-VIII
      * @param formulaData The formula data to prefill
      */
+    // prefillForm(formulaData: any): void {
+    //     if (!this.formulaForm || Object.keys(this.formulaForm.controls).length === 0) {
+    //         console.warn('Form not ready for prefilling, will retry');
+    //         setTimeout(() => this.prefillForm(formulaData), 100);
+    //         return;
+    //     }
+    //     console.log('Prefilling form with data:', formulaData); 
+    //     const updatedConfig = JSON.parse(JSON.stringify(this.crudFieldConfig));
+    //     const formData = {
+    //         name: formulaData.name || '',
+    //         description: formulaData.description || '',
+    //         formula_description: formulaData.formula_description || '',
+    //         formula_status: formulaData.formula_status || '',
+    //         product_origin: formulaData.product_origin || 'I',
+    //         submission_id: formulaData.submission_id || '',
+    //         formula_id: formulaData.formula_id || '',
+    //         client_name: formulaData.client_name || '',
+    //         client_id: this.getDropDownArrayByIds(this.filtersList?.client_id, formulaData.client_id, 'client_id'),
+    //         product_type: this.getDropDownArrayByIds(this.filtersList?.product_type, formulaData.product_type, 'product_type'),
+    //         classification: this.getDropDownArrayByIds(this.filtersList?.classification, formulaData.classification, 'classification'),
+    //         sample_received: this.getDropDownArrayByIds(this.filtersList?.sample_received, formulaData.sample_received, 'sample_received'),
+    //         type: this.getDropDownArrayByIds(this.filtersList?.types, formulaData.type, 'type'),
+    //         category: this.getDropDownArrayByIds(this.filtersList?.categories, formulaData.category, 'category'),
+    //         status: formulaData.status || '',
+    //         date_requested: formulaData.date_requested || '',
+    //         commodity_statement: formulaData.commodity_statement || '',
+    //         commodity_statement_request: formulaData.commodity_statement_request || '',
+    //         total_batch_size: formulaData.total_batch_size || '',
+    //         batch_size_unit_of_measure: formulaData.batch_size_unit_of_measure || '',
+    //         notes: formulaData.notes || '',
+    //         date_submitted: formulaData.date_submitted || '',
+    //         formula_loi_id: formulaData?.formula_loi_id || [],
+    //         formula_fids_id: formulaData?.formula_fids_id || [],
+    //         formula_mom_id: formulaData?.formula_mom_id || [],
+    //         formula_approval_id: formulaData?.formula_approval_id || [],
+    //         date_approved: formulaData.date_approved || '',
+    //         date_expired: formulaData.date_expired || '',
+    //         no_expiration_date: formulaData.no_expiration_date || false,
+    //     };
+    //     const productOriginField = updatedConfig.leftSection.find(field => field.key === 'product_origin');
+    //     if (productOriginField) {
+    //         productOriginField.value = null; // Clear the default value
+    //     }
+    //     this.crudFieldConfig = updatedConfig;
+    //     setTimeout(() => {
+    //         if (formulaData.product_origin) {
+    //             console.log('Setting product_origin to:', formulaData.product_origin);
+    //             this.formulaForm.get('product_origin')?.setValue(formulaData.product_origin);
+    //             this.formulaForm.get('product_origin')?.markAsDirty();
+    //         }
+    //         this.changeDetector.detectChanges();
+    //     }, 100);
+        
+    //     // Rest of your existing prefillForm code...
+    //     // Set all simple form values
+    //     Object.keys(this.formulaForm.controls).forEach(controlName => {
+    //         if (formulaData[controlName] !== undefined && formulaData[controlName] !== null) {
+    //             console.log(`Setting ${controlName} to:`, formulaData[controlName]);
+    //             this.formulaForm.get(controlName)?.setValue(formulaData[controlName]);
+    //         }
+    //     });
+        
+    //     const setClientValue=(fieldName, value) => {
+    //         if (!value) return;
+
+    //         const options = this.filtersList[fieldName] || [];
+    //         const selectedOption = options.find(opt => opt.quickbooks_id === value);
+
+    //         if (selectedOption) {
+    //             this.sellectedData[fieldName] = [selectedOption];
+    //             this.formulaForm.get(fieldName)?.setValue(value);
+    //         }
+    //     };
+
+    //     setClientValue('client_id', formulaData.client_id);
+    //     const setDropdownValue = (fieldName, value) => {
+    //         if (!value) return;
+
+    //         const options = this.filtersList[fieldName] || [];
+    //         const selectedOption = options.find(opt => opt.id === value);
+
+    //         if (selectedOption) {
+    //             this.sellectedData[fieldName] = [selectedOption];
+    //             this.formulaForm.get(fieldName)?.setValue(value);
+    //         }
+    //     };
+
+    //     setDropdownValue('client_id', formulaData.client_id);
+    //     setDropdownValue('formula_status', formulaData.formula_status_id);
+    //     setDropdownValue('product_type', formulaData.product_type);
+    //     setDropdownValue('classification', formulaData.classification);
+    //     setDropdownValue('sample_received', formulaData.sample_received);
+    //     this.product_type_data = formulaData.product_type;
+
+
+    //     this.formulaForm.patchValue(formData);
+    //     this.formulaForm.updateValueAndValidity();
+    //     this.updateSubmitButtonState();
+    //     this.changeDetector.detectChanges();
+    // }
     prefillForm(formulaData: any): void {
         if (!this.formulaForm || Object.keys(this.formulaForm.controls).length === 0) {
             console.warn('Form not ready for prefilling, will retry');
@@ -408,15 +508,13 @@ export class FormulaCrudComponent implements OnInit {
         setDropdownValue('client_id', formulaData.client_id);
         setDropdownValue('formula_status', formulaData.formula_status_id);
         setDropdownValue('product_type', formulaData.product_type);
-        setDropdownValue('classification', formulaData.classification);
         setDropdownValue('sample_received', formulaData.sample_received);
         this.product_type_data = formulaData.product_type;
-
-
         this.formulaForm.patchValue(formData);
         this.formulaForm.updateValueAndValidity();
         this.updateSubmitButtonState();
         this.changeDetector.detectChanges();
+        this.fetchClassification(formulaData.classification);
     }
 
     getDropDownArrayByIds(list: any[], value: any, name: string) {
@@ -715,7 +813,32 @@ export class FormulaCrudComponent implements OnInit {
         }
     }
 
-    fetchClassification() {
+    // fetchClassification() {
+    //     const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
+    //         this.formulaForm.value,
+    //         this.filtersList,
+    //         this.edit,
+    //         this.duplicate,
+    //         this.formulaId
+    //     );
+    //     const product_origin = formattedModel.product_origin?.trim()
+    //         ? formattedModel.product_origin
+    //         : this.initialFormData.product_origin;
+    //     let payload = {
+    //         product_origin,
+    //         product_type: this.product_type_data
+    //     }
+
+    //     this.FormulaCrudService.getClassification(payload).subscribe(response => {
+    //         this.classification = response.data;
+    //         if (this.classification && this.classification.length > 0) {
+    //             this.filtersList['classification'] = this.classification;
+    //             this.changeDetector.detectChanges();
+    //         }
+    //         this.updateClassificationFilter();
+    //     });
+    // }
+    fetchClassification(selectedClassification?: any) {
         const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
             this.formulaForm.value,
             this.filtersList,
@@ -738,6 +861,13 @@ export class FormulaCrudComponent implements OnInit {
                 this.changeDetector.detectChanges();
             }
             this.updateClassificationFilter();
+            if (selectedClassification) {
+                const selectedOption = this.classification.find(opt => opt.id === selectedClassification);
+                if (selectedOption) {
+                    this.sellectedData['classification'] = [selectedOption];
+                    this.formulaForm.get('classification')?.setValue(selectedClassification);
+                }
+            }
         });
     }
 

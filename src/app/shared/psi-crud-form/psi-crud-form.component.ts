@@ -192,4 +192,13 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
             }
         }
     }
+    /**
+     * Function to call on date change.
+     * @param fieldName
+     * @param event
+     * @author PSI-Enhancements
+     */
+    onDateChangedInForm(fieldName: string, event: { type: string; value: Date | null }) {
+        this.form.get(fieldName)?.setValue(event.value);
+    }
 }
