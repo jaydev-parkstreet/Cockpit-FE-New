@@ -81,7 +81,7 @@ export class FormulaCrudComponent implements OnInit {
 
         if (formulaId) {
             this.edit = true;
-            this.isEditMode=true
+            this.isEditMode = true
             this.getFormulaData(formulaId);
         } else {
             this.edit = false;
@@ -149,7 +149,7 @@ export class FormulaCrudComponent implements OnInit {
             this.commonService.hideSpinner();
             this.formulaForm.patchValue({
                 product_origin: 'I'
-            });              
+            });
         }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
             this.commonService.hideSpinner();
@@ -230,7 +230,7 @@ export class FormulaCrudComponent implements OnInit {
             this.commonService.hideSpinner();
             if (!response.hasError) {
                 this.formulaId = response.data.id;
-                this.entityuploads = response.data.entity_uploads || [];             
+                this.entityuploads = response.data.entity_uploads || [];
 
                 if (this.formInitialized) {
                     if (this.duplicate) {
@@ -387,7 +387,7 @@ export class FormulaCrudComponent implements OnInit {
             date_expired: formulaData.date_expired || '',
             no_expiration_date: formulaData.no_expiration_date || false,
         };
-        const setClientValue=(fieldName, value) => {
+        const setClientValue = (fieldName, value) => {
             if (!value) return;
 
             const options = this.filtersList[fieldName] || [];
@@ -416,19 +416,19 @@ export class FormulaCrudComponent implements OnInit {
             formula_fids_id: this.filtersList.entity_kinds[1].id,
             formula_mom_id: this.filtersList.entity_kinds[2].id,
             formula_approval_id: this.filtersList.entity_kinds[0].id
-          };
-          
-          if (this.isEditMode && Array.isArray(this.entityuploads) && this.entityuploads.length > 0) {
+        };
+
+        if (this.isEditMode && Array.isArray(this.entityuploads) && this.entityuploads.length > 0) {
             this.crudFieldConfig.rightSection.forEach(field => {
-              if (field.type === 'upload-attachment' && entityKindMap[field.name]) {
-                const matchingFiles = this.entityuploads.filter(upload => upload.entity_kind === entityKindMap[field.name]);
-                if (matchingFiles.length > 0) {
-                  field.selectedFileUrls = matchingFiles;
-                  field['isEditMode'] = true;
+                if (field.type === 'upload-attachment' && entityKindMap[field.name]) {
+                    const matchingFiles = this.entityuploads.filter(upload => upload.entity_kind === entityKindMap[field.name]);
+                    if (matchingFiles.length > 0) {
+                        field.selectedFileUrls = matchingFiles;
+                        field['isEditMode'] = true;
+                    }
                 }
-              }
             });
-          }
+        }
 
         setDropdownValue('client_id', formulaData.client_id);
         setDropdownValue('formula_status', formulaData.formula_status_id);
@@ -467,14 +467,21 @@ export class FormulaCrudComponent implements OnInit {
      * @author PSI-VIII
      */
     updateSubmitButtonState(): void {
-        const formValid = this.formulaForm.valid;     
+        const formValid = this.formulaForm.valid;
         const requiredFieldKeysRightSection = ['date_approved', 'date_expired'];
         const requiredFieldsValidRightSection = requiredFieldKeysRightSection.every(key => {
             const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
             const control = this.formulaForm.get(key);
+
+            // Skip date_expired validation if no_expiration_date is checked
+            if (key === 'date_expired' && this.form.get('no_expiration_date')?.value === '1') {
+                return true;
+            }
+
             if (!field?.isRequired) return true;
             return !!control?.value;
         });
+
         const requiredFieldKeysLeftSection = ['formula_description', 'product_origin'];
         const requiredFieldsValidLeftSection = requiredFieldKeysLeftSection.every(key => {
             const field = this.crudFieldConfig.leftSection.find(f => f.key === key);
@@ -482,14 +489,14 @@ export class FormulaCrudComponent implements OnInit {
             if (!field?.isRequired) return true;
             return !!control?.value;
         });
-      
+
         const submitButton = this.crudFieldConfig?.btnLabel?.find(btn => btn.label === 'Submit');
         if (submitButton) {
-          submitButton.isDisable = !(formValid && requiredFieldsValidRightSection && requiredFieldsValidLeftSection);
-          this.changeDetector.detectChanges();
+            submitButton.isDisable = !(formValid && requiredFieldsValidRightSection && requiredFieldsValidLeftSection);
+            this.changeDetector.detectChanges();
         }
-      }    
-      
+    }
+
     onDateModelChange(event: any) {
         this.formulaForm.get(event.type)?.setValue(this.datePipe.transform(event.value, 'yyyy/MM/dd'));
     }
@@ -901,20 +908,30 @@ export class FormulaCrudComponent implements OnInit {
         }
 
         if (field === 'no_expiration_date') {
-            const dateExpiredControl = this.form.get('date_expired');
+            const dateExpiredControl = this.formulaForm.get('date_expired');
             if (dateExpiredControl) {
-                this.formulaForm.get('date_expired')?.setValue(null);
                 dateExpiredControl.setValue(null);
                 isChecked ? dateExpiredControl.disable() : dateExpiredControl.enable();
-            }
 
+                const formulaStatus = this.formulaForm.get('formula_status')?.value;
+                const isApproved = formulaStatus === '2';
+
+                if (isChecked) {
+                    dateExpiredControl.clearValidators();
+                } else if (isApproved) {
+                    dateExpiredControl.setValidators([Validators.required]);
+                }
+                dateExpiredControl.updateValueAndValidity();
+            }
             if (Array.isArray(this.crudFieldConfig.rightSection)) {
                 const dateExpiredField = this.crudFieldConfig.rightSection.find(f => f.key === 'date_expired');
                 if (dateExpiredField) {
-                    this.formulaForm.value.date_expired = '';
                     dateExpiredField.isDisabled = isChecked;
+                    const formulaStatus = this.formulaForm.get('formula_status')?.value;
+                    dateExpiredField.isRequired = !isChecked && formulaStatus === '2';
                 }
             }
+            this.updateSubmitButtonState();
         }
     }
 }
