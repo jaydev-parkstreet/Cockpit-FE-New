@@ -46,6 +46,8 @@ export class FormulaCrudComponent implements OnInit {
     selectedFilesMap: { [key: string]: File[] } = {};
     entities: string[] = [];
     form: FormGroup;
+    isEditMode: any;
+    entityuploads: any;
 
     constructor(
         private FormulaService: FormulaService,
@@ -79,6 +81,7 @@ export class FormulaCrudComponent implements OnInit {
 
         if (formulaId) {
             this.edit = true;
+            this.isEditMode=true
             this.getFormulaData(formulaId);
         } else {
             this.edit = false;
@@ -144,6 +147,9 @@ export class FormulaCrudComponent implements OnInit {
             this.initialFormData = this.getCurrentFormDataSnapshot();
             this.initialFormData.product_origin = "I";
             this.commonService.hideSpinner();
+            this.formulaForm.patchValue({
+                product_origin: 'I'
+            });              
         }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
             this.commonService.hideSpinner();
@@ -223,11 +229,12 @@ export class FormulaCrudComponent implements OnInit {
         this.FormulaService.getDetails(formulaId).then((response: any) => {
             this.commonService.hideSpinner();
             if (!response.hasError) {
-                this.formulaId = response.data.formula_id;
+                this.formulaId = response.data.id;
+                this.entityuploads = response.data.entity_uploads || [];             
 
                 if (this.formInitialized) {
                     if (this.duplicate) {
-                        delete response.data.formula_id;
+                        delete response.data.id;
                     }
                     this.prefillForm(response.data);
                 } else {
@@ -236,7 +243,7 @@ export class FormulaCrudComponent implements OnInit {
                         if (this.formInitialized) {
                             clearInterval(checkInterval);
                             if (this.duplicate) {
-                                delete response.data.formula_id;
+                                delete response.data.id;
                             }
                             this.prefillForm(response.data);
                         }
@@ -504,6 +511,24 @@ export class FormulaCrudComponent implements OnInit {
                 this.formulaForm.get(fieldName)?.setValue(value);
             }
         };
+        const entityKindMap = {
+            formula_loi_id: this.filtersList.entity_kinds[3].id,
+            formula_fids_id: this.filtersList.entity_kinds[1].id,
+            formula_mom_id: this.filtersList.entity_kinds[2].id,
+            formula_approval_id: this.filtersList.entity_kinds[0].id
+          };
+          
+          if (this.isEditMode && Array.isArray(this.entityuploads) && this.entityuploads.length > 0) {
+            this.crudFieldConfig.rightSection.forEach(field => {
+              if (field.type === 'upload-attachment' && entityKindMap[field.name]) {
+                const matchingFiles = this.entityuploads.filter(upload => upload.entity_kind === entityKindMap[field.name]);
+                if (matchingFiles.length > 0) {
+                  field.selectedFileUrls = matchingFiles;
+                  field['isEditMode'] = true;
+                }
+              }
+            });
+          }
 
         setDropdownValue('client_id', formulaData.client_id);
         setDropdownValue('formula_status', formulaData.formula_status_id);
@@ -542,13 +567,29 @@ export class FormulaCrudComponent implements OnInit {
      * @author PSI-VIII
      */
     updateSubmitButtonState(): void {
-        const formValid = this.formulaForm.valid;
+        const formValid = this.formulaForm.valid;     
+        const requiredFieldKeysRightSection = ['date_approved', 'date_expired'];
+        const requiredFieldsValidRightSection = requiredFieldKeysRightSection.every(key => {
+            const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
+            const control = this.formulaForm.get(key);
+            if (!field?.isRequired) return true;
+            return !!control?.value;
+        });
+        const requiredFieldKeysLeftSection = ['formula_description', 'product_origin'];
+        const requiredFieldsValidLeftSection = requiredFieldKeysLeftSection.every(key => {
+            const field = this.crudFieldConfig.leftSection.find(f => f.key === key);
+            const control = this.formulaForm.get(key);
+            if (!field?.isRequired) return true;
+            return !!control?.value;
+        });
+      
         const submitButton = this.crudFieldConfig?.btnLabel?.find(btn => btn.label === 'Submit');
         if (submitButton) {
-            submitButton.isDisable = !formValid;
-            this.changeDetector.detectChanges();
+          submitButton.isDisable = !(formValid && requiredFieldsValidRightSection && requiredFieldsValidLeftSection);
+          this.changeDetector.detectChanges();
         }
-    }
+      }    
+      
     onDateModelChange(event: any) {
         this.formulaForm.get(event.type)?.setValue(this.datePipe.transform(event.value, 'yyyy/MM/dd'));
     }
@@ -567,7 +608,6 @@ export class FormulaCrudComponent implements OnInit {
         } else {
             this.formulaForm.get(fieldName)?.setValue(selectedValue[0]?.name);
         }
-        this.validateRequiredFields();
         switch (fieldName) {
             case 'product_type':
                 this.product_type_data = selectedValue[0].name;
@@ -579,17 +619,16 @@ export class FormulaCrudComponent implements OnInit {
                 }
                 break;
             case 'formula_status':
-                if (selectedValue[0].id === 2) {
-                    if (Array.isArray(this.crudFieldConfig.rightSection)) {
-                        const fieldsToUpdate = ['date_expired', 'date_approved', 'formula_approval_id'];
-                        fieldsToUpdate.forEach(fieldKey => {
-                            const field = this.crudFieldConfig.rightSection.find(f => f.key === fieldKey);
-                            if (field) {
-                                field.isRequired = true;
-                            }
-                        });
-                    }
+                const fieldsToUpdate = ['date_expired', 'date_approved', 'formula_approval_id'];
+                if (Array.isArray(this.crudFieldConfig.rightSection)) {
+                    fieldsToUpdate.forEach(fieldKey => {
+                        const field = this.crudFieldConfig.rightSection.find(f => f.key === fieldKey);
+                        if (field) {
+                            field.isRequired = selectedValue[0].id === 2;
+                        }
+                    });
                 }
+                this.updateSubmitButtonState();
                 break;
         }
     }
@@ -813,31 +852,12 @@ export class FormulaCrudComponent implements OnInit {
         }
     }
 
-    // fetchClassification() {
-    //     const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
-    //         this.formulaForm.value,
-    //         this.filtersList,
-    //         this.edit,
-    //         this.duplicate,
-    //         this.formulaId
-    //     );
-    //     const product_origin = formattedModel.product_origin?.trim()
-    //         ? formattedModel.product_origin
-    //         : this.initialFormData.product_origin;
-    //     let payload = {
-    //         product_origin,
-    //         product_type: this.product_type_data
-    //     }
-
-    //     this.FormulaCrudService.getClassification(payload).subscribe(response => {
-    //         this.classification = response.data;
-    //         if (this.classification && this.classification.length > 0) {
-    //             this.filtersList['classification'] = this.classification;
-    //             this.changeDetector.detectChanges();
-    //         }
-    //         this.updateClassificationFilter();
-    //     });
-    // }
+    /**
+     * The `fetchClassification` function in TypeScript fetches classification data based on a payload
+     * and updates the classification filter.
+     * @author PSI-VIII
+     * @param {any} [selectedClassification] 
+     */
     fetchClassification(selectedClassification?: any) {
         const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
             this.formulaForm.value,
@@ -853,7 +873,6 @@ export class FormulaCrudComponent implements OnInit {
             product_origin,
             product_type: this.product_type_data
         }
-
         this.FormulaCrudService.getClassification(payload).subscribe(response => {
             this.classification = response.data;
             if (this.classification && this.classification.length > 0) {
@@ -937,6 +956,8 @@ export class FormulaCrudComponent implements OnInit {
             kindId = this.filtersList.entity_kinds[3].id;
         } else if (type === 'Mmdoc') {
             kindId = this.filtersList.entity_kinds[2].id;
+        } else if (type === 'Appdoc') {
+            kindId = this.filtersList.entity_kinds[0].id;
         }
 
         this.commonBackendService.getAttachments(entity, tool_id).subscribe((response: any) => {
@@ -996,23 +1017,4 @@ export class FormulaCrudComponent implements OnInit {
             }
         }
     }
-
-    /**
-     * The function `validateRequiredFields` checks if certain fields are filled in and
-     * enables/disables a submit button accordingly.
-     * @author PSI-VIII
-     * @return void
-     */
-    validateRequiredFields() {
-        const requiredKeys = ['date_approved', 'date_expired'];
-        const isValid = requiredKeys.every(key => {
-            const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
-            return field && field.value;
-        });
-        const submitBtn = this.crudFieldConfig.btnLabel.find(btn => btn.label === 'Submit');
-        if (submitBtn) {
-            submitBtn.isDisable = !isValid;
-        }
-    }
-
 }
