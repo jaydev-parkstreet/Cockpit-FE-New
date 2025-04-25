@@ -412,10 +412,10 @@ export class FormulaCrudComponent implements OnInit {
             }
         };
         const entityKindMap = {
-            formula_loi_id: 195,
-            formula_fids_id: 193,
-            formula_mom_id: 194,
-            formula_approval_id: 192
+            formula_loi_id: this.filtersList.entity_kinds[3].id,
+            formula_fids_id: this.filtersList.entity_kinds[1].id,
+            formula_mom_id: this.filtersList.entity_kinds[2].id,
+            formula_approval_id: this.filtersList.entity_kinds[0].id
           };
           
           if (this.isEditMode && Array.isArray(this.entityuploads) && this.entityuploads.length > 0) {
@@ -856,6 +856,8 @@ export class FormulaCrudComponent implements OnInit {
             kindId = this.filtersList.entity_kinds[3].id;
         } else if (type === 'Mmdoc') {
             kindId = this.filtersList.entity_kinds[2].id;
+        } else if (type === 'Appdoc') {
+            kindId = this.filtersList.entity_kinds[0].id;
         }
 
         this.commonBackendService.getAttachments(entity, tool_id).subscribe((response: any) => {
