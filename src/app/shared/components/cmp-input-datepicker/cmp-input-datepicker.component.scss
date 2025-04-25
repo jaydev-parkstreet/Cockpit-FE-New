@@ -76,7 +76,7 @@
     
         .bs-datepicker-container {
             padding: 12px;        
-    
+            
             .bs-datepicker-head {
                 height: 32px;
                 padding: 0 0 8px 0;
@@ -138,6 +138,9 @@
                 min-height: 212px;
     
                 table {
+                    .week {
+                        display: none;
+                    }
                     th {
                         height: 32px;
                         font-size: 12px;
@@ -145,6 +148,10 @@
                         color: $colors-neutral-black;
                         line-height: 16px;
                         letter-spacing: 0.5px;
+
+                        &:first-child {
+                            display: none;
+                        }
                     }
     
                     td {

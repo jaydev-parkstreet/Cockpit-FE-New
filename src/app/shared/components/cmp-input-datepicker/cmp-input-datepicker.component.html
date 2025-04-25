@@ -5,7 +5,7 @@
         </div>
         <div class="datepicker-container u-flex u-align-center u-justify-between u-relative">
             <input class="u-w-100 form-control" type="text" [ngClass]="validationClasses"  bsDatepicker #dp="bsDatepicker"
-            [placeholder]="calculatedPlaceholder" [(ngModel)]="selectedDate"
+            [placeholder]="calculatedPlaceholder" [(ngModel)]="dateModel"
                 (bsValueChange)="onDateChange($event)"
                 [bsConfig]="{containerClass: 'theme-default custom-datepicker-theme', adaptivePosition : true}"
                 [disabled]="fieldConfig?.isDisabled"
