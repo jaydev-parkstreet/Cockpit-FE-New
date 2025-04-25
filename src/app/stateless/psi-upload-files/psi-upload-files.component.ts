@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { CommonBackendService } from 'src/app/core/services/common-backend-service.service';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
     selector: 'app-psi-upload-files',
@@ -13,8 +15,14 @@ export class PsiUploadFilesComponent implements OnInit {
     selectedFileCount: number;
     selectedFiles: File[] = [];
     errorMessage: string = '';
+    @Input() isEditMode: boolean = false;
+    @Input() selectedFileUrls: any[] = [];
 
-    constructor() { }
+
+    constructor(
+        private commonBackendService: CommonBackendService,
+        private commonService: CommonService
+    ) { }
 
     ngOnInit(): void {
     }
@@ -179,5 +187,25 @@ export class PsiUploadFilesComponent implements OnInit {
     clearAttachment() {
       this.selectedFiles  = [];
       this.changeFileUpload.emit(this.selectedFiles);
+    }
+
+    /**
+     * The onDeleteUploadFile function deletes an upload file and displays a success or error message
+     * accordingly.
+     * @author PSI-VIII
+     * @param {any} file 
+     */
+    onDeleteUploadFile(file: any) {
+        this.commonBackendService.deleteUploadFile(file.id)
+            .subscribe((response: any) => {
+                if (response.hasError) {
+                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
+                } else {
+                    this.selectedFileUrls = this.selectedFileUrls.filter(f => f.id !== file.id);
+                    this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
+                }
+            }, (error) => {
+                this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+            });
     }
 }

@@ -46,6 +46,8 @@ export class FormulaCrudComponent implements OnInit {
     selectedFilesMap: { [key: string]: File[] } = {};
     entities: string[] = [];
     form: FormGroup;
+    isEditMode: any;
+    entityuploads: any;
 
     constructor(
         private FormulaService: FormulaService,
@@ -79,6 +81,7 @@ export class FormulaCrudComponent implements OnInit {
 
         if (formulaId) {
             this.edit = true;
+            this.isEditMode=true
             this.getFormulaData(formulaId);
         } else {
             this.edit = false;
@@ -226,11 +229,12 @@ export class FormulaCrudComponent implements OnInit {
         this.FormulaService.getDetails(formulaId).then((response: any) => {
             this.commonService.hideSpinner();
             if (!response.hasError) {
-                this.formulaId = response.data.formula_id;
+                this.formulaId = response.data.id;
+                this.entityuploads = response.data.entity_uploads || [];             
 
                 if (this.formInitialized) {
                     if (this.duplicate) {
-                        delete response.data.formula_id;
+                        delete response.data.id;
                     }
                     this.prefillForm(response.data);
                 } else {
@@ -239,7 +243,7 @@ export class FormulaCrudComponent implements OnInit {
                         if (this.formInitialized) {
                             clearInterval(checkInterval);
                             if (this.duplicate) {
-                                delete response.data.formula_id;
+                                delete response.data.id;
                             }
                             this.prefillForm(response.data);
                         }
@@ -407,6 +411,24 @@ export class FormulaCrudComponent implements OnInit {
                 this.formulaForm.get(fieldName)?.setValue(value);
             }
         };
+        const entityKindMap = {
+            formula_loi_id: 195,
+            formula_fids_id: 193,
+            formula_mom_id: 194,
+            formula_approval_id: 192
+          };
+          
+          if (this.isEditMode && Array.isArray(this.entityuploads) && this.entityuploads.length > 0) {
+            this.crudFieldConfig.rightSection.forEach(field => {
+              if (field.type === 'upload-attachment' && entityKindMap[field.name]) {
+                const matchingFiles = this.entityuploads.filter(upload => upload.entity_kind === entityKindMap[field.name]);
+                if (matchingFiles.length > 0) {
+                  field.selectedFileUrls = matchingFiles;
+                  field['isEditMode'] = true;
+                }
+              }
+            });
+          }
 
         setDropdownValue('client_id', formulaData.client_id);
         setDropdownValue('formula_status', formulaData.formula_status_id);
