@@ -282,7 +282,8 @@ export class FormulaCrudService {
                     isDisabled: false,
                     Placeholder: 'Select List of ingredients Document(s)',
                     isShowUploader: true,
-                    isFileUpload: true
+                    isFileUpload: true,
+                    isEditMode:false,
                 },
                 {
                     key: 'formula_fids_id',
@@ -294,7 +295,8 @@ export class FormulaCrudService {
                     isDisabled: false,
                     Placeholder: 'Select List of ingredients Document(s)',
                     isShowUploader: true,
-                    isFileUpload: true
+                    isFileUpload: true,
+                    isEditMode:false,
                 },
                 {
                     key: 'formula_mom_id',
@@ -306,7 +308,8 @@ export class FormulaCrudService {
                     isDisabled: false,
                     Placeholder: 'Select List of ingredients Document(s)',
                     isShowUploader: true,
-                    isFileUpload: true
+                    isFileUpload: true,
+                    isEditMode:false,
                 },
                 {
                     key: 'formula_approval_id',
@@ -318,7 +321,8 @@ export class FormulaCrudService {
                     isDisabled: false,
                     Placeholder: 'Select List of ingredients Document(s)',
                     isShowUploader: true,
-                    isFileUpload: true
+                    isFileUpload: true,
+                    isEditMode:false,
                 },
                 {
                     key: 'date_approved',
