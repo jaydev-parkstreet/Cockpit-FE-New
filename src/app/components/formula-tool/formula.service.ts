@@ -240,7 +240,7 @@ export class FormulaService {
      */   
     renderStatus(params: any): string {
         const statusLabels: Record<string, string> = {
-          'Approved': 'u-bg-success',
+          'Approved': 'u-bg-success-lite',
           'Rejected': 'u-bg-error',
           'Needs Action - Waiting on Supplier': 'u-bg-warning text-ellipsis',
           'Request Received': 'u-bg-neutral-light',
@@ -249,7 +249,7 @@ export class FormulaService {
           'Ready for Submission': 'yellow text-ellipsis',
           'Cancelled': 'u-bg-neutral-light',
           'Under Review': 'u-bg-error-medium',
-          'Filed': 'u-bg-neutral-light'
+          'Filed': 'u-bg-filed'
         };
       
         const value = params.value || '--';
