@@ -523,6 +523,13 @@ export class FormulaCrudComponent implements OnInit {
             case 'classification':
                 if (selectedValue[0].formula_required === 'N') {
                     this.openClassificationPopup();
+                    const submitButton = this.crudFieldConfig?.btnLabel?.find(btn => btn.label === 'Submit');
+                    if (submitButton) {
+                        submitButton.isDisable = true;
+                        this.changeDetector.detectChanges();
+                    } else {
+                        this.updateSubmitButtonState();
+                    }
                 }
                 break;
             case 'formula_status':
