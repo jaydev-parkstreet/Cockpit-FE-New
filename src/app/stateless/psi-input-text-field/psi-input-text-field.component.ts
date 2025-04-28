@@ -11,7 +11,7 @@ export class PsiInputTextFieldComponent implements OnInit {
   @Input() valueEntered: any;
   @Output() valueChanged: EventEmitter<string> = new EventEmitter<string>();
   @Output() inputValueChange: EventEmitter<string> = new EventEmitter<string>();
-
+  showTooltip = false;
   constructor() { }
 
   ngOnInit(): void {

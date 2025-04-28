@@ -111,7 +111,9 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: true,
                     isDisabled: false,
-                    placeholder: 'Enter Formula Description'
+                    placeholder: 'Enter Formula Description',
+                    iconClass: 'fas fa-info-circle',
+                    tooltipText: 'Please enter basic description of the Product/Formula (e.g., Grey Goose Orange Vodka).'
                 },
                 {
                     key: 'formula_status',
