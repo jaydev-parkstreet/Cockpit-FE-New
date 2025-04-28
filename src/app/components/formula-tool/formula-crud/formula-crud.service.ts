@@ -284,6 +284,7 @@ export class FormulaCrudService {
                     isShowUploader: true,
                     isFileUpload: true,
                     isEditMode:false,
+                    allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
                     key: 'formula_fids_id',
@@ -297,6 +298,7 @@ export class FormulaCrudService {
                     isShowUploader: true,
                     isFileUpload: true,
                     isEditMode:false,
+                    allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
                     key: 'formula_mom_id',
@@ -310,6 +312,7 @@ export class FormulaCrudService {
                     isShowUploader: true,
                     isFileUpload: true,
                     isEditMode:false,
+                    allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
                     key: 'formula_approval_id',
@@ -323,6 +326,7 @@ export class FormulaCrudService {
                     isShowUploader: true,
                     isFileUpload: true,
                     isEditMode:false,
+                    allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
                     key: 'date_approved',
