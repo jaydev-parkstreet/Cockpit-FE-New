@@ -167,11 +167,11 @@ export class FormulaDetailsComponent implements OnInit {
         if (this.status === '--') {
             this.statusClass = 'badge med u-bg-white';
         } else if (this.status === 'Approved') {
-            this.statusClass = 'badge med u-bg-success';
+            this.statusClass = 'badge med u-bg-success-lite';
         } else if (this.status === 'Rejected') {
             this.statusClass = 'badge med u-bg-error';
         } else if (this.status === 'Filed') {
-            this.statusClass = 'badge med u-bg-neutral';
+            this.statusClass = 'badge med u-bg-filed';
         } else if (
             this.status === 'Needs Action - Waiting on Supplier' ||
             this.status === 'Needs Action-Waiting on Supplier' ||
