@@ -6,7 +6,7 @@
            class="ml-2"
            (mouseenter)="showTooltip = true"
            (mouseleave)="showTooltip = false"
-           style="cursor: pointer; font-size: 16px;"></i>
+           style="cursor: pointer;"></i>
         <div *ngIf="showTooltip" class="custom-tooltip">
           {{ field.tooltipText }}
         </div>
