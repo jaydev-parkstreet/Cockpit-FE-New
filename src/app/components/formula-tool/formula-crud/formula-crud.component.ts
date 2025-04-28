@@ -479,16 +479,15 @@ export class FormulaCrudComponent implements OnInit {
             const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
             const control = this.formulaForm.get(key);
 
-            // Skip date_expired validation if no_expiration_date is checked
             if (key === 'date_expired' && this.form.get('no_expiration_date')?.value === '1') {
                 return true;
             }
 
               if (!field?.isRequired) return true;
-        return !!control?.value;
+              return !!control?.value;
         });
 
-        const requiredFieldKeysLeftSection = ['formula_description', 'product_origin'];
+        const requiredFieldKeysLeftSection = ['formula_description', 'product_origin', 'date_submitted'];
         const requiredFieldsValidLeftSection = requiredFieldKeysLeftSection.every(key => {
             const field = this.crudFieldConfig.leftSection.find(f => f.key === key);
             const control = this.formulaForm.get(key);
@@ -541,6 +540,21 @@ export class FormulaCrudComponent implements OnInit {
                         }
                     });
                 }
+                const isFiled = selectedValue[0].id === 3;
+            const dateSubmittedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_submitted');
+            const dateSubmittedControl = this.formulaForm.get('date_submitted');
+            
+            if (dateSubmittedField && dateSubmittedControl) {
+                dateSubmittedField.isRequired = isFiled;
+                
+                if (isFiled) {
+                    dateSubmittedControl.setValidators([Validators.required]);
+                } else {
+                    dateSubmittedControl.clearValidators();
+                }
+                dateSubmittedControl.updateValueAndValidity();
+            }
+            
                 this.updateSubmitButtonState();
                 break;
         }
