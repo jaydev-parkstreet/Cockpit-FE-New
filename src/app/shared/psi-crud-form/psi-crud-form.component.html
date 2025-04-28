@@ -95,7 +95,7 @@
                     <app-psi-radio-button
                         [field]="field"
                         (modelChange)="changeRadioButton($event, field)"
-                        [model]="field.value">
+                        [model]="form.get(field.name)?.value">
                     </app-psi-radio-button>
                 </div>
             </div>

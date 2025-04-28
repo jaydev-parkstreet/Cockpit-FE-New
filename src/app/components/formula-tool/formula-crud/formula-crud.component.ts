@@ -78,6 +78,7 @@ export class FormulaCrudComponent implements OnInit {
 
         let formulaId = this.route.snapshot.paramMap.get('id');
         this.duplicate = this.route.snapshot.data.isDuplicate || false;
+        this.isEditMode = !!formulaId; // <== Always set before loadDropdownData
 
         if (formulaId) {
             this.edit = true;
@@ -145,11 +146,14 @@ export class FormulaCrudComponent implements OnInit {
             this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
             this.initializeForm();
             this.initialFormData = this.getCurrentFormDataSnapshot();
-            this.initialFormData.product_origin = "I";
+            // Only set default if not editing an existing formula
+            if (!this.isEditMode) {
+                this.initialFormData.product_origin = "I";
+                this.formulaForm.patchValue({
+                    product_origin: 'I'
+                });
+            }
             this.commonService.hideSpinner();
-            this.formulaForm.patchValue({
-                product_origin: 'I'
-            });
         }).catch(error => {
             console.error('Failed to fetch dropdown:', error);
             this.commonService.hideSpinner();
@@ -204,13 +208,12 @@ export class FormulaCrudComponent implements OnInit {
             const validators = isFieldRequired ? [Validators.required] : [];
 
             formControls[field.name] = new FormControl(
-                { value: '', disabled: isDisabled },
+                { value: field.value || '', disabled: isDisabled },
                 validators
-            );
+              );
+              
         });
 
-        this.formulaForm = this.formBuilder.group(formControls);
-        this.formInitialized = true;
         this.formulaForm = this.formBuilder.group(formControls);
         this.formInitialized = true;
         this.formulaForm.statusChanges.subscribe(() => {
@@ -436,10 +439,13 @@ export class FormulaCrudComponent implements OnInit {
         setDropdownValue('sample_received', formulaData.sample_received);
         this.product_type_data = formulaData.product_type;
         this.formulaForm.patchValue(formData);
+        this.formulaForm.markAllAsTouched();
+        this.formulaForm.markAsDirty();
+        this.fetchClassification(formulaData.classification);
         this.formulaForm.updateValueAndValidity();
         this.updateSubmitButtonState();
         this.changeDetector.detectChanges();
-        this.fetchClassification(formulaData.classification);
+
     }
 
     getDropDownArrayByIds(list: any[], value: any, name: string) {
@@ -478,8 +484,8 @@ export class FormulaCrudComponent implements OnInit {
                 return true;
             }
 
-            if (!field?.isRequired) return true;
-            return !!control?.value;
+              if (!field?.isRequired) return true;
+        return !!control?.value;
         });
 
         const requiredFieldKeysLeftSection = ['formula_description', 'product_origin'];
