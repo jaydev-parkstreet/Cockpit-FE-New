@@ -31,14 +31,12 @@ export class CmpInputDatepickerComponent implements OnInit {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('ngOnChanges triggered:', changes);
         if (changes['selectedDate']) {
             this._parseInputDate();
         }
     }
 
     private _parseInputDate(): void {
-        console.log('selectedDate in _parseInputDate:', this.selectedDate, typeof this.selectedDate);
         if (this.selectedDate && typeof this.selectedDate === 'string') {
             const parts = this.selectedDate.split('/');
             if (parts.length === 3) {
@@ -49,14 +47,11 @@ export class CmpInputDatepickerComponent implements OnInit {
     
                 if (!isNaN(parsedDate.getTime())) {
                     this._date = parsedDate;
-                    console.log('Parsed Date (Manual):', this._date);
                 } else {
                     this._date = null;
-                    console.warn(`Invalid date string provided: ${this.selectedDate}`);
                 }
             } else {
                 this._date = null;
-                console.warn(`Unexpected date string format: ${this.selectedDate}`);
             }
         } else if (this.selectedDate instanceof Date || this.selectedDate === null) {
             this._date = this.selectedDate instanceof Date ? this.selectedDate : null;
@@ -75,7 +70,6 @@ export class CmpInputDatepickerComponent implements OnInit {
      */
     set dateModel(newDate: Date | null) {
         this._date = newDate;
-        console.log('dateModel Setter:', this._date); // <--- ADD THIS LINE
         this.dateModelChange.emit({ type: this.type, value: this._date });
     }
 
@@ -97,7 +91,6 @@ export class CmpInputDatepickerComponent implements OnInit {
     onDateChange(date: Date) {
         this.selectedDate = date ?? null;
         this.dateModel = date ?? null;
-        console.log('bsValueChange Event:', date); // <--- ADD THIS LINE
         this.dateModelChange.emit({ type: this.type, value: this.selectedDate });
      }
 
