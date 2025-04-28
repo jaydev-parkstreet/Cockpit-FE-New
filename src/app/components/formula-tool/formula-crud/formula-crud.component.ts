@@ -78,7 +78,7 @@ export class FormulaCrudComponent implements OnInit {
 
         let formulaId = this.route.snapshot.paramMap.get('id');
         this.duplicate = this.route.snapshot.data.isDuplicate || false;
-        this.isEditMode = !!formulaId; // <== Always set before loadDropdownData
+        this.isEditMode = !!formulaId;
 
         if (formulaId) {
             this.edit = true;
@@ -146,7 +146,6 @@ export class FormulaCrudComponent implements OnInit {
             this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
             this.initializeForm();
             this.initialFormData = this.getCurrentFormDataSnapshot();
-            // Only set default if not editing an existing formula
             if (!this.isEditMode) {
                 this.initialFormData.product_origin = "I";
                 this.formulaForm.patchValue({
@@ -210,8 +209,8 @@ export class FormulaCrudComponent implements OnInit {
             formControls[field.name] = new FormControl(
                 { value: field.value || '', disabled: isDisabled },
                 validators
-              );
-              
+            );
+
         });
 
         this.formulaForm = this.formBuilder.group(formControls);
@@ -483,8 +482,8 @@ export class FormulaCrudComponent implements OnInit {
                 return true;
             }
 
-              if (!field?.isRequired) return true;
-              return !!control?.value;
+            if (!field?.isRequired) return true;
+            return !!control?.value;
         });
 
         const requiredFieldKeysLeftSection = ['formula_description', 'product_origin', 'date_submitted'];
@@ -541,20 +540,20 @@ export class FormulaCrudComponent implements OnInit {
                     });
                 }
                 const isFiled = selectedValue[0].id === 3;
-            const dateSubmittedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_submitted');
-            const dateSubmittedControl = this.formulaForm.get('date_submitted');
-            
-            if (dateSubmittedField && dateSubmittedControl) {
-                dateSubmittedField.isRequired = isFiled;
-                
-                if (isFiled) {
-                    dateSubmittedControl.setValidators([Validators.required]);
-                } else {
-                    dateSubmittedControl.clearValidators();
+                const dateSubmittedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_submitted');
+                const dateSubmittedControl = this.formulaForm.get('date_submitted');
+
+                if (dateSubmittedField && dateSubmittedControl) {
+                    dateSubmittedField.isRequired = isFiled;
+
+                    if (isFiled) {
+                        dateSubmittedControl.setValidators([Validators.required]);
+                    } else {
+                        dateSubmittedControl.clearValidators();
+                    }
+                    dateSubmittedControl.updateValueAndValidity();
                 }
-                dateSubmittedControl.updateValueAndValidity();
-            }
-            
+
                 this.updateSubmitButtonState();
                 break;
         }
