@@ -134,7 +134,7 @@
                         [settings]="field.inputSetting"
                         [filteredItems]="field.options"
                         [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
-                        [disabled]="field.isDisabled"
+                        [disabled]="field.disabled || field.isDisabled"
                         [required]="field.isRequired"
                         (onDropDownChange)="onDropdownStateChange(field.key, $event)">
                     </app-cmp-input-dropdown>
