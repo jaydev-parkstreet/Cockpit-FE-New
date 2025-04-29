@@ -405,7 +405,7 @@ export class FormulaCrudComponent implements OnInit {
 
             if (selectedOption) {
                 this.sellectedData[fieldName] = [selectedOption];
-                this.formulaForm.get(fieldName)?.setValue(selectedOption);
+                this.formulaForm.get(fieldName)?.setValue(selectedOption.quickbooks_id);
                 this.formulaForm.get(fieldName)?.markAsTouched();
                 this.formulaForm.get(fieldName)?.updateValueAndValidity();
             } else {
@@ -602,7 +602,7 @@ export class FormulaCrudComponent implements OnInit {
             if (this.formulaForm.valid) {
                 const formData = new FormData();
                 const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
-                    this.formulaForm.value,
+                    this.formulaForm.getRawValue(),
                     this.filtersList,
                     this.edit,
                     this.duplicate,
@@ -809,7 +809,10 @@ export class FormulaCrudComponent implements OnInit {
     updateClassificationFilter() {
         if (this.classification && this.classification.length > 0) {
             this.filtersList['classification'] = this.classification;
-            this.crudFieldConfig.leftSection[5].options = this.classification
+            const classificationField = this.crudFieldConfig.leftSection.find(field => field.key === 'classification');
+            if (classificationField) {
+                classificationField.options = this.classification;
+            }
             this.crudFieldConfig = { ...this.crudFieldConfig };
             this.changeDetector.detectChanges();
         }
