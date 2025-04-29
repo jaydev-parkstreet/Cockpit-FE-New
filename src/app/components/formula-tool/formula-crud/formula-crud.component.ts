@@ -144,6 +144,9 @@ export class FormulaCrudComponent implements OnInit {
         this.FormulaService.getDropdown(token).then(result => {
             this.filtersList = result;
             this.crudFieldConfig = this.FormulaCrudService.getFormulaFieldConfig(this.filtersList);
+            if (!this.edit) {
+                this.crudFieldConfig.leftSection = this.crudFieldConfig.leftSection.filter(field => field.key !== 'id');
+            }
             this.initializeForm();
             this.initialFormData = this.getCurrentFormDataSnapshot();
             if (!this.isEditMode) {
@@ -360,6 +363,7 @@ export class FormulaCrudComponent implements OnInit {
 
         const formData = {
             name: formulaData.name || '',
+            id: formulaData.id || '',
             description: formulaData.description || '',
             formula_description: formulaData.formula_description || '',
             formula_status: formulaData.formula_status || '',
