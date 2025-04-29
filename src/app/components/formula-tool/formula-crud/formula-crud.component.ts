@@ -78,7 +78,8 @@ export class FormulaCrudComponent implements OnInit {
 
         let formulaId = this.route.snapshot.paramMap.get('id');
         this.duplicate = this.route.snapshot.data.isDuplicate || false;
-        this.isEditMode = !!formulaId;
+        this.isEditMode = !!formulaId && !this.duplicate;
+        this.edit = this.isEditMode;
 
         if (formulaId) {
             this.edit = true;
@@ -366,12 +367,12 @@ export class FormulaCrudComponent implements OnInit {
             id: formulaData.id || '',
             description: formulaData.description || '',
             formula_description: formulaData.formula_description || '',
-            formula_status: formulaData.formula_status || '',
+            formula_status: formulaData.formula_status_id || '',
             product_origin: formulaData.product_origin || 'I',
             submission_id: formulaData.submission_id || '',
             formula_id: formulaData.formula_id || '',
             client_name: formulaData.client_name || '',
-            client_id: this.getDropDownArrayByIds(this.filtersList?.client_id, formulaData.client_id, 'client_id'),
+            client_id: formulaData.client_id,
             product_type: this.getDropDownArrayByIds(this.filtersList?.product_type, formulaData.product_type, 'product_type'),
             classification: this.getDropDownArrayByIds(this.filtersList?.classification, formulaData.classification, 'classification'),
             sample_received: this.getDropDownArrayByIds(this.filtersList?.sample_received, formulaData.sample_received, 'sample_received'),
@@ -393,6 +394,9 @@ export class FormulaCrudComponent implements OnInit {
             date_expired: formulaData.date_expired || '',
             no_expiration_date: formulaData.no_expiration_date || false,
         };
+
+        this.formulaForm.patchValue(formData);
+
         const setClientValue = (fieldName, value) => {
             if (!value) return;
 
@@ -401,11 +405,16 @@ export class FormulaCrudComponent implements OnInit {
 
             if (selectedOption) {
                 this.sellectedData[fieldName] = [selectedOption];
-                this.formulaForm.get(fieldName)?.setValue(value);
+                this.formulaForm.get(fieldName)?.setValue(selectedOption);
+                this.formulaForm.get(fieldName)?.markAsTouched();
+                this.formulaForm.get(fieldName)?.updateValueAndValidity();
+            } else {
+                this.formulaForm.get(fieldName)?.setValue('');
             }
+            this.updateSubmitButtonState();
+            this.changeDetector.detectChanges();
         };
 
-        setClientValue('client_id', formulaData.client_id);
         const setDropdownValue = (fieldName, value) => {
             if (!value) return;
 
@@ -416,6 +425,7 @@ export class FormulaCrudComponent implements OnInit {
                 this.sellectedData[fieldName] = [selectedOption];
                 this.formulaForm.get(fieldName)?.setValue(value);
             }
+            this.updateSubmitButtonState();
         };
         const entityKindMap = {
             formula_loi_id: this.filtersList.entity_kinds[3].id,
@@ -436,15 +446,31 @@ export class FormulaCrudComponent implements OnInit {
             });
         }
 
-        setDropdownValue('client_id', formulaData.client_id);
+        setClientValue('client_id', formulaData.client_id);
         setDropdownValue('formula_status', formulaData.formula_status_id);
         setDropdownValue('product_type', formulaData.product_type);
         setDropdownValue('sample_received', formulaData.sample_received);
         this.product_type_data = formulaData.product_type;
-        this.formulaForm.patchValue(formData);
-        this.formulaForm.markAllAsTouched();
-        this.formulaForm.markAsDirty();
         this.fetchClassification(formulaData.classification);
+
+        if (this.isEditMode && !this.duplicate) {
+            this.formulaForm.get('date_requested')?.disable();
+            const dateRequestedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_requested' || f.name === 'date_requested');
+            if (dateRequestedField) {
+                dateRequestedField.disabled = true;
+                dateRequestedField.isDisabled = true;
+            }
+        }
+
+        if (this.isEditMode && !this.duplicate) {
+            this.formulaForm.get('client_id')?.disable();
+            const clientIdField = this.crudFieldConfig.leftSection.find(f => f.key === 'client_id' || f.name === 'client_id');
+            if (clientIdField) {
+                clientIdField.disabled = true;
+                clientIdField.isDisabled = true;
+            }
+        }
+
         this.formulaForm.updateValueAndValidity();
         this.updateSubmitButtonState();
         this.changeDetector.detectChanges();
