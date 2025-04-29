@@ -92,6 +92,16 @@ export class FormulaCrudService {
         return {
             leftSection: [
                 {
+                    key: 'id',
+                    name: 'id',
+                    label: 'UNIQUE ID',
+                    type: 'text',
+                    colClass: 'col-sm-12',
+                    isRequired: false,
+                    disabled: true,
+                    placeholder: 'Enter UNIQUE ID'
+                },              
+                {
                     key: 'client_id',
                     name: 'client_id',
                     label: 'Supplier Name',
