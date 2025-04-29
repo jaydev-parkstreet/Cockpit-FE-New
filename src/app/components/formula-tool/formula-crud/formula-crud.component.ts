@@ -708,7 +708,6 @@ export class FormulaCrudComponent implements OnInit {
                 this.openConfirmationPopup();
             } else {
                 if (this.isEditMode) {
-                    console.log("this.isEditMode1111", this.isEditMode);
                     this.router.navigateByUrl(`/formula/${this.formulaId}`);
                 } else {
                     this.router.navigate(['/formula']);
@@ -731,7 +730,6 @@ export class FormulaCrudComponent implements OnInit {
                 if (result && result.btn && result.btn.label === 'Yes') {
                     window.removeEventListener('popstate', this.handleBackNavigation);
                     if (this.isEditMode) {
-                        console.log("this.isEditMode1111", this.isEditMode);
                         this.router.navigateByUrl(`/formula/${this.formulaId}`);
                     } else {
                         this.router.navigate(['/formula']);
