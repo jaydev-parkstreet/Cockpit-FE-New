@@ -104,38 +104,38 @@ export class FormulaCrudComponent implements OnInit {
     handleBackNavigation = (event: PopStateEvent): void => {
         event.preventDefault();
         if (document.activeElement instanceof HTMLElement) {
-          document.activeElement.blur();
+            document.activeElement.blur();
         }
 
         const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
-          this.formulaForm.getRawValue(),
-          this.filtersList,
-          this.edit,
-          this.duplicate,
-          this.formulaId
+            this.formulaForm.getRawValue(),
+            this.filtersList,
+            this.edit,
+            this.duplicate,
+            this.formulaId
         );
-      
+
         const hasUnsavedChanges = JSON.stringify(this.initialFormData) !== JSON.stringify(formattedModel);
-      
+
         if (hasUnsavedChanges) {
-          const modalData = this.commonService.getModalData(
-            'All data will be lost.',
-            'Are you sure you wish to exit?'
-          );
-          this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
-            .subscribe((result) => {
-              if (result && result.btn && result.btn.label === 'Yes') {
-                window.removeEventListener('popstate', this.handleBackNavigation);
-                history.back();
-              } else {
-                history.pushState(null, '', location.href);
-              }
-            });
+            const modalData = this.commonService.getModalData(
+                'All data will be lost.',
+                'Are you sure you wish to exit?'
+            );
+            this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+                .subscribe((result) => {
+                    if (result && result.btn && result.btn.label === 'Yes') {
+                        window.removeEventListener('popstate', this.handleBackNavigation);
+                        history.back();
+                    } else {
+                        history.pushState(null, '', location.href);
+                    }
+                });
         } else {
-          window.removeEventListener('popstate', this.handleBackNavigation);
-          history.back();
+            window.removeEventListener('popstate', this.handleBackNavigation);
+            history.back();
         }
-      };
+    };
 
     /**
     * Load dropdown data and initialize form configuration
@@ -707,10 +707,10 @@ export class FormulaCrudComponent implements OnInit {
             if (JSON.stringify(this.initialFormData) !== JSON.stringify(formattedModel)) {
                 this.openConfirmationPopup();
             } else {
-                if(this.isEditMode){
+                if (this.isEditMode) {
                     console.log("this.isEditMode1111", this.isEditMode);
                     this.router.navigateByUrl(`/formula/${this.formulaId}`);
-                }else{
+                } else {
                     this.router.navigate(['/formula']);
                 }
             }
@@ -730,10 +730,10 @@ export class FormulaCrudComponent implements OnInit {
             .subscribe((result) => {
                 if (result && result.btn && result.btn.label === 'Yes') {
                     window.removeEventListener('popstate', this.handleBackNavigation);
-                    if(this.isEditMode){
+                    if (this.isEditMode) {
                         console.log("this.isEditMode1111", this.isEditMode);
                         this.router.navigateByUrl(`/formula/${this.formulaId}`);
-                    }else{
+                    } else {
                         this.router.navigate(['/formula']);
                     }
                 }
