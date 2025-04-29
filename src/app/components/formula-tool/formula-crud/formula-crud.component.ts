@@ -103,21 +103,21 @@ export class FormulaCrudComponent implements OnInit {
      */
     handleBackNavigation = (event: PopStateEvent): void => {
         event.preventDefault();
-        history.pushState(null, '', location.href);
-
         if (document.activeElement instanceof HTMLElement) {
             document.activeElement.blur();
         }
 
         const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
-            this.formulaForm.value,
+            this.formulaForm.getRawValue(),
             this.filtersList,
             this.edit,
             this.duplicate,
             this.formulaId
         );
 
-        if (JSON.stringify(this.initialFormData) !== JSON.stringify(formattedModel)) {
+        const hasUnsavedChanges = JSON.stringify(this.initialFormData) !== JSON.stringify(formattedModel);
+
+        if (hasUnsavedChanges) {
             const modalData = this.commonService.getModalData(
                 'All data will be lost.',
                 'Are you sure you wish to exit?'
@@ -126,12 +126,14 @@ export class FormulaCrudComponent implements OnInit {
                 .subscribe((result) => {
                     if (result && result.btn && result.btn.label === 'Yes') {
                         window.removeEventListener('popstate', this.handleBackNavigation);
-                        this.router.navigate(['/formula']);
+                        history.back();
+                    } else {
+                        history.pushState(null, '', location.href);
                     }
                 });
         } else {
             window.removeEventListener('popstate', this.handleBackNavigation);
-            this.router.navigate(['/formula']);
+            history.back();
         }
     };
 
@@ -243,6 +245,9 @@ export class FormulaCrudComponent implements OnInit {
                         delete response.data.id;
                     }
                     this.prefillForm(response.data);
+                    setTimeout(() => {
+                        this.initialFormData = this.getCurrentFormDataSnapshot();
+                    }, 200)
                 } else {
 
                     const checkInterval = setInterval(() => {
@@ -252,6 +257,9 @@ export class FormulaCrudComponent implements OnInit {
                                 delete response.data.id;
                             }
                             this.prefillForm(response.data);
+                            setTimeout(() => {
+                                this.initialFormData = this.getCurrentFormDataSnapshot();
+                            }, 200)
                         }
                     }, 100);
                 }
@@ -690,7 +698,7 @@ export class FormulaCrudComponent implements OnInit {
             }
         } else {
             const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
-                this.formulaForm.value,
+                this.formulaForm.getRawValue(),
                 this.filtersList,
                 this.edit,
                 this.duplicate,
@@ -699,7 +707,11 @@ export class FormulaCrudComponent implements OnInit {
             if (JSON.stringify(this.initialFormData) !== JSON.stringify(formattedModel)) {
                 this.openConfirmationPopup();
             } else {
-                this.router.navigate(['/formula']);
+                if (this.isEditMode) {
+                    this.router.navigateByUrl(`/formula/${this.formulaId}`);
+                } else {
+                    this.router.navigate(['/formula']);
+                }
             }
         }
     }
@@ -713,12 +725,15 @@ export class FormulaCrudComponent implements OnInit {
             'All data will be lost.',
             'Are you sure you wish to exit?'
         );
-
         this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
             .subscribe((result) => {
                 if (result && result.btn && result.btn.label === 'Yes') {
                     window.removeEventListener('popstate', this.handleBackNavigation);
-                    this.router.navigate(['/formula']);
+                    if (this.isEditMode) {
+                        this.router.navigateByUrl(`/formula/${this.formulaId}`);
+                    } else {
+                        this.router.navigate(['/formula']);
+                    }
                 }
             });
     }
@@ -931,7 +946,7 @@ export class FormulaCrudComponent implements OnInit {
             uploadedDocs[0].entity_id = this.entities[0];
 
             const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
-                this.formulaForm.value,
+                this.formulaForm.getRawValue(),
                 this.filtersList,
                 this.edit,
                 this.duplicate,
