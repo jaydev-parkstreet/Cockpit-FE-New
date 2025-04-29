@@ -367,7 +367,7 @@ export class FormulaCrudComponent implements OnInit {
             id: formulaData.id || '',
             description: formulaData.description || '',
             formula_description: formulaData.formula_description || '',
-            formula_status: formulaData.formula_status || '',
+            formula_status: formulaData.formula_status_id || '',
             product_origin: formulaData.product_origin || 'I',
             submission_id: formulaData.submission_id || '',
             formula_id: formulaData.formula_id || '',
