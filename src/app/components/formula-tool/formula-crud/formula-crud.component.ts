@@ -809,7 +809,10 @@ export class FormulaCrudComponent implements OnInit {
     updateClassificationFilter() {
         if (this.classification && this.classification.length > 0) {
             this.filtersList['classification'] = this.classification;
-            this.crudFieldConfig.leftSection[5].options = this.classification
+            const classificationField = this.crudFieldConfig.leftSection.find(field => field.key === 'classification');
+            if (classificationField) {
+                classificationField.options = this.classification;
+            }
             this.crudFieldConfig = { ...this.crudFieldConfig };
             this.changeDetector.detectChanges();
         }
