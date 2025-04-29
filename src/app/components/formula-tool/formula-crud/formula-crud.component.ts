@@ -948,7 +948,7 @@ export class FormulaCrudComponent implements OnInit {
             uploadedDocs[0].entity_id = this.entities[0];
 
             const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
-                this.formulaForm.value,
+                this.formulaForm.getRawValue(),
                 this.filtersList,
                 this.edit,
                 this.duplicate,
