@@ -48,6 +48,7 @@ export class FormulaCrudComponent implements OnInit {
     form: FormGroup;
     isEditMode: any;
     entityuploads: any;
+    initialFormDataSnapshot: any;
 
     constructor(
         private FormulaService: FormulaService,
@@ -94,6 +95,9 @@ export class FormulaCrudComponent implements OnInit {
         this.form = this.formBuilder.group({
             no_expiration_date: ['0'],
             date_expired: null,
+        });
+        this.formulaForm.valueChanges.subscribe(values => {
+            console.log('Form value changed:', values);
         });
     }
 
@@ -218,6 +222,9 @@ export class FormulaCrudComponent implements OnInit {
             );
 
         });
+         
+    console.log('Form initialized with controls:', Object.keys(this.formulaForm.controls));
+    console.log('Initial form value:', this.formulaForm.value);
 
         this.formulaForm = this.formBuilder.group(formControls);
         this.formInitialized = true;
@@ -239,27 +246,36 @@ export class FormulaCrudComponent implements OnInit {
             if (!response.hasError) {
                 this.formulaId = response.data.id;
                 this.entityuploads = response.data.entity_uploads || [];
-
-                if (this.formInitialized) {
+    
+                const initializeAndPrefill = () => {
                     if (this.duplicate) {
                         delete response.data.id;
                     }
                     this.prefillForm(response.data);
+                    
+                    // Use setTimeout to ensure all form updates are complete
                     setTimeout(() => {
-                        this.initialFormData = this.getCurrentFormDataSnapshot();
-                    }, 200)
+                        // Create a deep copy of the initial form data
+                        this.initialFormDataSnapshot = JSON.parse(JSON.stringify(
+                            this.FormulaCrudService.formatModelFormulaTool(
+                                this.formulaForm.getRawValue(),
+                                this.filtersList,
+                                this.edit,
+                                this.duplicate,
+                                this.formulaId
+                            )
+                        ));
+                        console.log('Initial form data captured:', this.initialFormDataSnapshot);
+                    }, 300);
+                };
+    
+                if (this.formInitialized) {
+                    initializeAndPrefill();
                 } else {
-
                     const checkInterval = setInterval(() => {
                         if (this.formInitialized) {
                             clearInterval(checkInterval);
-                            if (this.duplicate) {
-                                delete response.data.id;
-                            }
-                            this.prefillForm(response.data);
-                            setTimeout(() => {
-                                this.initialFormData = this.getCurrentFormDataSnapshot();
-                            }, 200)
+                            initializeAndPrefill();
                         }
                     }, 100);
                 }
@@ -364,6 +380,7 @@ export class FormulaCrudComponent implements OnInit {
      * @param formulaData The formula data to prefill
      */
     prefillForm(formulaData: any): void {
+        console.log('Prefilling form with data:', formulaData);
         if (!this.formulaForm || Object.keys(this.formulaForm.controls).length === 0) {
             console.warn('Form not ready for prefilling, will retry');
             setTimeout(() => this.prefillForm(formulaData), 100);
@@ -482,6 +499,8 @@ export class FormulaCrudComponent implements OnInit {
         this.formulaForm.updateValueAndValidity();
         this.updateSubmitButtonState();
         this.changeDetector.detectChanges();
+        console.log('Form after prefilling:', this.formulaForm.value);
+    console.log('Form validity after prefilling:', this.formulaForm.valid);
 
     }
 
@@ -544,6 +563,8 @@ export class FormulaCrudComponent implements OnInit {
     }
 
     onDropdownStateChange(fieldName: any, selectedValue: any) {
+        console.log('Dropdown changed - Field:', fieldName, 'Selected:', selectedValue);
+        console.log('Form value before change:', this.formulaForm.value);
         this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
         const selectedItem = selectedValue[0];
         const idFields = [
@@ -602,9 +623,11 @@ export class FormulaCrudComponent implements OnInit {
                 this.updateSubmitButtonState();
                 break;
         }
+        console.log('Form value after change:', this.formulaForm.value);
     }
 
     onSubmit(event: string) {
+        console.log('Submit button clicked:', event);
         if (event === "Submit") {
             this.formSubmitted = true;
             if (this.formulaForm.valid) {
@@ -697,14 +720,28 @@ export class FormulaCrudComponent implements OnInit {
                 this.commonService.showToastV2Message(true, "Please fill all required fields", 'fas fa-exclamation-circle');
             }
         } else {
-            const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
-                this.formulaForm.getRawValue(),
-                this.filtersList,
-                this.edit,
-                this.duplicate,
-                this.formulaId
-            );
-            if (JSON.stringify(this.initialFormData) !== JSON.stringify(formattedModel)) {
+            const currentFormData = JSON.parse(JSON.stringify(
+                this.FormulaCrudService.formatModelFormulaTool(
+                    this.formulaForm.getRawValue(),
+                    this.filtersList,
+                    this.edit,
+                    this.duplicate,
+                    this.formulaId
+                )
+            ));
+            console.group('Form Comparison Debug');
+        console.log('Current form raw value:', this.formulaForm.getRawValue());
+        console.log('Current processed data:', currentFormData);
+        console.log('Initial snapshot:', this.initialFormDataSnapshot);
+        const differences = this.findDifferences(currentFormData, this.initialFormDataSnapshot);
+        console.log('Differences found:', differences);
+        
+        console.log('Deep equal result:', this.deepEqual(currentFormData, this.initialFormDataSnapshot));
+        console.groupEnd();
+            // Improved comparison logic
+            const hasChanges = !this.deepEqual(currentFormData, this.initialFormDataSnapshot);
+            
+            if (hasChanges) {
                 this.openConfirmationPopup();
             } else {
                 if (this.isEditMode) {
@@ -714,6 +751,44 @@ export class FormulaCrudComponent implements OnInit {
                 }
             }
         }
+    }
+    private deepEqual(obj1: any, obj2: any): boolean {
+        if (obj1 === obj2) return true;
+        
+        if (typeof obj1 !== 'object' || obj1 === null || 
+            typeof obj2 !== 'object' || obj2 === null) {
+            return false;
+        }
+        
+        const keys1 = Object.keys(obj1);
+        const keys2 = Object.keys(obj2);
+        
+        if (keys1.length !== keys2.length) return false;
+        
+        for (const key of keys1) {
+            if (!keys2.includes(key)) return false;
+            
+            if (key === 'existingFiles') continue; // Skip file comparison
+            
+            if (!this.deepEqual(obj1[key], obj2[key])) return false;
+        }
+        
+        return true;
+    }
+    private findDifferences(current: any, initial: any): any {
+        const diffs: any = {};
+        const allKeys = new Set([...Object.keys(current), ...Object.keys(initial)]);
+        
+        allKeys.forEach(key => {
+            if (!this.deepEqual(current[key], initial[key])) {
+                diffs[key] = {
+                    current: current[key],
+                    initial: initial[key]
+                };
+            }
+        });
+        
+        return diffs;
     }
     /**
      * Open confirmation popup before navigating away
@@ -880,6 +955,9 @@ export class FormulaCrudComponent implements OnInit {
      * @param fieldName: string 
      */
     uploadFiles(files: File[], type: string, fieldName: string): void {
+        console.log('File upload - Type:', type, 'Field:', fieldName);
+        console.log('Files being uploaded:', files);
+        
         this.entities = ['temp' + Date.now()];
         const formData = new FormData();
 
