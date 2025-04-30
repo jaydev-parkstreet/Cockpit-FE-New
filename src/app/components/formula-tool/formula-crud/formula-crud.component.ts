@@ -97,7 +97,6 @@ export class FormulaCrudComponent implements OnInit {
             date_expired: null,
         });
         this.formulaForm.valueChanges.subscribe(values => {
-            console.log('Form value changed:', values);
         });
     }
 
@@ -220,14 +219,10 @@ export class FormulaCrudComponent implements OnInit {
             const validators = isFieldRequired ? [Validators.required] : [];
 
             formControls[field.name] = new FormControl(
-                { value: field.value || null, disabled: isDisabled }, // Changed from '' to null
+                { value: field.value || null, disabled: isDisabled },
                 validators
             );
         });
-
-        console.log('Form initialized with controls:', Object.keys(this.formulaForm.controls));
-        console.log('Initial form value:', this.formulaForm.value);
-
         this.formulaForm = this.formBuilder.group(formControls);
         this.formInitialized = true;
         this.formulaForm.statusChanges.subscribe(() => {
@@ -254,8 +249,6 @@ export class FormulaCrudComponent implements OnInit {
                         delete response.data.id;
                     }
                     this.prefillForm(response.data);
-
-                    // Use setTimeout to ensure all form updates are complete
                     setTimeout(() => {
                         const rawData = this.FormulaCrudService.formatModelFormulaTool(
                             this.formulaForm.getRawValue(),
@@ -266,7 +259,6 @@ export class FormulaCrudComponent implements OnInit {
                         );
 
                         this.initialFormDataSnapshot = this.normalizeFormData(rawData);
-                        console.log('Normalized initial data:', this.initialFormDataSnapshot);
                     }, 300);
                 }
 
@@ -329,15 +321,11 @@ export class FormulaCrudComponent implements OnInit {
         if (!data) return {};
 
         const normalized = { ...data };
-
-        // Convert empty strings to null and handle undefined
         Object.keys(normalized).forEach(key => {
             if (normalized[key] === '' || normalized[key] === undefined) {
                 normalized[key] = null;
             }
         });
-
-        // Normalize dates to consistent format
         const dateFields = ['date_requested', 'date_submitted', 'date_approved', 'date_expired'];
         dateFields.forEach(field => {
             if (normalized[field]) {
@@ -408,7 +396,6 @@ export class FormulaCrudComponent implements OnInit {
      * @param formulaData The formula data to prefill
      */
     prefillForm(formulaData: any): void {
-        console.log('Prefilling form with data:', formulaData);
         if (!this.formulaForm || Object.keys(this.formulaForm.controls).length === 0) {
             console.warn('Form not ready for prefilling, will retry');
             setTimeout(() => this.prefillForm(formulaData), 100);
@@ -528,9 +515,6 @@ export class FormulaCrudComponent implements OnInit {
         this.formulaForm.updateValueAndValidity();
         this.updateSubmitButtonState();
         this.changeDetector.detectChanges();
-        console.log('Form after prefilling:', this.formulaForm.value);
-        console.log('Form validity after prefilling:', this.formulaForm.valid);
-
     }
 
     getDropDownArrayByIds(list: any[], value: any, name: string) {
@@ -592,8 +576,6 @@ export class FormulaCrudComponent implements OnInit {
     }
 
     onDropdownStateChange(fieldName: any, selectedValue: any) {
-        console.log('Dropdown changed - Field:', fieldName, 'Selected:', selectedValue);
-        console.log('Form value before change:', this.formulaForm.value);
         this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
         const selectedItem = selectedValue[0];
         const idFields = [
@@ -652,19 +634,13 @@ export class FormulaCrudComponent implements OnInit {
                 this.updateSubmitButtonState();
                 break;
         }
-        console.log('Form value after change:', this.formulaForm.value);
     }
     private safeCompare(a: any, b: any): boolean {
-        // Handle null/undefined cases
         if (a == null && b == null) return true;
         if (a == null || b == null) return false;
-
-        // Special handling for dates
         if (this.isDateString(a) || this.isDateString(b)) {
             return new Date(a).getTime() === new Date(b).getTime();
         }
-
-        // Default strict equality
         return a === b;
     }
 
@@ -673,7 +649,6 @@ export class FormulaCrudComponent implements OnInit {
         return !isNaN(Date.parse(value));
     }
     onSubmit(event: string) {
-        console.log('Submit button clicked:', event);
         if (event === "Submit") {
             this.formSubmitted = true;
             if (this.formulaForm.valid) {
@@ -775,11 +750,7 @@ export class FormulaCrudComponent implements OnInit {
                     this.formulaId
                 )
             );
-
-            // Debug comparison
             const differences = this.findDifferences(currentFormData, this.initialFormDataSnapshot);
-            console.log('Form comparison differences:', differences);
-
             if (Object.keys(differences).length > 0) {
                 this.openConfirmationPopup();
             } else {
@@ -810,7 +781,7 @@ export class FormulaCrudComponent implements OnInit {
         for (const key of keys1) {
             if (!keys2.includes(key)) return false;
 
-            if (key === 'existingFiles') continue; // Skip file comparison
+            if (key === 'existingFiles') continue;
 
             if (!this.deepEqual(obj1[key], obj2[key])) return false;
         }
@@ -997,9 +968,6 @@ export class FormulaCrudComponent implements OnInit {
      * @param fieldName: string 
      */
     uploadFiles(files: File[], type: string, fieldName: string): void {
-        console.log('File upload - Type:', type, 'Field:', fieldName);
-        console.log('Files being uploaded:', files);
-
         this.entities = ['temp' + Date.now()];
         const formData = new FormData();
 
