@@ -199,7 +199,10 @@ export class FormulaCrudComponent implements OnInit {
             console.error('Field configuration is not properly loaded');
             return;
         }
-
+        if (!this.crudFieldConfig || !this.crudFieldConfig.rightSection || !this.crudFieldConfig.leftSection) {
+            console.error('Field configuration is not properly loaded');
+            return;
+        }
         const formControls = {};
         const allFields = [
             ...this.crudFieldConfig.rightSection,
@@ -217,14 +220,13 @@ export class FormulaCrudComponent implements OnInit {
             const validators = isFieldRequired ? [Validators.required] : [];
 
             formControls[field.name] = new FormControl(
-                { value: field.value || '', disabled: isDisabled },
+                { value: field.value || null, disabled: isDisabled }, // Changed from '' to null
                 validators
             );
-
         });
-         
-    console.log('Form initialized with controls:', Object.keys(this.formulaForm.controls));
-    console.log('Initial form value:', this.formulaForm.value);
+
+        console.log('Form initialized with controls:', Object.keys(this.formulaForm.controls));
+        console.log('Initial form value:', this.formulaForm.value);
 
         this.formulaForm = this.formBuilder.group(formControls);
         this.formInitialized = true;
@@ -246,29 +248,28 @@ export class FormulaCrudComponent implements OnInit {
             if (!response.hasError) {
                 this.formulaId = response.data.id;
                 this.entityuploads = response.data.entity_uploads || [];
-    
+
                 const initializeAndPrefill = () => {
                     if (this.duplicate) {
                         delete response.data.id;
                     }
                     this.prefillForm(response.data);
-                    
+
                     // Use setTimeout to ensure all form updates are complete
                     setTimeout(() => {
-                        // Create a deep copy of the initial form data
-                        this.initialFormDataSnapshot = JSON.parse(JSON.stringify(
-                            this.FormulaCrudService.formatModelFormulaTool(
-                                this.formulaForm.getRawValue(),
-                                this.filtersList,
-                                this.edit,
-                                this.duplicate,
-                                this.formulaId
-                            )
-                        ));
-                        console.log('Initial form data captured:', this.initialFormDataSnapshot);
+                        const rawData = this.FormulaCrudService.formatModelFormulaTool(
+                            this.formulaForm.getRawValue(),
+                            this.filtersList,
+                            this.edit,
+                            this.duplicate,
+                            this.formulaId
+                        );
+
+                        this.initialFormDataSnapshot = this.normalizeFormData(rawData);
+                        console.log('Normalized initial data:', this.initialFormDataSnapshot);
                     }, 300);
-                };
-    
+                }
+
                 if (this.formInitialized) {
                     initializeAndPrefill();
                 } else {
@@ -323,6 +324,33 @@ export class FormulaCrudComponent implements OnInit {
         }
 
         this.changeDetector.detectChanges();
+    }
+    private normalizeFormData(data: any): any {
+        if (!data) return {};
+
+        const normalized = { ...data };
+
+        // Convert empty strings to null and handle undefined
+        Object.keys(normalized).forEach(key => {
+            if (normalized[key] === '' || normalized[key] === undefined) {
+                normalized[key] = null;
+            }
+        });
+
+        // Normalize dates to consistent format
+        const dateFields = ['date_requested', 'date_submitted', 'date_approved', 'date_expired'];
+        dateFields.forEach(field => {
+            if (normalized[field]) {
+                try {
+                    const date = new Date(normalized[field]);
+                    normalized[field] = isNaN(date.getTime()) ? null : date.toISOString();
+                } catch {
+                    normalized[field] = null;
+                }
+            }
+        });
+
+        return normalized;
     }
 
     /**
@@ -386,8 +414,9 @@ export class FormulaCrudComponent implements OnInit {
             setTimeout(() => this.prefillForm(formulaData), 100);
             return;
         }
-
+        const normalizedData = this.normalizeFormData(formulaData);
         const formData = {
+            ...normalizedData,
             name: formulaData.name || '',
             id: formulaData.id || '',
             description: formulaData.description || '',
@@ -397,9 +426,9 @@ export class FormulaCrudComponent implements OnInit {
             submission_id: formulaData.submission_id || '',
             formula_id: formulaData.formula_id || '',
             client_name: formulaData.client_name || '',
-            client_id: formulaData.client_id,
-            product_type: this.getDropDownArrayByIds(this.filtersList?.product_type, formulaData.product_type, 'product_type'),
-            classification: this.getDropDownArrayByIds(this.filtersList?.classification, formulaData.classification, 'classification'),
+            client_id: formulaData.client_id || null,
+            classification: formulaData.classification || null,
+            product_type: formulaData.product_type || null,
             sample_received: this.getDropDownArrayByIds(this.filtersList?.sample_received, formulaData.sample_received, 'sample_received'),
             type: this.getDropDownArrayByIds(this.filtersList?.types, formulaData.type, 'type'),
             category: this.getDropDownArrayByIds(this.filtersList?.categories, formulaData.category, 'category'),
@@ -500,7 +529,7 @@ export class FormulaCrudComponent implements OnInit {
         this.updateSubmitButtonState();
         this.changeDetector.detectChanges();
         console.log('Form after prefilling:', this.formulaForm.value);
-    console.log('Form validity after prefilling:', this.formulaForm.valid);
+        console.log('Form validity after prefilling:', this.formulaForm.valid);
 
     }
 
@@ -625,7 +654,24 @@ export class FormulaCrudComponent implements OnInit {
         }
         console.log('Form value after change:', this.formulaForm.value);
     }
+    private safeCompare(a: any, b: any): boolean {
+        // Handle null/undefined cases
+        if (a == null && b == null) return true;
+        if (a == null || b == null) return false;
 
+        // Special handling for dates
+        if (this.isDateString(a) || this.isDateString(b)) {
+            return new Date(a).getTime() === new Date(b).getTime();
+        }
+
+        // Default strict equality
+        return a === b;
+    }
+
+    private isDateString(value: any): boolean {
+        if (typeof value !== 'string') return false;
+        return !isNaN(Date.parse(value));
+    }
     onSubmit(event: string) {
         console.log('Submit button clicked:', event);
         if (event === "Submit") {
@@ -720,7 +766,7 @@ export class FormulaCrudComponent implements OnInit {
                 this.commonService.showToastV2Message(true, "Please fill all required fields", 'fas fa-exclamation-circle');
             }
         } else {
-            const currentFormData = JSON.parse(JSON.stringify(
+            const currentFormData = this.normalizeFormData(
                 this.FormulaCrudService.formatModelFormulaTool(
                     this.formulaForm.getRawValue(),
                     this.filtersList,
@@ -728,57 +774,53 @@ export class FormulaCrudComponent implements OnInit {
                     this.duplicate,
                     this.formulaId
                 )
-            ));
-            console.group('Form Comparison Debug');
-        console.log('Current form raw value:', this.formulaForm.getRawValue());
-        console.log('Current processed data:', currentFormData);
-        console.log('Initial snapshot:', this.initialFormDataSnapshot);
-        const differences = this.findDifferences(currentFormData, this.initialFormDataSnapshot);
-        console.log('Differences found:', differences);
-        
-        console.log('Deep equal result:', this.deepEqual(currentFormData, this.initialFormDataSnapshot));
-        console.groupEnd();
-            // Improved comparison logic
-            const hasChanges = !this.deepEqual(currentFormData, this.initialFormDataSnapshot);
-            
-            if (hasChanges) {
+            );
+
+            // Debug comparison
+            const differences = this.findDifferences(currentFormData, this.initialFormDataSnapshot);
+            console.log('Form comparison differences:', differences);
+
+            if (Object.keys(differences).length > 0) {
                 this.openConfirmationPopup();
             } else {
-                if (this.isEditMode) {
-                    this.router.navigateByUrl(`/formula/${this.formulaId}`);
-                } else {
-                    this.router.navigate(['/formula']);
-                }
+                this.navigateAway();
             }
+        }
+    }
+    private navigateAway() {
+        if (this.isEditMode) {
+            this.router.navigateByUrl(`/formula/${this.formulaId}`);
+        } else {
+            this.router.navigate(['/formula']);
         }
     }
     private deepEqual(obj1: any, obj2: any): boolean {
         if (obj1 === obj2) return true;
-        
-        if (typeof obj1 !== 'object' || obj1 === null || 
+
+        if (typeof obj1 !== 'object' || obj1 === null ||
             typeof obj2 !== 'object' || obj2 === null) {
             return false;
         }
-        
+
         const keys1 = Object.keys(obj1);
         const keys2 = Object.keys(obj2);
-        
+
         if (keys1.length !== keys2.length) return false;
-        
+
         for (const key of keys1) {
             if (!keys2.includes(key)) return false;
-            
+
             if (key === 'existingFiles') continue; // Skip file comparison
-            
+
             if (!this.deepEqual(obj1[key], obj2[key])) return false;
         }
-        
+
         return true;
     }
     private findDifferences(current: any, initial: any): any {
         const diffs: any = {};
         const allKeys = new Set([...Object.keys(current), ...Object.keys(initial)]);
-        
+
         allKeys.forEach(key => {
             if (!this.deepEqual(current[key], initial[key])) {
                 diffs[key] = {
@@ -787,7 +829,7 @@ export class FormulaCrudComponent implements OnInit {
                 };
             }
         });
-        
+
         return diffs;
     }
     /**
@@ -957,7 +999,7 @@ export class FormulaCrudComponent implements OnInit {
     uploadFiles(files: File[], type: string, fieldName: string): void {
         console.log('File upload - Type:', type, 'Field:', fieldName);
         console.log('Files being uploaded:', files);
-        
+
         this.entities = ['temp' + Date.now()];
         const formData = new FormData();
 
