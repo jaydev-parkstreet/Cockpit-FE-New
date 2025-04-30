@@ -34,12 +34,12 @@ export class SummaryTopBarComponent implements OnInit {
     constructor(private router: Router) { }
 
     ngOnInit(): void {
-        console.log('config', this.config);
+        // console.log('config', this.config);
         this.tooltipText = 'Export To Excel';
     }
 
     ngOnChanges() {
-      console.log('filterList', this.filterList);
+    //   console.log('filterList', this.filterList);
     }
     /**
      * function to filter change
@@ -74,7 +74,7 @@ export class SummaryTopBarComponent implements OnInit {
      * @author PSI-Enhancement
     */
     applyFilterChanges() {
-        console.log('selectedFilters', this.selectedFilters);
+        // console.log('selectedFilters', this.selectedFilters);
         this.applyFilters.emit(this.selectedFilters);
     }
 

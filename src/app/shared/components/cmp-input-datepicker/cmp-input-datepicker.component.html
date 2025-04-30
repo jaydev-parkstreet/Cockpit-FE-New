@@ -12,7 +12,7 @@
                 [minDate]="min"
                 [maxDate]="max"
                 readonly/>
-            <span class="clear-date u-flex-center u-pg-s-2" *ngIf="selectedDate" (click)="clearDate()">
+            <span class="clear-date u-flex-center u-pg-s-2" *ngIf="selectedDate && !fieldConfig?.isDisabled" (click)="clearDate()">
                 <i class="fal fa-times-circle"></i>
             </span>
             <button type="button" class="dropdownbtn u-flex-center u-absolute" (click)="toggleDropdown()" [disabled]="fieldConfig?.isDisabled">
