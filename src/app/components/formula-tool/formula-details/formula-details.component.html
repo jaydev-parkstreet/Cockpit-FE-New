@@ -39,6 +39,7 @@
                     <app-notes-tab
                         *ngIf = "activeTab === 'notes'"
                         [entity] = "formulaDetails.id"
+                        [allowChangePrivacy] = true
                         [permissions] = "permissions"
                         [filterList] = "filterList">
                     </app-notes-tab>
@@ -48,6 +49,7 @@
                         [permissions] = "filterList"
                         [showFileType] = true
                         [showPrivacyIcon] = true
+                        [configUpload]="configUpload"
                         [filterList] = "filterList">
                     </app-attachment-tab>
                     <app-audit-tab

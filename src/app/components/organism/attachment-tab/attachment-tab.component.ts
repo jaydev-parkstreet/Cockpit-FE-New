@@ -19,6 +19,7 @@ export class AttachmentTabComponent implements OnInit {
     @Input() showFileType: boolean;
     @Input() showPrivacyIcon: boolean;
     @Input() filterList: any = {};
+    @Input() configUpload: any;
 
 
     isLoadingAttachments: boolean = false;
@@ -103,7 +104,8 @@ export class AttachmentTabComponent implements OnInit {
                 style: 'custom-attachment-delete-sa'
             },
             attachmentDetails: JSON.parse(JSON.stringify(attachments)),
-            showLine: true, showScroll: true
+            showLine: true, showScroll: true,
+            configUpload: this.configUpload
         };
         this.simpleModalService.addModal(CmpAttachmentModalComponent, { modalData })
             .subscribe((result) => {
@@ -157,7 +159,7 @@ export class AttachmentTabComponent implements OnInit {
         if (file.isInternalUser) {
             permission_id = file.permission_id === AppConstant.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID ? AppConstant.ENTITY_PERMISSIONS.PUBLIC_EVERYONE_ID : AppConstant.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID;
         } else {
-            permission_id = file.permission_id === AppConstant.ENTITY_PERMISSIONS.PRIVATE_ONLY_ME ? AppConstant.ENTITY_PERMISSIONS.PUBLIC_EVERYONE_ID : AppConstant.ENTITY_PERMISSIONS.PRIVATE_ONLY_ME;
+            permission_id = file.permission_id === AppConstant.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID ? AppConstant.ENTITY_PERMISSIONS.PUBLIC_EVERYONE_ID : AppConstant.ENTITY_PERMISSIONS.PRIVATE_ONLY_PS_USER_ID;
         }
 
         this.commonBackendService.changeFilePermission(file.upload_id, permission_id)

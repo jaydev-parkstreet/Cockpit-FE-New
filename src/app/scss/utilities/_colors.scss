@@ -101,3 +101,18 @@ COLORS
 .u-bg-success-t-10 {
   background: $colors-v2-base-success-t-10;
 }
+
+.u-bg-success-lite {
+  background: $colors-v2-base-success-v-lite;
+  color: $colors-neutral-black !important;
+}
+
+.u-bg-filed {
+  background: $colors-v2-filed-bg;
+}
+
+.u-bg-error-medium {
+  background: $colors-neutral-white;
+  color: $colors-v2-base-error !important;
+  border: 1px solid $colors-v2-base-error;
+}

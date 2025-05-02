@@ -31,29 +31,45 @@ export class FormulaCrudService {
             return {};
         }
 
+        const processDropdownValue = (value) => {
+            if (Array.isArray(value) && value.length > 0) {
+                if (typeof value[0] === 'object' && value[0].hasOwnProperty('id')) {
+                    return value[0].id;
+                }
+                return value.length === 1 ? value[0] : value;
+            }
+            if (value && typeof value === 'object' && value.hasOwnProperty('id')) {
+                return value.id;
+            }
+            return value || null;
+        };
+
         let modelFormat: any = {
-            name: model.name || "",
-            description: model.description || "",
-            ingredient: Array.isArray(model.ingredient) && model.ingredient.length > 0
-                ? model.ingredient.map((item: any) => ({
-                    id: item.id || null,
-                    name: item.name || null,
-                    quantity: item.quantity || null,
-                    unit: item.unit || null
-                }))
-                : [],
-            compliance: model.compliance === "1" ? 1 : 0,
-            is_organic: model.is_organic ? 1 : 0,
-            use_up: model.use_up === "1" ? 1 : 0,
-            abv: model.abv || "",
-            cola_ttb_id: model.cola_ttb_id || "",
-            nabca_code: model.nabca_code || "",
-            bdn_code: model.bdn_code || "",
-            unimerc_code: model.unimerc_code || "",
-            client_id: model.client_id || "",
-            system_id: model.system_id || "",
-            scc_code: model.scc_code || "",
-            upc_code: model.upc_code || ""
+            formula_description: model.formula_description || "",
+            id: model.id || "",
+            client_name: model.client_name || "",
+            client_id: processDropdownValue(model.client_id),
+            formula_status: processDropdownValue(model.formula_status),
+            product_origin: model.product_origin || "",
+            product_type: processDropdownValue(model.product_type),
+            classification: processDropdownValue(model.classification),
+            submission_id: model.submission_id || "",
+            formula_id: model.formula_id || "",
+            date_requested: model.date_requested || null,
+            commodity_statement: model.commodity_statement || "",
+            commodity_statement_request: model.commodity_statement_request || "",
+            total_batch_size: model.total_batch_size || "",
+            batch_size_unit_of_measure: model.batch_size_unit_of_measure || "",
+            notes: model.notes || "",
+            sample_received: processDropdownValue(model.sample_received),
+            date_submitted: model.date_submitted || null,
+            formula_loi_id: model.formula_loi_id || null,
+            formula_fids_id: model.formula_fids_id || null,
+            formula_mom_id: model.formula_mom_id || null,
+            formula_approval_id: model.formula_approval_id || null,
+            date_approved: model.date_approved || null,
+            date_expired: model.date_expired || null,
+            no_expiration_date: model.no_expiration_date || false,
         };
 
         if (edit && !duplicate) {
@@ -65,6 +81,7 @@ export class FormulaCrudService {
         }
         return modelFormat;
     }
+
     /**
      * Fetches the configuration for formula CRUD fields.
      * @author PSI-VIII
@@ -81,23 +98,13 @@ export class FormulaCrudService {
                     type: 'text',
                     colClass: 'col-sm-12',
                     isRequired: false,
-                    isDisabled: false,
-                    placeholder: 'Enter Unique ID'
-                },
-                {
-                    key: 'client_name',
-                    name: 'client_name',
-                    label: 'Supplier Name',
-                    type: 'text',
-                    colClass: 'col-sm-12',
-                    isRequired: false,
-                    isDisabled: false,
-                    placeholder: 'Enter Supplier Name'
-                },
+                    disabled: true,
+                    placeholder: 'Enter UNIQUE ID'
+                },              
                 {
                     key: 'client_id',
                     name: 'client_id',
-                    label: 'Supplier',
+                    label: 'Supplier Name',
                     type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
@@ -114,13 +121,15 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: true,
                     isDisabled: false,
-                    placeholder: 'Enter Formula Description'
+                    placeholder: 'Enter Formula Description',
+                    iconClass: 'fas fa-info-circle',
+                    tooltipText: 'Please enter basic description of the Product/Formula (e.g., Grey Goose Orange Vodka).'
                 },
                 {
                     key: 'formula_status',
                     name: 'formula_status',
                     label: 'Status',
-                    type: 'single-select',
+                    type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.formula_status || [],
@@ -130,22 +139,24 @@ export class FormulaCrudService {
                 },
                 {
                     key: 'product_origin',
+                    type: 'radio',
                     name: 'product_origin',
                     label: 'Product Origin',
-                    type: 'radio',
+                    placeholder: 'Product Origin',
                     colClass: 'col-sm-12',
+                    value: 'I',
                     radio: [
                         { value: 'D', name: 'Domestic' },
                         { value: 'I', name: 'Imported' }
                     ],
                     isRequired: true,
-                    isDisabled: false
+                    isProductOrigin: true,
                 },
                 {
                     key: 'product_type',
                     name: 'product_type',
                     label: 'Product Type',
-                    type: 'single-select',
+                    type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.product_type || [],
@@ -157,11 +168,11 @@ export class FormulaCrudService {
                     key: 'classification',
                     name: 'classification',
                     label: 'Classification',
-                    type: 'single-select',
+                    type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
-                    options: filtersList.classification || [],
-                    isRequired: false,
+                    options: filtersList?.classification || [],
+                    isRequired: true,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Classification')
                 },
@@ -206,8 +217,8 @@ export class FormulaCrudService {
                     placeholder: 'Enter Commodity Statement'
                 },
                 {
-                    key: 'composition',
-                    name: 'composition',
+                    key: 'commodity_statement_request',
+                    name: 'commodity_statement_request',
                     label: 'Statement of Composition',
                     type: 'text',
                     colClass: 'col-sm-12',
@@ -227,16 +238,16 @@ export class FormulaCrudService {
                 },
                 {
                     key: 'batch_size_unit_of_measure',
+                    type: 'radio',
                     name: 'batch_size_unit_of_measure',
                     label: 'Batch Size Unit of Measure',
-                    type: 'radio',
+                    placeholder: 'Batch Size Unit of Measure',
                     colClass: 'col-sm-12',
+                    value: '',
                     radio: [
                         { value: 'Liters', name: 'Liters' },
                         { value: 'Gallons', name: 'Gallons' }
                     ],
-                    isRequired: false,
-                    isDisabled: false
                 },
                 {
                     key: 'notes',
@@ -252,11 +263,11 @@ export class FormulaCrudService {
                     key: 'sample_received',
                     name: 'sample_received',
                     label: 'Sample Received',
-                    type: 'single-select',
+                    type: 'multiselect-dropdown',
                     colClass: 'col-sm-12',
                     filters: { entity: [] },
                     options: filtersList.sample_received || [],
-                    isRequired: true,
+                    isRequired: false,
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Sample Received')
                 },
@@ -274,40 +285,60 @@ export class FormulaCrudService {
 
             rightSection: [
                 {
-                    key: 'lisd_doc',
-                    name: 'lisd_doc',
+                    key: 'formula_loi_id',
+                    name: 'formula_loi_id',
                     label: 'List of Ingredients Document',
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
-                    isDisabled: false
+                    isDisabled: false,
+                    Placeholder: 'Select List of ingredients Document(s)',
+                    isShowUploader: true,
+                    isFileUpload: true,
+                    isEditMode:false,
+                    allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
-                    key: 'fids_doc',
-                    name: 'fids_doc',
+                    key: 'formula_fids_id',
+                    name: 'formula_fids_id',
                     label: 'FIDS Document',
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
-                    isDisabled: false
+                    isDisabled: false,
+                    Placeholder: 'Select List of ingredients Document(s)',
+                    isShowUploader: true,
+                    isFileUpload: true,
+                    isEditMode:false,
+                    allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
-                    key: 'mm_doc',
-                    name: 'mm_doc',
+                    key: 'formula_mom_id',
+                    name: 'formula_mom_id',
                     label: 'Method of Manufacturing Document',
-                    type: '',
+                    type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
-                    isDisabled: false
+                    isDisabled: false,
+                    Placeholder: 'Select List of ingredients Document(s)',
+                    isShowUploader: true,
+                    isFileUpload: true,
+                    isEditMode:false,
+                    allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
-                    key: 'approved_doc',
-                    name: 'approved_doc',
+                    key: 'formula_approval_id',
+                    name: 'formula_approval_id',
                     label: 'Formula Approval Document',
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
-                    isDisabled: false
+                    isDisabled: false,
+                    Placeholder: 'Select List of ingredients Document(s)',
+                    isShowUploader: true,
+                    isFileUpload: true,
+                    isEditMode:false,
+                    allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
                     key: 'date_approved',
@@ -336,13 +367,14 @@ export class FormulaCrudService {
                     type: 'checkbox',
                     colClass: 'col-sm-6 float-right',
                     isRequired: false,
-                    isDisabled: false
-                }
+                    isDisabled: false,
+                    isExpiration: true
+                },
             ],
 
             btnLabel: [
                 { type: 'Btn', label: 'Cancel', class: 'secondary w-lg' },
-                { type: 'Btn', label: 'Submit', class: 'primary w-lg' }
+                { type: 'Btn', label: 'Submit', class: 'primary w-lg' ,  isDisable: true}
             ]
 
         };
@@ -359,6 +391,7 @@ export class FormulaCrudService {
             .post(environment.apiUrl + AppRoutes.FORMULA.SAVE, formulaData)
             .pipe(map((response: any) => response));
     }
+
     /**
      * Calls the API to fetch the formula details.
      * @author PSI-VIII
@@ -371,5 +404,16 @@ export class FormulaCrudService {
             `/formula/create`;
 
         return this.http.post<any>(endpoint, formData);
+    }
+
+    /**
+    * Gets classification data based on product origin and type
+    * @param payload Object containing product_origin and product_type
+    * @returns Observable with classification data
+    */
+    getClassification(payload: { product_origin: string, product_type: string }) {
+        return this.http
+            .post<any>(environment.apiUrl + AppRoutes.FORMULA.CLASSIFICATION, payload)
+            .pipe(map((response: any) => response));
     }
 }

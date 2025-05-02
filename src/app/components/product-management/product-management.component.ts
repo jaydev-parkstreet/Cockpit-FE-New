@@ -65,7 +65,6 @@ export class ProductManagementComponent implements OnInit {
 		this.filterList = this.route.snapshot.data['filterList'];
 		this.permissions = this.route.snapshot.data['permissions'];
 		this.topPanelConfig = this.productManagementService.getTopPanelConfig(this.permissions);
-		console.log(this.topPanelConfig);
 		this.updateTopPanelConfig();
 		this.reportRequestObj = {
 			"page": this.reportRequestObj.page,
@@ -84,7 +83,6 @@ export class ProductManagementComponent implements OnInit {
 		this.initGridOptions();
 		this.productToolSummary = [];
 	}
-
 
 	/**
 	 * Function to initialize grid options

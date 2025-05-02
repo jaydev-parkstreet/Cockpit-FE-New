@@ -1,14 +1,21 @@
-<div class="u-mb2 u-mt3">
-    <div [ngClass]="isFromAttachment ? 'file-uploader' : 'mass-uploader'">
-        <label for="file_upload" class="file-upload-label" tabindex="0">
-            <span [innerHTML]="fileSizeMessage"></span>
+<div class="upload-container">
+    <div [ngClass]="configUpload?.isShowUploader ? 'file-uploader' : 'mass-uploader'">
+        <label class="typography-body-dark-regular upload-label" [ngClass]="{'required': configUpload?.isRequired}"
+            *ngIf="configUpload?.label">
+            {{configUpload?.label}}
         </label>
-        <input type="file" name="files" id="file_upload" (change)="onFileChange($event)" #file_upload multiple hidden />
+        <label for="file_upload{{configUpload?.key}}" class="file-upload-label" tabindex="0">
+            <span [ngClass]="{'placeholder-color': selectedFiles?.length > 0}" [innerHTML]="placeholder"></span>
+            <i *ngIf="selectedFiles.length > 0" class="far fa-times-circle u-absolute clear-icon"
+                (click)="clearAttachment(); $event.preventDefault();"></i>
+        </label>
+        <input type="file" name="files" id="file_upload{{configUpload?.key}}" [ngClass]="validationClasses"
+            [disabled]="configUpload?.isDisabled" (change)="onFileChange($event)" #file_upload multiple hidden />
         <div class="error-msg" *ngIf="errorMessage">
             {{ errorMessage }}
         </div>
     </div>
-    <div class="file-list-container">
+    <div class="file-list-container" *ngIf="selectedFiles?.length > 0">
         <div class="file-item" *ngFor="let file of selectedFiles; let i = index">
             <div class="file-item-info">
                 <i class="far fa-file file-icon"></i>
@@ -20,7 +27,21 @@
                     </div>
                 </div>
             </div>
-            <i class="fas fa-trash" (click)="deleteFile(i)"></i>
+            <i class="fas fa-trash" (click)="onFileDeleted(i)"></i>
         </div>
     </div>
+
+    <div class="file-list-container" *ngIf="isEditMode && selectedFileUrls?.length > 0">
+        <div class="file-item" *ngFor="let file of selectedFileUrls; let i = index">
+            <div class="file-item-info">
+                <i class="far fa-file file-icon"></i>
+                <div class="file-details">
+                    <a class="file-name" [href]="file.file_url" target="_blank">{{ file.display_name ||
+                        file.original_filename }}</a>
+                </div>
+            </div>
+            <i class="fas fa-trash" (click)="onDeleteUploadFile(file)"></i>
+        </div>
+    </div>
+
 </div>

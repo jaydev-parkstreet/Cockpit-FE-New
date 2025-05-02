@@ -40,6 +40,7 @@ export class FormulaDetailsComponent implements OnInit {
     archiveData: any;
     archiveWarningMessage: string = '';
     archiveFailedMessage: string = '';
+    configUpload: any;
 
     constructor(
         private FormulaService: FormulaService,
@@ -68,6 +69,10 @@ export class FormulaDetailsComponent implements OnInit {
         this.activeTab = this.tabGroupConfig[2].key;
         this.getFormulaData(formulaId);
         this.headerTitle = "UNIQUE ID";
+        this.configUpload = {
+            allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt'],
+            isShowUploader: true
+        };
     }
 
     /**
@@ -162,11 +167,11 @@ export class FormulaDetailsComponent implements OnInit {
         if (this.status === '--') {
             this.statusClass = 'badge med u-bg-white';
         } else if (this.status === 'Approved') {
-            this.statusClass = 'badge med u-bg-success';
+            this.statusClass = 'badge med u-bg-success-lite';
         } else if (this.status === 'Rejected') {
             this.statusClass = 'badge med u-bg-error';
         } else if (this.status === 'Filed') {
-            this.statusClass = 'badge med u-bg-neutral';
+            this.statusClass = 'badge med u-bg-filed';
         } else if (
             this.status === 'Needs Action - Waiting on Supplier' ||
             this.status === 'Needs Action-Waiting on Supplier' ||
@@ -294,27 +299,35 @@ export class FormulaDetailsComponent implements OnInit {
             tool: this.permissions.tool_id
         }
         this.isAuditDataIsLoading = true;
-        this.commonBackendService.getAuditTrailData(req_obj).subscribe( (response: any) => {
-            if(!response.hasError) {
-                response.data.map(row => {
-                    row.date = moment(row.date).format('MM/DD/YY hh:mm');
-                    if(row.current_data) {
-                        row = this.getAuditTrailFormattedData(row);
+    
+        this.commonBackendService.getAuditTrailData(req_obj).subscribe(
+            (response: any) => {
+                if (!response.hasError) {
+                    const filteredData = response.data
+                        .filter(row => row.type !== 'attachment created' && row.type !== 'attachment deleted')
+                        .map(row => {
+                            row.date = moment(row.date).format('MM/DD/YY hh:mm');
+                            this.getAuditTrailFormattedData(row);
+                            return row;
+                        });
+    
+                    this.auditList = filteredData;
+
+                    if (this.auditList && this.auditList[0]) {
+                        this.filterAuditData();
                     }
-                });
-                this.auditList = response.data;
-                if(this.auditList && this.auditList[0]) {
-                    this.filterAuditData();
+                } else {
+                    this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
                 }
-            } else {
-                this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
+            },
+            (error) => {
+                this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
+            },
+            () => {
+                this.isAuditDataIsLoading = false;
             }
-        }, (error) => {
-            this.commonService.showToastV2Message(true, 'Falied', 'fas fa-exclamation-circle');
-        }, () => {
-            this.isAuditDataIsLoading = false;
-        });
-    }
+        );
+    }    
 
     /**
      * Formats the audit trail data for the given row, processing the `current_data` and `previous_data` 

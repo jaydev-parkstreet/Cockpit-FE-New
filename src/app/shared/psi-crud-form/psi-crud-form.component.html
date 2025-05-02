@@ -47,18 +47,6 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
-                    <app-psi-upload-files 
-                    [selectedFiles]="selectedFiles" 
-                    (changeFileUpload)="onFileChange($event)"
-                    [convertFileSizes]="convertFileSizes.bind(this)" 
-                    [convertFileType]="convertFileType.bind(this)"
-                    [isFromAttachment]="true"
-                    [fileSizeMessage]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"
-                    (fileDeleted)="onFileDeleted()"
-                    >
-                </app-psi-upload-files>
-                    </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
@@ -80,22 +68,53 @@
                 </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
                     <app-cmp-input-datepicker
-                        [fieldConfig]="field"
-                        [validationClasses] = "{'invalid': isFieldInvalid(field.name), 'disabled': field.disabled}"
-                        (dateModelChange) ="OnChangeDateModel.emit({ type: 'from', value: $event})">
-                    </app-cmp-input-datepicker>
+                    [selectedDate]="form.controls[field.name]?.value"
+                    type="{{field?.key}}"
+                    [fieldConfig]="field"
+                    [validationClasses] = "{'invalid': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                    (dateModelChange)="onDateChangedInForm(field.name, $event)">
+                </app-cmp-input-datepicker>
                     <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>  
                 </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
+                    <app-psi-upload-files 
+                        [configUpload] ="field"
+                        (changeFileUpload) = "changeFileUpload($event, field.name)"
+                        [isEditMode]="field.isEditMode"
+                        [selectedFileUrls]="field.selectedFileUrls"
+                        [placeholder]="selectedFilesMap[field.name]?.length >= 1 ? selectedFilesMap[field.name].length + ' files were chosen' : field.Placeholder"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}">
+                    </app-psi-upload-files>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field?.type == 'radio'">
+                    <app-psi-radio-button
+                        [field]="field"
+                        (modelChange)="changeRadioButton($event, field)"
+                        [model]="form.get(field.name)?.value">
+                    </app-psi-radio-button>
+                </div>
             </div>
             <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
                 <div *ngFor="let field of crudFieldConfig?.btnLabel">
-                    <app-cmp-button
-                        [buttonText]="field.label"
-                        [buttonClass]="field.class"
-                        (onClick)="formSubmit.emit($event)">
-                    </app-cmp-button>
+                    <span  *ngIf="field.isDisable" class="custom-tooltip-trigger" data-tooltip="All required fields must be completed before save."
+                        style="pointer-events: auto;">
+                        <app-cmp-button [buttonText]="field.label" [buttonClass]="field.class" [isDisable]="field.isDisable"
+                            (onClick)="formSubmit.emit($event)">
+                        </app-cmp-button>
+                    </span>
+                    <ng-container *ngIf="!field.isDisable">
+                        <app-cmp-button
+                            [buttonText]="field.label"
+                            [buttonClass]="field.class"
+                            [isDisable]="field.isDisable"
+                            (onClick)="formSubmit.emit($event)">
+                        </app-cmp-button>
+                    </ng-container>
                 </div>
             </div>
         </div>
@@ -123,25 +142,13 @@
                         [settings]="field.inputSetting"
                         [filteredItems]="field.options"
                         [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
-                        [disabled]="field.isDisabled"
+                        [disabled]="field.disabled || field.isDisabled"
                         [required]="field.isRequired"
                         (onDropDownChange)="onDropdownStateChange(field.key, $event)">
                     </app-cmp-input-dropdown>
                     <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
-                </div>
-                <!-- For each upload field in rightSection -->
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
-                    <label class="field-label" *ngIf="field.label">{{field.label}}</label>
-                    <app-psi-upload-files 
-                        [selectedFiles]="selectedFiles"
-                        (changeFileUpload) ="onFileChange.emit($event)"
-                        [isFromAttachment]="true"
-                        [fileSizeMessage]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"
-                        (fileDeleted)="onFileDeleted.emit()"
-                    >
-                    </app-psi-upload-files>
                 </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
@@ -156,14 +163,37 @@
                 </div>
                 <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
                     <app-cmp-input-datepicker
-                        [fieldConfig]="field"
-                        [validationClasses] = "{'invalid': isFieldInvalid(field.name), 'disabled': field.disabled}"
-                        (dateModelChange) ="OnChangeDateModel.emit({ type: 'from', value: $event})">
-                    </app-cmp-input-datepicker>
+                    [selectedDate]="form.controls[field.name]?.value"
+                    type="{{field?.key}}"
+                    [fieldConfig]="field"
+                    [validationClasses] = "{'invalid': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                    (dateModelChange)="onDateChangedInForm(field.name, $event)">
+                </app-cmp-input-datepicker>
                     <div *ngIf="isFieldInvalid(field.name)" class="error-message">
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>  
                 </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
+                    <app-psi-upload-files 
+                        [configUpload] ="field"
+                        (changeFileUpload) = "changeFileUpload($event, field.name)"
+                        [isEditMode]="field.isEditMode"
+                        [selectedFileUrls]="field.selectedFileUrls"
+                        [placeholder]="selectedFilesMap[field.name]?.length >= 1 ? selectedFilesMap[field.name].length + ' files were chosen' : field.Placeholder"
+                        [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}">
+                    </app-psi-upload-files>
+                    <div *ngIf="isFieldInvalid(field.name)" class="error-message">
+                        <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
+                    </div>
+                </div>
+                <div class="d-flex flex-column field-group" [ngClass]="field.colClass"  *ngIf="field?.type == 'checkbox'">
+                     <app-psi-checkbox
+                         [field]="field"
+                         [checkedValue]="form?.value[field.name]"
+                         [validationClasses] = "{'ps-required-error': isFieldInvalid(field.name), 'disabled': field.disabled}"
+                         (valueChanged)="onCheckedInput(field.name, $event)">
+                     </app-psi-checkbox>
+                 </div>
             </div>
         </div>
     </div>

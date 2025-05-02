@@ -27,12 +27,13 @@
                                 </a>
                                 <span class="private-file"
                                     *ngIf="attachment.permission_id == 2 || attachment.permission_id == 3">(Private)</span>
-                                <span *ngIf="attachment.entity_kind_name && modalData.showFileType"
-                                    class="middle-section">
-                                    <span class="typography-v2-mon-medium">File Type:</span>&nbsp;
-                                    <span class="typography-v2-mon-regular"
-                                        [innerText]="attachment.entity_kind_name"></span>
-                                </span>
+                            </div>
+
+                            <div *ngIf="attachment.entity_kind_name && modalData.showFileType"
+                                class="middle-section">
+                                <span class="typography-v2-mon-medium">File Type:</span> 
+                                <span class="typography-v2-mon-regular"
+                                    [innerText]="attachment.entity_kind_name"></span>
                             </div>
 
                             <div class="right-section">
@@ -53,15 +54,10 @@
             </div>
         </div>
         <hr *ngIf="modalData?.attachmentDetails?.data?.length > 4" />
-        <app-psi-upload-files 
-            [selectedFiles]="selectedFiles" 
-            (changeFileUpload)="onFileChange($event)"
-            [convertFileSizes]="convertFileSizes.bind(this)" 
-            [convertFileType]="convertFileType.bind(this)"
-            [isFromAttachment]="true"
-            [fileSizeMessage]="selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'"
-            (fileDeleted)="onFileDeleted()"
-            >
+        <app-psi-upload-files
+            (changeFileUpload) = "onFileChange($event)"
+            [configUpload] = "configUpload"
+            [placeholder] = "selectedFiles?.length >= 1 ? selectedFiles?.length + ' files were chosen' : 'Maximum File Size: 10MB'">
         </app-psi-upload-files>
         <div class="attachment-permission">
             <div *ngIf="!modalData.latestDesign" class="custom-select-wrapper">

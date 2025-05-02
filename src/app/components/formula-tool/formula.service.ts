@@ -237,43 +237,45 @@ export class FormulaService {
      * @author PSI-VIII
      * @param {Object} params
      * @returns {String}
-     */
-    renderStatus(params) {
-        const statusLabels = {
-            'Approved': 'u-bg-success',
-            'Rejected': 'u-bg-error',
-            'Pre-Approved': 'u-bg-primary',
-            'Needs Action - Waiting on Supplier': 'u-bg-warning text-ellipsis',
-            'Request Received': 'u-bg-neutral-light',
-            'Pending Formula Approval': 'u-bg-warning text-ellipsis',
-            'Pending Samples - Waiting on Supplier': 'u-bg-warning text-ellipsis',
-            'Ready for Submission': 'yellow text-ellipsis',
-            'Cancelled': 'u-bg-neutral-light',
-            'Under Review': 'u-bg-error-medium',
-            'Filed': 'u-bg-neutral-light'
+     */   
+    renderStatus(params: any): string {
+        const statusLabels: Record<string, string> = {
+          'Approved': 'u-bg-success-lite',
+          'Rejected': 'u-bg-error',
+          'Needs Action - Waiting on Supplier': 'u-bg-warning text-ellipsis',
+          'Request Received': 'u-bg-neutral-light',
+          'Pending Formula Approval': 'u-bg-warning text-ellipsis',
+          'Pending Samples - Waiting on Supplier': 'u-bg-warning text-ellipsis',
+          'Ready for Submission': 'yellow text-ellipsis',
+          'Cancelled': 'u-bg-neutral-light',
+          'Under Review': 'u-bg-error-medium',
+          'Filed': 'u-bg-filed'
         };
-    
+      
         const value = params.value || '--';
         const labelClass = statusLabels[value] || '';
         const isExpired = !!(params.data?.is_formula_expire && params.data?.date_expired_display);
         const hasEllipsis = labelClass.includes('text-ellipsis');
-    
+      
         const iconHtml = isExpired
-            ? `<i class="fas fa-exclamation-circle text-danger" title="FORMULA will expire within 30 days" style="margin-left: 6px; font-size: 14px;"></i>`
-            : '';
-    
+          ? `
+            <span class="custom-tooltip-trigger" data-tooltip="FORMULA will expire within 30 days" style="margin-left: 6px;">
+              <i class="fas fa-exclamation-circle text-danger" style="font-size: 14px;"></i>
+            </span>
+          `
+          : '';
+      
         return `
-            <div class="status-label-wrapper" style="display: flex; align-items: center;">
-                <span
-                    class="typography-caption-dark-medium ${labelClass} status-label"
-                    style="padding: 2px 8px;"
-                    ${hasEllipsis ? `title="${value}"` : ''}>
-                    ${value}
-                </span>
-                ${iconHtml}
-            </div>
+          <div class="status-label-wrapper" style="display: flex; align-items: center;">
+            <span class="typography-caption-dark-medium ${labelClass} status-label custom-tooltip-trigger"
+                  style="padding: 2px 8px;"
+                  ${hasEllipsis ? `data-tooltip="${value}"` : ''}>
+              ${value}
+            </span>
+            ${iconHtml}
+          </div>
         `;
-    }        
+      } 
 
     /**
      * Function to get attachment list
@@ -370,18 +372,16 @@ export class FormulaService {
                 }, {
                     key: 'date_requested',
                     label: 'Date Requested',
-                    type: 'multiselect-search',
+                    type: 'daterange',
                     divClass: 'col-4',
-                    setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 }, {
                     key: 'date_approved',
                     label: 'Date Approved',
-                    type: 'multiselect-search',
+                    type: 'daterange',
                     divClass: 'col-4 norightpadding',
-                    setting: this.getMultiSelectConfig('mm/dd/yyyy')
                 },
                 { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
-                { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4' , id: 1}
+                { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4'}
             ],
         };
     }

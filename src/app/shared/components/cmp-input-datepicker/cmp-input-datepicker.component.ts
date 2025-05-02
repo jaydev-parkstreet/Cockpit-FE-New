@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Setting } from 'src/app/interfaces/setting';
 
 @Component({
@@ -9,16 +9,17 @@ import { Setting } from 'src/app/interfaces/setting';
 export class CmpInputDatepickerComponent implements OnInit {
     
     @Input() fieldConfig: any;
-    @Input() selectedDate: Date | null;
+    @Input() selectedDate: Date | string | null;
     @Input() setting: Setting;
-    @Input() type: 'from' | 'to' | 'default';
+    @Input() type: string;
     @Input() min: any;
     @Input() max: any;
     @Input() validationClasses: any;
-    @Output() dateModelChange = new EventEmitter<{ type: 'from' | 'to' | 'default', value: Date | null }>();
+    @Output() dateModelChange = new EventEmitter<{ type: string, value: Date | null }>();
 
     calculatedPlaceholder: string;
-    
+    private _date: Date | null = null;
+
     @ViewChild('dp') datepicker?: any;
 
     constructor() {
@@ -26,6 +27,50 @@ export class CmpInputDatepickerComponent implements OnInit {
 
     ngOnInit() {
         this.updatePlaceholder();
+        this._parseInputDate();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['selectedDate']) {
+            this._parseInputDate();
+        }
+    }
+
+    private _parseInputDate(): void {
+        if (this.selectedDate && typeof this.selectedDate === 'string') {
+            const parts = this.selectedDate.split('/');
+            if (parts.length === 3) {
+                const month = parseInt(parts[0], 10) - 1; // Month is 0-indexed
+                const day = parseInt(parts[1], 10);
+                const year = parseInt(parts[2], 10);
+                const parsedDate = new Date(year, month, day);
+    
+                if (!isNaN(parsedDate.getTime())) {
+                    this._date = parsedDate;
+                } else {
+                    this._date = null;
+                }
+            } else {
+                this._date = null;
+            }
+        } else if (this.selectedDate instanceof Date || this.selectedDate === null) {
+            this._date = this.selectedDate instanceof Date ? this.selectedDate : null;
+        } else {
+            this._date = null;
+        }
+    }
+ 
+
+    get dateModel(): Date | null {
+        return this._date;
+    }
+
+    /**
+     * Setter for the internal _date property, emits the change.
+     */
+    set dateModel(newDate: Date | null) {
+        this._date = newDate;
+        this.dateModelChange.emit({ type: this.type, value: this._date });
     }
 
     /**
@@ -44,9 +89,10 @@ export class CmpInputDatepickerComponent implements OnInit {
      * @returns void
      */
     onDateChange(date: Date) {
-       this.selectedDate = date ?? null;
-       this.dateModelChange.emit({ type: this.type, value: this.selectedDate });
-    }
+        this.selectedDate = date ?? null;
+        this.dateModel = date ?? null;
+        this.dateModelChange.emit({ type: this.type, value: this.selectedDate });
+     }
 
     updatePlaceholder() {
         this.calculatedPlaceholder = this.setting?.placeholder || 'mm/dd/yyyy';
@@ -59,9 +105,9 @@ export class CmpInputDatepickerComponent implements OnInit {
      * @returns void
      */
     clearDate() {
+        this.dateModel = null;
         this.selectedDate = null;
         this.updatePlaceholder();
         this.dateModelChange.emit({ type: this.type, value: null });
     }
-
 }
