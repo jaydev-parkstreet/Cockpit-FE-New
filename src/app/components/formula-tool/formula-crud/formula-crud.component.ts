@@ -155,7 +155,6 @@ export class FormulaCrudComponent implements OnInit {
                 history.back();
             }
         } else {
-            // For add mode, use the same logic as in onSubmit()
             const hasUserInput = Object.keys(currentFormData).some(key => {
                 const value = currentFormData[key];
                 if (key === 'product_origin' && value === 'I') return false;
