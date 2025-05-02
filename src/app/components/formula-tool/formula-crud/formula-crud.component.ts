@@ -98,7 +98,6 @@ export class FormulaCrudComponent implements OnInit {
                         this.formulaId
                     )
                 );
-                console.log('Add mode initial snapshot:', this.initialFormDataSnapshot);
             }, 500);
         }
         window.removeEventListener('popstate', this.handleBackNavigation);
