@@ -717,7 +717,7 @@ export class FormulaCrudComponent implements OnInit {
                             if (!response.hasError) {
                                 this.commonService.showToastV2Message(
                                     true,
-                                    this.edit ? 'Saved Successfully' : 'Created Successfully',
+                                    this.edit ? 'Saved Successfully' : 'Saved Successfully',
                                     'fas fa-check-circle',
                                     'success'
                                 );
@@ -739,7 +739,7 @@ export class FormulaCrudComponent implements OnInit {
                             if (!response.hasError) {
                                 this.commonService.showToastV2Message(
                                     true,
-                                    this.edit ? 'Saved Successfully' : 'Created Successfully',
+                                    this.edit ? 'Saved Successfully' : 'Saved Successfully',
                                     'fas fa-check-circle',
                                     'success'
                                 );
