@@ -88,6 +88,18 @@ export class FormulaCrudComponent implements OnInit {
             this.getFormulaData(formulaId);
         } else {
             this.edit = false;
+            setTimeout(() => {
+                this.initialFormDataSnapshot = this.normalizeFormData(
+                    this.FormulaCrudService.formatModelFormulaTool(
+                        this.formulaForm.getRawValue(),
+                        this.filtersList,
+                        this.edit,
+                        this.duplicate,
+                        this.formulaId
+                    )
+                );
+                console.log('Add mode initial snapshot:', this.initialFormDataSnapshot);
+            }, 500);
         }
         window.removeEventListener('popstate', this.handleBackNavigation);
         history.pushState(null, '', location.href);
@@ -160,6 +172,17 @@ export class FormulaCrudComponent implements OnInit {
                 this.formulaForm.patchValue({
                     product_origin: 'I'
                 });
+                setTimeout(() => {
+                    this.initialFormDataSnapshot = this.normalizeFormData(
+                        this.FormulaCrudService.formatModelFormulaTool(
+                            this.formulaForm.getRawValue(),
+                            this.filtersList,
+                            this.edit,
+                            this.duplicate,
+                            null
+                        )
+                    );
+                }, 300);
             }
             this.commonService.hideSpinner();
         }).catch(error => {
@@ -648,6 +671,11 @@ export class FormulaCrudComponent implements OnInit {
         if (typeof value !== 'string') return false;
         return !isNaN(Date.parse(value));
     }
+    /**
+     * Handles form submission
+     * @author PSI-VIII
+     * @param event The event triggered by the submit button
+     */
     onSubmit(event: string) {
         if (event === "Submit") {
             this.formSubmitted = true;
@@ -687,16 +715,15 @@ export class FormulaCrudComponent implements OnInit {
                         response => {
                             this.commonService.hideSpinner();
                             if (!response.hasError) {
-                                const formulaId = response.id;
                                 this.commonService.showToastV2Message(
                                     true,
-                                    this.edit ? 'Saved Successfully' : 'Saved Successfully',
+                                    this.edit ? 'Saved Successfully' : 'Created Successfully',
                                     'fas fa-check-circle',
                                     'success'
                                 );
                                 this.router.navigateByUrl(`/formula`);
                             } else {
-                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                                 this.router.navigateByUrl(`/formula`);
                             }
                         },
@@ -710,16 +737,15 @@ export class FormulaCrudComponent implements OnInit {
                         response => {
                             this.commonService.hideSpinner();
                             if (!response.hasError) {
-                                const formulaId = response.id;
                                 this.commonService.showToastV2Message(
                                     true,
-                                    this.edit ? 'Saved Successfully' : 'Saved Successfully',
+                                    this.edit ? 'Saved Successfully' : 'Created Successfully',
                                     'fas fa-check-circle',
                                     'success'
                                 );
                                 this.router.navigateByUrl(`/formula`);
                             } else {
-                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle', 'success');
+                                this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                                 this.router.navigateByUrl(`/formula`);
                             }
                         },
@@ -750,13 +776,53 @@ export class FormulaCrudComponent implements OnInit {
                     this.formulaId
                 )
             );
-            const differences = this.findDifferences(currentFormData, this.initialFormDataSnapshot);
-            if (Object.keys(differences).length > 0) {
-                this.openConfirmationPopup();
-            } else {
-                this.navigateAway();
+            if (!this.isEditMode) {
+                const hasUserInput = Object.keys(currentFormData).some(key => {
+                    const value = currentFormData[key];
+                    if (key === 'product_origin' && value === 'I') return false;
+                    if (key === 'no_expiration_date' && value === false) return false;
+                    return value !== null && value !== '' && value !== undefined &&
+                        (!Array.isArray(value) || value.length > 0);
+                });
+                if (hasUserInput) {
+                    this.openConfirmationPopup();
+                } else {
+                    this.navigateAway();
+                }
+            }
+            else {
+                const differences = this.findDifferences(currentFormData, this.initialFormDataSnapshot);
+                if (Object.keys(differences).length > 0) {
+                    this.openConfirmationPopup();
+                } else {
+                    this.navigateAway();
+                }
             }
         }
+    }
+    /**
+     * Check if the form is pristine (no changes made)
+     * @author PSI-VIII
+     * @returns True if the form is pristine, false otherwise
+     */
+    private isFormPristine(): boolean {
+        if (!this.initialFormDataSnapshot) return true;
+
+        const currentData = this.normalizeFormData(
+            this.FormulaCrudService.formatModelFormulaTool(
+                this.formulaForm.getRawValue(),
+                this.filtersList,
+                this.edit,
+                this.duplicate,
+                this.formulaId
+            )
+        );
+        const ignoreFields = ['id', 'date_created', 'last_updated'];
+
+        return Object.keys(currentData).every(key => {
+            if (ignoreFields.includes(key)) return true;
+            return this.safeCompare(currentData[key], this.initialFormDataSnapshot[key]);
+        });
     }
     private navigateAway() {
         if (this.isEditMode) {
