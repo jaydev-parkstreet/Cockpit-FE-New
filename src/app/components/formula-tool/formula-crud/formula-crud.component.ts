@@ -113,45 +113,77 @@ export class FormulaCrudComponent implements OnInit {
     }
 
     /**
-     * Handle back navigation
-     * @author PSI-VIII
-     */
+   * Handle back navigation
+   * @author PSI-VIII
+   */
     handleBackNavigation = (event: PopStateEvent): void => {
         event.preventDefault();
         if (document.activeElement instanceof HTMLElement) {
             document.activeElement.blur();
         }
 
-        const formattedModel = this.FormulaCrudService.formatModelFormulaTool(
-            this.formulaForm.getRawValue(),
-            this.filtersList,
-            this.edit,
-            this.duplicate,
-            this.formulaId
+        const currentFormData = this.normalizeFormData(
+            this.FormulaCrudService.formatModelFormulaTool(
+                this.formulaForm.getRawValue(),
+                this.filtersList,
+                this.edit,
+                this.duplicate,
+                this.formulaId
+            )
         );
 
-        const hasUnsavedChanges = JSON.stringify(this.initialFormData) !== JSON.stringify(formattedModel);
+        if (this.isEditMode) {
+            const differences = this.findDifferences(currentFormData, this.initialFormDataSnapshot);
+            console.log('Back navigation differences:', differences);
 
-        if (hasUnsavedChanges) {
-            const modalData = this.commonService.getModalData(
-                'All data will be lost.',
-                'Are you sure you wish to exit?'
-            );
-            this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
-                .subscribe((result) => {
-                    if (result && result.btn && result.btn.label === 'Yes') {
-                        window.removeEventListener('popstate', this.handleBackNavigation);
-                        history.back();
-                    } else {
-                        history.pushState(null, '', location.href);
-                    }
-                });
+            if (Object.keys(differences).length > 0) {
+                const modalData = this.commonService.getModalData(
+                    'All data will be lost.',
+                    'Are you sure you wish to exit?'
+                );
+                this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+                    .subscribe((result) => {
+                        if (result && result.btn && result.btn.label === 'Yes') {
+                            window.removeEventListener('popstate', this.handleBackNavigation);
+                            history.back();
+                        } else {
+                            history.pushState(null, '', location.href);
+                        }
+                    });
+            } else {
+                window.removeEventListener('popstate', this.handleBackNavigation);
+                history.back();
+            }
         } else {
-            window.removeEventListener('popstate', this.handleBackNavigation);
-            history.back();
+            // For add mode, use the same logic as in onSubmit()
+            const hasUserInput = Object.keys(currentFormData).some(key => {
+                const value = currentFormData[key];
+                if (key === 'product_origin' && value === 'I') return false;
+                if (key === 'no_expiration_date' && value === false) return false;
+                return value !== null && value !== '' && value !== undefined &&
+                    (!Array.isArray(value) || value.length > 0);
+            });
+
+            if (hasUserInput) {
+                const modalData = this.commonService.getModalData(
+                    'All data will be lost.',
+                    'Are you sure you wish to exit?'
+                );
+                this.simpleModalService.addModal(ConfirmationModalComponent, { modalData })
+                    .subscribe((result) => {
+                        if (result && result.btn && result.btn.label === 'Yes') {
+                            window.removeEventListener('popstate', this.handleBackNavigation);
+                            history.back();
+                        } else {
+                            history.pushState(null, '', location.href);
+                        }
+                    });
+            } else {
+                window.removeEventListener('popstate', this.handleBackNavigation);
+                history.back();
+            }
         }
     };
-
     /**
     * Load dropdown data and initialize form configuration
     * @author PSI-VIII
