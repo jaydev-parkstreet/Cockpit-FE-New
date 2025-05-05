@@ -116,9 +116,9 @@ export class PsiCustomFormComponent implements OnInit, AfterViewInit {
                 this.authService.login(token, currentUserData);
                 await this.setSessionOldNavigatorSite(token).then(() => {
                     // this.router.navigate(['/product-management']);
-                    // window.location.href = environment.oldCockpit + '/router.php/dashboard';
+                     window.location.href = environment.oldCockpit + '/router.php/dashboard';
                 });
-                this.router.navigate(['/product-management']);
+               // this.router.navigate(['/product-management']);
                 // window.location.href = environment.oldCockpit + '/router.php/dashboard';
             } else {
                 this.isShowLoginErrorMsg = true;
