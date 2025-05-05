@@ -17,4 +17,4 @@ export const environment: any = {
     hotjar: '1444748',
     host: window.location.hostname,
   };
-  
+
