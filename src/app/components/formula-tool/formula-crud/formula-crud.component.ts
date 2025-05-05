@@ -133,8 +133,6 @@ export class FormulaCrudComponent implements OnInit {
 
         if (this.isEditMode) {
             const differences = this.findDifferences(currentFormData, this.initialFormDataSnapshot);
-            console.log('Back navigation differences:', differences);
-
             if (Object.keys(differences).length > 0) {
                 const modalData = this.commonService.getModalData(
                     'All data will be lost.',

@@ -101,12 +101,20 @@
             </div>
             <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
                 <div *ngFor="let field of crudFieldConfig?.btnLabel">
-                    <app-cmp-button
-                        [buttonText]="field.label"
-                        [buttonClass]="field.class"
-                        (onClick)="formSubmit.emit($event)"
-                        [isDisable]="field.isDisable">
-                    </app-cmp-button>
+                    <span  *ngIf="field.isDisable" class="custom-tooltip-trigger" data-tooltip="All required fields must be completed before save."
+                        style="pointer-events: auto;">
+                        <app-cmp-button [buttonText]="field.label" [buttonClass]="field.class" [isDisable]="field.isDisable"
+                            (onClick)="formSubmit.emit($event)">
+                        </app-cmp-button>
+                    </span>
+                    <ng-container *ngIf="!field.isDisable">
+                        <app-cmp-button
+                            [buttonText]="field.label"
+                            [buttonClass]="field.class"
+                            [isDisable]="field.isDisable"
+                            (onClick)="formSubmit.emit($event)">
+                        </app-cmp-button>
+                    </ng-container>
                 </div>
             </div>
         </div>

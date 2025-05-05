@@ -19,7 +19,7 @@ const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: '/product-management',
+        redirectTo: '/formula',
         pathMatch: 'full'
     },
     {
