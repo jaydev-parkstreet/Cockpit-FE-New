@@ -127,8 +127,10 @@ export class AuthService {
 		if (token) {
 			const storedUserData = localStorage.getItem('userData');
 			this.userData = storedUserData ? JSON.parse(storedUserData) : null;
-			const currentUrl = window.location.href;
-			if (currentUrl.includes('/login')) {
+			const currentUrl = decodeURIComponent(window.location.href);
+			if (currentUrl.includes("/login?message=You have successfully logged out.")) {
+				this.logout();
+			} else if (currentUrl.includes('/login')) {
 				window.location.href = environment.oldCockpit + '/router.php/dashboard';
 			}
 		}
