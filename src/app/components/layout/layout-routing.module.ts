@@ -9,15 +9,8 @@ const routes: Routes = [
 		children: [
 			{
 				path: '',
-				redirectTo: '/product-management',
+				redirectTo: '/formula',
 				pathMatch: 'full',
-			},
-			{
-				path: 'product-management',
-				loadChildren: () =>
-					import('../product-management/product-management.module').then(
-						(m) => m.ProductManagementModule
-					),
 			},
 			{
 				path: 'formula',
