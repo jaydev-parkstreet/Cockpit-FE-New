@@ -130,6 +130,7 @@ export class AuthService {
 			const currentUrl = decodeURIComponent(window.location.href);
 			if (currentUrl.includes("/login?message=You have successfully logged out.")) {
 				this.logout();
+				window.location.reload();
 			} else if (currentUrl.includes('/login')) {
 				window.location.href = environment.oldCockpit + '/router.php/dashboard';
 			}
