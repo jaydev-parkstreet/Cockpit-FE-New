@@ -31,7 +31,13 @@ export class AuthService {
 		localStorage.setItem('userData', JSON.stringify(userData));
 		this.userData = userData;
 		this.isAuthenticatedSubject.next(true);
+		this.setSessionOldCockpitSite(token);
 	}
+
+	setSessionOldCockpitSite(token) {
+        const iframe = document.getElementById('myframe') as HTMLInputElement;
+        iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
+    }
 
 	/**
 	 * Function for logout.
@@ -42,7 +48,7 @@ export class AuthService {
 		logout.then((res) => {
 			this.clearLocalStorage();
 			const iframe = document.getElementById('myframe') as HTMLInputElement;
-			iframe.src = environment.oldNavigator + '/router.php/logout';
+			iframe.src = environment.oldCockpit + '/router.php/logout';
 			let loginUrl = 'login';
 			const url = new URL(window.location.href);
 
@@ -121,6 +127,13 @@ export class AuthService {
 		if (token) {
 			const storedUserData = localStorage.getItem('userData');
 			this.userData = storedUserData ? JSON.parse(storedUserData) : null;
+			const currentUrl = decodeURIComponent(window.location.href);
+			if (currentUrl.includes("/login?message=You have successfully logged out.")) {
+				this.logout();
+				window.location.reload();
+			} else if (currentUrl.includes('/login')) {
+				window.location.href = environment.oldCockpit + '/router.php/dashboard';
+			}
 		}
 	}
 }

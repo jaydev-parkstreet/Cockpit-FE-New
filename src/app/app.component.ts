@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from './core/services/common.service';
+import { AuthService } from './components/authentication/auth.service';
 
 @Component({
 	selector: 'app-root',
@@ -12,13 +13,16 @@ export class AppComponent implements OnInit {
 
 	constructor(
 		public commonService: CommonService,
-		private router: Router
+		private router: Router,
+		private authService: AuthService
 	) { }
 
 	ngOnInit() {
 		const loggedIn = localStorage.getItem('authToken');
 		if (!loggedIn) {
 			this.router.navigate(['/login']);
+		}else{
+			this.authService.setSessionOldCockpitSite(loggedIn);
 		}
 	}
 }
