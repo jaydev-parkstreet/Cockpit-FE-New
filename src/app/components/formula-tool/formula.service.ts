@@ -304,7 +304,7 @@ export class FormulaService {
             const isExpiredFormula = params.colDef.field === 'date_expired_display' && params.data.is_formula_expire === 1;
             const colorStyle = isExpiredFormula ? 'color:#c52335;' : '';
             
-            return `<div style="${colorStyle}" class="text-ellipsis add-tooltip" title="${params.value}">
+            return `<div style="${colorStyle}" class="text-ellipsis add-tooltip">
                         ${params.value}
                     </div>`;
         } else {
