@@ -296,6 +296,7 @@ export class FormulaCrudService {
                     isShowUploader: true,
                     isFileUpload: true,
                     isEditMode:false,
+                    isUploadMode: true,
                     allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
@@ -310,6 +311,7 @@ export class FormulaCrudService {
                     isShowUploader: true,
                     isFileUpload: true,
                     isEditMode:false,
+                    isUploadMode: true,
                     allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
@@ -324,6 +326,7 @@ export class FormulaCrudService {
                     isShowUploader: true,
                     isFileUpload: true,
                     isEditMode:false,
+                    isUploadMode: true,
                     allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
@@ -338,6 +341,7 @@ export class FormulaCrudService {
                     isShowUploader: true,
                     isFileUpload: true,
                     isEditMode:false,
+                    isUploadMode: true,
                     allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {

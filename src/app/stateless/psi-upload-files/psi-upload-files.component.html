@@ -15,7 +15,7 @@
             {{ errorMessage }}
         </div>
     </div>
-    <div class="file-list-container" *ngIf="selectedFiles?.length > 0">
+    <div class="file-list-container" *ngIf=" !isUploadMode && selectedFiles?.length > 0">
         <div class="file-item" *ngFor="let file of selectedFiles; let i = index">
             <div class="file-item-info">
                 <i class="far fa-file file-icon"></i>
@@ -33,6 +33,19 @@
 
     <div class="file-list-container" *ngIf="isEditMode && selectedFileUrls?.length > 0">
         <div class="file-item" *ngFor="let file of selectedFileUrls; let i = index">
+            <div class="file-item-info">
+                <i class="far fa-file file-icon"></i>
+                <div class="file-details">
+                    <a class="file-name" [href]="file.file_url" target="_blank">{{ file.display_name ||
+                        file.original_filename }}</a>
+                </div>
+            </div>
+            <i class="fas fa-trash" (click)="onDeleteUploadFile(file)"></i>
+        </div>
+    </div>
+
+    <div class="file-list-container" *ngIf="isUploadMode && uploadFileUrls?.length > 0">
+        <div class="file-item" *ngFor="let file of uploadFileUrls; let i = index">
             <div class="file-item-info">
                 <i class="far fa-file file-icon"></i>
                 <div class="file-details">
