@@ -1192,8 +1192,7 @@ export class FormulaCrudComponent implements OnInit {
                 const dateExpiredField = this.crudFieldConfig.rightSection.find(f => f.key === 'date_expired');
                 if (dateExpiredField) {
                     dateExpiredField.isDisabled = isChecked;
-                    const formulaStatus = this.formulaForm.get('formula_status')?.value;
-                    dateExpiredField.isRequired = !isChecked && formulaStatus === '2';
+                    dateExpiredField.isRequired = !isChecked;
                 }
             }
             this.updateSubmitButtonState();
