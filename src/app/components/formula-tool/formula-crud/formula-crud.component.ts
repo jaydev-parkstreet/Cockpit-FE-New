@@ -1146,12 +1146,32 @@ export class FormulaCrudComponent implements OnInit {
 
             if (type === 'Fidsdoc') {
                 formattedModel.formula_fids_id = this.entities[0];
+                const field = this.crudFieldConfig.rightSection.find(f => f.name === 'formula_fids_id');
+                if (field) {
+                    field.uploadFileUrls = uploadedDocs;
+                    field.isUploadMode = true
+                }
             } else if (type === 'Lisddoc') {
                 formattedModel.formula_loi_id = this.entities[0];
+                const field = this.crudFieldConfig.rightSection.find(f => f.name === 'formula_loi_id');
+                if (field) {
+                    field.uploadFileUrls = uploadedDocs;
+                    field.isUploadMode = true
+                }
             } else if (type === 'Mmdoc') {
                 formattedModel.formula_mom_id = this.entities[0];
+                const field = this.crudFieldConfig.rightSection.find(f => f.name === 'formula_mom_id');
+                if (field) {
+                    field.uploadFileUrls = uploadedDocs;
+                    field.isUploadMode = true
+                }
             } else if (type === 'Appdoc') {
                 formattedModel.formula_approval_id = this.entities[0];
+                const field = this.crudFieldConfig.rightSection.find(f => f.name === 'formula_approval_id');
+                if (field) {
+                    field.uploadFileUrls = uploadedDocs;
+                    field.isUploadMode = true
+                }
             }
             this.formulaForm.patchValue(formattedModel);
         }, () => {
