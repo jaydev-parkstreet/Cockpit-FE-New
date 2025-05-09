@@ -780,10 +780,10 @@ export class FormulaCrudComponent implements OnInit {
                                     'fas fa-check-circle',
                                     'success'
                                 );
-                                this.router.navigateByUrl(`/formula`);
+                                this.router.navigateByUrl(`/formula/${this.formulaId}`);
                             } else {
                                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
-                                this.router.navigateByUrl(`/formula`);
+                                this.router.navigateByUrl(`/formula/${this.formulaId}`);
                             }
                         },
                         error => {
