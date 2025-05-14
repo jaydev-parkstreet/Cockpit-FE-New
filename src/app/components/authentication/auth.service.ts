@@ -17,7 +17,6 @@ export class AuthService {
 	constructor(
 		private http: HttpClient,
 		private router: Router, private commonService: CommonService) {
-		// this.checkToken();
 	}
 
 	/**
@@ -119,7 +118,7 @@ export class AuthService {
 
 	validTokenCall(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return this.http.get(environment.apiUrl + AppRoutes.FORMULA.CHECK_TOKEN, { headers }).toPromise();
+        return this.http.get(environment.apiUrl + AppRoutes.AUTHENTICATION.CHECK_TOKEN, { headers }).toPromise();
     }
 
 	/**
@@ -127,7 +126,7 @@ export class AuthService {
 	 * @author PSI-Enhancements
 	 */
 	checkToken(): void {
-		// TO-DO Remove console log once verify on preprod
+		// TO-DO Remove console log once verified on preprod
 		const token = this.getToken();
 		this.isAuthenticatedSubject.next(!!token);
 		if (token) {

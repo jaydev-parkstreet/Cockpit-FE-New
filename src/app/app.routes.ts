@@ -3,6 +3,7 @@ const AppRoutes = {
         LOGIN: 'login',
         LOGOUT: 'logout',
         GET_PROFILE_INFO: 'get-profile',
+        CHECK_TOKEN: 'check-token'
     },
     PRODUCT_TOOL: {
         GET_SUB_BRAND_PRODUCT_WITH_CLIENT_ID: 'product-tool/get-sub-brand-products-client',
@@ -37,8 +38,7 @@ const AppRoutes = {
         ARCHIVE: 'formula/archive_action',
         SAVE: 'formula/save',
         EXCEL_EXPORT: 'formula/excel-export',
-        CLASSIFICATION: 'formula/classifications',
-        CHECK_TOKEN: 'formula/checkToken',
+        CLASSIFICATION: 'formula/classifications'
     },
     COMMON: {
         NOTES: 'notes',
