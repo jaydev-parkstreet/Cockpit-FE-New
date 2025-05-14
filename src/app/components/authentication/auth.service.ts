@@ -17,7 +17,7 @@ export class AuthService {
 	constructor(
 		private http: HttpClient,
 		private router: Router, private commonService: CommonService) {
-		this.checkToken();
+		//this.checkToken();
 	}
 
 	/**
@@ -121,7 +121,7 @@ export class AuthService {
 	 * Function to check Token.
 	 * @author PSI-Enhancements
 	 */
-	private checkToken(): void {
+	checkToken(): void {
 		const token = this.getToken();
 		this.isAuthenticatedSubject.next(!!token);
 		if (token) {
@@ -133,7 +133,12 @@ export class AuthService {
 				window.location.reload();
 			} else if (currentUrl.includes('/login')) {
 				window.location.href = environment.oldCockpit + '/router.php/dashboard';
+			} else {
+				this.setSessionOldCockpitSite(token);
 			}
+		} else {
+			this.clearLocalStorage();
+			this.router.navigate(['/login']);
 		}
 	}
 }
