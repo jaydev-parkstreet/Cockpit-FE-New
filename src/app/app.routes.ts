@@ -38,6 +38,7 @@ const AppRoutes = {
         SAVE: 'formula/save',
         EXCEL_EXPORT: 'formula/excel-export',
         CLASSIFICATION: 'formula/classifications',
+        CHECK_TOKEN: 'formula/checkToken',
     },
     COMMON: {
         NOTES: 'notes',

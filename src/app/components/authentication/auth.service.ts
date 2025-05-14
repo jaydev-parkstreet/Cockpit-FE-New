@@ -118,6 +118,22 @@ export class AuthService {
 	}
 
 	/**
+	 * Function to call logout API.
+	 * @author PSI-Enhancements
+	 */
+	async validTokenCall() {
+		this.commonService.showSpinner();
+		try {
+			const response = await this.http.get(environment.apiUrl + AppRoutes.FORMULA.CHECK_TOKEN).toPromise();
+			return response;
+		} catch (err) {
+			return true;
+		} finally {
+			this.commonService.hideSpinner();
+		}
+	}
+
+	/**
 	 * Function to check Token.
 	 * @author PSI-Enhancements
 	 */
@@ -135,6 +151,13 @@ export class AuthService {
 				this.logout();
 				window.location.reload();
 			} else if (currentUrl.includes('/login')) {
+				console.log('inside else if');
+				const validToken = this.validTokenCall();
+				validToken.then(res => {
+					console.log(res);
+				}).catch(error => {
+					console.log('error', error);
+				});
 				window.location.href = environment.oldCockpit + '/router.php/dashboard';
 			} 
 		}
