@@ -121,24 +121,54 @@ export class AuthService {
 	 * Function to check Token.
 	 * @author PSI-Enhancements
 	 */
+	// checkToken(): void {
+	// 	const token = this.getToken();
+	// 	this.isAuthenticatedSubject.next(!!token);
+	// 	if (token) {
+	// 		const storedUserData = localStorage.getItem('userData');
+	// 		this.userData = storedUserData ? JSON.parse(storedUserData) : null;
+	// 		const currentUrl = decodeURIComponent(window.location.href);
+	// 		if (currentUrl.includes("/login?message=You have successfully logged out.")) {
+	// 			this.logout();
+	// 			window.location.reload();
+	// 		} else if (currentUrl.includes('/login')) {
+	// 			window.location.href = environment.oldCockpit + '/router.php/dashboard';
+	// 		} else {
+	// 			this.setSessionOldCockpitSite(token);
+	// 		}
+	// 	} else {
+	// 		this.clearLocalStorage();
+	// 		this.router.navigate(['/login']);
+	// 	}
+	// }
 	checkToken(): void {
 		const token = this.getToken();
-		this.isAuthenticatedSubject.next(!!token);
-		if (token) {
-			const storedUserData = localStorage.getItem('userData');
-			this.userData = storedUserData ? JSON.parse(storedUserData) : null;
-			const currentUrl = decodeURIComponent(window.location.href);
-			if (currentUrl.includes("/login?message=You have successfully logged out.")) {
-				this.logout();
-				window.location.reload();
-			} else if (currentUrl.includes('/login')) {
-				window.location.href = environment.oldCockpit + '/router.php/dashboard';
-			} else {
-				this.setSessionOldCockpitSite(token);
-			}
-		} else {
-			this.clearLocalStorage();
+		const hasToken = !!token;
+		this.isAuthenticatedSubject.next(hasToken);
+	
+		if (!hasToken) {
+			this.logout();
 			this.router.navigate(['/login']);
+			return;
 		}
+	
+		const storedUserData = localStorage.getItem('userData');
+		this.userData = storedUserData ? JSON.parse(storedUserData) : null;
+	
+		const currentUrl = decodeURIComponent(window.location.href);
+	
+		if (currentUrl.includes('/login?message=You have successfully logged out.')) {
+			this.logout();
+			window.location.reload();
+			return;
+		}
+	
+		if (currentUrl.includes('/login')) {
+			window.location.href = environment.oldCockpit + '/router.php/dashboard';
+			return;
+		}
+	
+		this.setSessionOldCockpitSite(token);
 	}
+	
 }
