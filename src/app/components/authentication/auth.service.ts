@@ -65,6 +65,7 @@ export class AuthService {
 			} else {
 				this.router.navigate(['/login'], { queryParams: { reload: true } });
 			}
+			window.location.reload();
 		}).catch(error => {
 		});
 	}
@@ -135,7 +136,7 @@ export class AuthService {
 			const currentUrl = decodeURIComponent(window.location.href);
 			if (currentUrl.includes("/login?message=You have successfully logged out.")) {
 				this.logout();
-				window.location.reload();
+			//	window.location.reload();
 			} else if (currentUrl.includes('/login')) {
 				console.log('inside else if');
 				const validToken = this.validTokenCall(token);
