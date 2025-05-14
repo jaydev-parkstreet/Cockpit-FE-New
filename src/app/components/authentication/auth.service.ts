@@ -136,14 +136,4 @@ export class AuthService {
 			} 
 		}
 	}
-	checkTokenAuthentication(): boolean {
-		const token = this.getToken();
-		this.isAuthenticatedSubject.next(!!token);
-		if (token) {
-			const storedUserData = localStorage.getItem('userData');
-			this.userData = storedUserData ? JSON.parse(storedUserData) : null;
-			return true;
-		}
-		return false;
-	}
 }
