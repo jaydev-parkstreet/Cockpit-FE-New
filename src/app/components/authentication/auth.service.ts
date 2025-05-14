@@ -124,10 +124,13 @@ export class AuthService {
 	checkToken(): void {
 		const token = this.getToken();
 		this.isAuthenticatedSubject.next(!!token);
+		console.log('in service');
+		console.log(token);
 		if (token) {
 			const storedUserData = localStorage.getItem('userData');
 			this.userData = storedUserData ? JSON.parse(storedUserData) : null;
 			const currentUrl = decodeURIComponent(window.location.href);
+			console.log(currentUrl);
 			if (currentUrl.includes("/login?message=You have successfully logged out.")) {
 				this.logout();
 				window.location.reload();
