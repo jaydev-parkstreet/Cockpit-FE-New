@@ -117,26 +117,6 @@ export class AuthService {
 		return this.userData;
 	}
 
-	// /**
-	//  * Function to call logout API.
-	//  * @author PSI-Enhancements
-	//  */
-	// async validTokenCall() {
-	// 	console.log('inside valid token call');
-	// 	this.commonService.showSpinner();
-	// 	try {
-	// 		const response = await this.http.get(environment.apiUrl + AppRoutes.FORMULA.CHECK_TOKEN).toPromise();
-	// 		return response;
-	// 	} catch (err) {
-	// 		console.log('inside catch');
-	// 		console.log(err);
-	// 		return true;
-	// 	} finally {
-	// 		this.commonService.hideSpinner();
-	// 	}
-	// }
-
-
 	validTokenCall(token) {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http.get(environment.apiUrl + AppRoutes.FORMULA.CHECK_TOKEN, { headers }).toPromise();
@@ -149,8 +129,6 @@ export class AuthService {
 	checkToken(): void {
 		const token = this.getToken();
 		this.isAuthenticatedSubject.next(!!token);
-		// console.log('in service');
-		// console.log(token);
 		if (token) {
 			const storedUserData = localStorage.getItem('userData');
 			this.userData = storedUserData ? JSON.parse(storedUserData) : null;
@@ -166,16 +144,14 @@ export class AuthService {
 					console.log(res);
 					if (!res.hasError) {
 						console.log('valid token');
+						window.location.href = environment.oldCockpit + '/router.php/dashboard';
 					} else {
-						console.log('success invalid');
+						console.log('in success with invalid token');
 					}
 				}).catch(error => {
+					console.log('in error with invalid token');
 					console.log('error', error);
-					console.log('error invalid');
-					
 				});
-				
-				// window.location.href = environment.oldCockpit + '/router.php/dashboard';
 			} 
 		}
 	}
