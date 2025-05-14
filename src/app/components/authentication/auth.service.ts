@@ -122,6 +122,7 @@ export class AuthService {
 	 * @author PSI-Enhancements
 	 */
 	async validTokenCall() {
+		console.log('inside valida token call');
 		this.commonService.showSpinner();
 		try {
 			const response = await this.http.get(environment.apiUrl + AppRoutes.FORMULA.CHECK_TOKEN).toPromise();
@@ -158,7 +159,7 @@ export class AuthService {
 				}).catch(error => {
 					console.log('error', error);
 				});
-				window.location.href = environment.oldCockpit + '/router.php/dashboard';
+				// window.location.href = environment.oldCockpit + '/router.php/dashboard';
 			} 
 		}
 	}
