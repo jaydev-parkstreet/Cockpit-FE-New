@@ -122,12 +122,14 @@ export class AuthService {
 	 * @author PSI-Enhancements
 	 */
 	async validTokenCall() {
-		console.log('inside valida token call');
+		console.log('inside valid token call');
 		this.commonService.showSpinner();
 		try {
 			const response = await this.http.get(environment.apiUrl + AppRoutes.FORMULA.CHECK_TOKEN).toPromise();
 			return response;
 		} catch (err) {
+			console.log('inside catch');
+			console.log(err);
 			return true;
 		} finally {
 			this.commonService.hideSpinner();
