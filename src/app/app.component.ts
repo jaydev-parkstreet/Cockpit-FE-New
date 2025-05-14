@@ -17,12 +17,23 @@ export class AppComponent implements OnInit {
 		private authService: AuthService
 	) { }
 
+	// ngOnInit() {
+	// 	const loggedIn = localStorage.getItem('authToken');
+	// 	if (!loggedIn) {
+	// 		this.router.navigate(['/login']);
+	// 	}else{
+	// 		this.authService.setSessionOldCockpitSite(loggedIn);
+	// 	}	
+	// }
 	ngOnInit() {
-		const loggedIn = localStorage.getItem('authToken');
+		const loggedIn = this.authService.checkTokenAuthentication();
 		if (!loggedIn) {
-			this.router.navigate(['/login']);
-		}else{
-			this.authService.setSessionOldCockpitSite(loggedIn);
-		}	
+			this.authService.logout();
+		} else {
+			const authToken = localStorage.getItem('authToken');
+			if (authToken) {
+				this.authService.setSessionOldCockpitSite(authToken);
+			}
+		}
 	}
 }
