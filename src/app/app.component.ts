@@ -18,12 +18,11 @@ export class AppComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		// const loggedIn = localStorage.getItem('authToken');
-		// if (!loggedIn) {
-		// 	this.router.navigate(['/login']);
-		// }else{
-		// 	this.authService.setSessionOldCockpitSite(loggedIn);
-		// }
-		this.authService.checkToken();
+		const loggedIn = localStorage.getItem('authToken');
+		if (!loggedIn) {
+			this.router.navigate(['/login']);
+		}else{
+			this.authService.setSessionOldCockpitSite(loggedIn);
+		}	
 	}
 }
