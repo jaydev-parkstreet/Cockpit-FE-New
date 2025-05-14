@@ -127,13 +127,13 @@ export class AuthService {
 	 * @author PSI-Enhancements
 	 */
 	checkToken(): void {
+		// TO-DO Remove console log once verify on preprod
 		const token = this.getToken();
 		this.isAuthenticatedSubject.next(!!token);
 		if (token) {
 			const storedUserData = localStorage.getItem('userData');
 			this.userData = storedUserData ? JSON.parse(storedUserData) : null;
 			const currentUrl = decodeURIComponent(window.location.href);
-			console.log(currentUrl);
 			if (currentUrl.includes("/login?message=You have successfully logged out.")) {
 				this.logout();
 				window.location.reload();
@@ -149,8 +149,7 @@ export class AuthService {
 						console.log('in success with invalid token');
 					}
 				}).catch(error => {
-					console.log('in error with invalid token');
-					console.log('error', error);
+					console.log('in error with invalid token', error);
 				});
 			} 
 		}
