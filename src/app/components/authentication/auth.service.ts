@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import AppRoutes from 'src/app/app.routes';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ export class AuthService {
 	constructor(
 		private http: HttpClient,
 		private router: Router, private commonService: CommonService) {
-		this.checkToken();
+		// this.checkToken();
 	}
 
 	/**
@@ -117,24 +117,30 @@ export class AuthService {
 		return this.userData;
 	}
 
-	/**
-	 * Function to call logout API.
-	 * @author PSI-Enhancements
-	 */
-	async validTokenCall() {
-		console.log('inside valid token call');
-		this.commonService.showSpinner();
-		try {
-			const response = await this.http.get(environment.apiUrl + AppRoutes.FORMULA.CHECK_TOKEN).toPromise();
-			return response;
-		} catch (err) {
-			console.log('inside catch');
-			console.log(err);
-			return true;
-		} finally {
-			this.commonService.hideSpinner();
-		}
-	}
+	// /**
+	//  * Function to call logout API.
+	//  * @author PSI-Enhancements
+	//  */
+	// async validTokenCall() {
+	// 	console.log('inside valid token call');
+	// 	this.commonService.showSpinner();
+	// 	try {
+	// 		const response = await this.http.get(environment.apiUrl + AppRoutes.FORMULA.CHECK_TOKEN).toPromise();
+	// 		return response;
+	// 	} catch (err) {
+	// 		console.log('inside catch');
+	// 		console.log(err);
+	// 		return true;
+	// 	} finally {
+	// 		this.commonService.hideSpinner();
+	// 	}
+	// }
+
+
+	validTokenCall(token) {
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get(environment.apiUrl + AppRoutes.FORMULA.CHECK_TOKEN, { headers }).toPromise();
+    }
 
 	/**
 	 * Function to check Token.
@@ -143,8 +149,8 @@ export class AuthService {
 	checkToken(): void {
 		const token = this.getToken();
 		this.isAuthenticatedSubject.next(!!token);
-		console.log('in service');
-		console.log(token);
+		// console.log('in service');
+		// console.log(token);
 		if (token) {
 			const storedUserData = localStorage.getItem('userData');
 			this.userData = storedUserData ? JSON.parse(storedUserData) : null;
@@ -155,12 +161,20 @@ export class AuthService {
 				window.location.reload();
 			} else if (currentUrl.includes('/login')) {
 				console.log('inside else if');
-				const validToken = this.validTokenCall();
-				validToken.then(res => {
+				const validToken = this.validTokenCall(token);
+				validToken.then((res: any) => {
 					console.log(res);
+					if (!res.hasError) {
+						console.log('valid token');
+					} else {
+						console.log('success invalid');
+					}
 				}).catch(error => {
 					console.log('error', error);
+					console.log('error invalid');
+					
 				});
+				
 				// window.location.href = environment.oldCockpit + '/router.php/dashboard';
 			} 
 		}
