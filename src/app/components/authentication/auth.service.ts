@@ -144,8 +144,10 @@ export class AuthService {
 					console.log(res);
 					if (!res.hasError) {
 						console.log('valid token');
-						window.location.href = environment.oldCockpit + '/router.php/dashboard';
-					} else {
+						this.setSessionOldCockpitSite(token);
+						setTimeout(() => {
+							window.location.href = environment.oldCockpit + '/router.php/dashboard';
+						}, 500);
 						console.log('in success with invalid token');
 					}
 				}).catch(error => {
