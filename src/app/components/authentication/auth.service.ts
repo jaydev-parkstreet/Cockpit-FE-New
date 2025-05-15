@@ -63,9 +63,8 @@ export class AuthService {
 			if (url.searchParams.get('r') || url.searchParams.get('c')) {
 				window.location.href = loginUrl;
 			} else {
-				this.router.navigate(['/login'], { queryParams: { reload: true } });
+				this.router.navigate(['/login']);
 			}
-			window.location.reload();
 		}).catch(error => {
 		});
 	}
