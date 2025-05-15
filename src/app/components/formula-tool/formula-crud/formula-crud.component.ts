@@ -628,7 +628,6 @@ export class FormulaCrudComponent implements OnInit {
 
     onDropdownStateChange(fieldName: any, selectedValue: any) {
         this.activeDropdownId = selectedValue ? (this.activeDropdownId === selectedValue ? null : selectedValue) : null;
-        const selectedItem = selectedValue[0];
         const idFields = [
             'product_type', 'classification', 'formula_status'
         ];
@@ -643,6 +642,15 @@ export class FormulaCrudComponent implements OnInit {
         switch (fieldName) {
             case 'product_type':
                 this.product_type_data = selectedValue[0].name;
+                // Clear classification when product type changes
+                this.formulaForm.get('classification')?.setValue(null);
+                this.sellectedData['classification'] = [];
+                this.fetchClassification();
+                break;
+            case 'product_origin':
+                // Clear classification when product origin changes
+                this.formulaForm.get('classification')?.setValue(null);
+                this.sellectedData['classification'] = [];
                 this.fetchClassification();
                 break;
             case 'classification':
@@ -670,10 +678,10 @@ export class FormulaCrudComponent implements OnInit {
                 const isFiled = selectedValue[0].id === 3;
                 const dateSubmittedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_submitted');
                 const dateSubmittedControl = this.formulaForm.get('date_submitted');
-
+    
                 if (dateSubmittedField && dateSubmittedControl) {
                     dateSubmittedField.isRequired = isFiled;
-
+    
                     if (isFiled) {
                         dateSubmittedControl.setValidators([Validators.required]);
                     } else {
@@ -681,11 +689,12 @@ export class FormulaCrudComponent implements OnInit {
                     }
                     dateSubmittedControl.updateValueAndValidity();
                 }
-
+    
                 this.updateSubmitButtonState();
                 break;
         }
     }
+    
     private safeCompare(a: any, b: any): boolean {
         if (a == null && b == null) return true;
         if (a == null || b == null) return false;
@@ -771,10 +780,10 @@ export class FormulaCrudComponent implements OnInit {
                                     'fas fa-check-circle',
                                     'success'
                                 );
-                                this.router.navigateByUrl(`/formula`);
+                                this.router.navigateByUrl(`/formula/${this.formulaId}`);
                             } else {
                                 this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
-                                this.router.navigateByUrl(`/formula`);
+                                this.router.navigateByUrl(`/formula/${this.formulaId}`);
                             }
                         },
                         error => {
@@ -1137,12 +1146,32 @@ export class FormulaCrudComponent implements OnInit {
 
             if (type === 'Fidsdoc') {
                 formattedModel.formula_fids_id = this.entities[0];
+                const field = this.crudFieldConfig.rightSection.find(f => f.name === 'formula_fids_id');
+                if (field) {
+                    field.uploadFileUrls = uploadedDocs;
+                    field.isUploadMode = true
+                }
             } else if (type === 'Lisddoc') {
                 formattedModel.formula_loi_id = this.entities[0];
+                const field = this.crudFieldConfig.rightSection.find(f => f.name === 'formula_loi_id');
+                if (field) {
+                    field.uploadFileUrls = uploadedDocs;
+                    field.isUploadMode = true
+                }
             } else if (type === 'Mmdoc') {
                 formattedModel.formula_mom_id = this.entities[0];
+                const field = this.crudFieldConfig.rightSection.find(f => f.name === 'formula_mom_id');
+                if (field) {
+                    field.uploadFileUrls = uploadedDocs;
+                    field.isUploadMode = true
+                }
             } else if (type === 'Appdoc') {
                 formattedModel.formula_approval_id = this.entities[0];
+                const field = this.crudFieldConfig.rightSection.find(f => f.name === 'formula_approval_id');
+                if (field) {
+                    field.uploadFileUrls = uploadedDocs;
+                    field.isUploadMode = true
+                }
             }
             this.formulaForm.patchValue(formattedModel);
         }, () => {
@@ -1183,8 +1212,7 @@ export class FormulaCrudComponent implements OnInit {
                 const dateExpiredField = this.crudFieldConfig.rightSection.find(f => f.key === 'date_expired');
                 if (dateExpiredField) {
                     dateExpiredField.isDisabled = isChecked;
-                    const formulaStatus = this.formulaForm.get('formula_status')?.value;
-                    dateExpiredField.isRequired = !isChecked && formulaStatus === '2';
+                    dateExpiredField.isRequired = !isChecked;
                 }
             }
             this.updateSubmitButtonState();

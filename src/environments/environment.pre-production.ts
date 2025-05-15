@@ -1,0 +1,20 @@
+export const environment: any = {
+    production: true,
+    env: 'pre-production',
+    appDomain: 'preprodappcockpit.parkstreet.com',
+    appRoute: 'https://preprodappcockpit.parkstreet.com',
+    version: { v1: 'v1/', v2: 'v2/' },
+    newLoginUrl: '/login',
+    newSignupUrl: '/user-signup',
+    loginUrl: 'login',
+    apiUrl: 'https://preprodapi.parkstreet.com/v1/',
+    apiRouteUrl: 'https://preprodapi.parkstreet.com/',
+    pictureUrl: 'https://preprodnavigator.parkstreet.com/uploads/crm/',
+    personUrl: '/router.php/people/profile/',
+    fileServer: 'https://preprodnavigator.parkstreet.com',
+    oldNavigator: 'https://preprodnavigator.parkstreet.com',
+    oldCockpit: 'https://preprodcockpit.parkstreet.com',
+    hotjar: '1444748',
+    host: window.location.hostname,
+  };
+

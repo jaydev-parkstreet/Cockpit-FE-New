@@ -16,7 +16,7 @@ export class SidebarMenuComponent implements OnInit {
     currentUserData: any;
     oldCockpit: string = environment.oldCockpit;
     currentRoute: any;
-    allowedRoutes = ['product_management_system', 'cola_formula'];
+    allowedRoutes = ['cola_formula'];
     private hideTimeout: any;
 
     constructor(

@@ -16,7 +16,9 @@ export class PsiUploadFilesComponent implements OnInit {
     selectedFiles: File[] = [];
     errorMessage: string = '';
     @Input() isEditMode: boolean = false;
+    @Input() isUploadMode: boolean = false;
     @Input() selectedFileUrls: any[] = [];
+    @Input() uploadFileUrls: any[] = [];
 
 
     constructor(
@@ -196,12 +198,17 @@ export class PsiUploadFilesComponent implements OnInit {
      * @param {any} file 
      */
     onDeleteUploadFile(file: any) {
-        this.commonBackendService.deleteUploadFile(file.id)
+        const fileId = file.id || file.upload_id;
+        this.commonBackendService.deleteUploadFile(fileId)
             .subscribe((response: any) => {
                 if (response.hasError) {
                     this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                 } else {
-                    this.selectedFileUrls = this.selectedFileUrls.filter(f => f.id !== file.id);
+                    if (file.id) {
+                        this.selectedFileUrls = this.selectedFileUrls.filter(f => f.id !== file.id);
+                    } else if (file.upload_id) {
+                        this.uploadFileUrls = this.uploadFileUrls.filter(f => f.upload_id !== file.upload_id);
+                    }
                     this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                 }
             }, (error) => {

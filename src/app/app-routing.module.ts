@@ -14,12 +14,8 @@ const routes: Routes = [
         loadChildren: () => import('./components/layout/layout.module').then(m => m.LayoutModule)
     },
     {
-        path: 'product-management',
-        loadChildren: () => import('./components/product-management/product-management.module').then(m => m.ProductManagementModule)
-    },
-    {
         path: '**',
-        redirectTo: '/product-management',
+        redirectTo: '/formula',
         pathMatch: 'full'
     },
     {

@@ -59,23 +59,23 @@ export class FormulaService {
             cellClass: 'select-all-header-cell pl0px header-check check'
         }, {
             headerName: 'Unique ID',
-            minWidth: 75,
-            width: 115,
+            minWidth: 120,
+            width: 140,
             field: 'unique_id',
             cellRenderer: 'idRender',
             cellClass: 'tooltip-cell'
         },
-        { headerName: 'Supplier Name', minWidth: 75, width: 193, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Supplier Name', minWidth: 140, width: 160, field: 'client_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
         { headerName: 'Status', minWidth: 200, width: 200, field: 'formula_status', cellRenderer: 'statusRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Formula Description', minWidth: 75, width: 115, field: 'formula_description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Classification', minWidth: 120, width: 140, field: 'classification_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell prod_status' },
-        { headerName: 'Submission ID', minWidth: 60, width: 108, field: 'submission_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Formula ID', minWidth: 60, width: 108, field: 'formula_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
-        { headerName: 'Date Requested', field: 'date_requested_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
-        { headerName: 'Date Submitted', field: 'date_submitted_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
-        { headerName: 'Date Approved', field: 'date_approved_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
-        { headerName: 'Date Expired', field: 'date_expired_display', minWidth: 75, width: 142, cellRenderer: 'dateFormatRenderer' },
-        { headerName: 'Formula Approval Document', minWidth: 75, width: 134, field: 'display_name', cellRenderer: 'openDocument', cellClass: 'tooltip-cell' },
+        { headerName: 'Formula Description', minWidth: 200, width: 195, field: 'formula_description', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Classification', minWidth: 140, width: 160, field: 'classification_name', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell prod_status' },
+        { headerName: 'Submission ID', minWidth: 120, width: 160, field: 'submission_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Formula ID', minWidth: 120, width: 160, field: 'formula_id', cellRenderer: 'dashRenderer', cellClass: 'tooltip-cell' },
+        { headerName: 'Date Requested', field: 'date_requested_display', minWidth: 140, width: 160, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Date Submitted', field: 'date_submitted_display', minWidth: 140, width: 160, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Date Approved', field: 'date_approved_display', minWidth: 140, width: 160, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Date Expired', field: 'date_expired_display', minWidth: 120, width: 160, cellRenderer: 'dateFormatRenderer' },
+        { headerName: 'Formula Approval Document', minWidth: 220, width: 250, field: 'display_name', cellRenderer: 'openDocument', cellClass: 'tooltip-cell' },
         ];
     }
 
@@ -269,13 +269,13 @@ export class FormulaService {
           <div class="status-label-wrapper" style="display: flex; align-items: center;">
             <span class="typography-caption-dark-medium ${labelClass} status-label custom-tooltip-trigger"
                   style="padding: 2px 8px;"
-                  ${hasEllipsis ? `data-tooltip="${value}"` : ''}>
+                  ${hasEllipsis ? `title = "${value}"` : ''}>
               ${value}
             </span>
             ${iconHtml}
           </div>
         `;
-      } 
+    }
 
     /**
      * Function to get attachment list
@@ -304,7 +304,7 @@ export class FormulaService {
             const isExpiredFormula = params.colDef.field === 'date_expired_display' && params.data.is_formula_expire === 1;
             const colorStyle = isExpiredFormula ? 'color:#c52335;' : '';
             
-            return `<div style="${colorStyle}" class="text-ellipsis add-tooltip" title="${params.value}">
+            return `<div style="${colorStyle}" class="text-ellipsis add-tooltip">
                         ${params.value}
                     </div>`;
         } else {
