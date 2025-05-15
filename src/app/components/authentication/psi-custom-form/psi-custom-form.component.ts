@@ -123,7 +123,7 @@ export class PsiCustomFormComponent implements OnInit, AfterViewInit {
             } else {
                 this.isShowLoginErrorMsg = true;
                 this.showErrorMsg = res.msg;
-            this.spinner.hide();
+                this.spinner.hide();
 
             }
         } catch (error) {
