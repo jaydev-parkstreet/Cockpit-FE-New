@@ -379,6 +379,11 @@ export class FormulaService {
                     label: 'Date Approved',
                     type: 'daterange',
                     divClass: 'col-4 norightpadding',
+                }, {
+                    key: 'date_expired',
+                    label: 'Date Expired',
+                    type: 'daterange',
+                    divClass: 'col-4 noleftpadding',
                 },
                 { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
                 { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4'}
