@@ -40,10 +40,10 @@ export class CmpInputDatepickerComponent implements OnInit {
         if (this.selectedDate && typeof this.selectedDate === 'string') {
             const parts = this.selectedDate.split('/');
             if (parts.length === 3) {
-                const month = parseInt(parts[0], 10) - 1; // Month is 0-indexed
+                const month = parseInt(parts[0], 10) - 1;
                 const day = parseInt(parts[1], 10);
                 const year = parseInt(parts[2], 10);
-                const parsedDate = new Date(Date.UTC(year, month, day)); // Use UTC to avoid timezone issues
+                const parsedDate = new Date(Date.UTC(year, month, day));
     
                 if (!isNaN(parsedDate.getTime())) {
                     this._date = parsedDate;
