@@ -69,7 +69,6 @@ export class FormulaCrudService {
             formula_approval_id: model.formula_approval_id || null,
             date_approved: model.date_approved || null,
             date_expired: model.date_expired || null,
-            no_expiration_date: model.no_expiration_date || false,
         };
 
         if (edit && !duplicate) {
@@ -166,7 +165,7 @@ export class FormulaCrudService {
                 },
                  {
                     key: 'notes',
-                    name: 'Additional Information',
+                    name: 'notes',
                     label: 'Additional Information',
                     type: 'text',
                     colClass: 'col-sm-12',
@@ -205,16 +204,6 @@ export class FormulaCrudService {
                     isRequired: false,
                     isDisabled: false,
                     placeholder: 'Enter Formula ID'
-                },
-                {
-                    key: 'date_requested',
-                    name: 'date_requested',
-                    label: 'Date Requested',
-                    type: 'datepicker',
-                    colClass: 'col-sm-12',
-                    isRequired: false,
-                    isDisabled: false,
-                    inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
                 },
                 {
                     key: 'commodity_statement',
@@ -272,6 +261,16 @@ export class FormulaCrudService {
                     inputSetting: this.commonService.getDropdownConfig('Select Sample Received')
                 },
                 {
+                    key: 'date_requested',
+                    name: 'date_requested',
+                    label: 'Date Requested',
+                    type: 'datepicker',
+                    colClass: 'col-sm-12',
+                    isRequired: false,
+                    isDisabled: false,
+                    inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
+                },
+                {
                     key: 'date_submitted',
                     name: 'date_submitted',
                     label: 'Date Submitted',
@@ -280,7 +279,27 @@ export class FormulaCrudService {
                     isRequired: false,
                     isDisabled: false,
                     inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
-                }
+                },
+                {
+                    key: 'date_approved',
+                    name: 'date_approved',
+                    label: 'Date Approved',
+                    type: 'datepicker',
+                    colClass: 'col-sm-12',
+                    isRequired: false,
+                    isDisabled: false,
+                    inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
+                },
+                {
+                    key: 'date_expired',
+                    name: 'date_expired',
+                    label: 'Expiration Date',
+                    type: 'datepicker',
+                    colClass: 'col-sm-12',
+                    isRequired: false,
+                    isDisabled: false,
+                    inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
+                },
             ],
 
             rightSection: [
@@ -288,21 +307,6 @@ export class FormulaCrudService {
                     key: 'formula_loi_id',
                     name: 'formula_loi_id',
                     label: 'List of Ingredients Document',
-                    type: 'upload-attachment',
-                    colClass: 'col-sm-12',
-                    isRequired: false,
-                    isDisabled: false,
-                    Placeholder: 'Select List of ingredients Document(s)',
-                    isShowUploader: true,
-                    isFileUpload: true,
-                    isEditMode:false,
-                    isUploadMode: true,
-                    allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
-                },
-                {
-                    key: 'formula_fids_id',
-                    name: 'formula_fids_id',
-                    label: 'FIDS Document',
                     type: 'upload-attachment',
                     colClass: 'col-sm-12',
                     isRequired: false,
@@ -330,6 +334,21 @@ export class FormulaCrudService {
                     allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
                 },
                 {
+                    key: 'formula_fids_id',
+                    name: 'formula_fids_id',
+                    label: 'FIDS Document',
+                    type: 'upload-attachment',
+                    colClass: 'col-sm-12',
+                    isRequired: false,
+                    isDisabled: false,
+                    Placeholder: 'Select List of ingredients Document(s)',
+                    isShowUploader: true,
+                    isFileUpload: true,
+                    isEditMode:false,
+                    isUploadMode: true,
+                    allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
+                },
+                {
                     key: 'formula_approval_id',
                     name: 'formula_approval_id',
                     label: 'Formula Approval Document',
@@ -343,37 +362,7 @@ export class FormulaCrudService {
                     isEditMode:false,
                     isUploadMode: true,
                     allowedExtensions: ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif', 'zip', 'pdf','xls', 'doc', 'docx', 'xlsx','pages', 'xlsm', 'csv', 'odt']
-                },
-                {
-                    key: 'date_approved',
-                    name: 'date_approved',
-                    label: 'Date Approved',
-                    type: 'datepicker',
-                    colClass: 'col-sm-6',
-                    isRequired: false,
-                    isDisabled: false,
-                    inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
-                },
-                {
-                    key: 'date_expired',
-                    name: 'date_expired',
-                    label: 'Expiration Date',
-                    type: 'datepicker',
-                    colClass: 'col-sm-6',
-                    isRequired: false,
-                    isDisabled: false,
-                    inputSetting: this.commonService.dateFormat('mm/dd/yyyy')
-                },
-                {
-                    key: 'no_expiration_date',
-                    name: 'no_expiration_date',
-                    label: 'No Expiration Date',
-                    type: 'checkbox',
-                    colClass: 'col-sm-6 float-right',
-                    isRequired: false,
-                    isDisabled: false,
-                    isExpiration: true
-                },
+                }
             ],
 
             btnLabel: [

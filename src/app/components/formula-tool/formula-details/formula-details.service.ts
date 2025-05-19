@@ -178,7 +178,6 @@ export class formulaDetailService {
             { data: 'commodity_statement_request', label: 'Statement of Composition:', typeOfFilter: null },
             { data: 'formula_description', label: 'Formula Description:', typeOfFilter: null },
             { data: 'formula_status', label: 'Formula Status:', typeOfFilter: null },
-            { data: 'no_expiration_date', label: 'No Expiration Date:', typeOfFilter: null },
             { data: 'product_origin', label: 'Product Origin:', typeOfFilter: null },
             { data: 'product_type', label: 'Product Type:', typeOfFilter: null },
             { data: 'total_batch_size', label: 'Total Batch Size:', typeOfFilter: null },
@@ -190,7 +189,7 @@ export class formulaDetailService {
             { data: 'edit_mode', label: 'Edit Mode:', typeOfFilter: null },
             { data: 'document_link', label: 'Document Link:', typeOfFilter: null },
             { data: 'is_admin', label: 'Is Admin:', typeOfFilter: null },
-            { data: 'notes', label: 'Notes:', typeOfFilter: null }
+            { data: 'notes', label: 'Additional Information:', typeOfFilter: null }
         ];
     }
 }

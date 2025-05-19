@@ -251,8 +251,8 @@ export class FormulaDetailsComponent implements OnInit {
 
             const documentTypes = [
                 { label: 'List of Ingredients Document', kind: 'List of Ingredients' },
-                { label: 'FIDS Document', kind: 'FIDS' },
                 { label: 'Method of Manufacturing Document', kind: 'Method of Manufacturing' },
+                { label: 'FIDS Document', kind: 'FIDS' },
                 { label: 'Formula Approval Document', kind: 'Formula Approval Document' }
 
             ];
@@ -266,7 +266,6 @@ export class FormulaDetailsComponent implements OnInit {
             });
             response.push({ label: 'Date Approved', value: this.formulaDetailService.valueChecker(formulaDetails.date_approved) });
             response.push({ label: 'Date Expired', value: this.formulaDetailService.valueChecker(formulaDetails.date_expired) });
-            response.push({ label: 'No Expiration Date', value: this.formulaDetailService.valueChecker(formulaDetails.no_expiration_date === 1 ? 'NON' : '--') });
         }
         return response;
     }
