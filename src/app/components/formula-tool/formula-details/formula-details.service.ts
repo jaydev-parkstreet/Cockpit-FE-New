@@ -70,13 +70,13 @@ export class formulaDetailService {
         { label: 'Classification', key: 'classification_name' },
         { label: 'Submission ID', key: 'submission_id' },
         { label: 'Formula ID', key: 'formula_id' },
-        { label: 'Date Requested', key: 'date_requested' },
         { label: 'Requested By', key: 'requested_by' },
         { label: 'Commodity Statement', key: 'commodity_statement' },
         { label: 'Statement of Composition', key: 'commodity_statement_request' },
         { label: 'Total Batch Size', key: 'total_batch_size' },
         { label: 'Batch Size Unit of Measure', key: 'batch_size_unit_of_measure' },
         { label: 'Sample Received', key: 'sample_received' },
+        { label: 'Date Requested', key: 'date_requested' },
         { label: 'Date Submitted', key: 'date_submitted' }
       ];
     }
