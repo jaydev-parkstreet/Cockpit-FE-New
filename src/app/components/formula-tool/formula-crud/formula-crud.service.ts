@@ -52,6 +52,7 @@ export class FormulaCrudService {
             formula_status: processDropdownValue(model.formula_status),
             product_origin: model.product_origin || "",
             product_type: processDropdownValue(model.product_type),
+            notes: model.notes || "",
             classification: processDropdownValue(model.classification),
             submission_id: model.submission_id || "",
             formula_id: model.formula_id || "",
@@ -60,7 +61,6 @@ export class FormulaCrudService {
             commodity_statement_request: model.commodity_statement_request || "",
             total_batch_size: model.total_batch_size || "",
             batch_size_unit_of_measure: model.batch_size_unit_of_measure || "",
-            notes: model.notes || "",
             sample_received: processDropdownValue(model.sample_received),
             date_submitted: model.date_submitted || null,
             formula_loi_id: model.formula_loi_id || null,
@@ -164,6 +164,16 @@ export class FormulaCrudService {
                     isDisabled: false,
                     inputSetting: this.commonService.getDropdownConfig('Select Product Type')
                 },
+                 {
+                    key: 'notes',
+                    name: 'Additional Information',
+                    label: 'Additional Information',
+                    type: 'text',
+                    colClass: 'col-sm-12',
+                    isRequired: false,
+                    isDisabled: false,
+                    placeholder: 'Enter Additional Information'
+                },
                 {
                     key: 'classification',
                     name: 'classification',
@@ -248,16 +258,6 @@ export class FormulaCrudService {
                         { value: 'Liters', name: 'Liters' },
                         { value: 'Gallons', name: 'Gallons' }
                     ],
-                },
-                {
-                    key: 'notes',
-                    name: 'notes',
-                    label: 'Notes',
-                    type: 'text',
-                    colClass: 'col-sm-12',
-                    isRequired: false,
-                    isDisabled: false,
-                    placeholder: 'Enter Notes'
                 },
                 {
                     key: 'sample_received',
