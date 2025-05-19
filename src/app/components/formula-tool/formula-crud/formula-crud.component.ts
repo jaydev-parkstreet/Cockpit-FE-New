@@ -591,7 +591,7 @@ export class FormulaCrudComponent implements OnInit {
      */
     updateSubmitButtonState(): void {
         const formValid = this.formulaForm.valid;
-        const requiredFieldKeysLeftSection = ['formula_description', 'product_origin', 'date_submitted','date_approved', 'date_expired'];
+        const requiredFieldKeysLeftSection = ['formula_description', 'product_origin', 'date_submitted', 'date_approved', 'date_expired'];
         const requiredFieldsValidLeftSection = requiredFieldKeysLeftSection.every(key => {
             const field = this.crudFieldConfig.leftSection.find(f => f.key === key);
             const control = this.formulaForm.get(key);
@@ -626,13 +626,11 @@ export class FormulaCrudComponent implements OnInit {
         switch (fieldName) {
             case 'product_type':
                 this.product_type_data = selectedValue[0].name;
-                // Clear classification when product type changes
                 this.formulaForm.get('classification')?.setValue(null);
                 this.sellectedData['classification'] = [];
                 this.fetchClassification();
                 break;
             case 'product_origin':
-                // Clear classification when product origin changes
                 this.formulaForm.get('classification')?.setValue(null);
                 this.sellectedData['classification'] = [];
                 this.fetchClassification();
@@ -650,15 +648,28 @@ export class FormulaCrudComponent implements OnInit {
                 }
                 break;
             case 'formula_status':
-                const fieldsToUpdate = ['date_expired', 'date_approved', 'formula_approval_id'];
-                if (Array.isArray(this.crudFieldConfig.rightSection)) {
-                    fieldsToUpdate.forEach(fieldKey => {
-                        const field = this.crudFieldConfig.rightSection.find(f => f.key === fieldKey);
-                        if (field) {
-                            field.isRequired = selectedValue[0].id === 2;
-                        }
-                    });
+                const isApproved = selectedValue[0].id === 2;
+                const dateApprovedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_approved');
+                const dateExpiredField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_expired');
+                if (dateApprovedField) {
+                    dateApprovedField.isRequired = isApproved;
                 }
+                if (dateExpiredField) {
+                    dateExpiredField.isRequired = isApproved;
+                }
+                const dateApprovedControl = this.formulaForm.get('date_approved');
+                const dateExpiredControl = this.formulaForm.get('date_expired');
+
+                if (isApproved) {
+                    dateApprovedControl?.setValidators([Validators.required]);
+                    dateExpiredControl?.setValidators([Validators.required]);
+                } else {
+                    dateApprovedControl?.clearValidators();
+                    dateExpiredControl?.clearValidators();
+                }
+
+                dateApprovedControl?.updateValueAndValidity();
+                dateExpiredControl?.updateValueAndValidity();
                 const isFiled = selectedValue[0].id === 3;
                 const dateSubmittedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_submitted');
                 const dateSubmittedControl = this.formulaForm.get('date_submitted');
