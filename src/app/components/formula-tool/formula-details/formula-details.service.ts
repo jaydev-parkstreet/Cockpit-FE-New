@@ -66,6 +66,7 @@ export class formulaDetailService {
           iconClass: 'fas fa-info-circle' },
         { label: 'Product Origin', key: 'product_origin' },
         { label: 'Product Type', key: 'product_type' },
+        { label: 'Additional Information', key: 'notes' },
         { label: 'Classification', key: 'classification_name' },
         { label: 'Submission ID', key: 'submission_id' },
         { label: 'Formula ID', key: 'formula_id' },
@@ -75,7 +76,6 @@ export class formulaDetailService {
         { label: 'Statement of Composition', key: 'commodity_statement_request' },
         { label: 'Total Batch Size', key: 'total_batch_size' },
         { label: 'Batch Size Unit of Measure', key: 'batch_size_unit_of_measure' },
-        { label: 'Notes', key: 'notes' },
         { label: 'Sample Received', key: 'sample_received' },
         { label: 'Date Submitted', key: 'date_submitted' }
       ];
