@@ -111,6 +111,16 @@ COLORS
   background: $colors-v2-filed-bg;
 }
 
+.u-bg-reject {
+  background: $colors-v2-base-error;
+  color: $colors-neutral-white !important;
+}
+
+.u-bg-pending {
+  background: $colors-v2-pending-bg;
+  color: $colors-neutral-white !important;
+}
+
 .u-bg-error-medium {
   background: $colors-neutral-white;
   color: $colors-v2-base-error !important;

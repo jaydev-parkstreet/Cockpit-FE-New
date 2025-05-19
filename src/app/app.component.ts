@@ -21,8 +21,8 @@ export class AppComponent implements OnInit {
 		const loggedIn = localStorage.getItem('authToken');
 		if (!loggedIn) {
 			this.router.navigate(['/login']);
-		}else{
-			this.authService.setSessionOldCockpitSite(loggedIn);
-		}
+		} else {
+			this.authService.checkToken();
+		}	
 	}
 }

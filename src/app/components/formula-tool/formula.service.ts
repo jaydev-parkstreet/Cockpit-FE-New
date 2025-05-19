@@ -241,11 +241,11 @@ export class FormulaService {
     renderStatus(params: any): string {
         const statusLabels: Record<string, string> = {
           'Approved': 'u-bg-success-lite',
-          'Rejected': 'u-bg-error',
+          'Rejected': 'u-bg-reject',
           'Needs Action - Waiting on Supplier': 'u-bg-warning text-ellipsis',
           'Request Received': 'u-bg-neutral-light',
           'Pending Formula Approval': 'u-bg-warning text-ellipsis',
-          'Pending Samples - Waiting on Supplier': 'u-bg-warning text-ellipsis',
+          'Pending Samples - Waiting on Supplier': 'u-bg-pending text-ellipsis',
           'Ready for Submission': 'yellow text-ellipsis',
           'Cancelled': 'u-bg-neutral-light',
           'Under Review': 'u-bg-error-medium',
@@ -379,6 +379,11 @@ export class FormulaService {
                     label: 'Date Approved',
                     type: 'daterange',
                     divClass: 'col-4 norightpadding',
+                }, {
+                    key: 'date_expired',
+                    label: 'Date Expired',
+                    type: 'daterange',
+                    divClass: 'col-4 noleftpadding',
                 },
                 { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
                 { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4'}

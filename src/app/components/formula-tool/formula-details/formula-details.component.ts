@@ -169,15 +169,15 @@ export class FormulaDetailsComponent implements OnInit {
         } else if (this.status === 'Approved') {
             this.statusClass = 'badge med u-bg-success-lite';
         } else if (this.status === 'Rejected') {
-            this.statusClass = 'badge med u-bg-error';
+            this.statusClass = 'badge med u-bg-reject';
         } else if (this.status === 'Filed') {
             this.statusClass = 'badge med u-bg-filed';
         } else if (
             this.status === 'Needs Action - Waiting on Supplier' ||
-            this.status === 'Needs Action-Waiting on Supplier' ||
-            this.status === 'Pending Samples - Waiting on Supplier'
-        ) {
+            this.status === 'Needs Action-Waiting on Supplier') {
             this.statusClass = 'badge med u-bg-warning';
+        } else if (this.status === 'Pending Samples - Waiting on Supplier') {
+            this.statusClass = 'badge med u-bg-pending';
         } else if (
             this.status === 'Request Received' ||
             this.status === 'Cancelled'

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import AppRoutes from 'src/app/app.routes';
 import { Router } from '@angular/router';
@@ -17,7 +17,6 @@ export class AuthService {
 	constructor(
 		private http: HttpClient,
 		private router: Router, private commonService: CommonService) {
-		this.checkToken();
 	}
 
 	/**
@@ -64,7 +63,7 @@ export class AuthService {
 			if (url.searchParams.get('r') || url.searchParams.get('c')) {
 				window.location.href = loginUrl;
 			} else {
-				this.router.navigate(['/login'], { queryParams: { reload: true } });
+				this.router.navigate(['/login']);
 			}
 		}).catch(error => {
 		});
@@ -117,11 +116,17 @@ export class AuthService {
 		return this.userData;
 	}
 
+	validTokenCall(token) {
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get(environment.apiUrl + AppRoutes.AUTHENTICATION.CHECK_TOKEN, { headers }).toPromise();
+    }
+
 	/**
 	 * Function to check Token.
 	 * @author PSI-Enhancements
 	 */
-	private checkToken(): void {
+	checkToken(): void {
+		// TO-DO Remove console log once verified on preprod
 		const token = this.getToken();
 		this.isAuthenticatedSubject.next(!!token);
 		if (token) {
@@ -130,10 +135,24 @@ export class AuthService {
 			const currentUrl = decodeURIComponent(window.location.href);
 			if (currentUrl.includes("/login?message=You have successfully logged out.")) {
 				this.logout();
-				window.location.reload();
+			//	window.location.reload();
 			} else if (currentUrl.includes('/login')) {
-				window.location.href = environment.oldCockpit + '/router.php/dashboard';
-			}
+				console.log('inside else if');
+				const validToken = this.validTokenCall(token);
+				validToken.then((res: any) => {
+					console.log(res);
+					if (!res.hasError) {
+						console.log('valid token');
+						this.setSessionOldCockpitSite(token);
+						setTimeout(() => {
+							window.location.href = environment.oldCockpit + '/router.php/dashboard';
+						}, 500);
+						console.log('in success with invalid token');
+					}
+				}).catch(error => {
+					console.log('in error with invalid token', error);
+				});
+			} 
 		}
 	}
 }

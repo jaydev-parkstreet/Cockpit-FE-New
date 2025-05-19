@@ -175,6 +175,7 @@ export class formulaDetailService {
             { data: 'date_approved', label: 'Approved Date:', typeOfFilter: null },
             { data: 'date_expired', label: 'Expired Date:', typeOfFilter: null },
             { data: 'commodity_statement', label: 'Commodity Statement:', typeOfFilter: null },
+            { data: 'commodity_statement_request', label: 'Statement of Composition:', typeOfFilter: null },
             { data: 'formula_description', label: 'Formula Description:', typeOfFilter: null },
             { data: 'formula_status', label: 'Formula Status:', typeOfFilter: null },
             { data: 'no_expiration_date', label: 'No Expiration Date:', typeOfFilter: null },
