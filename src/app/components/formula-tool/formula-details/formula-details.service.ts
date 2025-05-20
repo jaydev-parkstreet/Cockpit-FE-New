@@ -180,16 +180,17 @@ export class formulaDetailService {
             { data: 'formula_status', label: 'Formula Status:', typeOfFilter: null },
             { data: 'product_origin', label: 'Product Origin:', typeOfFilter: null },
             { data: 'product_type', label: 'Product Type:', typeOfFilter: null },
+            { data: 'notes', label: 'Additional Information:', typeOfFilter: null },
             { data: 'total_batch_size', label: 'Total Batch Size:', typeOfFilter: null },
             { data: 'classification_name', label: 'Classification:', typeOfFilter: null },
             { data: 'sample_received', label: 'Sample Received:', typeOfFilter: null },
             { data: 'submission_id', label: 'Submission ID:', typeOfFilter: null },
+            { data: 'formula_id', label: 'Formula ID:', typeOfFilter: null },
             { data: 'is_archived', label: 'Is Archived:', typeOfFilter: null },
             { data: 'ps_user', label: 'PS User:', typeOfFilter: null },
             { data: 'edit_mode', label: 'Edit Mode:', typeOfFilter: null },
             { data: 'document_link', label: 'Document Link:', typeOfFilter: null },
             { data: 'is_admin', label: 'Is Admin:', typeOfFilter: null },
-            { data: 'notes', label: 'Additional Information:', typeOfFilter: null }
         ];
     }
 }
