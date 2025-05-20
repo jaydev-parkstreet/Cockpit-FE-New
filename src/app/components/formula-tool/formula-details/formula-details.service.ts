@@ -66,17 +66,17 @@ export class formulaDetailService {
           iconClass: 'fas fa-info-circle' },
         { label: 'Product Origin', key: 'product_origin' },
         { label: 'Product Type', key: 'product_type' },
+        { label: 'Additional Information', key: 'notes' },
         { label: 'Classification', key: 'classification_name' },
         { label: 'Submission ID', key: 'submission_id' },
         { label: 'Formula ID', key: 'formula_id' },
-        { label: 'Date Requested', key: 'date_requested' },
         { label: 'Requested By', key: 'requested_by' },
         { label: 'Commodity Statement', key: 'commodity_statement' },
         { label: 'Statement of Composition', key: 'commodity_statement_request' },
         { label: 'Total Batch Size', key: 'total_batch_size' },
         { label: 'Batch Size Unit of Measure', key: 'batch_size_unit_of_measure' },
-        { label: 'Notes', key: 'notes' },
         { label: 'Sample Received', key: 'sample_received' },
+        { label: 'Date Requested', key: 'date_requested' },
         { label: 'Date Submitted', key: 'date_submitted' }
       ];
     }
@@ -178,19 +178,19 @@ export class formulaDetailService {
             { data: 'commodity_statement_request', label: 'Statement of Composition:', typeOfFilter: null },
             { data: 'formula_description', label: 'Formula Description:', typeOfFilter: null },
             { data: 'formula_status', label: 'Formula Status:', typeOfFilter: null },
-            { data: 'no_expiration_date', label: 'No Expiration Date:', typeOfFilter: null },
             { data: 'product_origin', label: 'Product Origin:', typeOfFilter: null },
             { data: 'product_type', label: 'Product Type:', typeOfFilter: null },
+            { data: 'notes', label: 'Additional Information:', typeOfFilter: null },
             { data: 'total_batch_size', label: 'Total Batch Size:', typeOfFilter: null },
             { data: 'classification_name', label: 'Classification:', typeOfFilter: null },
             { data: 'sample_received', label: 'Sample Received:', typeOfFilter: null },
             { data: 'submission_id', label: 'Submission ID:', typeOfFilter: null },
+            { data: 'formula_id', label: 'Formula ID:', typeOfFilter: null },
             { data: 'is_archived', label: 'Is Archived:', typeOfFilter: null },
             { data: 'ps_user', label: 'PS User:', typeOfFilter: null },
             { data: 'edit_mode', label: 'Edit Mode:', typeOfFilter: null },
             { data: 'document_link', label: 'Document Link:', typeOfFilter: null },
             { data: 'is_admin', label: 'Is Admin:', typeOfFilter: null },
-            { data: 'notes', label: 'Notes:', typeOfFilter: null }
         ];
     }
 }

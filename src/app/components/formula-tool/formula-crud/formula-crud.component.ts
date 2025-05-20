@@ -104,7 +104,6 @@ export class FormulaCrudComponent implements OnInit {
         history.pushState(null, '', location.href);
         window.addEventListener('popstate', this.handleBackNavigation);
         this.form = this.formBuilder.group({
-            no_expiration_date: ['0'],
             date_expired: null,
         });
         this.formulaForm.valueChanges.subscribe(values => {
@@ -155,7 +154,6 @@ export class FormulaCrudComponent implements OnInit {
             const hasUserInput = Object.keys(currentFormData).some(key => {
                 const value = currentFormData[key];
                 if (key === 'product_origin' && value === 'I') return false;
-                if (key === 'no_expiration_date' && value === false) return false;
                 return value !== null && value !== '' && value !== undefined &&
                     (!Array.isArray(value) || value.length > 0);
             });
@@ -467,6 +465,7 @@ export class FormulaCrudComponent implements OnInit {
             client_id: formulaData.client_id || null,
             classification: formulaData.classification || null,
             product_type: formulaData.product_type || null,
+            notes: formulaData.notes || '',
             sample_received: this.getDropDownArrayByIds(this.filtersList?.sample_received, formulaData.sample_received, 'sample_received'),
             type: this.getDropDownArrayByIds(this.filtersList?.types, formulaData.type, 'type'),
             category: this.getDropDownArrayByIds(this.filtersList?.categories, formulaData.category, 'category'),
@@ -476,7 +475,6 @@ export class FormulaCrudComponent implements OnInit {
             commodity_statement_request: formulaData.commodity_statement_request || '',
             total_batch_size: formulaData.total_batch_size || '',
             batch_size_unit_of_measure: formulaData.batch_size_unit_of_measure || '',
-            notes: formulaData.notes || '',
             date_submitted: formulaData.date_submitted || '',
             formula_loi_id: formulaData?.formula_loi_id || [],
             formula_fids_id: formulaData?.formula_fids_id || [],
@@ -484,7 +482,6 @@ export class FormulaCrudComponent implements OnInit {
             formula_approval_id: formulaData?.formula_approval_id || [],
             date_approved: formulaData.date_approved || '',
             date_expired: formulaData.date_expired || '',
-            no_expiration_date: formulaData.no_expiration_date || false,
         };
 
         this.formulaForm.patchValue(formData);
@@ -594,20 +591,7 @@ export class FormulaCrudComponent implements OnInit {
      */
     updateSubmitButtonState(): void {
         const formValid = this.formulaForm.valid;
-        const requiredFieldKeysRightSection = ['date_approved', 'date_expired'];
-        const requiredFieldsValidRightSection = requiredFieldKeysRightSection.every(key => {
-            const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
-            const control = this.formulaForm.get(key);
-
-            if (key === 'date_expired' && this.form.get('no_expiration_date')?.value === '1') {
-                return true;
-            }
-
-            if (!field?.isRequired) return true;
-            return !!control?.value;
-        });
-
-        const requiredFieldKeysLeftSection = ['formula_description', 'product_origin', 'date_submitted'];
+        const requiredFieldKeysLeftSection = ['formula_description', 'product_origin', 'date_submitted', 'date_approved', 'date_expired'];
         const requiredFieldsValidLeftSection = requiredFieldKeysLeftSection.every(key => {
             const field = this.crudFieldConfig.leftSection.find(f => f.key === key);
             const control = this.formulaForm.get(key);
@@ -617,7 +601,7 @@ export class FormulaCrudComponent implements OnInit {
 
         const submitButton = this.crudFieldConfig?.btnLabel?.find(btn => btn.label === 'Submit');
         if (submitButton) {
-            submitButton.isDisable = !(formValid && requiredFieldsValidRightSection && requiredFieldsValidLeftSection);
+            submitButton.isDisable = !(formValid && requiredFieldsValidLeftSection);
             this.changeDetector.detectChanges();
         }
     }
@@ -642,13 +626,11 @@ export class FormulaCrudComponent implements OnInit {
         switch (fieldName) {
             case 'product_type':
                 this.product_type_data = selectedValue[0].name;
-                // Clear classification when product type changes
                 this.formulaForm.get('classification')?.setValue(null);
                 this.sellectedData['classification'] = [];
                 this.fetchClassification();
                 break;
             case 'product_origin':
-                // Clear classification when product origin changes
                 this.formulaForm.get('classification')?.setValue(null);
                 this.sellectedData['classification'] = [];
                 this.fetchClassification();
@@ -666,15 +648,28 @@ export class FormulaCrudComponent implements OnInit {
                 }
                 break;
             case 'formula_status':
-                const fieldsToUpdate = ['date_expired', 'date_approved', 'formula_approval_id'];
-                if (Array.isArray(this.crudFieldConfig.rightSection)) {
-                    fieldsToUpdate.forEach(fieldKey => {
-                        const field = this.crudFieldConfig.rightSection.find(f => f.key === fieldKey);
-                        if (field) {
-                            field.isRequired = selectedValue[0].id === 2;
-                        }
-                    });
+                const isApproved = selectedValue[0].id === 2;
+                const dateApprovedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_approved');
+                const dateExpiredField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_expired');
+                if (dateApprovedField) {
+                    dateApprovedField.isRequired = isApproved;
                 }
+                if (dateExpiredField) {
+                    dateExpiredField.isRequired = isApproved;
+                }
+                const dateApprovedControl = this.formulaForm.get('date_approved');
+                const dateExpiredControl = this.formulaForm.get('date_expired');
+
+                if (isApproved) {
+                    dateApprovedControl?.setValidators([Validators.required]);
+                    dateExpiredControl?.setValidators([Validators.required]);
+                } else {
+                    dateApprovedControl?.clearValidators();
+                    dateExpiredControl?.clearValidators();
+                }
+
+                dateApprovedControl?.updateValueAndValidity();
+                dateExpiredControl?.updateValueAndValidity();
                 const isFiled = selectedValue[0].id === 3;
                 const dateSubmittedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_submitted');
                 const dateSubmittedControl = this.formulaForm.get('date_submitted');
@@ -821,7 +816,6 @@ export class FormulaCrudComponent implements OnInit {
                 const hasUserInput = Object.keys(currentFormData).some(key => {
                     const value = currentFormData[key];
                     if (key === 'product_origin' && value === 'I') return false;
-                    if (key === 'no_expiration_date' && value === false) return false;
                     return value !== null && value !== '' && value !== undefined &&
                         (!Array.isArray(value) || value.length > 0);
                 });
@@ -1183,43 +1177,4 @@ export class FormulaCrudComponent implements OnInit {
         });
     }
 
-    /**
-     * The function `onCheckedInput` updates form controls based on the checked status of a field, with
-     * special handling for a field related to expiration dates.
-     * @author PSI-VIII
-     * @param data { field: string, isChecked: boolean }
-     */
-    onCheckedInput(data: { field: string, isChecked: boolean }): void {
-        const { field, isChecked } = data;
-        const control = this.form.get(field);
-        if (control) {
-            control.setValue(isChecked ? '1' : '0');
-        }
-
-        if (field === 'no_expiration_date') {
-            const dateExpiredControl = this.formulaForm.get('date_expired');
-            if (dateExpiredControl) {
-                dateExpiredControl.setValue(null);
-                isChecked ? dateExpiredControl.disable() : dateExpiredControl.enable();
-
-                const formulaStatus = this.formulaForm.get('formula_status')?.value;
-                const isApproved = formulaStatus === '2';
-
-                if (isChecked) {
-                    dateExpiredControl.clearValidators();
-                } else if (isApproved) {
-                    dateExpiredControl.setValidators([Validators.required]);
-                }
-                dateExpiredControl.updateValueAndValidity();
-            }
-            if (Array.isArray(this.crudFieldConfig.rightSection)) {
-                const dateExpiredField = this.crudFieldConfig.rightSection.find(f => f.key === 'date_expired');
-                if (dateExpiredField) {
-                    dateExpiredField.isDisabled = isChecked;
-                    dateExpiredField.isRequired = !isChecked;
-                }
-            }
-            this.updateSubmitButtonState();
-        }
-    }
 }
