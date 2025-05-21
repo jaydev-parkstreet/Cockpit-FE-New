@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { SimpleModalService } from 'ngx-simple-modal';
+import * as moment from 'moment';
 @Component({
     selector: 'app-psi-crud-form',
     templateUrl: './psi-crud-form.component.html',
@@ -199,6 +200,9 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      * @param event
      */
     onDateChangedInForm(fieldName: string, event: { type: string; value: Date | null }) {
-        this.form.get(fieldName)?.setValue(event.value);
+        const date = event.value
+            ? moment.utc(moment(event.value).format('YYYY-MM-DD')).toDate()
+            : null;
+        this.form.get(fieldName)?.setValue(date);
     }
 }
