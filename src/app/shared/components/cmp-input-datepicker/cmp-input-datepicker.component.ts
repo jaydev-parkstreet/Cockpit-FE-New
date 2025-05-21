@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Setting } from 'src/app/interfaces/setting';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-cmp-input-datepicker',
@@ -37,33 +38,12 @@ export class CmpInputDatepickerComponent implements OnInit {
     }
 
     private _parseInputDate(): void {
-        if (this.selectedDate && typeof this.selectedDate === 'string') {
-            const parts = this.selectedDate.split('/');
-            if (parts.length === 3) {
-                const month = parseInt(parts[0], 10) - 1;
-                const day = parseInt(parts[1], 10);
-                const year = parseInt(parts[2], 10);
-                 const parsedDate = new Date(year, month, day);
-               // const parsedDate = new Date(Date.UTC(year, month, day));
-    
-                if (!isNaN(parsedDate.getTime())) {
-                    this._date = parsedDate;
-                } else {
-                    this._date = null;
-                }
-            } else {
-                this._date = null;
-            }
-        } else if (this.selectedDate instanceof Date || this.selectedDate === null) {
-            // this._date = this.selectedDate instanceof Date ? new Date(Date.UTC(
-            //     this.selectedDate.getFullYear(),
-            //     this.selectedDate.getMonth(),
-            //     this.selectedDate.getDate()
-            // )) : null;
-            this._date = this.selectedDate instanceof Date ? this.selectedDate : null;
-        } else {
+        if (!this.selectedDate) {
             this._date = null;
+            return;
         }
+        const parsed = moment(this.selectedDate, 'MM/DD/YYYY', true);
+        this._date = parsed.isValid() ? parsed.toDate() : null;
     }
  
 
@@ -75,8 +55,9 @@ export class CmpInputDatepickerComponent implements OnInit {
      * Setter for the internal _date property, emits the change.
      */
     set dateModel(newDate: Date | null) {
+        if (this._date?.getTime() === newDate?.getTime()) return;
         this._date = newDate;
-        this.dateModelChange.emit({ type: this.type, value: this._date });
+        this.dateModelChange.emit({ type: this.type, value: newDate });
     }
 
     /**
@@ -94,26 +75,19 @@ export class CmpInputDatepickerComponent implements OnInit {
      * @author PSI-Enhancement
      * @returns void
      */
-    onDateChange(date: Date) {
-        this.selectedDate = date ?? null;
-        this.dateModel = date ?? null;
-        this.dateModelChange.emit({ type: this.type, value: this.selectedDate });
-        // if (date) {
-        //     const normalizedDate = new Date(Date.UTC(
-        //         date.getFullYear(),
-        //         date.getMonth(),
-        //         date.getDate()
-        //     ));
-        //     this.selectedDate = normalizedDate;
-        //     this.dateModel = normalizedDate;
-        //     this.dateModelChange.emit({ type: this.type, value: normalizedDate });
-        // } else {
-        //     this.selectedDate = null;
-        //     this.dateModel = null;
-        //     this.dateModelChange.emit({ type: this.type, value: null });
-        // }
-    }
+   onDateChange(date: Date) {
+        if (!date || isNaN(date.getTime())) {
+            this.selectedDate = null;
+            this.dateModel = null;
+            this.dateModelChange.emit({ type: this.type, value: null });
+            return;
+        }
 
+        const formattedDate = moment(date).format('MM/DD/YYYY');
+        this.selectedDate = formattedDate;
+        this.dateModel = moment(formattedDate, 'MM/DD/YYYY').toDate();
+        this.dateModelChange.emit({ type: this.type, value: this.dateModel });
+    }
     updatePlaceholder() {
         this.calculatedPlaceholder = this.setting?.placeholder || 'mm/dd/yyyy';
     }
