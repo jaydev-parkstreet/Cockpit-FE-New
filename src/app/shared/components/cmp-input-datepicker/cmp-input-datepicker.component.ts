@@ -43,7 +43,8 @@ export class CmpInputDatepickerComponent implements OnInit {
                 const month = parseInt(parts[0], 10) - 1;
                 const day = parseInt(parts[1], 10);
                 const year = parseInt(parts[2], 10);
-                const parsedDate = new Date(Date.UTC(year, month, day));
+                 const parsedDate = new Date(year, month, day);
+               // const parsedDate = new Date(Date.UTC(year, month, day));
     
                 if (!isNaN(parsedDate.getTime())) {
                     this._date = parsedDate;
@@ -54,11 +55,12 @@ export class CmpInputDatepickerComponent implements OnInit {
                 this._date = null;
             }
         } else if (this.selectedDate instanceof Date || this.selectedDate === null) {
-            this._date = this.selectedDate instanceof Date ? new Date(Date.UTC(
-                this.selectedDate.getFullYear(),
-                this.selectedDate.getMonth(),
-                this.selectedDate.getDate()
-            )) : null;
+            // this._date = this.selectedDate instanceof Date ? new Date(Date.UTC(
+            //     this.selectedDate.getFullYear(),
+            //     this.selectedDate.getMonth(),
+            //     this.selectedDate.getDate()
+            // )) : null;
+            this._date = this.selectedDate instanceof Date ? this.selectedDate : null;
         } else {
             this._date = null;
         }
@@ -93,20 +95,23 @@ export class CmpInputDatepickerComponent implements OnInit {
      * @returns void
      */
     onDateChange(date: Date) {
-        if (date) {
-            const normalizedDate = new Date(Date.UTC(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate()
-            ));
-            this.selectedDate = normalizedDate;
-            this.dateModel = normalizedDate;
-            this.dateModelChange.emit({ type: this.type, value: normalizedDate });
-        } else {
-            this.selectedDate = null;
-            this.dateModel = null;
-            this.dateModelChange.emit({ type: this.type, value: null });
-        }
+        this.selectedDate = date ?? null;
+        this.dateModel = date ?? null;
+        this.dateModelChange.emit({ type: this.type, value: this.selectedDate });
+        // if (date) {
+        //     const normalizedDate = new Date(Date.UTC(
+        //         date.getFullYear(),
+        //         date.getMonth(),
+        //         date.getDate()
+        //     ));
+        //     this.selectedDate = normalizedDate;
+        //     this.dateModel = normalizedDate;
+        //     this.dateModelChange.emit({ type: this.type, value: normalizedDate });
+        // } else {
+        //     this.selectedDate = null;
+        //     this.dateModel = null;
+        //     this.dateModelChange.emit({ type: this.type, value: null });
+        // }
     }
 
     updatePlaceholder() {
