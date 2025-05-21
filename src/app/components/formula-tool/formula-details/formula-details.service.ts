@@ -191,6 +191,7 @@ export class formulaDetailService {
             { data: 'edit_mode', label: 'Edit Mode:', typeOfFilter: null },
             { data: 'document_link', label: 'Document Link:', typeOfFilter: null },
             { data: 'is_admin', label: 'Is Admin:', typeOfFilter: null },
+            { data: 'batch_size_unit_of_measure', label: 'Batch Size Unit of Measure:', typeOfFilter: null },
         ];
     }
 }
