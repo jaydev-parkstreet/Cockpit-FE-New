@@ -42,7 +42,8 @@ export class CmpInputDatepickerComponent implements OnInit {
             this._date = null;
             return;
         }
-        const parsed = moment(this.selectedDate, 'MM/DD/YYYY', true);
+
+        const parsed = moment(this.selectedDate, ['MM/DD/YYYY', 'YYYY-MM-DD'], true);
         this._date = parsed.isValid() ? parsed.toDate() : null;
     }
  
@@ -75,7 +76,7 @@ export class CmpInputDatepickerComponent implements OnInit {
      * @author PSI-Enhancement
      * @returns void
      */
-   onDateChange(date: Date) {
+    onDateChange(date: Date) {
         if (!date || isNaN(date.getTime())) {
             this.selectedDate = null;
             this.dateModel = null;
@@ -83,11 +84,12 @@ export class CmpInputDatepickerComponent implements OnInit {
             return;
         }
 
-        const formattedDate = moment(date).format('MM/DD/YYYY');
+        const formattedDate = moment(date).format('YYYY-MM-DD');
         this.selectedDate = formattedDate;
-        this.dateModel = moment(formattedDate, 'MM/DD/YYYY').toDate();
+        this.dateModel = moment(formattedDate, 'YYYY-MM-DD').toDate();
         this.dateModelChange.emit({ type: this.type, value: this.dateModel });
     }
+
     updatePlaceholder() {
         this.calculatedPlaceholder = this.setting?.placeholder || 'mm/dd/yyyy';
     }

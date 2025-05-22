@@ -257,6 +257,9 @@ export class FormulaCrudComponent implements OnInit {
             ...this.crudFieldConfig.leftSection
         ];
 
+        const today = new Date();
+        const todayFormatted = this.datePipe.transform(today, 'MM/dd/yyyy');
+
         allFields.forEach(field => {
             if (!field || !field.name) {
                 console.error('Invalid field configuration:', field);
@@ -267,8 +270,14 @@ export class FormulaCrudComponent implements OnInit {
             const isFieldRequired = field.required || field.isRequired;
             const validators = isFieldRequired ? [Validators.required] : [];
 
+            let defaultValue = field.value || null;
+            if (field.name === 'date_requested' && !this.edit) {
+                defaultValue = todayFormatted;
+                console.log('Setting default date_requested value:', defaultValue);
+            }
+
             formControls[field.name] = new FormControl(
-                { value: field.value || null, disabled: isDisabled },
+                { value: defaultValue, disabled: isDisabled },
                 validators
             );
         });
@@ -278,6 +287,11 @@ export class FormulaCrudComponent implements OnInit {
             this.updateSubmitButtonState();
         });
         this.changeDetector.detectChanges();
+        setTimeout(() => {
+            if (!this.edit && this.formulaForm.get('date_requested')) {
+                this.formulaForm.get('date_requested').setValue(todayFormatted);
+            }
+        });
     }
 
     /**
@@ -537,6 +551,11 @@ export class FormulaCrudComponent implements OnInit {
 
         setClientValue('client_id', formulaData.client_id);
         setDropdownValue('formula_status', formulaData.formula_status_id);
+        const statusOptions = this.filtersList?.formula_status || [];
+        const selectedStatus = statusOptions.find(opt => opt.id === formulaData.formula_status_id);
+        if (selectedStatus) {
+            this.onDropdownStateChange('formula_status', [selectedStatus]);
+        }
         setDropdownValue('product_type', formulaData.product_type);
         setDropdownValue('sample_received', formulaData.sample_received);
         this.product_type_data = formulaData.product_type;
@@ -651,32 +670,40 @@ export class FormulaCrudComponent implements OnInit {
                 const isApproved = selectedValue[0].id === 2;
                 const dateApprovedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_approved');
                 const dateExpiredField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_expired');
+                const approvalDoc = this.crudFieldConfig.rightSection.find(f => f.key === 'formula_approval_id');
                 if (dateApprovedField) {
                     dateApprovedField.isRequired = isApproved;
                 }
                 if (dateExpiredField) {
                     dateExpiredField.isRequired = isApproved;
                 }
+                if (approvalDoc) {
+                    approvalDoc.isRequired = isApproved;
+                }
                 const dateApprovedControl = this.formulaForm.get('date_approved');
                 const dateExpiredControl = this.formulaForm.get('date_expired');
+                const approvalDocControl = this.formulaForm.get('formula_approval_id')
 
                 if (isApproved) {
                     dateApprovedControl?.setValidators([Validators.required]);
                     dateExpiredControl?.setValidators([Validators.required]);
+                    approvalDocControl?.setValidators([Validators.required]);
                 } else {
                     dateApprovedControl?.clearValidators();
                     dateExpiredControl?.clearValidators();
+                    approvalDocControl?.clearValidators();
                 }
 
                 dateApprovedControl?.updateValueAndValidity();
                 dateExpiredControl?.updateValueAndValidity();
+                approvalDocControl?.updateValueAndValidity();
                 const isFiled = selectedValue[0].id === 3;
                 const dateSubmittedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_submitted');
                 const dateSubmittedControl = this.formulaForm.get('date_submitted');
-    
+
                 if (dateSubmittedField && dateSubmittedControl) {
                     dateSubmittedField.isRequired = isFiled;
-    
+
                     if (isFiled) {
                         dateSubmittedControl.setValidators([Validators.required]);
                     } else {
@@ -684,12 +711,12 @@ export class FormulaCrudComponent implements OnInit {
                     }
                     dateSubmittedControl.updateValueAndValidity();
                 }
-    
+
                 this.updateSubmitButtonState();
                 break;
         }
     }
-    
+
     private safeCompare(a: any, b: any): boolean {
         if (a == null && b == null) return true;
         if (a == null || b == null) return false;
@@ -816,6 +843,7 @@ export class FormulaCrudComponent implements OnInit {
                 const hasUserInput = Object.keys(currentFormData).some(key => {
                     const value = currentFormData[key];
                     if (key === 'product_origin' && value === 'I') return false;
+                    if (key === 'date_requested' && value != '') return false;
                     return value !== null && value !== '' && value !== undefined &&
                         (!Array.isArray(value) || value.length > 0);
                 });

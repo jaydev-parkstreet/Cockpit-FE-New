@@ -200,8 +200,9 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      * @param event
      */
     onDateChangedInForm(fieldName: string, event: { type: string; value: Date | null }) {
-        const date = event.value
-            ? moment.utc(moment(event.value).format('YYYY-MM-DD')).toDate()
+        const value = event.value;
+        const date = value
+            ? moment(value).format('YYYY-MM-DD')
             : null;
         this.form.get(fieldName)?.setValue(date);
     }
