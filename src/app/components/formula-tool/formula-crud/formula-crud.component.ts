@@ -537,6 +537,11 @@ export class FormulaCrudComponent implements OnInit {
 
         setClientValue('client_id', formulaData.client_id);
         setDropdownValue('formula_status', formulaData.formula_status_id);
+        const statusOptions = this.filtersList?.formula_status || [];
+        const selectedStatus = statusOptions.find(opt => opt.id === formulaData.formula_status_id);
+        if (selectedStatus) {
+            this.onDropdownStateChange('formula_status', [selectedStatus]);
+        }
         setDropdownValue('product_type', formulaData.product_type);
         setDropdownValue('sample_received', formulaData.sample_received);
         this.product_type_data = formulaData.product_type;
@@ -681,10 +686,10 @@ export class FormulaCrudComponent implements OnInit {
                 const isFiled = selectedValue[0].id === 3;
                 const dateSubmittedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_submitted');
                 const dateSubmittedControl = this.formulaForm.get('date_submitted');
-    
+
                 if (dateSubmittedField && dateSubmittedControl) {
                     dateSubmittedField.isRequired = isFiled;
-    
+
                     if (isFiled) {
                         dateSubmittedControl.setValidators([Validators.required]);
                     } else {
@@ -692,12 +697,12 @@ export class FormulaCrudComponent implements OnInit {
                     }
                     dateSubmittedControl.updateValueAndValidity();
                 }
-    
+
                 this.updateSubmitButtonState();
                 break;
         }
     }
-    
+
     private safeCompare(a: any, b: any): boolean {
         if (a == null && b == null) return true;
         if (a == null || b == null) return false;
