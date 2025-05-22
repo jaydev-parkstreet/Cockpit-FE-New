@@ -201,6 +201,8 @@ export class PsiUploadFilesComponent implements OnInit {
      */
     onDeleteUploadFile(file: any): void {
         const fileId = file.id || file.upload_id;
+        this.selectedFiles  = [];
+        this.changeFileUpload.emit(this.selectedFiles);
         this.commonBackendService.deleteUploadFile(fileId).subscribe(
             (response: any) => {
                 if (response.hasError) {
@@ -212,14 +214,15 @@ export class PsiUploadFilesComponent implements OnInit {
                         this.uploadFileUrls = this.uploadFileUrls.filter(f => f.upload_id !== file.upload_id);
                     }
 
-                    const noFilesLeft =
-                        this.selectedFiles.length === 0 &&
-                        this.selectedFileUrls.length === 0 &&
-                        this.uploadFileUrls.length === 0;
+                    this.changeFileUpload.emit({
+                    selectedFiles: this.selectedFiles,
+                    selectedFileUrls: this.selectedFileUrls,
+                    uploadFileUrls: this.uploadFileUrls
+                });
 
-                    if (noFilesLeft) {
-                        this.fileDeleted.emit(this.configUpload?.name);
-                    }
+                if (this.totalFiles === 0) {
+                    this.fileDeleted.emit(this.configUpload?.name);
+                }
                     this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
                 }
             },
@@ -227,5 +230,33 @@ export class PsiUploadFilesComponent implements OnInit {
                 this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
             }
         );
+    }
+    
+    /**
+     * Gets the total number of files based on the current mode.
+     * @author PSI-VIII
+     * @returns The total count of files depending on the component's mode.
+     */
+    get totalFiles(): number {
+        if (this.isEditMode) {
+            return this.selectedFileUrls?.length || 0;
+        } else if (this.isUploadMode) {
+            return this.uploadFileUrls?.length || 0;
+        } else {
+            return this.selectedFiles.length;
+        }
+    }
+
+    /**
+     * Returns the placeholder text for the file upload input based on the number of selected files.
+     * @author PSI-VIII
+     * @returns {string} The placeholder text to display.
+     */
+    getPlaceholderText(): string {
+        const count = this.totalFiles;
+        if (count === 0) {
+            return this.placeholder;
+        }
+        return `${count} file${count !== 1 ? 's' : ''} chosen`;
     }
 }

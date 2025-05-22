@@ -530,6 +530,7 @@ export class FormulaCrudComponent implements OnInit {
                     if (matchingFiles.length > 0) {
                         field.selectedFileUrls = matchingFiles;
                         field['isEditMode'] = true;
+                        this.formulaForm.get(field.name)?.setValue(matchingFiles);
                     }
                 }
             });
@@ -682,6 +683,10 @@ export class FormulaCrudComponent implements OnInit {
                     dateApprovedControl?.setValidators([Validators.required]);
                     dateExpiredControl?.setValidators([Validators.required]);
                     approvalDocControl?.setValidators([Validators.required]);
+                    if (this.isEditMode && approvalDoc?.selectedFileUrls?.length > 0) {
+                        approvalDocControl?.setValue(approvalDoc.selectedFileUrls);
+                        approvalDocControl?.updateValueAndValidity();
+                    }
                 } else {
                     dateApprovedControl?.clearValidators();
                     dateExpiredControl?.clearValidators();
