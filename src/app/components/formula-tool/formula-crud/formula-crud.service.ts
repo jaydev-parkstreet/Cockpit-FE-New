@@ -356,7 +356,7 @@ export class FormulaCrudService {
                     colClass: 'col-sm-12',
                     isRequired: false,
                     isDisabled: false,
-                    Placeholder: 'Select List of ingredients Document(s)',
+                    Placeholder: 'Select Formula Approval Document(s)',
                     isShowUploader: true,
                     isFileUpload: true,
                     isEditMode:false,

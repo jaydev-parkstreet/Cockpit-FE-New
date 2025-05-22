@@ -651,25 +651,33 @@ export class FormulaCrudComponent implements OnInit {
                 const isApproved = selectedValue[0].id === 2;
                 const dateApprovedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_approved');
                 const dateExpiredField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_expired');
+                const approvalDoc = this.crudFieldConfig.rightSection.find(f => f.key === 'formula_approval_id');
                 if (dateApprovedField) {
                     dateApprovedField.isRequired = isApproved;
                 }
                 if (dateExpiredField) {
                     dateExpiredField.isRequired = isApproved;
                 }
+                if (approvalDoc) {
+                    approvalDoc.isRequired = isApproved;
+                }
                 const dateApprovedControl = this.formulaForm.get('date_approved');
                 const dateExpiredControl = this.formulaForm.get('date_expired');
+                const approvalDocControl = this.formulaForm.get('formula_approval_id')
 
                 if (isApproved) {
                     dateApprovedControl?.setValidators([Validators.required]);
                     dateExpiredControl?.setValidators([Validators.required]);
+                    approvalDocControl?.setValidators([Validators.required]);
                 } else {
                     dateApprovedControl?.clearValidators();
                     dateExpiredControl?.clearValidators();
+                    approvalDocControl?.clearValidators();
                 }
 
                 dateApprovedControl?.updateValueAndValidity();
                 dateExpiredControl?.updateValueAndValidity();
+                approvalDocControl?.updateValueAndValidity();
                 const isFiled = selectedValue[0].id === 3;
                 const dateSubmittedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_submitted');
                 const dateSubmittedControl = this.formulaForm.get('date_submitted');
