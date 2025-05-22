@@ -65,6 +65,22 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         this.clearAllClicked.emit();
     }
 
+    onFileDeleted(fieldName: string): void {
+        this.selectedFilesMap[fieldName] = [];
+    
+        const control = this.form.get(fieldName);
+        if (control) {
+            control.setValue(null);
+            control.markAsDirty();
+        }
+        const field = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection]
+            .find(f => f.key === fieldName);
+        if (field && field.uploadFileUrls) {
+            field.uploadFileUrls = [];
+        }
+        this.form.updateValueAndValidity();
+    }
+
     clearAllFields(): void {
         if (!this.form || !this.crudFieldConfig) return;
         const clearField = (fieldName: string): void => {

@@ -17,6 +17,7 @@
         (formSubmit)="onSubmit($event)"
         (onFileChange)=onAttachmentUpload($event)
         [selectedFiles]="selectedFiles"
+        (fileDeleted)="onFileDeleted($event)"
         (fileUploadTriggered)="uploadFiles($event.files, $event.uploadType, $event.fieldName)"
         (OnChangeDateModel)="onDateModelChange($event)">
     </app-psi-crud-form>

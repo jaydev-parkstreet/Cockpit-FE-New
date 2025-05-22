@@ -5,7 +5,7 @@
             {{configUpload?.label}}
         </label>
         <label for="file_upload{{configUpload?.key}}" class="file-upload-label" tabindex="0">
-            <span [ngClass]="{'placeholder-color': selectedFiles?.length > 0}" [innerHTML]="placeholder"></span>
+            <span [ngClass]="{'placeholder-color': totalFiles > 0}" [innerHTML]="getPlaceholderText()"></span>
             <i *ngIf="selectedFiles.length > 0" class="far fa-times-circle u-absolute clear-icon"
                 (click)="clearAttachment(); $event.preventDefault();"></i>
         </label>
