@@ -257,6 +257,9 @@ export class FormulaCrudComponent implements OnInit {
             ...this.crudFieldConfig.leftSection
         ];
 
+        const today = new Date();
+        const todayFormatted = this.datePipe.transform(today, 'MM/dd/yyyy');
+
         allFields.forEach(field => {
             if (!field || !field.name) {
                 console.error('Invalid field configuration:', field);
@@ -267,8 +270,14 @@ export class FormulaCrudComponent implements OnInit {
             const isFieldRequired = field.required || field.isRequired;
             const validators = isFieldRequired ? [Validators.required] : [];
 
+            let defaultValue = field.value || null;
+            if (field.name === 'date_requested' && !this.edit) {
+                defaultValue = todayFormatted;
+                console.log('Setting default date_requested value:', defaultValue);
+            }
+
             formControls[field.name] = new FormControl(
-                { value: field.value || null, disabled: isDisabled },
+                { value: defaultValue, disabled: isDisabled },
                 validators
             );
         });
@@ -278,6 +287,11 @@ export class FormulaCrudComponent implements OnInit {
             this.updateSubmitButtonState();
         });
         this.changeDetector.detectChanges();
+        setTimeout(() => {
+            if (!this.edit && this.formulaForm.get('date_requested')) {
+                this.formulaForm.get('date_requested').setValue(todayFormatted);
+            }
+        });
     }
 
     /**
@@ -829,6 +843,7 @@ export class FormulaCrudComponent implements OnInit {
                 const hasUserInput = Object.keys(currentFormData).some(key => {
                     const value = currentFormData[key];
                     if (key === 'product_origin' && value === 'I') return false;
+                    if (key === 'date_requested' && value != '') return false;
                     return value !== null && value !== '' && value !== undefined &&
                         (!Array.isArray(value) || value.length > 0);
                 });
