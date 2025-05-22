@@ -21,7 +21,6 @@ export class PsiUploadFilesComponent implements OnInit {
     @Input() uploadFileUrls: any[] = [];
     @Output() fileDeleted = new EventEmitter<void>();
 
-
     constructor(
         private commonBackendService: CommonBackendService,
         private commonService: CommonService
@@ -200,10 +199,10 @@ export class PsiUploadFilesComponent implements OnInit {
      * @author PSI-VIII
      * @param {any} file 
      */
-    onDeleteUploadFile(file: any) {
+    onDeleteUploadFile(file: any): void {
         const fileId = file.id || file.upload_id;
-        this.commonBackendService.deleteUploadFile(fileId)
-            .subscribe((response: any) => {
+        this.commonBackendService.deleteUploadFile(fileId).subscribe(
+            (response: any) => {
                 if (response.hasError) {
                     this.commonService.showToastV2Message(true, response.msg, 'fas fa-exclamation-circle');
                 } else {
@@ -212,11 +211,21 @@ export class PsiUploadFilesComponent implements OnInit {
                     } else if (file.upload_id) {
                         this.uploadFileUrls = this.uploadFileUrls.filter(f => f.upload_id !== file.upload_id);
                     }
+
+                    const noFilesLeft =
+                        this.selectedFiles.length === 0 &&
+                        this.selectedFileUrls.length === 0 &&
+                        this.uploadFileUrls.length === 0;
+
+                    if (noFilesLeft) {
+                        this.fileDeleted.emit(this.configUpload?.name);
+                    }
                     this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
-                    this.fileDeleted.emit();
                 }
-            }, (error) => {
+            },
+            (error) => {
                 this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');
-            });
+            }
+        );
     }
 }

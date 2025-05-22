@@ -80,7 +80,7 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         }
         this.form.updateValueAndValidity();
     }
-    
+
     clearAllFields(): void {
         if (!this.form || !this.crudFieldConfig) return;
         const clearField = (fieldName: string): void => {
