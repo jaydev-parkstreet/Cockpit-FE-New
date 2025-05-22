@@ -19,6 +19,7 @@ export class PsiUploadFilesComponent implements OnInit {
     @Input() isUploadMode: boolean = false;
     @Input() selectedFileUrls: any[] = [];
     @Input() uploadFileUrls: any[] = [];
+    @Output() fileDeleted = new EventEmitter<void>();
 
 
     constructor(
@@ -179,6 +180,7 @@ export class PsiUploadFilesComponent implements OnInit {
     onFileDeleted(deletedIndex): void {
         this.selectedFiles.splice(deletedIndex, 1);
         this.changeFileUpload.emit(this.selectedFiles);
+        this.fileDeleted.emit();
     }
 
     /**
@@ -189,6 +191,7 @@ export class PsiUploadFilesComponent implements OnInit {
     clearAttachment() {
       this.selectedFiles  = [];
       this.changeFileUpload.emit(this.selectedFiles);
+      this.fileDeleted.emit();
     }
 
     /**
@@ -210,6 +213,7 @@ export class PsiUploadFilesComponent implements OnInit {
                         this.uploadFileUrls = this.uploadFileUrls.filter(f => f.upload_id !== file.upload_id);
                     }
                     this.commonService.showToastV2Message(true, response.msg, 'fas fa-check-circle', 'success');
+                    this.fileDeleted.emit();
                 }
             }, (error) => {
                 this.commonService.showToastV2Message(true, 'Failed', 'fas fa-exclamation-circle');

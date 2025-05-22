@@ -179,6 +179,7 @@
                     <app-psi-upload-files 
                         [configUpload] ="field"
                         (changeFileUpload) = "changeFileUpload($event, field.name)"
+                        (fileDeleted)="onFileDeleted(field.name)"
                         [isEditMode]="field.isEditMode"
                         [selectedFileUrls]="field.selectedFileUrls"
                         [isUploadMode]="field.isUploadMode"
