@@ -537,6 +537,11 @@ export class FormulaCrudComponent implements OnInit {
 
         setClientValue('client_id', formulaData.client_id);
         setDropdownValue('formula_status', formulaData.formula_status_id);
+        const statusOptions = this.filtersList?.formula_status || [];
+        const selectedStatus = statusOptions.find(opt => opt.id === formulaData.formula_status_id);
+        if (selectedStatus) {
+            this.onDropdownStateChange('formula_status', [selectedStatus]);
+        }
         setDropdownValue('product_type', formulaData.product_type);
         setDropdownValue('sample_received', formulaData.sample_received);
         this.product_type_data = formulaData.product_type;
