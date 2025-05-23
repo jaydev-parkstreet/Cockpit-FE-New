@@ -89,7 +89,9 @@ export class FormulaDetailsComponent implements OnInit {
                 this.spinner.hide();
                 if (!res.hasError) {
                     this.updateFormulaData(res.data);
-                    this.getAuditTrailData();
+                    setTimeout(() => {
+                        this.getAuditTrailData();
+                    }, 500);
                 } else {
                     this.commonService.showToastV2Message(true, res.msg, 'fas fa-exclamation-circle');
                     this.router.navigate(['../']);
@@ -108,7 +110,7 @@ export class FormulaDetailsComponent implements OnInit {
         this.getStatusUpdate();
         this.actionButtons = this.getactionButtons(this.permissions ,this.formulaDetails);
         this.headerTitle = "UNIQUE ID : " + this.formulaDetails.id;
-        this.getAuditTrailData();
+       // this.getAuditTrailData();
         this.rowAuditTrailConfigApiRequest = this.formulaDetailService.getDetailsAuditTrailConfigApiRequest();
     }
 
