@@ -89,6 +89,7 @@ export class FormulaDetailsComponent implements OnInit {
                 this.spinner.hide();
                 if (!res.hasError) {
                     this.updateFormulaData(res.data);
+                    this.getAuditTrailData();
                 } else {
                     this.commonService.showToastV2Message(true, res.msg, 'fas fa-exclamation-circle');
                     this.router.navigate(['../']);
