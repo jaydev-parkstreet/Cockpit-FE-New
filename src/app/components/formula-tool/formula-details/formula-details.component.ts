@@ -110,7 +110,6 @@ export class FormulaDetailsComponent implements OnInit {
         this.getStatusUpdate();
         this.actionButtons = this.getactionButtons(this.permissions ,this.formulaDetails);
         this.headerTitle = "UNIQUE ID : " + this.formulaDetails.id;
-       // this.getAuditTrailData();
         this.rowAuditTrailConfigApiRequest = this.formulaDetailService.getDetailsAuditTrailConfigApiRequest();
     }
 
