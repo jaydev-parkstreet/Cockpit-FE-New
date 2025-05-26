@@ -273,7 +273,6 @@ export class FormulaCrudComponent implements OnInit {
             let defaultValue = field.value || null;
             if (field.name === 'date_requested' && !this.edit) {
                 defaultValue = todayFormatted;
-                console.log('Setting default date_requested value:', defaultValue);
             }
 
             formControls[field.name] = new FormControl(

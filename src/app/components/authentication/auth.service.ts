@@ -126,7 +126,6 @@ export class AuthService {
 	 * @author PSI-Enhancements
 	 */
 	checkToken(): void {
-		// TO-DO Remove console log once verified on preprod
 		const token = this.getToken();
 		this.isAuthenticatedSubject.next(!!token);
 		if (token) {
@@ -135,19 +134,14 @@ export class AuthService {
 			const currentUrl = decodeURIComponent(window.location.href);
 			if (currentUrl.includes("/login?message=You have successfully logged out.")) {
 				this.logout();
-			//	window.location.reload();
 			} else if (currentUrl.includes('/login')) {
-				console.log('inside else if');
 				const validToken = this.validTokenCall(token);
 				validToken.then((res: any) => {
-					console.log(res);
 					if (!res.hasError) {
-						console.log('valid token');
 						this.setSessionOldCockpitSite(token);
 						setTimeout(() => {
 							window.location.href = environment.oldCockpit + '/router.php/dashboard';
 						}, 500);
-						console.log('in success with invalid token');
 					}
 				}).catch(error => {
 					console.log('in error with invalid token', error);
