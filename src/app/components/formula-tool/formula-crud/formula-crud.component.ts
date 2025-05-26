@@ -544,6 +544,7 @@ export class FormulaCrudComponent implements OnInit {
                     if (matchingFiles.length > 0) {
                         field.selectedFileUrls = matchingFiles;
                         field['isEditMode'] = true;
+                        this.formulaForm.get(field.name)?.setValue(matchingFiles);
                     }
                 }
             });
@@ -610,7 +611,15 @@ export class FormulaCrudComponent implements OnInit {
      */
     updateSubmitButtonState(): void {
         const formValid = this.formulaForm.valid;
-        const requiredFieldKeysLeftSection = ['formula_description', 'product_origin', 'date_submitted', 'date_approved', 'date_expired'];
+        const requiredFieldKeysRightSection = ['formula_approval_id'];
+        const requiredFieldsValidRightSection = requiredFieldKeysRightSection.every(key => {
+            const field = this.crudFieldConfig.rightSection.find(f => f.key === key);
+            const control = this.formulaForm.get(key);
+
+            if (!field?.isRequired) return true;
+            return !!control?.value;
+        });
+        const requiredFieldKeysLeftSection = ['formula_description', 'product_origin', 'date_submitted'];
         const requiredFieldsValidLeftSection = requiredFieldKeysLeftSection.every(key => {
             const field = this.crudFieldConfig.leftSection.find(f => f.key === key);
             const control = this.formulaForm.get(key);
@@ -620,7 +629,7 @@ export class FormulaCrudComponent implements OnInit {
 
         const submitButton = this.crudFieldConfig?.btnLabel?.find(btn => btn.label === 'Submit');
         if (submitButton) {
-            submitButton.isDisable = !(formValid && requiredFieldsValidLeftSection);
+            submitButton.isDisable = !(formValid && requiredFieldsValidRightSection && requiredFieldsValidLeftSection);
             this.changeDetector.detectChanges();
         }
     }
@@ -688,6 +697,10 @@ export class FormulaCrudComponent implements OnInit {
                     dateApprovedControl?.setValidators([Validators.required]);
                     dateExpiredControl?.setValidators([Validators.required]);
                     approvalDocControl?.setValidators([Validators.required]);
+                    if (this.isEditMode && approvalDoc?.selectedFileUrls?.length > 0) {
+                        approvalDocControl?.setValue(approvalDoc.selectedFileUrls);
+                        approvalDocControl?.updateValueAndValidity();
+                    }
                 } else {
                     dateApprovedControl?.clearValidators();
                     dateExpiredControl?.clearValidators();
@@ -977,18 +990,21 @@ export class FormulaCrudComponent implements OnInit {
         window.removeEventListener('popstate', this.handleBackNavigation);
     }
 
-    onFileDeleted(): void {
-        if (this.currentActiveField) {
-            this.fileFieldMap[this.currentActiveField] = [];
-            this.selectedFiles = [];
-            const control = this.formulaForm.get(this.currentActiveField);
-            if (control) {
-                control.setValue(null);
-                control.markAsDirty();
-            }
-
-            this.changeDetector.detectChanges();
+    onFileDeleted(fieldName: string): void {
+        this.selectedFilesMap[fieldName] = [];
+        const control = this.form.get(fieldName);
+        if (control) {
+            control.setValue(null);
+            control.markAsDirty();
         }
+    
+        const field = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection]
+            .find(f => f.key === fieldName);
+        if (field && field.uploadFileUrls) {
+            field.uploadFileUrls = [];
+        }
+        this.form.updateValueAndValidity();
+        this.updateSubmitButtonState(); 
     }
 
     /**
