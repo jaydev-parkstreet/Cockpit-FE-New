@@ -89,7 +89,7 @@ export class PsiCustomFormComponent implements OnInit, AfterViewInit {
                     password: form.controls.password.value,
                     token: null,
                     email_verification_token: '',
-                    skip2fa: false
+                    skip2fa: true
                 };
                 this.userLoginHandler(reqObj);
             }
