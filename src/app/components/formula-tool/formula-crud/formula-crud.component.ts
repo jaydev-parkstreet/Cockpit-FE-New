@@ -710,8 +710,12 @@ export class FormulaCrudComponent implements OnInit {
                 dateExpiredControl?.updateValueAndValidity();
                 approvalDocControl?.updateValueAndValidity();
                 const isFiled = selectedValue[0].id === 3;
-                const dateSubmittedField = this.crudFieldConfig.leftSection.find(f => f.key === 'date_submitted');
+                const dateSubmittedField = this.crudFieldConfig.leftSection.find((f: any) => f.key === 'date_submitted');
+                const submissionIdSubmittedField = this.crudFieldConfig.leftSection.find((f: any) => f.key === 'submission_id');
+                const formulaIdSubmittedField = this.crudFieldConfig.leftSection.find((f: any) => f.key === 'formula_id');
                 const dateSubmittedControl = this.formulaForm.get('date_submitted');
+                const submissionIdSubmittedControl = this.formulaForm.get('submission_id');
+                const formulaIdSubmittedControl = this.formulaForm.get('formula_id');
 
                 if (dateSubmittedField && dateSubmittedControl) {
                     dateSubmittedField.isRequired = isFiled;
@@ -722,6 +726,28 @@ export class FormulaCrudComponent implements OnInit {
                         dateSubmittedControl.clearValidators();
                     }
                     dateSubmittedControl.updateValueAndValidity();
+                }
+
+                if (submissionIdSubmittedField && submissionIdSubmittedControl) {
+                    submissionIdSubmittedField.isRequired = isFiled;
+
+                    if (isFiled) {
+                        submissionIdSubmittedControl.setValidators([Validators.required]);
+                    } else {
+                        submissionIdSubmittedControl.clearValidators();
+                    }
+                    submissionIdSubmittedControl.updateValueAndValidity();
+                }
+
+                if (formulaIdSubmittedField && formulaIdSubmittedControl) {
+                    formulaIdSubmittedField.isRequired = isFiled;
+
+                    if (isFiled) {
+                        formulaIdSubmittedControl.setValidators([Validators.required]);
+                    } else {
+                        formulaIdSubmittedControl.clearValidators();
+                    }
+                    formulaIdSubmittedControl.updateValueAndValidity();
                 }
 
                 this.updateSubmitButtonState();
