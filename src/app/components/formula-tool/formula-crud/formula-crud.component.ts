@@ -737,6 +737,7 @@ export class FormulaCrudComponent implements OnInit {
                         submissionIdSubmittedControl.clearValidators();
                     }
                     submissionIdSubmittedControl.updateValueAndValidity();
+                    formulaIdSubmittedControl.markAsTouched();
                 }
 
                 if (formulaIdSubmittedField && formulaIdSubmittedControl) {
@@ -748,6 +749,7 @@ export class FormulaCrudComponent implements OnInit {
                         formulaIdSubmittedControl.clearValidators();
                     }
                     formulaIdSubmittedControl.updateValueAndValidity();
+                    formulaIdSubmittedControl.markAsTouched();
                 }
 
                 this.updateSubmitButtonState();

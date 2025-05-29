@@ -36,6 +36,7 @@ export class PsiInputTextFieldComponent implements OnInit {
     const value = (event.target as HTMLInputElement).value;
     this.inputValueChange.emit(value);
     this.valueEntered = value;
+    this.valueChanged.emit(value);
   }
 
   /**
