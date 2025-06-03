@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { SimpleModalService } from 'ngx-simple-modal';
+import * as moment from 'moment';
 @Component({
     selector: 'app-psi-crud-form',
     templateUrl: './psi-crud-form.component.html',
@@ -62,6 +63,22 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
         });
         if (!hasValues) { return; }
         this.clearAllClicked.emit();
+    }
+
+    onFileDeleted(fieldName: string): void {
+        this.selectedFilesMap[fieldName] = [];
+    
+        const control = this.form.get(fieldName);
+        if (control) {
+            control.setValue(null);
+            control.markAsDirty();
+        }
+        const field = [...this.crudFieldConfig.leftSection, ...this.crudFieldConfig.rightSection]
+            .find(f => f.key === fieldName);
+        if (field && field.uploadFileUrls) {
+            field.uploadFileUrls = [];
+        }
+        this.form.updateValueAndValidity();
     }
 
     clearAllFields(): void {
@@ -199,6 +216,10 @@ export class PsiCrudFormComponent implements OnInit, OnChanges {
      * @param event
      */
     onDateChangedInForm(fieldName: string, event: { type: string; value: Date | null }) {
-        this.form.get(fieldName)?.setValue(event.value);
+        const value = event.value;
+        const date = value
+            ? moment(value).format('YYYY-MM-DD')
+            : null;
+        this.form.get(fieldName)?.setValue(date);
     }
 }

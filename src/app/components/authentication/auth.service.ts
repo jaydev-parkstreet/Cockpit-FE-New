@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import AppRoutes from 'src/app/app.routes';
 import { Router } from '@angular/router';
@@ -17,7 +17,6 @@ export class AuthService {
 	constructor(
 		private http: HttpClient,
 		private router: Router, private commonService: CommonService) {
-		this.checkToken();
 	}
 
 	/**
@@ -31,7 +30,13 @@ export class AuthService {
 		localStorage.setItem('userData', JSON.stringify(userData));
 		this.userData = userData;
 		this.isAuthenticatedSubject.next(true);
+		this.setSessionOldCockpitSite(token);
 	}
+
+	setSessionOldCockpitSite(token) {
+        const iframe = document.getElementById('myframe') as HTMLInputElement;
+        iframe.src = environment.oldCockpit + '/router.php/set_session?jwt=' + token;
+    }
 
 	/**
 	 * Function for logout.
@@ -42,7 +47,7 @@ export class AuthService {
 		logout.then((res) => {
 			this.clearLocalStorage();
 			const iframe = document.getElementById('myframe') as HTMLInputElement;
-			iframe.src = environment.oldNavigator + '/router.php/logout';
+			iframe.src = environment.oldCockpit + '/router.php/logout';
 			let loginUrl = 'login';
 			const url = new URL(window.location.href);
 
@@ -58,7 +63,7 @@ export class AuthService {
 			if (url.searchParams.get('r') || url.searchParams.get('c')) {
 				window.location.href = loginUrl;
 			} else {
-				this.router.navigate(['/login'], { queryParams: { reload: true } });
+				this.router.navigate(['/login']);
 			}
 		}).catch(error => {
 		});
@@ -111,16 +116,37 @@ export class AuthService {
 		return this.userData;
 	}
 
+	validTokenCall(token) {
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get(environment.apiUrl + AppRoutes.AUTHENTICATION.CHECK_TOKEN, { headers }).toPromise();
+    }
+
 	/**
 	 * Function to check Token.
 	 * @author PSI-Enhancements
 	 */
-	private checkToken(): void {
+	checkToken(): void {
 		const token = this.getToken();
 		this.isAuthenticatedSubject.next(!!token);
 		if (token) {
 			const storedUserData = localStorage.getItem('userData');
 			this.userData = storedUserData ? JSON.parse(storedUserData) : null;
+			const currentUrl = decodeURIComponent(window.location.href);
+			if (currentUrl.includes("/login?message=You have successfully logged out.")) {
+				this.logout();
+			} else if (currentUrl.includes('/login')) {
+				const validToken = this.validTokenCall(token);
+				validToken.then((res: any) => {
+					if (!res.hasError) {
+						this.setSessionOldCockpitSite(token);
+						setTimeout(() => {
+							window.location.href = environment.oldCockpit + '/router.php/dashboard';
+						}, 500);
+					}
+				}).catch(error => {
+					console.log('in error with invalid token', error);
+				});
+			} 
 		}
 	}
 }

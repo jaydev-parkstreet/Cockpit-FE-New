@@ -34,6 +34,7 @@
     
                     .note-owner-image {
                         width: 40px;
+                        min-width: max-content;
                         height: 40px;
                         position: relative;
     
@@ -58,7 +59,7 @@
                     .note-meta {
                         .notes-scroll {
                             display: block;
-                            width: 42%;
+                            width: 100%;
                             overflow-x: auto;
                             @include new-scrollbar;
                         }

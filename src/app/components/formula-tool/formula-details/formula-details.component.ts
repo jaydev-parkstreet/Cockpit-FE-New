@@ -89,6 +89,9 @@ export class FormulaDetailsComponent implements OnInit {
                 this.spinner.hide();
                 if (!res.hasError) {
                     this.updateFormulaData(res.data);
+                    setTimeout(() => {
+                        this.getAuditTrailData();
+                    }, 500);
                 } else {
                     this.commonService.showToastV2Message(true, res.msg, 'fas fa-exclamation-circle');
                     this.router.navigate(['../']);
@@ -107,7 +110,6 @@ export class FormulaDetailsComponent implements OnInit {
         this.getStatusUpdate();
         this.actionButtons = this.getactionButtons(this.permissions ,this.formulaDetails);
         this.headerTitle = "UNIQUE ID : " + this.formulaDetails.id;
-        this.getAuditTrailData();
         this.rowAuditTrailConfigApiRequest = this.formulaDetailService.getDetailsAuditTrailConfigApiRequest();
     }
 
@@ -169,15 +171,15 @@ export class FormulaDetailsComponent implements OnInit {
         } else if (this.status === 'Approved') {
             this.statusClass = 'badge med u-bg-success-lite';
         } else if (this.status === 'Rejected') {
-            this.statusClass = 'badge med u-bg-error';
+            this.statusClass = 'badge med u-bg-reject';
         } else if (this.status === 'Filed') {
             this.statusClass = 'badge med u-bg-filed';
         } else if (
             this.status === 'Needs Action - Waiting on Supplier' ||
-            this.status === 'Needs Action-Waiting on Supplier' ||
-            this.status === 'Pending Samples - Waiting on Supplier'
-        ) {
+            this.status === 'Needs Action-Waiting on Supplier') {
             this.statusClass = 'badge med u-bg-warning';
+        } else if (this.status === 'Pending Samples - Waiting on Supplier') {
+            this.statusClass = 'badge med u-bg-pending';
         } else if (
             this.status === 'Request Received' ||
             this.status === 'Cancelled'
@@ -212,16 +214,7 @@ export class FormulaDetailsComponent implements OnInit {
         this.activeTab = tab.key
     }
 
-    /**
-     * Get product fields to get a response array with corresponding labels and values.
-     *
-     * @param {Object} row - The row of product data.
-     * @returns {Array} The response array with labels and formatted values for the fields.
-     * @author PSI-VIII
-     */
-    fieldsDetail(row) {
-        return this.formulaDetailService.getFieldsDetail(row);
-    }
+  
 
     /**
      * The function `documentDetail` processes formula details to generate an array of document links
@@ -251,8 +244,8 @@ export class FormulaDetailsComponent implements OnInit {
 
             const documentTypes = [
                 { label: 'List of Ingredients Document', kind: 'List of Ingredients' },
-                { label: 'FIDS Document', kind: 'FIDS' },
                 { label: 'Method of Manufacturing Document', kind: 'Method of Manufacturing' },
+                { label: 'FIDS Document', kind: 'FIDS' },
                 { label: 'Formula Approval Document', kind: 'Formula Approval Document' }
 
             ];
@@ -264,14 +257,26 @@ export class FormulaDetailsComponent implements OnInit {
                     response.push(makeLink(docLabel, upload.display_name, upload.file_url));
                 });
             });
-            response.push({ label: 'Date Approved', value: this.formulaDetailService.valueChecker(formulaDetails.date_approved) });
-            response.push({ label: 'Date Expired', value: this.formulaDetailService.valueChecker(formulaDetails.date_expired) });
-            response.push({ label: 'No Expiration Date', value: this.formulaDetailService.valueChecker(formulaDetails.no_expiration_date === 1 ? 'NON' : '--') });
         }
         return response;
     }
 
-
+  /**
+     * Get product fields to get a response array with corresponding labels and values.
+     *
+     * @param {Object} row - The row of product data.
+     * @returns {Array} The response array with labels and formatted values for the fields.
+     * @author PSI-VIII
+     */
+    fieldsDetail(row) {
+        const details = this.formulaDetailService.getFieldsDetail(row);
+    details.push(
+            { label: 'Date Approved', value: this.formulaDetailService.valueChecker(row.date_approved), tooltip: '', iconClass: '' },
+            { label: 'Date Expired', value: this.formulaDetailService.valueChecker(row.date_expired), tooltip: '', iconClass: '' }
+        );
+    
+    return details;
+    }
     /**
      * Function to get action buttons.
      *
