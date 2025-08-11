@@ -31,3 +31,35 @@
     margin-right: $size * $i+px;
   }
 }
+
+//Auto margin
+
+.#{$prefix}-m-auto {
+  margin: auto;
+}
+
+.#{$prefix}-mt-auto {
+  margin-top: auto;
+}
+
+.#{$prefix}-mr-auto {
+  margin-right: auto;
+}
+
+.#{$prefix}-mb-auto {
+  margin-bottom: auto;
+}
+
+.#{$prefix}-ml-auto {
+  margin-left: auto;
+}
+
+.#{$prefix}-my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.#{$prefix}-mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -1,12 +1,11 @@
-<div class="dropdown-label d-inline-flex align-items-center" [ngClass]="{'required': field.required || field.isRequired}">
-    <span class="d-block" [textContent]="field.label"></span>
+<div class="dropdown-label u-inline-flex u-align-center" [ngClass]="{'required': field.required || field.isRequired}">
+    <span class="u-db" [textContent]="field.label"></span>
     <ng-container *ngIf="field.iconClass && field.tooltipText">
-      <div class="tooltip-wrapper position-relative">
+      <div class="tooltip-wrapper u-relative">
         <i [ngClass]="field.iconClass"
-           class="ml-2"
+           class="ml-2 u-csr-ptr"
            (mouseenter)="showTooltip = true"
-           (mouseleave)="showTooltip = false"
-           style="cursor: pointer;"></i>
+           (mouseleave)="showTooltip = false"></i>
         <div *ngIf="showTooltip" class="custom-tooltip">
           {{ field.tooltipText }}
         </div>
