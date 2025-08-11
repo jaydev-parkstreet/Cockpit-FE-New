@@ -1,10 +1,10 @@
   <div class="notes-tab u-mt1 u-bg-neutral-white u-neutral-black">
     <div [ngHide]="isLoadingNotes" *ngFor="let note of notes; let last = last" class="note-row-tab u-flex" [ngClass]="{'u-pg-p-2': last, 'custom-padding': !last}">
-      <div class="note-owner-image u-pg-mr-1 position-relative">
+      <div class="note-owner-image u-pg-mr-1 u-relative">
         <img class="profile-picture" [src]="fileServer + note.person_image" />
         <img class="ps-logo" [src]="fileServer +'/images/cockpit/custom-ps-logo.svg'" />
       </div>
-      <div class="note-container w-100" [ngClass]="{'u-primary-v-low-t-10': note.show_new}">
+      <div class="note-container u-w-100" [ngClass]="{'u-primary-v-low-t-10': note.show_new}">
         <div class="note-detail u-flex u-align-center u-justify-between">
           <div class="u-flex u-pg-g-1 u-mb1">
             <span class="typography-paragraph-primary-medium">{{ note.first_name }} {{ note.last_name }}</span>

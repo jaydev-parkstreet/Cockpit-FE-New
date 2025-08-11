@@ -3,6 +3,8 @@
 
 .psi-crud-form {
     margin: 0 16px;
+    display: flex;
+    flex-direction: column;
 
     .lt-c {
         padding-right: 4px;

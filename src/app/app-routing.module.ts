@@ -13,14 +13,18 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: () => import('./components/layout/layout.module').then(m => m.LayoutModule)
     },
-    {
-        path: '**',
-        redirectTo: '/formula',
-        pathMatch: 'full'
-    },
+    // {
+    //     path: '**',
+    //     redirectTo: '/formula',
+    //     pathMatch: 'full'
+    // },
     {
         path: 'formula',
         loadChildren: () => import('./components/formula-tool/formula.module').then(m => m.FormulaSummaryModule)
+    },
+    {
+        path: 'product-management',
+        loadChildren: () => import('./components/product-management/product-management.module').then(m => m.ProductManagementModule)
     }
 ];
 @NgModule({
