@@ -1,6 +1,6 @@
 <div class="row psi-crud-form">
     <!-- header section -->
-    <div class=" col-sm-12 p-0">
+    <div class="p-0">
         <div class=" col-sm-6 lt-c">
             <app-psi-page-column-header
                 [headerTitle]="leftHeaderTitle"
@@ -29,7 +29,7 @@
                         </app-psi-page-column-header>
                     </div>
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'multiselect-dropdown'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'multiselect-dropdown'">
                     <app-cmp-input-dropdown
                         [label]="field.label"
                         [showSelectAll]="false"
@@ -47,7 +47,7 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
                         [valueEntered]="form.value[field.name]"
@@ -58,7 +58,7 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass"  *ngIf="field?.type == 'checkbox'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass"  *ngIf="field?.type == 'checkbox'">
                     <app-psi-checkbox
                         [field]="field"
                         [checkedValue]="form?.value[field.name]"
@@ -66,7 +66,7 @@
                         (valueChanged)="onCheckedInput(field.name, $event)">
                     </app-psi-checkbox>
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
                     <app-cmp-input-datepicker
                     [selectedDate]="form.controls[field.name]?.value"
                     type="{{field?.key}}"
@@ -78,7 +78,7 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>  
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
                     <app-psi-upload-files 
                         [configUpload] ="field"
                         (changeFileUpload) = "changeFileUpload($event, field.name)"
@@ -93,7 +93,7 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field?.type == 'radio'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass" *ngIf="field?.type == 'radio'">
                     <app-psi-radio-button
                         [field]="field"
                         (modelChange)="changeRadioButton($event, field)"
@@ -101,7 +101,7 @@
                     </app-psi-radio-button>
                 </div>
             </div>
-            <div class="form-submit-button u-flex justify-content-end u-pg-g-2">
+            <div class="form-submit-button u-flex u-justify-flex-end u-pg-g-2">
                 <div *ngFor="let field of crudFieldConfig?.btnLabel">
                     <span  *ngIf="field.isDisable" class="custom-tooltip-trigger" data-tooltip="All required fields must be completed before save."
                         style="pointer-events: auto;">
@@ -134,7 +134,7 @@
                         </app-psi-page-column-header>
                     </div>
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'multiselect-dropdown'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'multiselect-dropdown'">
                     <app-cmp-input-dropdown
                         [label]="field.label"
                         [showSelectAll]="false"
@@ -152,7 +152,7 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'text'">
                     <app-psi-input-text-field
                         [field]="field"
                         [valueEntered]="form.value[field.name]"
@@ -163,7 +163,7 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'datepicker'">
                     <app-cmp-input-datepicker
                     [selectedDate]="form.controls[field.name]?.value"
                     type="{{field?.key}}"
@@ -175,7 +175,7 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>  
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass" *ngIf="field.type === 'upload-attachment'">
                     <app-psi-upload-files 
                         [configUpload] ="field"
                         (changeFileUpload) = "changeFileUpload($event, field.name)"
@@ -191,7 +191,7 @@
                         <span *ngIf="form.get(field.name)?.errors?.required">Required</span>
                     </div>
                 </div>
-                <div class="d-flex flex-column field-group" [ngClass]="field.colClass"  *ngIf="field?.type == 'checkbox'">
+                <div class="u-flex u-flex-column field-group" [ngClass]="field.colClass"  *ngIf="field.type === 'checkbox'">
                      <app-psi-checkbox
                          [field]="field"
                          [checkedValue]="form?.value[field.name]"

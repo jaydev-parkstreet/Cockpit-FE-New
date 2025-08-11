@@ -349,44 +349,44 @@ export class FormulaService {
                     key: 'client_id',
                     label: 'Supplier Name',
                     type: 'multiselect-search',
-                    divClass: 'col-4 noleftpadding',
+                    divClass: 'col-sm-4 noleftpadding',
                     setting: this.getMultiSelectConfig('Select Supplier Name')
                 }, {
                     key: 'formula_status',
                     label: 'Status',
                     type: 'multiselect-search',
-                    divClass: 'col-4',
+                    divClass: 'col-sm-4',
                     setting: this.getMultiSelectConfig('Select Status')
                 }, {
                     key: 'submission_id',
                     label: 'Submission ID',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-sm-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Submission ID')
                 }, {
                     key: 'formula_id',
                     label: 'Formula ID',
                     type: 'multiselect-search',
-                    divClass: 'col-4 noleftpadding',
+                    divClass: 'col-sm-4 noleftpadding',
                     setting: this.getMultiSelectConfig('Select Formula ID')
                 }, {
                     key: 'date_requested',
                     label: 'Date Requested',
                     type: 'daterange',
-                    divClass: 'col-4',
+                    divClass: 'col-sm-4',
                 }, {
                     key: 'date_approved',
                     label: 'Date Approved',
                     type: 'daterange',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-sm-4 norightpadding',
                 }, {
                     key: 'date_expired',
                     label: 'Date Expired',
                     type: 'daterange',
-                    divClass: 'col-4 noleftpadding',
+                    divClass: 'col-sm-4 noleftpadding',
                 },
-                { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-4' },
-                { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-4'}
+                { type: 'checkbox', name: 'is_active', label: 'Formula to Expire in 30 days', placeholder: 'Formula to Expire in 30 days', divClass: 'col-sm-4' },
+                { type: 'checkbox', name: 'is_archived', label: 'Archive only', placeholder: 'Archive only', divClass: 'col-sm-4'}
             ],
         };
     }
