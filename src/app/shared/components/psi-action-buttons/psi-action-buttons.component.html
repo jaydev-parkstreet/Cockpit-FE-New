@@ -1,6 +1,6 @@
 <div class="button-round u-flex u-pg-g-2">
     <ng-container *ngFor="let action of actionButtons; let last = last">
-        <span *ngIf="action.permission" class="action-round u-flex-center u-csr-ptr position-relative"
+        <span *ngIf="action.permission" class="action-round u-flex-center u-csr-ptr u-relative"
             [ngClass]="{ 'disabled': action.disabled, 'last-action-button': last}"
             (click)="!action.disabled ? actionEvent(action) : null"
             [attr.data-tooltip]="action.showTooltip ? action.tooltipText : null">
