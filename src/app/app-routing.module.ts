@@ -13,11 +13,11 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: () => import('./components/layout/layout.module').then(m => m.LayoutModule)
     },
-    // {
-    //     path: '**',
-    //     redirectTo: '/formula',
-    //     pathMatch: 'full'
-    // },
+    {
+        path: '**',
+        redirectTo: '/formula',
+        pathMatch: 'full'
+    },
     {
         path: 'formula',
         loadChildren: () => import('./components/formula-tool/formula.module').then(m => m.FormulaSummaryModule)
