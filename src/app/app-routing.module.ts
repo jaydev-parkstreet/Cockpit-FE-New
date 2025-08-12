@@ -21,10 +21,6 @@ const routes: Routes = [
     {
         path: 'formula',
         loadChildren: () => import('./components/formula-tool/formula.module').then(m => m.FormulaSummaryModule)
-    },
-    {
-        path: 'product-management',
-        loadChildren: () => import('./components/product-management/product-management.module').then(m => m.ProductManagementModule)
     }
 ];
 @NgModule({
