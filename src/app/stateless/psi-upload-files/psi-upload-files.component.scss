@@ -8,12 +8,10 @@
         @include psi-input-label;
     }
 
-    // Apply text input styling only to non-file inputs
     input:not([type='file']) {
         @include psi-input;
     }
 
-    // Ensure the file input stays hidden when using the hidden attribute
     input[type='file'][hidden] {
         display: none !important;
     }
