@@ -138,6 +138,11 @@ $ps-spacing-extra-extra-extra-large: 16rem;
   margin-right: $ps-spacing-extra-extra-extra-large;
 }
 
+.u-pg-mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 @media (max-width: $screen-xs-max) {
   // 767px and below
 

@@ -1,37 +1,37 @@
-<div class="form-wrapper mx-auto">
+<div class="form-wrapper u-center">
     <div class="form-validation row u-pg-mt-3" *ngIf="isShowLoginErrorMsg">
-        <div class="typography-paragraph-white-regular col-md-8 mx-auto text-center u-pg-mb-3 validation-msg"
+        <div class="typography-paragraph-white-regular col-md-8 u-pg-mx-auto u-tc u-pg-mb-3 validation-msg"
             *ngIf="isShowLoginErrorMsg">
             {{ showErrorMsg }}
         </div>
     </div>
-    <div class="form-container row justify-content-between">
-        <div class="col-md-7 cockpit-logo p-0">
+    <div class="form-container row u-justify-between">
+        <div class="col-md-7 cockpit-logo u-pg-p-0">
             <img src="../../../../assets/images/login-logo.svg" alt="Logo" class="logo">
         </div>
-        <div class="col-md-5 custom-form d-flex flex-column">
+        <div class="col-md-5 custom-form u-flex u-flex-column">
             <div class="form-title">
-                <h1 class="typography-v2-cr-h3-white-bold m-0" [textContent]="formTitle.firstline"></h1>
-                <p class="mb-0" [textContent]="formTitle.secondline"></p>
+                <h1 class="typography-v2-cr-h3-white-bold u-pg-m-0" [textContent]="formTitle.firstline"></h1>
+                <p class="u-pg-mb-0" [textContent]="formTitle.secondline"></p>
             </div>
             <div class="sign-in-form-group">
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin(loginForm)" autocomplete="false">
-                    <div class="typograpghy-paragraph-white-regular u-pg-mt-3 d-flex flex-column form-field"
+                    <div class="typography-paragraph-white-regular u-pg-mt-3 form-field u-flex u-flex-column"
                         *ngFor="let field of formConfig.schema; index as i ; trackBy: trackByField">
                         <label [for]="field.name" [ngClass]="{'ps-required-asterisk': field.required}"
                             [textContent]="field.label">
                         </label>
-                        <div class="input-wrapper position-relative d-flex align-items-center">
+                        <div class="input-wrapper u-flex-h-center u-relative">
                             <input #inputElement [type]="field.type" [id]="field.name" [formControlName]="field.name"
                                 [placeholder]="field.placeholder" [required]="field.required" [autocomplete]="false"
                                 class="w-100" [name]="field.name">
-                            <div #iconContainer class="input-action-buttons position-absolute end-0 d-flex">
-                                <div class="password-container position-relative" *ngIf="field.passwordField">
+                            <div #iconContainer class="input-action-buttons u-absolute u-flex u-right-0">
+                                <div class="password-container u-relative" *ngIf="field.passwordField">
                                     <i class="fa password-icon"
                                         [ngClass]="{'fa-eye-slash': !field.isPasswordVisible,'fa-eye': field.isPasswordVisible}"
                                         (click)="togglePassword(i)">
                                     </i>
-                                    <span class="password-tooltip position-absolute">
+                                    <span class="password-tooltip u-absolute">
                                         {{ !field.isPasswordVisible ? field.showtooltip : field.hidetooltip }}
                                     </span>
                                 </div>

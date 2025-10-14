@@ -1,13 +1,13 @@
 <div class="headerbar u-flex u-align-center u-pg-py-1">
-    <div class="search-container u-pg-ml-3 position-relative">
+    <div class="search-container u-pg-ml-3 u-relative">
         <input 
             type="text" 
             class="u-bg-neutral-light-t-10 u-neutral-light custom-input"
             placeholder="Search People and Companies"
             [(ngModel)]="searchText">
-        <div class="icon-container h-100 position-absolute u-flex-center u-pg-g-1 u-csr-ptr">
+        <div class="icon-container u-flex-center u-pg-g-1 u-csr-ptr u-absolute u-h-100">
             <i *ngIf="searchText" class="fal fa-times-circle search-icon u-neutral-light" (click)="clearSearchText()"></i>
-            <div class="search-icon-container h-100 u-flex-center">
+            <div class="search-icon-container u-flex-center u-h-100">
                 <i class="far fa-search search-icon u-neutral-light"></i>
             </div>
         </div>

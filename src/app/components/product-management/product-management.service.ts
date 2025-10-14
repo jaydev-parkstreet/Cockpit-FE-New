@@ -303,68 +303,68 @@ export class ProductManagementService {
                     key: 'clients',
                     label: 'Supplier',
                     type: 'multiselect-search',
-                    divClass: 'col-4 noleftpadding',
+                    divClass: 'col-sm-4 noleftpadding',
                     setting: this.getMultiSelectConfig('Select Supplier')
                 }, {
                     key: 'product_state',
                     label: 'Product Status',
                     type: 'multiselect-search',
-                    divClass: 'col-4',
+                    divClass: 'col-sm-4',
                     setting: this.getMultiSelectConfig('Select Status')
                 }, {
                     key: 'product_type',
                     label: 'Product Type',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-sm-4 norightpadding',
                     setting: this.getMultiSelectConfig('Select Type')
                 }, {
                     key: 'product_sub_type',
                     label: 'Product Sub-Type',
                     type: 'multiselect-search',
-                    divClass: 'col-4 noleftpadding',
+                    divClass: 'col-sm-4 noleftpadding',
                     setting: this.getMultiSelectConfig('Select Sub-Type')
                 }, {
                     key: 'source',
                     label: 'Source',
                     type: 'multiselect-search',
-                    divClass: 'col-4',
+                    divClass: 'col-sm-4',
                     setting: this.getMultiSelectConfig('Select Source')
                 }, {
                     key: 'crm',
                     label: 'CRM',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding', 
+                    divClass: 'col-sm-4 norightpadding', 
                     setting: this.getMultiSelectConfig('Select CRM')
                 }, {
                     key: 'brand',
                     label: 'Brand',
                     type: 'multiselect-search',
-                    divClass: 'col-4 noleftpadding',
+                    divClass: 'col-sm-4 noleftpadding',
                     showSelectAll: false,
                     setting: this.getMultiSelectConfig('Select Brand', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.BRAND_SEARCH)
                 }, {
                     key: 'sub-brand',
                     label: 'Sub-Brand',
                     type: 'multiselect-search',
-                    divClass: 'col-4',
+                    divClass: 'col-sm-4',
                     showSelectAll: false,
                     setting: this.getMultiSelectConfig('Select Sub-Brand', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_SEARCH)
                 }, {
                     key: 'sub-brands-product',
                     label: 'Sub-Brand Product',
                     type: 'multiselect-search',
-                    divClass: 'col-4 norightpadding',
+                    divClass: 'col-sm-4 norightpadding',
                     showSelectAll: false,
                     setting: this.getMultiSelectConfig('Select Sub-Brand Product', 'name', true, environment.apiRouteUrl+environment.version.v1+ AppRoutes.PRODUCT_TOOL.SUB_BRAND_PRODUCT_SEARCH)
                 }, {
                     key: 'organic',
                     label: 'Organic',
                     type: 'multiselect-search',
-                    divClass: 'col-4 noleftpadding', 
+                    divClass: 'col-sm-4 noleftpadding', 
                     setting: this.getMultiSelectConfig('Select Organic')
                 },
-                { type: 'checkbox', name: 'is_active', label: 'Inactive Only', placeholder: 'Inactive Only', divClass: 'col-4' },
-                { type: 'checkbox', name: 'is_rejected', label: 'Rejected Only', placeholder: 'Rejected Only', divClass: 'col-4' }
+                { type: 'checkbox', name: 'is_active', label: 'Inactive Only', placeholder: 'Inactive Only', divClass: 'col-sm-4' },
+                { type: 'checkbox', name: 'is_rejected', label: 'Rejected Only', placeholder: 'Rejected Only', divClass: 'col-sm-4' }
             ],
         };
     }

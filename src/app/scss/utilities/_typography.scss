@@ -26,6 +26,12 @@
   text-overflow: ellipsis;
 }
 
+/* Allow long text to break/wrap */
+.u-text-break {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 // As per zero height
 
 @mixin font-bold {

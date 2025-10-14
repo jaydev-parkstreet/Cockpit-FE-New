@@ -8,8 +8,12 @@
         @include psi-input-label;
     }
 
-    input {
+    input:not([type='file']) {
         @include psi-input;
+    }
+
+    input[type='file'][hidden] {
+        display: none !important;
     }
 
     .ps-required-error {

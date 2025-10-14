@@ -1,6 +1,6 @@
 <div class="input-dropdown">
     <div class="dropdown-label" [ngClass]="{'required': required}">
-        <span class="d-block" [textContent]="filter.label" *ngIf="filter?.label"></span>
+        <span class="u-db" [textContent]="filter.label" *ngIf="filter?.label"></span>
     </div>
     <div class="u-flex u-align-center u-justify-between" (click)="toggleDropdown()">
         <input 
@@ -11,7 +11,7 @@
             placeholder="mm/dd/yyyy" 
             tabindex="0" 
             readonly>
-        <i class="fal fa-times-circle position-absolute u-neutral-light u-csr-ptr clearSelectedItems" *ngIf="selectedDate !== 'mm/dd/yyyy - mm/dd/yyyy'" (click)="clearDate()"></i>
+        <i class="fal fa-times-circle u-absolute u-neutral-light u-csr-ptr clearSelectedItems" *ngIf="selectedDate !== 'mm/dd/yyyy - mm/dd/yyyy'" (click)="clearDate()"></i>
         <button class="dropdown-button">
             <i class="fa-calendar-alt fas" aria-hidden="true"></i>
         </button>
