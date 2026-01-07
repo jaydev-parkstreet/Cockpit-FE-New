@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA;;;;;;;;;;;EAWE;AAEF,SAAU;EAAE,QAAQ,EAAE,MAAM;;AAC5B,WAAY;EAAE,QAAQ,EAAE,QAAQ;;AAChC,WAAY;EAAE,QAAQ,EAAE,QAAQ;;AAChC,QAAS;EAAE,QAAQ,EAAE,KAAK",
-"sources": ["_position.scss"],
-"names": [],
-"file": "_position.css"
-}

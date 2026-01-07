@@ -1,7 +1,0 @@
-@import '../../../scss/variables/typography';
-@import '../../../scss/variables/colors';
-@import '../../../scss/mixin/mixin';
-
-.search-box {
-    @include search-box;
-}

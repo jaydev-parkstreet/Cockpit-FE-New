@@ -1,8 +1,0 @@
-<div class="tab-group u-bg-neutral-white u-pg-mt-1">
-    <ul class="u-h-100 u-flex u-align-center u-pg-p-0 u-pg-m-0 list-unstyled">
-        <li class="typography-body-dark-medium u-csr-ptr u-flex-center u-h-100 w-100 text-uppercase" *ngFor="let tab of tabGroupConfig"
-            [ngClass]="{'active': tab.key === activeTab}" (click)="clickOnTab(tab)">
-            {{ tab.label }}
-        </li>
-    </ul>
-</div>

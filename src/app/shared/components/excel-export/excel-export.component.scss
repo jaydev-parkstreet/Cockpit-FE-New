@@ -1,9 +1,0 @@
-@import '../../../scss/variables/typography';
-@import '../../../scss/variables/colors';
-@import '../../../scss/utilities/base';
-@import '../../../scss/utilities/colors';
-@import '../../../scss/mixin/_mixin';
-
-.action-icon {
-    @include action-icon;
-}

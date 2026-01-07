@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA;;;;;;;;GAQG;AAEH,OAAQ;EACN,eAAe,EAAE,IAAI;EACrB,UAAU,EAAE,kBAAkB;;AAGhC;eACgB;EACd,UAAU,EAAE,kBAAkB;;AAGhC,aAAgB;EACd,UAAU,EAAE,kBAAkB;;AAGhC,cAAgB;EACd,UAAU,EAAE,kBAAkB;;AAGhC,aAAgB;EACd,UAAU,EAAE,kBAAkB;EAC9B,OAAO,EAAE,uBAAuB",
-"sources": ["_links.scss"],
-"names": [],
-"file": "_links.css"
-}
