@@ -1,0 +1,57 @@
+@use '../variables/colors' as *;
+
+.u-bg-primary {
+  background-color: $colors-v2-base-primary;
+}
+
+.u-bg-secondary {
+  background-color: $colors-v2-base-secondary;
+}
+
+.u-bg-success {
+  background: $colors-v2-base-success;
+}
+
+.u-bg-warning {
+  background: $colors-v2-base-warning;
+}
+
+.u-bg-error {
+  background: $colors-v2-base-error;
+}
+
+.u-bg-neutral-black {
+  background: $colors-neutral-black;
+}
+
+.u-bg-neutral-dark {
+  background: $colors-neutral-dark;
+}
+
+.u-bg-neutral-light {
+  background: $colors-neutral-light;
+}
+
+.u-bg-neutral-light-v-low {
+  background-color: $colors-neutral-light-v-low;
+}
+
+.u-bg-neutral-white {
+  background: $colors-neutral-white;
+}
+
+.u-bg-warning-medium {
+  background: $colors-v2-base-warning-v-medium;
+}
+
+.u-bg-neutral-light-t-10 {
+  background: $colors-neutral-light-t-10;
+}
+
+.u-bg-error-t-10 {
+  background: $colors-v2-base-error-t-10;
+}
+
+.u-bg-success-t-10 {
+  background: $colors-v2-base-success-t-10;
+}

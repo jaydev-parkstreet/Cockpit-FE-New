@@ -1,0 +1,48 @@
+/*!
+ * 8-point-grid 
+Margin
+======
+    m  - margin
+    mt - margin-top
+    mr - margin-right
+    mb - margin-bottom
+    ml - margin-left
+    my - margin-top, margin-bottom
+    mx - margin-left, margin-right margin
+    8px 
+    m-2
+Padding
+=======
+    p  - padding
+    pt - padding-top
+    pr - padding-right
+    pb - padding-bottom
+    pl - padding-left
+    py - padding-top, padding-bottom
+    px - padding-left, padding-right
+Size
+====
+    w - width
+    h - height
+    s - width, height
+
+Example
+=======
+    So if you want 8px margin-top, its: u-pg-mt-1
+ */
+
+@use "margin"as *;
+@use "padding"as *;
+@use "size"as *;
+
+.u-pg-br-1 {
+    border-radius: 8px;
+}
+
+.u-pg-br-half {
+    border-radius: 4px;
+}
+
+.u-pg-g-half {
+    gap: 4px;
+}

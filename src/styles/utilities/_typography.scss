@@ -1,0 +1,167 @@
+@use '../variables/colors' as *;
+@use '../variables/typography' as *;
+
+
+.u-measure {
+  max-width: 30em;
+}
+
+.u-measure-wide {
+  max-width: 34em;
+}
+
+.u-measure-narrow {
+  max-width: 20em;
+}
+
+.u-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin font-bold {
+  font-family: $montserrat-bold;
+  font-weight: 700;
+}
+
+@mixin font-medium {
+  font-family: $montserrat-medium;
+  font-weight: 500;
+}
+
+@mixin font-regular {
+  font-family: $montserrat-regular;
+  font-weight: 400;
+}
+
+@mixin font-v2-cr-regular {
+  font-family: $crimson-pro-regular;
+  font-weight: 400;
+}
+
+@mixin font-v2-cr-medium {
+  font-family: $crimson-pro-medium;
+  font-weight: 500;
+}
+
+@mixin font-v2-cr-bold{
+  font-family: $crimson-pro-bold;
+  font-weight: 700;
+}
+
+[class^='typography-super-'],[class*='-super'] {
+  font-size: 64px;
+}
+
+[class^='typography-h1-'],[class*='-h1'] {
+  font-size: 56px;
+}
+
+[class^='typography-h2-'],[class*='-h2'] {
+  font-size: 40px;
+}
+
+[class^='typography-h3-'],[class*='-h3'] {
+  font-size: 32px;
+}
+
+[class^='typography-h4-'],[class*='-h4'] {
+  font-size: 24px;
+}
+
+[class^='typography-h5-'],[class*='-h5']{
+  font-size: 20px;
+}
+
+[class^='typography-h6-'],[class*='-h6'] {
+  font-size: 16px;
+}
+
+[class^='typography-body-'],
+[class^='typography-link-'],[class*='-body'],[class*='-link']{
+  font-size: 14px;
+}
+
+[class^='typography-link-'] {
+  text-decoration: underline;
+}
+
+[class^='typography-paragraph-'],
+[class^='typography-footnote-'],[class*='-paragraph'],[class*='-footnote'] {
+  font-size: 12px;
+}
+
+[class^='typography-caption-'],[class*='-caption'] {
+  font-size: 10px;
+}
+
+[class^='typography-small-'],[class*='-small'] {
+  font-size: 8px;
+}
+
+[class^='typography-'][class*='-black-'] {
+  color: $colors-neutral-black;
+}
+
+[class^='typography-'][class*='-dark-'] {
+  color: $colors-neutral-dark;
+}
+
+[class^='typography-'][class*='-error-'] {
+  color: $colors-v2-base-error;
+}
+
+[class^='typography-'][class*='-light-'] {
+  color: $colors-neutral-light;
+}
+
+[class^='typography-'][class*='-primary-'] {
+  color: $colors-v2-base-primary;
+}
+
+[class^='typography-'][class*='-success-'] {
+  color: $colors-v2-base-success;
+}
+
+[class^='typography-'][class*='-warning-'] {
+  color: $colors-v2-base-warning;
+}
+
+[class^='typography-'][class*='-white-'] {
+  color: $colors-neutral-white;
+}
+
+[class^='typography-'][class*='-bold'] {
+  @include font-bold;
+}
+
+[class^='typography-'][class*='-medium'] {
+  @include font-medium;
+}
+
+[class^='typography-'][class*='-regular'] {
+  @include font-regular;
+}
+
+[class^='typography-v2-cr-'][class*='-bold'] {
+  @include font-v2-cr-bold;
+}
+
+[class^='typography-v2-cr-'][class*='-medium'] {
+  @include font-v2-cr-medium;
+}
+
+[class^='typography-v2-cr-'][class*='-regular'] {
+  @include font-v2-cr-regular;
+}
+
+.href-link {
+  color: $colors-neutral-black;
+  cursor: pointer;
+
+  &:hover {
+    color: $colors-v2-base-primary;
+    text-decoration: underline;
+  }
+}

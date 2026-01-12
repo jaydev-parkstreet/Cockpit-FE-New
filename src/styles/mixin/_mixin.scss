@@ -1,0 +1,139 @@
+@use '../variables/colors'as *;
+@use '../variables/typography'as *;
+
+@mixin scrollbar($thumb-color: $colors-neutral-light-t-50,
+  $thumb-hover-color: $colors-neutral-light,
+  $width: 8px,
+  $height: 8px,
+  $track-radius: 8px,
+  $thumb-radius: 8px) {
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $height;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: $track-radius;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $thumb-radius;
+
+    &:hover {
+      background: $thumb-hover-color;
+    }
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+@mixin search-box {
+  display: flex;
+  position: relative;
+
+  input.form-control {
+    height: 40px;
+    padding: 0 16px;
+    color: $colors-neutral-black;
+    font-family: $montserrat-regular;
+    font-size: 12px;
+    border: 1px solid $colors-neutral-light;
+    border-radius: 8px 0px 0px 8px;
+    border-right: none;
+    transition: none;
+    box-shadow: none;
+
+    &:focus {
+      border: 1px solid transparent;
+    }
+
+    &::placeholder {
+      color: $colors-neutral-light;
+      font-family: $montserrat-regular;
+      font-size: 12px;
+    }
+  }
+
+  i.clear-search {
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $colors-neutral-light;
+
+    &:hover {
+      color: $colors-neutral-dark;
+      cursor: pointer;
+    }
+  }
+
+  button.search-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    height: 40px;
+    width: 40px;
+    max-width: 40px;
+    background: $colors-v2-base-primary-v-low-t-05;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid $colors-neutral-light;
+    border-left: none !important;
+    border-radius: 0px 8px 8px 0px;
+    flex: 0 0 40px;
+
+    i {
+      color: $colors-neutral-dark;
+      margin: 0;
+    }
+  }
+
+  &:focus-within {
+    border-radius: 8px;
+    outline: 2px solid $colors-v2-base-secondary-v-medium;
+
+    input.form-control,
+    button.search-icon {
+      border: 1px solid transparent;
+    }
+
+    input.form-control {
+      caret-color: $colors-v2-base-secondary-v-medium;
+    }
+  }
+
+  &:hover:not(:focus-within) {
+    border-radius: 8px;
+    outline: 2px solid $colors-neutral-dark;
+
+    input.form-control,
+    button.search-icon {
+      border: 1px solid transparent;
+    }
+  }
+}
+
+@mixin basic-tooltip {
+  position: absolute;
+  display: none;
+  padding: 8px;
+  align-items: center;
+  font-family: $montserrat-regular;
+  color: $colors-neutral-white;
+  font-size: 12px;
+  line-height: 16px;
+  background-color: $colors-neutral-black;
+  white-space: nowrap;
+  z-index: 1;
+}

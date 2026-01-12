@@ -1,0 +1,66 @@
+<div class="authentication-container">
+  <div class="form-wrapper mx-auto">
+    @if (isShowLoginErrorMsg) {
+      <div class="form-validation row u-pg-mt-3">
+        @if (isShowLoginErrorMsg) {
+          <div class="typography-paragraph-white-regular col-8 mx-auto text-center u-pg-mb-3 validation-msg"
+            >
+            {{ showErrorMsg }}
+          </div>
+        }
+      </div>
+    }
+    <div class="d-flex form-container justify-content-between">
+      <div class="cockpit-logo p-0">
+        <img src="assets/images/login-logo.svg" alt="Logo" class="logo">
+      </div>
+      <div class="custom-form d-flex flex-column">
+        <div class="form-title">
+          <h1 class="typography-v2-cr-h3-white-bold m-0" [textContent]="formTitle.firstline"></h1>
+          <p class="mb-0" [textContent]="formTitle.secondline"></p>
+        </div>
+        <div class="sign-in-form-group">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin(loginForm)" autocomplete="false">
+            @for (field of formConfig.schema; track trackByField(i, field); let i = $index) {
+              <div class="typograpghy-paragraph-white-regular u-pg-mt-3 d-flex flex-column form-field"
+                >
+                <label [for]="field.name" [ngClass]="{'ps-required-asterisk': field.required}"
+                  [textContent]="field.label">
+                </label>
+                <div class="input-wrapper position-relative d-flex align-items-center">
+                  <input #inputElement [type]="field.type" [id]="field.name" [formControlName]="field.name"
+                    [placeholder]="field.placeholder" [required]="field.required" [autocomplete]="false"
+                    class="w-100" [name]="field.name">
+                  <div #iconContainer class="input-action-buttons position-absolute end-0 d-flex">
+                    @if (field.passwordField) {
+                      <div class="password-container position-relative">
+                        <i class="fa password-icon"
+                          [ngClass]="{'fa-eye-slash': !field.isPasswordVisible,'fa-eye': field.isPasswordVisible}"
+                          (click)="togglePassword(i)">
+                        </i>
+                        <span class="password-tooltip u-absolute">
+                          {{ !field.isPasswordVisible ? field.showtooltip : field.hidetooltip }}
+                        </span>
+                      </div>
+                    }
+                    <i class="fal fa-times-circle clear-icon" [hidden]="!loginForm.get(field.name)?.value"
+                      (click)="clearInput(field.name)">
+                    </i>
+                  </div>
+                </div>
+              </div>
+            }
+            <div class="form-submit-button">
+              <button type="submit" class="btn btn-primary w-100">
+                {{ formConfig.submitBtnLabel }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="signup-footer">
+      <p> © {{ today | date:'yyyy' }} Park Street</p>
+    </div>
+  </div>
+</div>
