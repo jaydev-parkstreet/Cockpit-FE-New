@@ -1,0 +1,60 @@
+@use './../../styles/variables/colors' as *;
+
+.psi-layout {
+  // height: 100vh;
+  min-height: 100vh;
+  // overflow: hidden;
+  // position: fixed;
+  // top: 0;
+  // left: 0;
+  // right: 0;
+  // bottom: 0;
+
+  &__sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    background-color: $colors-neutral-black;
+    transition: width 0.3s ease;
+    width: 64px;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-height: 100vh;
+    margin-left: 64px;
+    transition: margin-left 0.3s ease;
+    overflow: hidden;
+  }
+
+  &__header {
+    position: relative;
+    z-index: 998;
+    background-color: $colors-neutral-black;
+    border-bottom: 1px solid $colors-neutral-dark;
+    flex-shrink: 0;
+  }
+
+  &__content {
+    flex: 1;
+    overflow: auto;
+    background-color: $colors-neutral-light-v-low;
+    // @include scrollbar;
+    min-height: 0;
+    max-height: calc(100vh - 56px);
+  }
+
+  &:not(.sidebar-collapsed) {
+    .psi-layout__sidebar {
+      width: 288px;
+    }
+
+    .psi-layout__main {
+      margin-left: 288px;
+    }
+  }
+}

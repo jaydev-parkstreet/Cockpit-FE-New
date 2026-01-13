@@ -1,0 +1,36 @@
+@use '../../../../styles/variables/colors'as *;
+
+.main-header {
+  background-color: $colors-neutral-black;
+
+  &__search-container {
+    border-radius: 8px;
+    outline: 2px solid $colors-neutral-black-v-medium;
+
+    input {
+      border-radius: 8px;
+      border: 0px;
+      outline: none;
+      caret-color: $colors-v2-base-secondary-v-medium;
+      background-color: $colors-neutral-light-t-20;
+    }
+
+    ::placeholder {
+      color: $colors-neutral-light;
+    }
+
+    .icon-container {
+      right: 0;
+      top: 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    &:hover {
+      outline: 2px solid $colors-neutral-dark;
+    }
+
+    &:focus-within {
+      outline: 2px solid $colors-v2-base-secondary-v-medium;
+    }
+  }
+}

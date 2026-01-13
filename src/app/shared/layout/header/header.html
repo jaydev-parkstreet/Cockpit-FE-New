@@ -1,0 +1,19 @@
+<div class="main-header d-flex align-items-center u-pg-py-1">
+  <div class="main-header__search-container u-pg-ml-3 position-relative">
+    <input
+      type="text"
+      class="u-bg-neutral-light-t-10 u-neutral-light u-pg-h-5 u-pg-w-65 u-pg-pl-2 u-pg-pr-9 u-fs12"
+      placeholder="Search People and Companies"
+      [(ngModel)]="searchText" />
+    <div class="icon-container h-100 position-absolute d-flex align-items-center u-pg-g-1 u-pointer">
+      @if (searchText) {
+        <i
+          class="fal fa-times-circle u-neutral-light"
+        (click)="clearSearchText()"></i>
+      }
+      <div class="h-100 d-flex align-items-center justify-content-center u-pg-w-5">
+        <i class="far fa-search u-neutral-light"></i>
+      </div>
+    </div>
+  </div>
+</div>

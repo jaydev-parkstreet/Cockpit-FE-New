@@ -1,1 +1,12 @@
-<p>application works!</p>
+<div class="psi-layout" [class.sidebar-collapsed]="!isSidebarExpanded">
+  <div class="psi-layout__sidebar">
+    <app-sidebar
+      (sidebarToggle)="onSidebarToggle($event)">
+    </app-sidebar>
+  </div>
+  <div class="psi-layout__main">
+    <div class="psi-layout__header">
+      <app-header></app-header>
+    </div>
+  </div>
+</div>
