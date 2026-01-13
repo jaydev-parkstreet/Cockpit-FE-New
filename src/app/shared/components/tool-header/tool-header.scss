@@ -1,0 +1,44 @@
+@use '../../../../styles/variables/colors' as *;
+
+.app-page-header {
+  box-shadow: $colors-shadows-black-25;
+  &__switcher {
+    &-icon {
+      transition: color 0.2s ease;
+    }
+
+    &-tooltip {
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 12px;
+      white-space: nowrap;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      box-shadow: $colors-shadows-black-25;
+
+      &.left {
+        left: -100%;
+      }
+
+      &.center {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      &.right {
+        right: 0;
+        transform: translateX(100%);
+      }
+    }
+
+    &:hover {
+      .app-page-header__switcher-tooltip {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+<div
+  class="app-page-header d-flex align-items-center u-bg-neutral-white u-pg-h-6 u-pg-px-2">
+  <div class="app-page-header__title d-flex align-items-center u-pg-g-1">
+    @if (headerIcon) {
+      <i class="u-pg-mr-1 u-fs14 {{ headerIcon }}"></i>
+    }
+    <div class="typography-v2-cr-h5-black-regular" [textContent]="headerText"></div>
+  </div>
+  <div class="app-page-header__switchers d-flex">
+    @for (switcher of switcherConfig; track switcher) {
+      <div
+        class="app-page-header__switcher d-flex position-relative"
+        >
+        <i
+          class="app-page-header__switcher-icon u-fs20 u-pg-ml-2 u-pointer {{ switcher.icon }}"
+          [ngClass]="activeSwitcher == switcher.key ? 'u-neutral-dark' : 'u-neutral-light'"
+        (click)="onSwitcherClick(switcher)"></i>
+        @if (switcher.tooltipText) {
+          <span
+        class="typography-paragraph-black-regular app-page-header__switcher-tooltip position-absolute u-bg-neutral-black u-neutral-white {{
+          switcher.tooltipPosition
+        }}"
+          [textContent]="switcher.tooltipText"></span>
+        }
+      </div>
+    }
+  </div>
+</div>
