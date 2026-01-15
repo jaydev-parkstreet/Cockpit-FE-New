@@ -14,5 +14,12 @@ export const AppRoutes = {
         SIDEBAR_MENU: 'cockpit-sidebar-menu',
         AUDIT_TRAIL: 'audit-trail/list',
         MULTIPLE_FILES_API: 'store-multiple-files'
+    },
+    HOUSE_CASH_CREDITS: {
+        PERMISSION: 'house-cash-credit/permissions',
+        DROPDOWN: 'house-cash-credit/filters',
+        SUMMARY: 'house-cash-credit/summary',
+        SUMMARY_COUNT: 'house-cash-credit/summary-count',
+        EXPORT: 'house-cash-credit/export-excel'
     }
 };

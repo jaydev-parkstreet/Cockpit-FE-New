@@ -1,0 +1,75 @@
+@use '../../../../styles/variables/colors'as *;
+@use '../../../../styles/variables/typography'as *;
+
+.psi-button {
+    font-family: $crimson-pro-bold;
+    padding: 0 32px;
+    border: none;
+    border-radius: 8px;
+
+    &.primary {
+        color: $colors-neutral-white;
+        background-color: $colors-v2-base-primary;
+
+        &:not(:disabled):hover {
+            background: $colors-v2-base-primary-v-high;
+        }
+
+        &:focus {
+            outline: 2px solid $colors-v2-base-secondary-v-medium;
+        }
+    }
+
+    &.secondary {
+        background-color: $colors-neutral-white;
+        border: 1px solid $colors-neutral-light;
+        color: $colors-neutral-black;
+
+        &:focus {
+            border: none;
+            outline: 2px solid $colors-v2-base-secondary-v-medium;
+        }
+
+        &.active {
+            background-color: $colors-v2-base-primary-v-low-t-05;
+        }
+    }
+
+    &.ghost {
+        background-color: $colors-neutral-light-v-low;
+        border: 1px solid $colors-v2-base-primary;
+        color: $colors-v2-base-primary;
+
+        &:not(:disabled):hover {
+            background: $colors-v2-base-primary-v-low-t-05;
+        }
+
+        &:focus {
+            border: none;
+            outline: 2px solid $colors-v2-base-secondary-v-medium;
+        }
+    }
+
+    &.large {
+        height: 40px;
+    }
+
+    &.medium {
+        height: 32px;
+    }
+
+    &.small {
+        height: 24px;
+        border-radius: 4px;
+
+        .btn-text {
+            font-family: $montserrat-regular;
+            font-size: 12px;
+        }
+    }
+
+    &:disabled {
+        color: $colors-neutral-light;
+        opacity: 0.5;
+    }
+}
