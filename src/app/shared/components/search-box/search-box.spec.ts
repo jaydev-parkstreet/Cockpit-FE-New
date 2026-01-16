@@ -1,17 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Authentication } from './authentication';
+import { SearchBox } from './search-box';
 
-describe('Authentication', () => {
-  let component: Authentication;
-  let fixture: ComponentFixture<Authentication>;
+describe('SearchBox', () => {
+  let component: SearchBox;
+  let fixture: ComponentFixture<SearchBox>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Authentication],
-    }).compileComponents();
+      declarations: [SearchBox]
+    })
+    .compileComponents();
 
-    fixture = TestBed.createComponent(Authentication);
+    fixture = TestBed.createComponent(SearchBox);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

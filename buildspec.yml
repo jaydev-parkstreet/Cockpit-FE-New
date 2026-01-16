@@ -10,7 +10,7 @@ phases:
   pre_build:
     commands:
       #install dependencies
-      - . "$NVM_DIR/nvm.sh" && nvm install 10.24.1 
+      - . "$NVM_DIR/nvm.sh" && nvm install 10.24.1
       - echo Installing node...
       - echo Installing npm...
       - node --version
@@ -25,8 +25,8 @@ phases:
       - npm install --global gulp-cli
       - npm install -g @angular/cli@10.2.4 --unsafe-perm=true --allow-root
       - npm install
-  #    - gulp sass
-  #    - gulp views
+      #    - gulp sass
+      #    - gulp views
       - ng build --configuration=${env} --verbose
       - ls -ltrh dist
   post_build:
@@ -35,7 +35,7 @@ phases:
       - aws s3 rm s3://${S3_BUCKET_COCKPIT} --recursive
       - aws s3 cp dist/COCKPIT-FE s3://${S3_BUCKET_COCKPIT} --recursive --acl public-read
       - aws cloudfront create-invalidation --distribution-id ${CF_DISTRIBUTION_COCKPIT} --paths "/*"
-      - echo "Build completed on $(date)"      
+      - echo "Build completed on $(date)"
 
 artifacts:
   files:

@@ -1,4 +1,7 @@
-<div class="sidebar d-flex flex-column u-w-100" [ngClass]="isSidebarExpanded ? 'expanded' : 'collapsed'">
+<div
+  class="sidebar d-flex flex-column u-w-100"
+  [ngClass]="isSidebarExpanded ? 'expanded' : 'collapsed'"
+>
   <div class="sidebar__header d-flex align-items-center">
     <img
       [src]="
@@ -7,11 +10,12 @@
           : 'assets/images/header-collapsed-logo.svg'
       "
       alt="PSI Logo"
-      />
-    <div class="menutoggle u-pg-w-3 u-pointer" (click)="toggleSidebar()">
+    />
+    <div class="menutoggle u-pg-w-3 cursor-pointer" (click)="toggleSidebar()">
       <i
         class="d-flex align-items-center justify-content-center u-pg-s-3 u-fs12"
-      [ngClass]="isSidebarExpanded ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"></i>
+        [ngClass]="isSidebarExpanded ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"
+      ></i>
     </div>
   </div>
   <div class="sidebar__content flex-grow-1">
@@ -19,135 +23,142 @@
       <ul id="mainMenu" class="sidebar-menu-list u-pg-px-1">
         @for (menu of menuData; track menu) {
           <li
-            class="sidebar-menu-item u-pointer"
-          [ngClass]="{
-            'sidebar-menu-open': menu.isExpanded,
-            'sidebar-menu-active': isActiveRoute(menu.url)
-          }"
-            (click)="toggleMenuItems(menu)">
+            class="sidebar-menu-item cursor-pointer"
+            [ngClass]="{
+              'sidebar-menu-open': menu.isExpanded,
+              'sidebar-menu-active': isActiveRoute(menu.url),
+            }"
+            (click)="toggleMenuItems(menu)"
+          >
             <a
               [attr.href]="menu.url == '/router.php/dashboard' ? oldCockpit + menu.url : null"
               (mouseover)="showMenu($event, $event.currentTarget)"
               (mouseleave)="hideMenu($event, $event.currentTarget)"
-              >
+            >
               <i
                 [class]="menu.icon"
                 class="sidebar-icon"
-              [ngClass]="isSidebarExpanded ? 'u-pg-mr-1' : ''"></i>
+                [ngClass]="isSidebarExpanded ? 'u-pg-mr-1' : ''"
+              ></i>
               @if (isSidebarExpanded) {
-                <span class="custom-width menu-heading">{{
-                  menu.label
-                }}</span>
+                <span class="custom-width menu-heading">{{ menu.label }}</span>
               }
               @if (menu.submenuItems && isSidebarExpanded) {
                 <em
                   class="toggle-icon"
                   [ngClass]="menu.isExpanded ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"
-                  >
+                >
                 </em>
               }
             </a>
             @if (!isSidebarExpanded && (menu.label == 'Dashboard' || menu.label == 'Gateway')) {
-              <span
-                class="sidebar-tooltip"
-                [ngClass]="menu.label == 'Dashboard' ? 'das' : 'get'"
-                >{{ menu.label }}</span
-                >
-              }
-              @if (menu.submenuItems) {
-                <ul
-                  id="mainMenu-items"
-                  [ngClass]="isSidebarExpanded ? 'main-items-expand' : 'main-items-collapse'"
-                  [ngStyle]="!isSidebarExpanded ? {} : { display: menu.isExpanded ? 'block' : 'none' }">
-                  <span class="sidebar-tooltip tooltip-collapsed">{{ menu.label }}</span>
-                  @for (submenu of menu.submenuItems; track submenu) {
-                    <li
-                      class="sidebar-submenu-item"
-              [ngClass]="{
-                'sidebar-menu-active': isActiveRoute(
-                  submenu.frontend_app_route ? submenu.frontend_app_route : submenu.url
-                )
-              }"
+              <span class="sidebar-tooltip" [ngClass]="menu.label == 'Dashboard' ? 'das' : 'get'">{{
+                menu.label
+              }}</span>
+            }
+            @if (menu.submenuItems) {
+              <ul
+                id="mainMenu-items"
+                [ngClass]="isSidebarExpanded ? 'main-items-expand' : 'main-items-collapse'"
+                [ngStyle]="
+                  !isSidebarExpanded ? {} : { display: menu.isExpanded ? 'block' : 'none' }
+                "
+              >
+                <span class="sidebar-tooltip tooltip-collapsed">{{ menu.label }}</span>
+                @for (submenu of menu.submenuItems; track submenu) {
+                  <li
+                    class="sidebar-submenu-item"
+                    [ngClass]="{
+                      'sidebar-menu-active': isActiveRoute(
+                        submenu.frontend_app_route ? submenu.frontend_app_route : submenu.url
+                      ),
+                    }"
+                  >
+                    @if (allowedRoutes.includes(submenu.route_name)) {
+                      <a
+                        [routerLink]="submenu.frontend_app_route"
+                        (mouseover)="showSubmenu($event, $event.currentTarget)"
+                        (mouseleave)="hideSubmenu($event, $event.currentTarget)"
                       >
-                      @if (allowedRoutes.includes(submenu.route_name)) {
-                        <a
-                          [routerLink]="submenu.frontend_app_route"
-                          (mouseover)="showSubmenu($event, $event.currentTarget)"
-                          (mouseleave)="hideSubmenu($event, $event.currentTarget)"
-                          >
-                          <span class="custom-width">{{ submenu.label }}</span>
-                          @if (submenu.submenuItems) {
-                            <em class="fas fa-chevron-right toggle-icon"></em>
-                          }
-                        </a>
-                      } @else {
-                        <a
-                  [attr.href]="
-                    submenu.url ? oldCockpit + submenu.url : oldCockpit + submenu.url_mobile
-                  "
-                          (mouseover)="showSubmenu($event, $event.currentTarget)"
-                          (mouseleave)="hideSubmenu($event, $event.currentTarget)"
-                          >
-                          <span class="custom-width">{{ submenu.label }}</span>
-                          @if (submenu.submenuItems) {
-                            <em class="fas fa-chevron-right toggle-icon"></em>
-                          }
-                        </a>
-                      }
-                      @if (submenu.submenuItems) {
-                        <ul class="submenu-item" #submenuItem>
-                          @for (submenu of submenu.submenuItems; track submenu) {
-                            <li class="sidebar-submenu-sub-item">
-                              @if (
-                                allowedRoutes.includes(submenu.route_name)) {
-                                <a
-                                  [routerLink]="submenu.frontend_app_route">
-                                  <span class="custom-width">{{ submenu.label }}</span>
-                                </a>
-                              } @else {
-                                <a
-                      [attr.href]="
-                        submenu.url ? oldCockpit + submenu.url : oldCockpit + submenu.url_mobile
-                      ">
-                                  <span class="custom-width">{{ submenu.label }}</span>
-                                </a>
-                              }
-                            </li>
-                          }
-                        </ul>
-                      }
-                    </li>
-                  }
-                </ul>
-              }
-            </li>
-          }
-        </ul>
-      </div>
-    </div>
-    <div class="sidebar__footer">
-      <div class="footer-profile">
-        <div
-          class="footer-profile-main d-flex align-items-center u-pointer"
-          (mouseenter)="toggleDropdown(true)"
-          (mouseleave)="toggleDropdown(false)">
-          <img class="u-pg-s-5" [src]="oldCockpit + currentUserData.PictureUrl" alt="" />
-          @if (currentUserData) {
-            <span class="user-name" [innerText]="currentUserData.first_name + ' ' + currentUserData.last_name"></span>
-          }
-          <i class="fas fa-chevron-right"></i>
-        </div>
-        @if (isDropdownVisible) {
-          <div
-            class="footer-profile-list u-pointer"
-            (mouseenter)="toggleDropdown(true)"
-            (mouseleave)="toggleDropdown(false)">
-            <span><a [href]="oldCockpit + '/router.php/profile'"> My Profile</a></span>
-            <span><a [href]="oldCockpit"> Account Settings</a></span>
-            <span><a [href]="oldCockpit"> Help</a></span>
-            <span><a class="u-pointer" (click)="logout()"> Log Out</a></span>
-          </div>
+                        <span class="custom-width">{{ submenu.label }}</span>
+                        @if (submenu.submenuItems) {
+                          <em class="fas fa-chevron-right toggle-icon"></em>
+                        }
+                      </a>
+                    } @else {
+                      <a
+                        [attr.href]="
+                          submenu.url ? oldCockpit + submenu.url : oldCockpit + submenu.url_mobile
+                        "
+                        (mouseover)="showSubmenu($event, $event.currentTarget)"
+                        (mouseleave)="hideSubmenu($event, $event.currentTarget)"
+                      >
+                        <span class="custom-width">{{ submenu.label }}</span>
+                        @if (submenu.submenuItems) {
+                          <em class="fas fa-chevron-right toggle-icon"></em>
+                        }
+                      </a>
+                    }
+                    @if (submenu.submenuItems) {
+                      <ul class="submenu-item" #submenuItem>
+                        @for (submenu of submenu.submenuItems; track submenu) {
+                          <li class="sidebar-submenu-sub-item">
+                            @if (allowedRoutes.includes(submenu.route_name)) {
+                              <a [routerLink]="submenu.frontend_app_route">
+                                <span class="custom-width">{{ submenu.label }}</span>
+                              </a>
+                            } @else {
+                              <a
+                                [attr.href]="
+                                  submenu.url
+                                    ? oldCockpit + submenu.url
+                                    : oldCockpit + submenu.url_mobile
+                                "
+                              >
+                                <span class="custom-width">{{ submenu.label }}</span>
+                              </a>
+                            }
+                          </li>
+                        }
+                      </ul>
+                    }
+                  </li>
+                }
+              </ul>
+            }
+          </li>
         }
-      </div>
+      </ul>
     </div>
   </div>
+  <div class="sidebar__footer">
+    <div class="footer-profile">
+      <div
+        class="footer-profile-main d-flex align-items-center cursor-pointer"
+        (mouseenter)="toggleDropdown(true)"
+        (mouseleave)="toggleDropdown(false)"
+      >
+        <img class="u-pg-s-5" [src]="oldCockpit + currentUserData.PictureUrl" alt="" />
+        @if (currentUserData) {
+          <span
+            class="user-name"
+            [innerText]="currentUserData.first_name + ' ' + currentUserData.last_name"
+          ></span>
+        }
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      @if (isDropdownVisible) {
+        <div
+          class="footer-profile-list cursor-pointer"
+          (mouseenter)="toggleDropdown(true)"
+          (mouseleave)="toggleDropdown(false)"
+        >
+          <span><a [href]="oldCockpit + '/router.php/profile'"> My Profile</a></span>
+          <span><a [href]="oldCockpit"> Account Settings</a></span>
+          <span><a [href]="oldCockpit"> Help</a></span>
+          <span><a class="cursor-pointer" (click)="logout()"> Log Out</a></span>
+        </div>
+      }
+    </div>
+  </div>
+</div>

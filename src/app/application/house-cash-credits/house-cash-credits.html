@@ -1,20 +1,17 @@
 <section class="house-cash-credit u-pg-py-1 u-pg-px-2 u-bg-neutral-light-v-low">
   <div class="house-cash-credit__header">
-    <app-tool-header
-      [headerText]="'House Cash Credits'"
-      [headerIcon]="'fas fa-dollar-sign'"
-    >
+    <app-tool-header [headerText]="'House Cash Credits'" [headerIcon]="'fas fa-dollar-sign'">
     </app-tool-header>
   </div>
   <div class="u-pg-mt-2">
     <app-summary-top-bar [config]="topPanelConfig" [filterList]="filterList">
-      <div class="u-pg-w-26" first-filter>
-        <!-- <app-psi-month-picker
+      <!-- <div class="u-pg-w-26" first-filter>
+        <app-psi-month-picker
           [selectedDate]="selectedDate"
           (dateChange)="updateMonth($event)"
         >
-        </app-psi-month-picker> -->
-      </div>
+        </app-psi-month-picker>
+      </div> -->
     </app-summary-top-bar>
   </div>
   <!-- <ag-grid-angular

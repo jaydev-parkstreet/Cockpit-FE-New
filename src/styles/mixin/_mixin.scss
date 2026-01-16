@@ -1,12 +1,14 @@
-@use '../variables/colors'as *;
-@use '../variables/typography'as *;
+@use '../variables/colors' as *;
+@use '../variables/typography' as *;
 
-@mixin scrollbar($thumb-color: $colors-neutral-light-t-50,
+@mixin scrollbar(
+  $thumb-color: $colors-neutral-light-t-50,
   $thumb-hover-color: $colors-neutral-light,
   $width: 8px,
   $height: 8px,
   $track-radius: 8px,
-  $thumb-radius: 8px) {
+  $thumb-radius: 8px
+) {
   &::-webkit-scrollbar-corner {
     background: transparent;
   }

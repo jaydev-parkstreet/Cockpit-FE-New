@@ -7,6 +7,4 @@ import { ToolHeader } from '../../shared/components/tool-header/tool-header';
   templateUrl: './formula.html',
   styleUrl: './formula.scss',
 })
-export class Formula {
-
-}
+export class Formula {}

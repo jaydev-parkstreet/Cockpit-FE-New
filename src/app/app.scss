@@ -1,15 +1,15 @@
-@use '../styles/variables/colors'as *;
+@use '../styles/variables/colors' as *;
 
 .psi-loader {
-    height: 100vh;
-    width: 100vw;
-    background-color: $colors-neutral-black-t-50;
-    position: fixed;
-    z-index: 999999999;
+  height: 100vh;
+  width: 100vw;
+  background-color: $colors-neutral-black-t-50;
+  position: fixed;
+  z-index: 999999999;
 }
 
 .psi-multi-toast {
-    z-index: 9999;
-    bottom: 24px;
-    right: 24px;
+  z-index: 9999;
+  bottom: 24px;
+  right: 24px;
 }

@@ -1,5 +1,5 @@
 @use './variables' as *;
-@use "sass:math";
+@use 'sass:math';
 
 @for $i from 1 through $multiplier {
   .#{$prefix}-w-#{$i} {
@@ -20,11 +20,11 @@
   }
 
   .#{$prefix}-gx-#{$i} {
-    column-gap: $size * $i+px;
+    column-gap: $size * $i + px;
   }
 
   .#{$prefix}-gy-#{$i} {
-    row-gap: $size * $i+px;
+    row-gap: $size * $i + px;
   }
 }
 

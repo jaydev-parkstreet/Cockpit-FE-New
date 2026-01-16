@@ -1,0 +1,26 @@
+<div
+  class="search-box-wrapper d-flex align-items-center u-pg-pl-2 u-bg-neutral-white u-pg-g-1 u-pg-br-1"
+  [ngClass]="containerClasses"
+>
+  <input
+    type="text"
+    class="search-input u-neutral-black bg-transparent border border-0 flex-grow-1"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [value]="value"
+    (input)="onInput($event)"
+    (keydown.enter)="onEnter()"
+  />
+  @if (value) {
+    <i
+      class="fal fa-times-circle clear-search-icon u-neutral-light cursor-pointer"
+      (click)="onClearInput()"
+    ></i>
+  }
+  <div
+    class="search-icon d-flex align-items-center justify-content-center u-pg-g-1 cursor-pointer border border-0"
+    (click)="onSearch()"
+  >
+    <i class="far fa-search"></i>
+  </div>
+</div>

@@ -2,17 +2,21 @@
   <div class="d-flex align-items-center justify-content-end u-pg-g-2 h-100 w-100">
     <ng-content select="[first-filter]"></ng-content>
     @if (!config.hideSearch) {
-      <div class="flex-grow-1 search-box-container u-pg-h-5">
-        <!-- <app-search-bar
-          [config]="config"
-          (onEnter)="onEnter.emit($event)">
-        </app-search-bar> -->
+      <div class="flex-grow-1">
+        <app-search-box
+          [placeholder]="'Custom Placeholder'"
+          [size]="'Medium'"
+          [disabled]="false"
+          [value]="'Default Search Text'"
+          (valueChange)="onSearchValueChange($event)"
+        >
+        </app-search-box>
       </div>
     }
     @for (action of config.actions; track action) {
       <div class="d-flex align-items-center icon-container" [ngClass]="action.divClass">
         @if (action.type == 'icon') {
-          <div class="u-icon-tooltip u-pointer">
+          <div class="u-icon-tooltip cursor-pointer">
             <!-- <i class="u-fs20 on-hover action-icon {{action.iconClass}}" [ngClass]="{'is-disabled': action.disabled}" (click)="!action.disabled && onClickAction.emit(action)"></i> -->
             @if (action.tooltipText) {
               <span class="tooltiptext t-center u-pg-mt-1" [innerHtml]="action.tooltipText"></span>
@@ -21,7 +25,7 @@
         }
         @if (action.type == 'export') {
           <!-- <app-excel-export
-            class="u-pointer"
+            class="cursor-pointer"
             [config]="action">
           </app-excel-export> -->
         }
@@ -30,7 +34,10 @@
             @if (!config.isResultLoading) {
               <span class="d-flex align-items-center u-pg-g-1">
                 <span class="typography-body-dark-medium" [textContent]="config.totalResult"></span>
-                <span class="typography-body-dark-regular" [textContent]="config.totalResult === 1 ? 'Result' : 'Results'"></span>
+                <span
+                  class="typography-body-dark-regular"
+                  [textContent]="config.totalResult === 1 ? 'Result' : 'Results'"
+                ></span>
               </span>
             }
             @if (config.isResultLoading) {
@@ -45,7 +52,8 @@
               [btnClass]="'active'"
               [buttonIconLeft]="'fas fa-filter'"
               [btnText]="'Filter'"
-              (onClick)="onClickFilter()">
+              (onClick)="onClickFilter()"
+            >
             </app-button>
           </div>
         }
@@ -57,7 +65,8 @@
               [buttonIconLeft]="action.buttonIconLeft"
               [buttonIconRight]="action.buttonIconRight"
               [btnText]="action.btnText"
-              [isDisable]="action.disabled">
+              [isDisable]="action.disabled"
+            >
             </app-button>
           </div>
         }
@@ -89,45 +98,42 @@
             (onDropDownChange)="onFilterChange(filter.key, $event)"
             (dropdownClosedWithServerFilteredItems)="handleDropdownCloseWithServerFiltering(filter.key, $event)">
           </app-cmp-input-dropdown> -->
-          <!-- <app-cmp-multi-select-dropdown
+            <!-- <app-cmp-multi-select-dropdown
             [placeholder]="filter.placeholder"
             [label]="filter.label"
             [selectedItems]="selectedFilters[filter.key]"
             [titleMap]="filterList && filterList[filter.key]"
             (onDropDownChange)="onFilterChange(filter.key, $event)">
           </app-cmp-multi-select-dropdown> -->
-        </div>
-      }
-      @if (filter.type === 'singleselect-search') {
-        <div [ngClass]="filter.divClass">
-          <!-- <app-cmp-single-select-dropdown
+          </div>
+        }
+        @if (filter.type === 'singleselect-search') {
+          <div [ngClass]="filter.divClass">
+            <!-- <app-cmp-single-select-dropdown
             [placeholder]="filter.placeholder"
             [label]="filter.label"
             [selectedItemId]="selectedFilters[filter.key]"
             [titleMap]="filterList && filterList[filter.key]"
             (onDropDownChange)="onFilterChange(filter.key, $event)">
           </app-cmp-single-select-dropdown> -->
-        </div>
-      }
-      @if (filter.type === 'checkbox') {
-        <div class="checkbox-item" [ngClass]="filter.divClass">
-          <!-- <app-psi-checkbox
+          </div>
+        }
+        @if (filter.type === 'checkbox') {
+          <div class="checkbox-item" [ngClass]="filter.divClass">
+            <!-- <app-psi-checkbox
             [checkboxId]="filter.id"
             [checkboxLabel]="filter.label"
             [checkedValue]="selectedFilters[filter.id]"
             (valueChanged)="onCheckedInput(filter.id, $event)">
           </app-psi-checkbox> -->
-        </div>
+          </div>
+        }
       }
-    }
+    </div>
+    <div class="d-flex align-items-center u-pg-g-3">
+      <app-button [btnClass]="'secondary sm'" [btnText]="'Apply'" (click)="applyFilterChanges()">
+      </app-button>
+      <div class="u-btn-link" (click)="resetFilterChanges()">Clear</div>
+    </div>
   </div>
-  <div class="d-flex align-items-center u-pg-g-3">
-    <app-button
-      [btnClass]="'secondary sm'"
-      [btnText]="'Apply'"
-      (click)="applyFilterChanges()">
-    </app-button>
-    <div class="u-btn-link" (click)="resetFilterChanges()">Clear</div>
-  </div>
-</div>
 }

@@ -1,0 +1,78 @@
+@use '../../../../styles/variables/colors' as *;
+@use '../../../../styles/variables/typography' as *;
+
+.search-box-wrapper {
+  border: 1px solid $colors-neutral-light;
+  font-family: $montserrat-regular;
+  font-style: normal;
+  font-weight: 400;
+
+  .search-input {
+    outline: none;
+
+    &::placeholder {
+      color: $colors-neutral-light;
+    }
+  }
+
+  .search-icon {
+    border-radius: 0 8px 8px 0;
+    border-top: 1px solid $colors-neutral-light;
+    border-bottom: 1px solid $colors-neutral-light;
+    background-color: $colors-v2-base-primary-v-low-t-05;
+  }
+
+  &.small {
+    height: 32px;
+    font-size: 10px;
+    line-height: 14px;
+
+    .search-icon {
+      padding: 8px;
+      height: 32px;
+      width: 32px;
+    }
+  }
+
+  &.medium {
+    height: 40px;
+    font-size: 12px;
+    line-height: 16px;
+
+    .search-icon {
+      padding: 10px;
+      height: 40px;
+      width: 40px;
+    }
+  }
+
+  &.disabled {
+    border: 1px solid $colors-neutral-light;
+    background: $colors-neutral-light-v-low;
+    pointer-events: none;
+
+    .search-input::placeholder {
+      color: $colors-neutral-dark-v-medium;
+    }
+  }
+
+  &:hover {
+    border: 2px solid $colors-neutral-dark;
+    background: $colors-neutral-white;
+
+    .search-icon {
+      border-top: 2px solid $colors-neutral-dark;
+      border-bottom: 2px solid $colors-neutral-dark;
+    }
+  }
+
+  &:focus-within {
+    border: 2px solid $colors-v2-base-secondary-v-medium;
+    background: $colors-neutral-white;
+
+    .search-icon {
+      border-top: 2px solid $colors-v2-base-secondary-v-medium;
+      border-bottom: 2px solid $colors-v2-base-secondary-v-medium;
+    }
+  }
+}

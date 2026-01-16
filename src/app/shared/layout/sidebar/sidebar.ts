@@ -30,13 +30,13 @@ interface Menu {
       frontend_app_route: string;
       route_name: string;
       url_mobile: string;
-    }[]
-  }[]
+    }[];
+  }[];
 }
 
 interface MenuResponse {
   hasError: boolean;
-  data: Menu[]
+  data: Menu[];
 }
 
 @Component({
@@ -46,7 +46,6 @@ interface MenuResponse {
   styleUrl: './sidebar.scss',
 })
 export class Sidebar implements OnInit {
-
   @Output() sidebarToggle = new EventEmitter<boolean>();
   menuData: Menu[] = [];
   isSidebarExpanded: boolean = false;
@@ -61,8 +60,8 @@ export class Sidebar implements OnInit {
     private authService: AuthService,
     private renderer: Renderer2,
     private router: Router,
-    private sidebarMenuService: SidebarService
-  ) { }
+    private sidebarMenuService: SidebarService,
+  ) {}
 
   ngOnInit(): void {
     this.currentUserData = this.authService.getUserData();
@@ -111,7 +110,7 @@ export class Sidebar implements OnInit {
     this.renderer.setStyle(
       submenuElement,
       'left',
-      `${parentRect.right + (this.isSidebarExpanded ? 8 : 16)}px`
+      `${parentRect.right + (this.isSidebarExpanded ? 8 : 16)}px`,
     );
     this.renderer.setStyle(submenuElement, 'display', 'block');
     submenuElement.addEventListener('mouseenter', () => {
@@ -153,7 +152,7 @@ export class Sidebar implements OnInit {
     this.renderer.setStyle(
       submenuItem,
       isOverflowing ? 'bottom' : 'top',
-      isOverflowing ? '16px' : `${parentRect.top}px`
+      isOverflowing ? '16px' : `${parentRect.top}px`,
     );
     this.renderer.setStyle(submenuItem, 'left', `calc(100% - 8px)`);
     this.renderer.setStyle(submenuItem, 'display', 'block');

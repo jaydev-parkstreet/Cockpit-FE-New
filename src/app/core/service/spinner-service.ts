@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class SpinnerService {
-
   spinnerCount: number = 0;
 
   show() {
@@ -18,9 +17,8 @@ export class SpinnerService {
   add() {
     this.spinnerCount++;
   }
-  
+
   remove() {
     this.spinnerCount--;
   }
-  
 }

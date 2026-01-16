@@ -8,11 +8,9 @@ import { AppRoutes } from '../../../core/constant/route.constant';
   providedIn: 'root',
 })
 export class SidebarService {
-
   constructor(private http: HttpClient) {}
 
   getMenu(): Observable<any> {
     return this.http.get<any>(environment.apiUrl + AppRoutes.COMMON.SIDEBAR_MENU);
   }
-  
 }

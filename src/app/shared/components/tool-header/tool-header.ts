@@ -6,7 +6,7 @@ interface Switcher {
   tooltipText: string;
   key: string;
   tooltipPosition: 'left' | 'right' | 'center';
-};
+}
 
 @Component({
   selector: 'app-tool-header',
@@ -32,5 +32,4 @@ export class ToolHeader {
     this.activeSwitcher = switcher.key;
     this.onClick.emit(switcher);
   }
-
 }

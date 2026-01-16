@@ -1,195 +1,195 @@
 /* You can add global styles to this file, and also import other style files */
-@use "./styles/8-point-grid/8-point-grid.scss"as *;
-@use "./styles/utilities/colors" as *;
-@use "./styles/utilities/background-colors" as *;
-@use "./styles/utilities/typography" as *;
-@use "./styles/variables/colors" as *;
-@use "./styles/mixin/mixin" as *;
+@use './styles/8-point-grid/8-point-grid.scss' as *;
+@use './styles/utilities/colors' as *;
+@use './styles/utilities/background-colors' as *;
+@use './styles/utilities/typography' as *;
+@use './styles/utilities/cursors' as *;
+@use './styles/variables/colors' as *;
+@use './styles/mixin/mixin' as *;
 
 @font-face {
-    font-family: "Montserrat-Regular";
-    src: url("../src/assets/fonts/montserrat/Montserrat-Regular.woff") format("woff");
+  font-family: 'Montserrat-Regular';
+  src: url('../src/assets/fonts/montserrat/Montserrat-Regular.woff') format('woff');
 }
 
 @font-face {
-    font-family: "Montserrat-Medium";
-    src: url("../src/assets/fonts/montserrat/Montserrat-Medium.woff") format("woff");
+  font-family: 'Montserrat-Medium';
+  src: url('../src/assets/fonts/montserrat/Montserrat-Medium.woff') format('woff');
 }
 
 @font-face {
-    font-family: "Montserrat-Bold";
-    src: url("../src/assets/fonts/montserrat/Montserrat-Bold.woff") format("woff");
-    font-weight: bold;
-    font-style: bold;
+  font-family: 'Montserrat-Bold';
+  src: url('../src/assets/fonts/montserrat/Montserrat-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: bold;
 }
 
 @font-face {
-    font-family: "CrimsonPro-Regular";
-    src: url("../src/assets/fonts/crimson-pro/CrimsonPro-Regular.woff") format("woff");
+  font-family: 'CrimsonPro-Regular';
+  src: url('../src/assets/fonts/crimson-pro/CrimsonPro-Regular.woff') format('woff');
 }
 
 @font-face {
-    font-family: "CrimsonPro-Medium";
-    src: url("../src/assets/fonts/crimson-pro/CrimsonPro-Medium.woff") format("woff");
+  font-family: 'CrimsonPro-Medium';
+  src: url('../src/assets/fonts/crimson-pro/CrimsonPro-Medium.woff') format('woff');
 }
 
 @font-face {
-    font-family: "CrimsonPro-Bold";
-    src: url("../src/assets/fonts/crimson-pro/CrimsonPro-Bold.woff") format("woff");
-    font-weight: bold;
-    font-style: bold;
+  font-family: 'CrimsonPro-Bold';
+  src: url('../src/assets/fonts/crimson-pro/CrimsonPro-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: bold;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-size: 14px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 14px;
 }
-
 
 html,
 body {
-    height: 100%;
-    font-family: "Montserrat-Regular", Arial, sans-serif !important;
-}
-
-.u-pointer {
-    cursor: pointer;
+  height: 100%;
+  font-family: 'Montserrat-Regular', Arial, sans-serif !important;
 }
 
 .u-fs12 {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .u-fs14 {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .u-fs20 {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .u-fs64 {
-    font-size: 64px;
+  font-size: 64px;
 }
 
 .u-action-icon {
-    color: $colors-neutral-dark;
+  color: $colors-neutral-dark;
 
-    &:not(.disabled):hover {
-        color: $colors-neutral-black;
-        cursor: pointer;
-    }
+  &:not(.disabled):hover {
+    color: $colors-neutral-black;
+    cursor: pointer;
+  }
 
-    &.disabled {
-        color: $colors-neutral-light;
-        pointer-events: none;
-    }
+  &.disabled {
+    color: $colors-neutral-light;
+    pointer-events: none;
+  }
 }
 
-
 .u-icon-tooltip {
-    position: relative;
+  position: relative;
 
-    .tooltiptext {
-        @include basic-tooltip;
-        top: 20px;
+  .tooltiptext {
+    @include basic-tooltip;
+    top: 20px;
 
-        &:not(.t-multiline) {
-            padding: 0 8px;
-            height: 32px;
-        }
-
-        &.t-left {
-            right: 0;
-        }
-
-        &.t-center {
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        &.secondary-tooltip {
-            background-color: $colors-neutral-white;
-            color: $colors-neutral-black;
-            box-shadow: 0 4px 8px 0 $colors-neutral-dark-t-15;
-        }
+    &:not(.t-multiline) {
+      padding: 0 8px;
+      height: 32px;
     }
 
-    .on-hover:hover~.tooltiptext,
-    .on-hover:hover+.tooltiptext {
-        display: flex;
+    &.t-left {
+      right: 0;
     }
+
+    &.t-center {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &.secondary-tooltip {
+      background-color: $colors-neutral-white;
+      color: $colors-neutral-black;
+      box-shadow: 0 4px 8px 0 $colors-neutral-dark-t-15;
+    }
+  }
+
+  .on-hover:hover ~ .tooltiptext,
+  .on-hover:hover + .tooltiptext {
+    display: flex;
+  }
 }
 
 .u-btn-link {
-    text-decoration: none;
-    color: $colors-neutral-black;
-    font-size: 12px;
-    cursor: pointer;
+  text-decoration: none;
+  color: $colors-neutral-black;
+  font-size: 12px;
+  cursor: pointer;
 
-    &:hover {
-        text-decoration: underline;
-        color: $colors-v2-base-primary;
-    }
+  &:hover {
+    text-decoration: underline;
+    color: $colors-v2-base-primary;
+  }
 }
 
 .u-input-label {
-    margin-left: 16px;
-    font-size: 12px;
-    margin-bottom: 6px !important;
-    line-height: 16px;
-    color: $colors-neutral-black;
-    position: relative;
+  margin-left: 16px;
+  font-size: 12px;
+  margin-bottom: 6px !important;
+  line-height: 16px;
+  color: $colors-neutral-black;
+  position: relative;
 
-    &.required::before {
-        content: "*";
-        color: $colors-v2-base-error;
-        font-size: 14px;
-        top: 0;
-        left: -8px;
-        position: absolute;
-        font-family: sans-serif;
-    }
+  &.required::before {
+    content: '*';
+    color: $colors-v2-base-error;
+    font-size: 14px;
+    top: 0;
+    left: -8px;
+    position: absolute;
+    font-family: sans-serif;
+  }
 }
 
 .u-overflow-ellipsis {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* CSS */
 :root {
-    --skeleton-bg: #e9e9ef;
-    --skeleton-highlight: #f5f6f9;
-    --skeleton-radius: 6px;
-    --skeleton-duration: 1.2s;
+  --skeleton-bg: #e9e9ef;
+  --skeleton-highlight: #f5f6f9;
+  --skeleton-radius: 6px;
+  --skeleton-duration: 1.2s;
 }
 
 .psi-skeleton-loader {
-    display: inline-block;
-    background: var(--skeleton-bg);
-    border-radius: var(--skeleton-radius);
-    position: relative;
-    overflow: hidden;
-    line-height: 1;
-    vertical-align: middle;
-    min-height: 8px;
-    min-width: 8px;
+  display: inline-block;
+  background: var(--skeleton-bg);
+  border-radius: var(--skeleton-radius);
+  position: relative;
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: middle;
+  min-height: 8px;
+  min-width: 8px;
 
-    &::after {
-        content: "";
-        position: absolute;
-        left: -150%;
-        top: 0;
-        height: 100%;
-        width: 150%;
-        background: linear-gradient(90deg, transparent 0%, var(--skeleton-highlight) 50%, transparent 100%);
-        transform: translateX(0);
-        animation: skeleton-shimmer var(--skeleton-duration) linear infinite;
-    }
+  &::after {
+    content: '';
+    position: absolute;
+    left: -150%;
+    top: 0;
+    height: 100%;
+    width: 150%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--skeleton-highlight) 50%,
+      transparent 100%
+    );
+    transform: translateX(0);
+    animation: skeleton-shimmer var(--skeleton-duration) linear infinite;
+  }
 }
 
 /* useful size helpers */
@@ -199,22 +199,22 @@ body {
 
 /* animation */
 @keyframes skeleton-shimmer {
-    0% {
-        transform: translateX(0);
-        left: -150%;
-    }
+  0% {
+    transform: translateX(0);
+    left: -150%;
+  }
 
-    100% {
-        transform: translateX(150%);
-        left: 150%;
-    }
+  100% {
+    transform: translateX(150%);
+    left: 150%;
+  }
 }
 
 /* respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-    .psi-skeleton-loader::after {
-        animation: none;
-        background: none;
-        opacity: 0.6;
-    }
+  .psi-skeleton-loader::after {
+    animation: none;
+    background: none;
+    opacity: 0.6;
+  }
 }

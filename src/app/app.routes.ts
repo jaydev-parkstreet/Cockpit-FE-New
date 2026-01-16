@@ -4,18 +4,23 @@ import { Authentication } from './authentication/authentication';
 import { HouseCashCredits } from './application/house-cash-credits/house-cash-credits';
 import { Formula } from './application/formula/formula';
 
-export const routes: Routes = [{
+export const routes: Routes = [
+  {
     path: 'login',
-    component: Authentication
-},
-{
+    component: Authentication,
+  },
+  {
     path: '',
     component: Application,
-    children: [{
+    children: [
+      {
         path: 'house-cash-credits',
-        component: HouseCashCredits
-    }, {
+        component: HouseCashCredits,
+      },
+      {
         path: 'formula',
-        component: Formula
-    }]
-}];
+        component: Formula,
+      },
+    ],
+  },
+];

@@ -31,18 +31,18 @@ Example
     So if you want 8px margin-top, its: u-pg-mt-1
  */
 
-@use "margin"as *;
-@use "padding"as *;
-@use "size"as *;
+@use 'margin' as *;
+@use 'padding' as *;
+@use 'size' as *;
 
 .u-pg-br-1 {
-    border-radius: 8px;
+  border-radius: 8px;
 }
 
 .u-pg-br-half {
-    border-radius: 4px;
+  border-radius: 4px;
 }
 
 .u-pg-g-half {
-    gap: 4px;
+  gap: 4px;
 }

@@ -7,18 +7,20 @@
     [disabled]="isDisable"
   >
     @if (buttonIconLeft) {
-    <i class="u-fs20" [class]="buttonIconLeft"></i>
-    } @if (btnText) {
-    <span class="btn-text" [textContent]="btnText"></span>
-    } @if (buttonIconRight) {
-    <i class="u-fs20" [class]="buttonIconRight"></i>
+      <i class="u-fs20" [class]="buttonIconLeft"></i>
+    }
+    @if (btnText) {
+      <span class="btn-text" [textContent]="btnText"></span>
+    }
+    @if (buttonIconRight) {
+      <i class="u-fs20" [class]="buttonIconRight"></i>
     }
   </button>
   @if (tooltipText) {
-  <span
-    class="tooltiptext t-left top-100 u-pg-h-3"
-    [class]="isDisable && 'secondary-tooltip'"
-    [textContent]="tooltipText"
-  ></span>
+    <span
+      class="tooltiptext t-left top-100 u-pg-h-3"
+      [class]="isDisable && 'secondary-tooltip'"
+      [textContent]="tooltipText"
+    ></span>
   }
 </div>

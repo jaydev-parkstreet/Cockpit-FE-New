@@ -1,7 +1,6 @@
 @use '../variables/colors' as *;
 @use '../variables/typography' as *;
 
-
 .u-measure {
   max-width: 30em;
 }
@@ -45,41 +44,50 @@
   font-weight: 500;
 }
 
-@mixin font-v2-cr-bold{
+@mixin font-v2-cr-bold {
   font-family: $crimson-pro-bold;
   font-weight: 700;
 }
 
-[class^='typography-super-'],[class*='-super'] {
+[class^='typography-super-'],
+[class*='-super'] {
   font-size: 64px;
 }
 
-[class^='typography-h1-'],[class*='-h1'] {
+[class^='typography-h1-'],
+[class*='-h1'] {
   font-size: 56px;
 }
 
-[class^='typography-h2-'],[class*='-h2'] {
+[class^='typography-h2-'],
+[class*='-h2'] {
   font-size: 40px;
 }
 
-[class^='typography-h3-'],[class*='-h3'] {
+[class^='typography-h3-'],
+[class*='-h3'] {
   font-size: 32px;
 }
 
-[class^='typography-h4-'],[class*='-h4'] {
+[class^='typography-h4-'],
+[class*='-h4'] {
   font-size: 24px;
 }
 
-[class^='typography-h5-'],[class*='-h5']{
+[class^='typography-h5-'],
+[class*='-h5'] {
   font-size: 20px;
 }
 
-[class^='typography-h6-'],[class*='-h6'] {
+[class^='typography-h6-'],
+[class*='-h6'] {
   font-size: 16px;
 }
 
 [class^='typography-body-'],
-[class^='typography-link-'],[class*='-body'],[class*='-link']{
+[class^='typography-link-'],
+[class*='-body'],
+[class*='-link'] {
   font-size: 14px;
 }
 
@@ -88,15 +96,19 @@
 }
 
 [class^='typography-paragraph-'],
-[class^='typography-footnote-'],[class*='-paragraph'],[class*='-footnote'] {
+[class^='typography-footnote-'],
+[class*='-paragraph'],
+[class*='-footnote'] {
   font-size: 12px;
 }
 
-[class^='typography-caption-'],[class*='-caption'] {
+[class^='typography-caption-'],
+[class*='-caption'] {
   font-size: 10px;
 }
 
-[class^='typography-small-'],[class*='-small'] {
+[class^='typography-small-'],
+[class*='-small'] {
   font-size: 8px;
 }
 

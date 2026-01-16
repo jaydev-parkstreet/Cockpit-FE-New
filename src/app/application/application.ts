@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from "../shared/layout/header/header";
-import { Sidebar } from "../shared/layout/sidebar/sidebar";
+import { Header } from '../shared/layout/header/header';
+import { Sidebar } from '../shared/layout/sidebar/sidebar';
 
 @Component({
   selector: 'app-application',
@@ -21,5 +21,4 @@ export class Application {
   onSidebarToggle(isExpanded: boolean): void {
     this.isSidebarExpanded = isExpanded;
   }
-
 }

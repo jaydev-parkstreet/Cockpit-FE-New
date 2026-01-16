@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+coverage/
+e2e/
+.scannerwork/
+package-lock.json
+*.min.js
+*.bundle.js
+*.map
+*.log
